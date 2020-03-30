@@ -11,15 +11,22 @@
   Through well planned activities and a personalised mental health care package, we support each client to reach their goals and be proud of their achievements. </h2>
     </div>
 		<div class="home-form-wrapper">
-			<h3 class="home-form-title">Get in touch with BAC</h3>
+		<div class="tabs d-flex justify-content-center">
+			<div class="tab" data-tab="find-tab">Find Practitioner</div>
+			<div class="tab active" data-tab="referral-tab">Make a Referral</div>
+		</div>
+		<div class="tab-content find-tab">
+
+		</div>
+		<div class="tab-content referral-tab active">
 			<?php echo do_shortcode('[contact-form-7 id="18" title="Home page"]'); ?>
 			<div class="form-addition">
-				<div class="form-addition-text">or you can call us or email us directly</div>
+				<div class="form-addition-text">or you can call us directly</div>
 				<div class="form-addition-action d-flex justify-content-between">
-					<div><a href="tel:555-555-5555">+44 20 8648 6681</a></div>
-					<div><a href="mailto:thimphoo@gmail.com">Email Us</a></div>
+					<div class="d-flex"><a href="tel:555-555-5555">+44 20 8648 6681</a></div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 </div>

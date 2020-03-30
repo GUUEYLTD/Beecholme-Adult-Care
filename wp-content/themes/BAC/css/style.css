@@ -462,6 +462,36 @@ p {
     z-index: 2;
 }
 
+.banner-content .tabs {
+    margin-bottom: 30px;
+}
+
+.banner-content .tab {
+    cursor: pointer;
+    width: 100%;
+    padding-bottom: 4px;
+    border-bottom: 3px solid #F4F4F5;
+    text-align: center;
+    font-family: 'InterReg', sans-serif;
+    font-size: 14px;
+    line-height: 24px;
+    color: #C4C4C4;
+}
+
+.banner-content .tab-content {
+    position: relative;
+    display: none;
+}
+
+.banner-content .tab-content.active {
+    display: block;
+}
+
+.banner-content .tab.active {
+    color: #333;
+    border-color: #5AB9AC;
+}
+
 .banner-content .heading {
     margin-right: 145px;
 }
@@ -514,7 +544,12 @@ p {
 
 #wpcf7-f18-o1 .wpcf7-form p:nth-child(5) {
     margin-bottom: 0;
-    text-align: left;
+    text-align: right;
+}
+
+#wpcf7-f18-o1 .wpcf7-form p:nth-child(5) .ajax-loader {
+    position: absolute;
+    bottom: 12px;
 }
 
 .wpcf7-form label {
@@ -527,10 +562,12 @@ p {
 }
 
 .wpcf7-form input, .wpcf7-form select {
-    width: 360px;
-    font-size: 14px;
+    font-family: 'InterReg', sans-serif;
+    width: 266px;
+    font-size: 16px;
     padding: 12px 15px;
-    border: 1px solid #E6E9ED;
+    border: 1px solid #C4C4C4;
+    border-radius: 3px;
     background: transparent;
     color: #737C8A;
     font-weight: normal;
@@ -564,10 +601,13 @@ p {
 }
 
 .wpcf7-form input[type="submit"] {
+    font-family: 'InterBold', sans-serif;
+    max-width: 100px;
     background: #5AB9AC;
     color: #fff;
     font-size: 16px;
     font-weight: bold;
+    padding: 7px 0;
 }
 .wpcf7-form input[type="submit"]:hover {
     background: #5da299;
@@ -579,14 +619,14 @@ p {
 
 .form-addition {
     position: absolute;
-    right: 60px;
-    bottom: 50px;
+    left: 0px;
+    bottom: 0px;
     padding: 5px 0;
 }
 
 .form-addition-text {
     font-size: 12px;
-    line-height: 12px;
+    line-height: 16px;
     color: #737C8A;
     margin-bottom: 4px;
     text-align: center;
@@ -601,7 +641,8 @@ p {
 }
 
 .form-addition-action div a {
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 16px;
     color: #434A54;
 }
 

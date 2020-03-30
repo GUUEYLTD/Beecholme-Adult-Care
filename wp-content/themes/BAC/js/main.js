@@ -208,3 +208,13 @@ jQuery(document).ready(function($) {
     });  
   });
 });
+
+// Home page banner tabs
+
+jQuery(document).ready(function($){
+  $('.banner-content .tab').on('click',function(){
+    $('.banner-content .tab, .banner-content .tab-content').removeClass('active');
+    $(this).addClass('active');
+    $('.' + $(this).attr('data-tab')).addClass('active');
+  });
+});
