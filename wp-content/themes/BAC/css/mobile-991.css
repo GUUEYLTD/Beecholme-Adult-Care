@@ -1,0 +1,424 @@
+/*General*/
+
+.owl-nav {
+	display: none;
+}
+
+.page-title {
+	padding: 30px 0;
+}
+
+.hero-image, .hero-image img {
+	height: 300px;
+}
+
+.small-container {
+	padding: 0 25px;
+}
+
+.wide-container {
+	padding: 0 25px;
+}
+
+/*PAGE home*/
+
+.home-top-banner {
+	height: 850px;
+}
+
+.banner-content h1 {
+	font-size: 36px;
+}
+
+.banner-content .second-heading {
+	font-size: 16px;
+	line-height: 24px;
+	padding: 0 25px;
+}
+
+.home-form-wrapper {
+	width: 640px;
+	padding: 30px;
+}
+
+#wpcf7-f18-o1 input, #wpcf7-f18-o1 select {
+	width: 96%;
+}		
+
+#wpcf7-f18-o1 input[type="submit"] {
+	max-width: 360px;
+}
+
+#wpcf7-f18-o1 .wpcf7-form p:nth-child(2) label span, #wpcf7-f18-o1 .wpcf7-form p:nth-child(3) label span {
+	width: 50%;
+}
+
+.wpcf7-form input[type="submit"] {
+	width: 300px;
+}
+
+.form-addition {
+	bottom: 30px;
+	right: 30px;
+}
+
+.services-container {
+	flex-wrap: wrap;
+    justify-content: center!important;
+}
+
+.single-service-container {
+	width: 216px;
+    margin: 10px;
+}
+
+.features {
+	padding: 60px 0;
+}
+
+.features-container .single-feature {
+	width: calc(50% - 15px);
+}
+
+.features-booking .cta-button {
+	padding: 19px 112px;
+}
+
+.boxes {
+	padding: 60px 0;
+}
+
+/*.single-box {
+	height: 300px;
+}*/
+
+@media screen and (max-width: 870px) {
+	.single-box .box-content img {
+		max-width: 100%;
+	}
+}
+
+.testimonials {
+	padding: 60px 0;
+}
+
+.brochures {
+	padding: 30px 15px 0;
+}
+
+/*PAGE about*/
+
+.about-heading {
+	min-width: 220px;
+}
+
+.principles {
+	margin: 60px 0;
+	padding: 30px 0;
+}
+
+.single-principle {
+	margin-bottom: 20px;
+}
+
+.principles-container {
+	padding: 0 25px;
+}
+
+.principles-button .cta-button {
+	padding: 19px 190px;
+}
+
+.about-content-second {
+	padding-bottom: 0;
+}
+
+.timeline {
+	margin-bottom: 50px;
+}
+
+.timeline .left-part h4 {
+	padding-left: 30px;
+}
+
+.timeline .left-part img {
+	display: none;
+}
+
+/*PAGE staff*/
+
+.staff-container {
+	padding: 40px 25px;
+}
+
+.staff-members {
+	flex-wrap: wrap;
+	justify-content: space-around!important;
+}
+
+.single-member {
+	width: 50%;
+	text-align: center;
+}
+
+.staff-booking {
+	margin-top: 50px;
+}
+
+/*PAGE recovery and reintegration*/
+
+.text-block-800 {
+	padding: 0 25px;
+	margin: 40px auto 40px;
+}
+
+.recovery-booking .cta-button {
+	padding: 19px 190px;
+}
+
+.gray-table {
+	margin: 0 auto 50px;
+	padding: 45px 50px;
+}
+
+/*PAGE 12 week*/
+
+.twelve-week-text h4 {
+	font-size: 24px;
+	line-height: 32px;
+}
+
+.twelve-week-booking {
+	margin-bottom: 50px;
+}
+
+.twelve-week-booking .cta-button {
+	padding: 19px 86px;
+}
+
+/*PAGE 24 hour*/
+
+.twentyfour-hour-booking {
+	margin-bottom: 50px;
+}
+
+.twentyfour-table {
+	padding: 30px 0;
+}
+
+.twentyfour-community-container {
+	flex-flow: column;
+}
+
+.twentyfour-table .left-part, .twentyfour-table .right-part {
+	width: 100%;
+}
+
+.twentyfour-table .left-part {
+	padding: 0;
+	margin-bottom: 30px;
+}
+
+.community-image-container {
+	text-align: center;
+}
+
+.community-image-container img {
+	max-height: 400px;
+}
+
+.twentyfour-table h4 {
+	text-align: center;
+}
+
+.book-block {
+	height: 300px;
+}
+
+.book-block h4 {
+	font-size: 30px;
+}
+
+.google-map {
+	height: 300px;
+}
+
+/*PAGE stepdown*/
+
+.stepdown-text {
+	padding: 0 25px;
+	margin: 40px auto;
+}
+
+.stepdown-table {
+	width: 90%;
+}
+
+/*PAGE outreach*/ 
+
+.outreach-info img {
+	display: none;
+}
+
+.outreach-info-container {
+	padding: 0;
+	position: relative;
+}
+
+.outreach-info-container h4 {
+	text-align: center;
+}
+
+.outreach-events {
+	padding: 50px 0;
+}
+
+.single-outreach-event .right-part {
+	padding: 20px;
+}
+
+.outreach-events-contact {
+	margin: 60px auto 55px;
+}
+
+.outreach-events-contact .cta-button {
+	padding: 19px 158px;
+}
+
+.outreach-events h6 {
+	font-size: 20px;
+	line-height: 30px;
+}
+
+/*PAGE community support*/
+
+.community-support .sup-subheading {
+	font-size: 20px;
+	line-height: 30px;
+}
+
+.support-booking {
+	margin-bottom: 50px;
+}
+
+.support-booking .cta-button {
+	padding: 19px 151px;
+}
+
+/*PAGE training*/ 
+
+.out-subheading, .training-subheading, .ref-subheading {
+	font-size: 20px;
+	line-height: 30px;
+}
+
+/*PAGE events*/ 
+
+.out-subheading {
+	margin-bottom: 0;
+}
+
+.upcoming-events {
+	padding: 50px 0;
+}
+
+.single-event .event-name {
+	font-size: 16px;
+}
+
+.single-event .event-details {
+	padding: 20px;
+}
+
+/*PAGE contact us*/
+
+.contact .small-container {
+	justify-content: center!important;
+}
+
+.mobile-switcher {
+	display: block;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.mobile-switcher button:first-child {
+	margin-right: 30px;
+}
+
+.switch-button {
+	font-family: InterBold;
+    font-size: 16px;
+    color: #fff;
+    padding: 10px 17px;
+    background: #AAB2BD;
+    border: none;
+}
+
+.switch-button:focus {
+	outline: none;
+}
+
+.mobile-switcher button.active {
+	background: #5AB9AC;
+}
+
+.book-visit-form {
+	display: none;
+}
+
+/*PAGE referral*/
+
+.referral-form-container {
+	justify-content: center!important;
+}
+
+.provider-form {
+	display: none;
+}
+
+.ref-subheading {
+	margin-bottom: 0;
+}
+
+/*PAGE join our team*/
+
+.join-team {
+	flex-flow: column;
+}
+
+.vacancies {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.join-team .contact-form-container {
+	margin: auto;
+}
+
+/*FOOTER*/
+
+.footer-top {
+	flex-flow: column;
+	padding: 20px 0;
+}
+
+.footer-controls {
+	order: 1;
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 20px;
+}
+
+.footer-controls a {
+	align-self: center;
+}
+
+.footer-controls a:nth-child(2) {
+	margin-bottom: 0;
+	margin-right: 20px;
+}
+
+.footer-info {
+	order: 2;
+}

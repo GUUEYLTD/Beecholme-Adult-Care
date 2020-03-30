@@ -1,0 +1,119 @@
+.gallery-page {
+    background-color: #F4F4F5;
+    padding: 50px 0;
+}
+
+.gallery-card {
+    display: block;
+    background-color: white;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-top: 5px solid #5AB9AC;
+    border-radius: 6px;
+    color: #333;
+}
+
+.gallery-card:hover, .gallery-card:focus {
+    text-decoration: none;
+    color: #333;
+}
+
+.gallery-card-thumb {
+    width: 100%;
+    height: 250px;
+}
+
+.gallery-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-card-title {
+    text-align: center;
+}
+
+.gallery-single-page {
+    padding: 0 0 65px 0;
+}
+
+.rl-gallery-description {
+    line-height: 30px;
+    font-size: 20px;
+    color: #2C3136;
+    margin-bottom: 24px;
+}
+
+.rl-gallery-item {
+    height: 200px;
+}
+
+.rl-gallery-item a {
+    width: 100%;
+    height: 100%;
+}
+
+.rl-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rl-pagination {
+    text-align: center;
+}
+
+.rl-pagination-bottom {
+    margin-top: 24px;
+}
+
+.rl-pagination-top {
+    margin-bottom: 24px;
+}
+
+.rl-load-more {
+    display: inline-block;
+    background: #5AB9AC;
+    font-size: 14px;
+    color: white;
+    padding: 11px 15px;
+    margin-top: 24px;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+#rl-gallery-container-3 .rl-basicgrid-gallery,
+#rl-gallery-container-4 .rl-basicgrid-gallery {
+    padding: -8px;
+}
+#rl-gallery-container-3 .rl-basicgrid-gallery .rl-gallery-item,
+#rl-gallery-container-4 .rl-basicgrid-gallery .rl-gallery-item {
+    width: calc(33.333333333333% - 8px);
+    margin: 4px;
+}
+@media all and (min-width: 1200px) {
+    #rl-gallery-container-3 .rl-basicgrid-gallery .rl-gallery-item,
+    #rl-gallery-container-4 .rl-basicgrid-gallery .rl-gallery-item {
+        width: calc(25% - 8px);
+    }
+}
+@media all and (min-width: 992px) and (max-width: 1200px) {
+    #rl-gallery-container-3 .rl-basicgrid-gallery .rl-gallery-item,
+    #rl-gallery-container-4 .rl-basicgrid-gallery .rl-gallery-item {
+        width: calc(33.333333333333% - 8px);
+    }
+}
+@media all and (min-width: 768px) and (max-width: 992px) {
+    #rl-gallery-container-3 .rl-basicgrid-gallery .rl-gallery-item,
+    #rl-gallery-container-4 .rl-basicgrid-gallery .rl-gallery-item {
+        width: calc(50% - 8px);
+    }
+}
+@media all and (max-width: 768px) {
+    #rl-gallery-container-3 .rl-basicgrid-gallery .rl-gallery-item,
+    #rl-gallery-container-4 .rl-basicgrid-gallery .rl-gallery-item {
+        width: calc(100% - 8px);
+    }
+}
+

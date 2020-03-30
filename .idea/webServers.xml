@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="50fbc1c6-d0a9-40c7-8a7c-440242b86aaf" name="Beecholmeadultcare" url="http://bac.dev.dnc.pp.ua">
+        <fileTransfer rootFolder="/var/www/dev.dnc.pp.ua/bac.dev.dnc.pp.ua" accessType="SFTP" host="34.255.32.63" port="22" keyPair="true" sshConfig="ubuntu@34.255.32.63:22 (k)">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

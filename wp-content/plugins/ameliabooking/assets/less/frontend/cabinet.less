@@ -1,0 +1,557 @@
+@import "_variables";
+
+.amelia-app-booking {
+  #am-cabinet {
+    .am-cabinet-action-button {
+      width: 130px;
+    }
+
+    .el-alert {
+      margin-bottom: 15px;
+      width: 100%;
+      color: @color-white;
+
+      &.el-alert--success {
+        background-color: @color-green;
+      }
+
+      &.el-alert--error {
+        background-color: @color-red;
+      }
+
+      .el-alert__closebtn, span {
+        color: @color-white;
+        font-size: @small-fs;
+      }
+    }
+    .am-cabinet-logo {
+      text-align: center;
+    }
+    .am-cabinet-auth-container {
+      max-width: 450px;
+      margin: @margin-big auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 58px 0 rgba(0,0,0,0.15);
+
+      @media @less-then-small {
+        padding: @padding-small;
+      }
+      .am-cabinet-auth-title {
+        font-size: @h4-fs;
+        font-weight: 500;
+        margin-bottom: @margin-medium;
+      }
+      .el-button {
+        margin: 0;
+        width: 100%;
+      }
+      .am-cabinet-auth-back {
+        p {
+          &:hover {
+            text-decoration: underline;
+          }
+
+          margin-top: 10px;
+          text-align: center;
+          margin-bottom: 0;
+
+          span {
+            color: @color-accent;
+            cursor: pointer;
+            font-weight: 500;
+          }
+        }
+      }
+      .am-cabinet-subtitle {
+        opacity: 0.8;
+        color: @color-text-second;
+        margin-bottom: @margin-big;
+      }
+      .am-cabinet-email-confirmation {
+        text-align: center;
+        padding: @margin-big*2 0;
+      }
+
+      .am-cabinet-auth {
+        padding: @padding-big*2 @margin-medium*4;
+
+        @media @less-then-small {
+          padding: @padding-small;
+        }
+      }
+    }
+
+
+    //Dashboard
+    .am-cabinet-dashboard {
+      margin: @margin-medium 0;
+      overflow: hidden;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15);
+      .am-cabinet-dashboard-header {
+        background: linear-gradient(135deg, @color-gradient1 0%, @color-gradient2 100%);
+        padding: @padding-medium*2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @media @less-then-small {
+          display: block;
+          > div:first-child {
+            margin-bottom: @margin-medium;
+          }
+        }
+      }
+      .am-cabinet-dashboard-user-data {
+        display: flex;
+        align-items: center;
+        * {
+          color: @color-white;
+        }
+        .am-cabinet-user-initials {
+          width: 56px;
+          height: 56px;
+          min-width: 56px;
+          line-height: 56px;
+          text-align: center;
+          background-color: @color-green;
+          border-radius: 50%;
+          color: @color-white;
+          font-size: 18px;
+          font-weight: 600;
+          margin-right: @margin-medium;
+
+          @media @less-then-small {
+            display: none;
+          }
+        }
+        .am-cabinet-user-email {
+          font-size: 14px;
+        }
+      }
+      .am-cabinet-logout {
+        img, svg, span {
+          vertical-align: middle;
+        }
+
+        .am-cabinet-logout-text {
+          @media @less-then-small {
+            display: none;
+          }
+        }
+
+        .el-button {
+          margin: 0;
+          background-color: rgba(255,255,255,0.1);
+          border: 1px solid rgba(192,204,218,0.2);
+          line-height: 14px;
+        }
+      }
+      .am-cabinet-menu {
+        background: linear-gradient(135deg, @color-gradient1 0%, @color-gradient2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        border-top: 1px solid rgba(255,255,255,.1);
+        @media @less-then-small {
+          display: block;
+        }
+        > div {
+          padding: @padding-small @padding-big;
+          color: @color-white;
+          cursor: pointer;
+          transition: all 0.3s;
+          &:hover, &.am-active {
+            background-color: rgba(255,255,255,.1);
+          }
+        }
+      }
+      .am-cabinet-content {
+        padding: @padding-medium*2;
+        min-height: 480px;
+        .am-cabinet-content-title {
+          font-weight: 500;
+          margin-bottom: @margin-medium;
+        }
+
+        @media @less-then-small {
+          padding: 0;
+        }
+      }
+    }
+
+    .am-cabinet-dashboard-change-password {
+      margin: @margin-big 0;
+      overflow: hidden;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(63,63,68,0.05), 0 1px 3px 0 rgba(63,63,68,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: @padding-big;
+      .el-button {
+        margin: 0;
+      }
+
+      .am-change-password-text {
+        @media @less-then-small {
+          display: none;
+        }
+      }
+    }
+
+    .am-empty-state {
+      text-align: center;
+      padding: @padding-big 0;
+      max-width: 300px;
+      margin: 0 auto;
+      svg {
+        path#Oval-8 {
+          fill: @color-accent;
+        }
+      }
+    }
+    .el-dialog {
+      max-width: 480px;
+      width: 96%;
+      .el-dialog__header {
+        padding: @padding-medium;
+      }
+      .el-dialog__body {
+        padding: @padding-medium;
+      }
+      input, .el-date-editor.el-input, .el-date-editor.el-input__inner {
+        width: 100%;
+      }
+    }
+
+    .am-text {
+      margin-bottom: @margin-medium;
+      color: @color-text-second;
+    }
+  }
+}
+
+
+.am-cabinet-list-head {
+  padding-top: @padding-big;
+  @media @less-then-large {
+    display: none;
+  }
+
+  @media @less-then-small {
+    padding: @padding-small;
+  }
+
+  p {
+    margin: 0;
+    color: @color-text-second;
+    text-transform: uppercase;
+    font-size: @mini-fs;
+  }
+}
+
+.am-cabinet-profile {
+  padding: @padding-small;
+
+  .el-button {
+    @media @less-then-small {
+      margin: 0 @padding-small @padding-small;
+    }
+  }
+}
+
+.am-cabinet-list {
+  @media @less-then-small {
+    padding: @padding-small;
+  }
+
+  .am-cabinet {
+    border-bottom: 1px solid @color-divider-gray;
+    position: relative;
+    &:first-child {
+      border-top: 1px solid @color-divider-gray;
+
+      @media @less-then-medium {
+        border-top: none;
+      }
+    }
+
+    h4 {
+      display: inline-block;
+      line-height: 1.1;
+      vertical-align: middle;
+      word-break: break-words;
+      white-space: unset;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      margin: 0 0 1em !important;
+      padding: 1em 0 0 !important;
+
+      @media @less-then-large {
+        padding: 0;
+        margin: 0 auto;
+      }
+    }
+
+    img {
+      border-radius: 50%;
+      border: 2px solid @color-white;
+      display: inline-block;
+      vertical-align: top;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      max-width: 32px;
+      margin-top: 0 !important;
+    }
+
+    .am-assigned {
+      display: flex;
+      align-items: center;
+      &.am-multiple-employees {
+        img + img {
+          margin-left: -24px;
+        }
+      }
+      img {
+        margin-right: @margin-small;
+      }
+    }
+
+    .am-booking-status-approved {
+      color: @color-green;
+    }
+
+    .am-booking-status-canceled {
+      color: @color-red;
+    }
+
+    .am-booking-status-rejected {
+      color: @color-text-prime;
+    }
+
+    .am-booking-status-pending {
+      color: @color-orange;
+    }
+
+    .am-cabinet-dropdown-menu {
+      li {
+        font-weight: 500;
+        &:nth-child(2) {
+          color: @color-red;
+        }
+      }
+    }
+
+    .am-cabinet-button {
+      i {
+        font-size: medium;
+      }
+    }
+
+    .am-cabinet-button-cancel {
+      color: @color-white;
+      background-color: @color-red;
+      border-color: @color-red;
+
+      &:hover {
+        color: @color-white;
+        background-color: darken(@color-red, 5%);
+        border-color: darken(@color-red, 5%);
+      }
+    }
+
+    .am-cabinet-button-disabled {
+      color: @color-gray;
+      opacity: 0.5;
+
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    p.am-col-title {
+      display: none;
+      font-size: @small-fs;
+      margin: 0;
+      color: @color-text-second;
+      @media @less-then-large {
+        display: block;
+        text-transform: capitalize;
+      }
+    }
+
+    .am-cabinet-row {
+      display: flex;
+      align-items: center;
+
+      @media @less-then-large {
+        display: block;
+        align-items: unset;
+      }
+    }
+  }
+}
+
+.am-cabinet-flex-row-middle-align {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+  @media @less-then-large {
+    align-items: inherit;
+  }
+  @media @less-then-small {
+    display: block;
+    &:first-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .el-col {
+    @media @less-then-small {
+      margin-bottom: @margin-small;
+    }
+  }
+}
+
+.am-cabinet-date-time {
+  font-size: @regular-fs;
+  line-height: 1.5;
+  font-weight: @medium;
+
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  clear: both;
+  margin: 0 0 0.75em;
+}
+
+.am-cabinet-buttons-align-right  {
+  text-align: right;
+
+  @media @less-then-large {
+    text-align: center;
+  }
+}
+
+.am-text {
+  word-break: break-word;
+}
+
+.el-button.el-button--danger {
+  span {
+    color: @color-white !important;
+  }
+
+  color: @color-white;
+  background-color: @color-red;
+  border-color: @color-red;
+
+  &:hover {
+    color: @color-white !important;
+    background-color: darken(@color-red, 5%);
+    border-color: darken(@color-red, 5%);
+  }
+}
+
+.el-button.el-button--primary {
+  span {
+    color: @color-white;
+  }
+
+  color: @color-white;
+  background-color: @color-accent;
+  border-color: @color-accent;
+
+  &:hover {
+    color: @color-white;
+    background-color: darken(@color-accent, 5%);
+  }
+}
+
+.am-password-field {
+  -webkit-appearance: none;
+  background-color: #FFF;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #DCDFE6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  padding: 0 15px;
+  -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  width: 100%;
+}
+
+.am-password-field input[type="password"]
+{
+  border: none;
+  padding: 0;
+  height: 90%;
+}
+
+.am-password-field input[type="text"]
+{
+  border: none;
+  padding: 0;
+  z-index: 0;
+  height: 90%;
+}
+
+.el-input__inner input[type="text"]
+{
+  margin-bottom: 0 !important;
+}
+
+.v-calendar-column {
+  @media @less-then-small {
+    padding: @padding-small 0 0;
+  }
+}
+
+.am-spinner {
+  text-align: center;
+  padding-top: @padding-big*4;
+  padding-bottom: @padding-big*4;
+}
+
+.am-spin {
+  padding: 0;
+  margin: 0;
+
+  path {
+    stroke: @color-accent;
+  }
+}
+
+.am-hourglass {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 42px;
+  padding: 0;
+  margin-left: -16px;
+  margin-top: -24px;
+
+  path {
+    stroke: @color-accent;
+  }
+}
+
+.el-message--success {
+  z-index: 999999 !important;
+}
+
+.el-message--error {
+  z-index: 999999 !important;
+}

@@ -1,0 +1,170 @@
+.blog-single-page {
+    background-color: #F4F4F5;
+    padding: 50px 0;
+}
+
+.post-container {
+    background-color: white;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-top: 5px solid #5AB9AC;
+    border-radius: 6px;
+}
+
+.post-title {
+    margin: 0 0 24px 0;
+}
+
+.post-meta {
+    display: flex;
+    margin: 0 0 24px 0;
+}
+
+.post-meta-item {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+}
+
+.post-meta-item a {
+    color: #5AB9AC;
+    text-decoration: none;
+}
+
+.post-meta-item li:not(:last-child) {
+    margin-right: 4px;
+}
+
+.post-meta-item .glyphicon {
+    margin-right: 8px;
+}
+
+.post-categories {
+    list-style: none;
+    display: flex;
+    margin-bottom: 0;
+}
+
+.post-featured-image {
+    margin-bottom: 24px;
+}
+
+.post-featured-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.post-content {
+    margin-bottom: 24px;
+}
+
+.post-social-share {
+    display: flex;
+    align-items: center;
+}
+
+.post-social-item {
+    display: flex;
+    margin-right: 16px;
+}
+
+.post-comments {
+    background-color: white;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-top: 5px solid #5AB9AC;
+    border-radius: 6px;
+}
+
+.comment-list, .comment-list .children {
+    list-style: none;
+}
+
+.comment-list .children {
+    padding-left: 32px;
+}
+
+.comments-title {
+    margin: 0 0 24px 0;
+}
+
+.comment-body, .comment-list .comment-respond  {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #E6E9ED;
+}
+
+.comment-meta {
+    margin-bottom: 8px;
+}
+
+.comment-meta a {
+    color: #5AB9AC;
+    text-decoration: none;
+}
+
+.comment-author .avatar {
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.comment-reply-link, #cancel-comment-reply-link {
+    display: inline-block;
+    background: #5AB9AC;
+    font-size: 14px;
+    color: white;
+    padding: 5px 8px;
+}
+
+.comment-reply-link:hover,
+.comment-reply-link:focus,
+#cancel-comment-reply-link:hover,
+#cancel-comment-reply-link:focus {
+    background: #5da299;
+    color: white;
+    text-decoration: none;
+    outline: none;
+}
+
+#cancel-comment-reply-link {
+    margin-left: 16px;
+}
+
+.comment-reply-title {
+    display: flex;
+    align-items: center;
+}
+
+.comment-form input {
+    width: 360px;
+    height: 100%;
+    font-size: 14px;
+    padding: 12px 15px;
+    border: 1px solid #E6E9ED;
+    background: transparent;
+    color: #737C8A;
+    font-weight: normal;
+}
+
+.comment-form label {
+   min-width: 88px;
+}
+
+.comment-form .submit {
+    background: #5AB9AC;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 15px;
+    border: 1px solid #E6E9ED;
+}
+
+#comment {
+    display: block;
+    resize: none;
+    padding: 11px 15px;
+    border: 1px solid #E6E9ED;
+    background: transparent;
+    color: #737C8A;
+    font-weight: normal;
+}

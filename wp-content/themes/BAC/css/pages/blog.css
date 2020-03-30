@@ -1,0 +1,50 @@
+.blog-page {
+    background-color: #F4F4F5;
+    padding: 50px 0;
+}
+
+.read-more-btn {
+    display: inline-block;
+    background: #5AB9AC;
+    font-size: 16px;
+    color: white;
+    padding: 10px 17px;
+    margin-bottom: 24px;
+}
+
+.read-more-btn:hover, .read-more-btn:focus {
+    background: #5da299;
+    color: white;
+    text-decoration: none;
+    outline: none;
+}
+
+.posts-pagination {
+    text-align: center;
+}
+
+.posts-pagination .screen-reader-text {
+    display: none;
+}
+
+.posts-pagination .pagination {
+    margin: 0;
+}
+
+.page-numbers {
+    display: inline-block;
+    background: #AAB2BD;
+    color: white;
+    padding: 10px 16px;
+}
+
+.page-numbers:hover, .page-numbers:focus {
+    background: #5AB9AC;
+    color: white;
+    text-decoration: none;
+    outline: none;
+}
+
+.page-numbers.current {
+    background: #5AB9AC;
+}
