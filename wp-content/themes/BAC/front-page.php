@@ -58,19 +58,10 @@
 				</div>
 			</a>		
 		<?php } ?>
-		<?php if(get_field('serv_h5')) { ?>
-			<a href="/community-support/" class="single-service-container d-flex align-items-center justify-content-center">
-				<div class="single-service">
-					<h3><?php the_field('serv_h5'); ?></h3>
-					<p><?php the_field('serv_t5'); ?></p>
-				</div>
-			</a>		
-		<?php } ?>								
-
 	</div>
 </div>
 <div class="features">
-	<h2>Why Choose BAC Supported Living Accommodation?</h2>
+	<h2>Why Choose BAC Supported<br>Living Accommodation?</h2>
 	<div class="features-container mid-container grid" data-masonry='{ "itemSelector": ".single-feature", "gutter": 20, "horizontalOrder": true }'>
 		<?php if(get_field('feat_h1', $cur_page)) { ?>
 			<div class="single-feature">
@@ -122,7 +113,7 @@
 		<?php } ?>												
 	</div>
 	<div class="features-booking">
-		<a class="cta-button" href="/24-hour-residential-care-home/">View our homes and book a visit <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="arrow right"></a>
+		<a class="cta-button" href="/24-hour-residential-care-home/">View Our Homes and Book a Visit <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="arrow right"></a>
 	</div>
 </div>
 <div class="boxes">
@@ -289,12 +280,76 @@
 			<div class="single-testimonial">
 				<p><?php the_field('testimonial_6'); ?></p>
 			</div>
-		<?php } ?>									
+		<?php } ?>
 	</div>
 
 	<div class="review-button">
 		<a class="cta-button" href="http://www.cqc.org.uk/location/1-121892109">Rating and review on the Care Quality Commission <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt='arrow-right'></a>
 	</div>
+</div>
+
+<div class="information life-coaching">
+  <div class="mid-container d-flex justify-between align-items-center">
+   <div class="text">
+    <h2><?php the_field('home_lc_heading'); ?></h2>
+    <?php the_field('home_lc_text'); ?>
+    <div class="link"><a href="#">Read More</a></div>
+   </div>
+   <div class="perks d-flex flex-column">
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_lc_perk_image_1'); ?>">
+      <span><?php the_field('home_lc_perk_text_1'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_lc_perk_image_2'); ?>">
+      <span><?php the_field('home_lc_perk_text_2'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_lc_perk_image_3'); ?>">
+      <span><?php the_field('home_lc_perk_text_3'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_lc_perk_image_4'); ?>">
+      <span><?php the_field('home_lc_perk_text_4'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_lc_perk_image_5'); ?>">
+      <span><?php the_field('home_lc_perk_text_5'); ?></span>
+    </div>
+   </div>
+  </div>
+</div>
+
+<div class="information therapy">
+  <div class="mid-container d-flex justify-between align-items-center">
+   <div class="text">
+    <h2><?php the_field('home_therapy_heading'); ?></h2>
+    <?php the_field('home_therapy_text'); ?>
+    <div class="link"><a href="#">Read More</a></div>
+   </div>
+   <div class="perks d-flex flex-column">
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_therapy_perk_image_1'); ?>">
+      <span><?php the_field('home_therapy_perk_text_1'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_therapy_perk_image_2'); ?>">
+      <span><?php the_field('home_therapy_perk_text_2'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_therapy_perk_image_3'); ?>">
+      <span><?php the_field('home_therapy_perk_text_3'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_therapy_perk_image_4'); ?>">
+      <span><?php the_field('home_therapy_perk_text_4'); ?></span>
+    </div>
+    <div class="single-perk d-flex align-items-center">
+      <img src="<?php the_field('home_therapy_perk_image_5'); ?>">
+      <span><?php the_field('home_therapy_perk_text_5'); ?></span>
+    </div>
+   </div>
+  </div>
 </div>
 
 

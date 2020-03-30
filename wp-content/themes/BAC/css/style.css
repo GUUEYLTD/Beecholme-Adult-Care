@@ -216,7 +216,8 @@ p {
 }
 
 .mid-container {
-    max-width: 1260px;
+    max-width: 1140px;
+    padding: 0 15px;
     margin: auto;
 }
 
@@ -441,8 +442,8 @@ p {
     height: 760px;
     background-position: center;
     position: relative;
-    padding-top: 50px;
-	background-repeat: no-repeat;
+    padding-top: 80px;
+	  background-repeat: no-repeat;
     background-size: cover;
 }
 
@@ -612,77 +613,91 @@ p {
 /*Services*/
 
 .services {
-    padding: 40px 0 45px;
-    background: #2C3136;
+    padding: 104px 0;
+    background: #333;
 }
 
 .services h2 {
-    font-size: 20px;
+    font-family: 'InterReg', sans-serif;
+    font-size: 32px;
     text-align: center;
-    margin: 0 0 30px;
+    margin: 0 0 48px;
     color: #fff;
 }
 
 .services-container {
-    max-width: 1200px;
+    max-width: 1110px;
     margin: auto;
 }
 
 .single-service-container {
-    width: 18%;
-    background: #434A54;
+    width: 23%;
+    background: rgba(196, 196, 196, .1);
 }
 
 .single-service {
-    padding: 15px;
+    padding: 32px;
+}
+
+.single-service h3,
+.single-service p {
+    font-family: 'InterReg', sans-serif;
+    text-align: left;
+    line-height: 24px;
+    color: #fff;
 }
 
 .single-service h3 {
-    color: #fff;
-    font-size: 14px;
-    font-family: InterBold;
-    text-align: center;
+    font-size: 18px;
+    margin: 0 0 16px;
+    font-weight: 600;
 }
 
 .single-service p {
-    text-align: center;
-    color: #AAB2BD;
-    font-size: 12px;
-    padding: 0 10px;
+    font-size: 16px;
 }
 
 /*Features*/
 
 .features {
-    padding: 100px 0;
+    padding: 104px 0 128px;
     background: #F4F4F5;
 }
 
 .features h2 {
-    margin: 0 0 50px;
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    margin: 0 0 48px;
     text-align: center;
-    color: #212429;
-    font-size: 36px;
+    color: #333;
 }
 
 .features-container .single-feature {
-    width: calc(25% - 15px);
-    border-top: 5px solid #5AB9AC;
+    width: calc(50% - 15px);
+    border-top: 6px solid #5AB9AC;
     border-radius: 6px;
-    padding: 25px 30px 30px;
+    padding: 32px;
     background: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 32px;
+}
+
+.features-container .single-feature h3,
+.features-container .single-feature p {
+    font-family: 'InterReg', sans-serif;
+    color: #333;
+    line-height: 24px;
 }
 
 .features-container .single-feature h3 {
+    font-weight: 600;
     font-size: 18px;
-    color: #212429;
+    margin: 0 0 8px;
 }
 
 .features-container .single-feature p {
-    color: #737C8A;
-    line-height: 22px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .features-booking {
@@ -691,12 +706,13 @@ p {
 }
 
 .features-booking .cta-button {
-    padding: 19px 212px;
+    padding: 15px 42px;
 }
 
 /*Boxes*/
 
 .boxes {
+    display: none;
     background: #2c3237;
     padding: 100px 0;
 }
@@ -768,9 +784,9 @@ p {
 /*Brochures*/
 
 .brochures {
+    display: none;
     padding: 50px 75px 0;
     text-align: center;
-    height: 0;
     overflow: hidden;
 }
 
@@ -821,6 +837,7 @@ p {
 /*Testimonials*/
 
 .testimonials {
+    display: none;
     padding: 100px 0;
 }
 
@@ -875,6 +892,84 @@ p {
 
 .review-button .cta-button {
     padding: 19px 24px;
+}
+
+/*Information*/
+
+.information {
+    padding: 120px 0;
+}
+
+.information.therapy {
+    background: #F4F4F5;
+}
+
+.information .text {
+    max-width: 635px;
+    margin-right: 125px;
+}
+
+.information h2,
+.information p,
+.single-perk span {
+    font-family: 'InterReg', sans-serif;
+    color: #333;
+}
+
+.information h2 {
+    text-transform: capitalize;
+    font-family: InterBold;
+    font-size: 42px;
+    margin: 0 0 48px;
+}
+
+.information p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 24px;
+}
+
+.information .link {
+    margin-top: 63px;
+    text-decoration: none;
+}
+
+.information .link a {
+    background: #5AB9AC;
+    border-radius: 3px;
+    padding: 15px 40px;
+
+    font-family: 'InterReg', sans-serif;
+    color: #fff;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.information .link a:hover {
+    text-decoration: none;
+}
+.information .link a:focus {
+    outline: none;
+}
+
+.single-perk {
+    margin-bottom: 40px;
+}
+
+.single-perk:last-child {
+    margin-bottom: 0;
+}
+
+.single-perk img {
+    margin-right: 24px;
+    width: 40px;
+    height: 40px;
+}
+
+.single-perk span {
+    max-width: 286px;
+    font-size: 18px;
+    line-height: 24px;
 }
 
 /*PAGE ABOUT*/
