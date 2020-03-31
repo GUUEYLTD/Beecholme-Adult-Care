@@ -26,27 +26,24 @@
 	height: 850px;
 }
 
+.banner-content .heading {
+	margin-right: 0;
+}
+
 .banner-content h1 {
 	font-size: 36px;
+	text-align: center;
 }
 
 .banner-content .second-heading {
 	font-size: 16px;
 	line-height: 24px;
 	padding: 0 25px;
-}
-
-.home-form-wrapper {
-	width: 640px;
-	padding: 30px;
+	text-align: center;
 }
 
 #wpcf7-f18-o1 input, #wpcf7-f18-o1 select {
 	width: 96%;
-}		
-
-#wpcf7-f18-o1 input[type="submit"] {
-	max-width: 360px;
 }
 
 #wpcf7-f18-o1 .wpcf7-form p:nth-child(2) label span, #wpcf7-f18-o1 .wpcf7-form p:nth-child(3) label span {
@@ -57,19 +54,15 @@
 	width: 300px;
 }
 
-.form-addition {
-	bottom: 30px;
-	right: 30px;
-}
-
 .services-container {
 	flex-wrap: wrap;
     justify-content: center!important;
 }
 
 .single-service-container {
-	width: 216px;
-    margin: 10px;
+	width: 50%;
+  margin: 15px;
+	max-width: 400px;
 }
 
 .features {
@@ -421,4 +414,10 @@
 
 .footer-info {
 	order: 2;
+}
+
+ /*homepage*/
+
+.banner-content {
+	flex-flow: column;
 }

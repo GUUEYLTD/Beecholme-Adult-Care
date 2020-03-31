@@ -514,7 +514,7 @@ p {
 
 .home-form-wrapper {
     background-color: #fff;
-    min-width: 330px;
+    width: 330px;
     margin: auto;
     padding: 43px 32px 48px;
     position: relative;
