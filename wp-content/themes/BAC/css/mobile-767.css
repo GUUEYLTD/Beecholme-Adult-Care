@@ -277,15 +277,8 @@
 .single-box {
 	width: 100%;
 	max-width: 475px;
-	margin: auto;
-	margin-bottom: 20px;
+	margin: auto auto 20px;
 }
-
-/*@media screen and (max-width: 450px) {
-	.single-box {
-		height: 200px;
-	}
-}*/
 
 .information .mid-container {
 	flex-flow: column;
