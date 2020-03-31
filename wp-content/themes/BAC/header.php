@@ -41,9 +41,10 @@
 				</a>
 			</div>
 			<div class="header-controls d-flex">
-				<a class="align-self-center" href="tel:+442086486681">+442086486681</a>
+				<a href="#" class="logo-trustpilot"><img src="images/logo_trustpilot.png" alt=""></a>
+<!--				<a class="align-self-center" href="tel:+442086486681">+442086486681</a>
 				<a class="align-self-center" href="/make-a-referral">Make a Referral</a>
-				<a class="align-self-center" href="/contact-us">Book a visit</a>
+				<a class="align-self-center" href="/contact-us">Book a visit</a>-->
 			</div>
 			<div class="mobile-menu d-flex">
 				<div class="toggle align-self-center">
