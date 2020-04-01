@@ -399,17 +399,12 @@
 .footer-controls {
 	order: 1;
 	display: flex;
-	justify-content: flex-end;
+	flex-flow: row;
 	margin-bottom: 20px;
 }
 
 .footer-controls a {
 	align-self: center;
-}
-
-.footer-controls a:nth-child(2) {
-	margin-bottom: 0;
-	margin-right: 20px;
 }
 
 .footer-info {

@@ -16,10 +16,16 @@
                     <?php wp_nav_menu( array( 'theme_location' => 'header-menu' ) ); ?>
                 </div>
             </div>
-            <div class="footer-controls">
-                <a href=""></a>
-                <a href="/make-a-referral">Make a Referral</a>
-                <a href="/contact-us">Book a visit</a>
+            <div class="footer-controls d-flex justify-content-between">
+                <div class="buttons d-flex flex-wrap justify-content-between">
+                    <a href="#">For Practitioner</a>
+                    <a href="/make-a-referral" class="referral-button">Make a Referral</a>
+                    <a href="#">Therapists</a>
+                    <a href="#">Coaches</a>
+                </div>
+                <div class="trustpilot">
+                    <a href="#"><img src="images/logo_trustpilot.png" alt=""></a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom d-flex justify-content-between">

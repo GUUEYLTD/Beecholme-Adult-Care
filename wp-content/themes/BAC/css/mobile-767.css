@@ -674,7 +674,8 @@
 }
 
 .footer-controls {
-	justify-content: center;
+	align-items: center;
+	flex-flow: column;
 }
 
 .footer-contact {
@@ -693,5 +694,11 @@
 	}
 	.copyrights {
 		order: 2;
+	}
+}
+
+@media screen and (max-width: 364px) {
+	.footer-controls .buttons {
+		justify-content: center!important;
 	}
 }

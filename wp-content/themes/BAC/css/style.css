@@ -274,24 +274,24 @@ p {
     color: #979ea9;
 }
 
-.header-controls a:nth-child(2), .footer-controls a:nth-child(2) {
+.header-controls a:nth-child(2) {
     background: #AAB2BD;
     margin-right: 10px;
 }
 
-.header-controls a:nth-child(2):hover, .footer-controls a:nth-child(2):hover {
+.header-controls a:nth-child(2):hover {
     background: #979ea9;
 }
 
-.header-controls a:nth-child(3), .footer-controls a:nth-child(3) {
+.header-controls a:nth-child(3) {
     background: #5AB9AC;
 }
 
-.header-controls a:nth-child(3):hover, .footer-controls a:nth-child(3):hover {
+.header-controls a:nth-child(3):hover {
     background: #5da299;
 }
 
-.header-controls a:hover, .footer-controls a:hover {
+.header-controls a:hover {
     text-decoration: none;
 }
 
@@ -2040,32 +2040,33 @@ p {
 /*FOOTER*/
 
 footer {
-    background-color: #1A1D20;
+  background-color: #1A1D20;
 }
 
 .footer-top {
-    padding: 50px 0;
+  padding: 64px 0 48px;
 }
 
 .footer-info h4 {
-    font-size: 16px;
-    font-family: InterBold;
-    color: #FFFFFF;
-    margin: 0 0 20px;
+  font-size: 18px;
+  line-height: 24px;
+  font-family: InterBold;
+  color: #FFFFFF;
+  margin: 0 0 20px;
 }
 
 .footer-contact {
-    margin-right: 75px;
+  margin-right: 75px;
 }
 
 .footer-contact p {
-    line-height: 24px;
-    font-size: 16px;
-    color: #9E9FA1;
+  line-height: 24px;
+  font-size: 16px;
+  color: #9E9FA1;
 }
 
 .footer-menu {
-    position: relative;
+  position: relative;
 }
 
 #menu-menu1-2 li .sub-menu {
@@ -2113,21 +2114,37 @@ footer {
     width: 300px;
 }
 
+.footer-controls {
+    flex-flow: column;
+}
+
 .footer-controls a {
     display: block;
 }
 
-.footer-controls a:first-child {
-    display: none;
+.footer-controls .buttons {
+    max-width: 344px;
 }
 
-.footer-controls a:nth-child(2) {
-    margin-right: 0;
-    margin-bottom: 10px;
+.footer-controls .buttons a {
+    width: 160px;
+    background: #5AB9AC;
+    border-radius: 3px;
+    margin-bottom: 24px;
+
+    text-align: center;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    color: #fff;
 }
 
-.footer-controls a:nth-child(3) {
-    float: right;
+.footer-controls .buttons a.referral-button {
+    background: #C4C4C4;
+}
+
+.footer-controls .buttons a:hover {
+    text-decoration: none;
 }
 
 .footer-bottom {
