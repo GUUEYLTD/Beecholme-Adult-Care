@@ -403,6 +403,15 @@
 	margin-bottom: 20px;
 }
 
+.footer-controls .buttons a:nth-child(3),
+.footer-controls .buttons a:nth-child(4) {
+	margin-bottom: 0;
+}
+
+.footer-controls .trustpilot {
+	display: flex;
+}
+
 .footer-controls a {
 	align-self: center;
 }

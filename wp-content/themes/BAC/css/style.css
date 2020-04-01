@@ -263,7 +263,10 @@ p {
 }
 
 .header-controls .logo-trustpilot {
+    display: flex;
+    align-items: center;
     width: 132px;
+    padding: 0;
 }
 
 .header-controls a:first-child {
@@ -1568,7 +1571,6 @@ p {
 .outreach-info-container {
     background: #fff;
     padding: 50px 170px 20px 45px;
-    padding-right: 170px;
     max-width: 800px;
     position: absolute;
     right: 0;
@@ -2124,6 +2126,10 @@ footer {
 
 .footer-controls .buttons {
     max-width: 344px;
+}
+
+.footer-controls .trustpilot {
+    text-align: right;
 }
 
 .footer-controls .buttons a {

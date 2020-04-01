@@ -24,7 +24,7 @@
                     <a href="#">Coaches</a>
                 </div>
                 <div class="trustpilot">
-                    <a href="#"><img src="images/logo_trustpilot.png" alt=""></a>
+                    <a href="#"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo_trustpilot_footer.png" alt=""></a>
                 </div>
             </div>
         </div>

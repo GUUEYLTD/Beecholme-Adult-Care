@@ -678,6 +678,10 @@
 	flex-flow: column;
 }
 
+.footer-controls .trustpilot {
+	margin-top: 24px;
+}
+
 .footer-contact {
 	margin: 0;
 }
