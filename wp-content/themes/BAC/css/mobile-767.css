@@ -734,3 +734,15 @@
 .training-info .single-topic h4 {
 	text-align: center;
 }
+
+@media screen and (max-width: 386px) {
+	.about-bac .block3 .action-button a {
+		display: block;
+		width: 100%;
+		padding: 12px 0;
+	}
+
+	.about-bac .block3 .action-button {
+		margin-top: 32px;
+	}
+}

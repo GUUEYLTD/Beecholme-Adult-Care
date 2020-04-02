@@ -440,3 +440,38 @@
 	flex-flow: column;
 	align-items: center;
 }
+
+.about-bac .information {
+	flex-flow: column;
+	align-items: center;
+}
+
+.about-bac .information .text {
+	padding: 0;
+}
+
+.about-bac .text-bar {
+	max-width: 90%;
+	width: auto;
+}
+
+.about-bac .choice-wrapper h2 {
+	text-align: center;
+}
+
+.about-bac .choice-content {
+	flex-flow: column;
+	align-items: center;
+}
+
+.about-bac .block3 .text {
+	flex-flow: column;
+}
+
+.about-bac .block3 .left-text {
+	margin-bottom: 48px;
+}
+
+.about-bac .diagram {
+	display: none;
+}

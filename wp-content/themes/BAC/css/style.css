@@ -2768,26 +2768,26 @@ a.policy-link {
     align-items: center;
 }
 
-.about-bac .text {
+.about-bac .block3-content .text {
     justify-content: space-between;
     align-items: center;
     width: 100%;
     margin: auto;
 }
 
-.about-bac .left-text,
-.about-bac .right-text {
+.about-bac .block3-content .left-text,
+.about-bac .block3-content .right-text {
     font-family: 'InterReg', sans-serif;
     font-size: 18px;
     line-height: 24px;
     color: #333;
 }
 
-.about-bac .left-text {
+.about-bac .block3-content .left-text {
     max-width: 420px;
 }
 
-.about-bac .right-text {
+.about-bac .block3-content .right-text {
     font-style: italic;
     padding: 40px;
     border-top: 6px solid #5AB9AC;
@@ -2798,15 +2798,16 @@ a.policy-link {
     height: 272px;
 }
 
-.about-bac .right-text .action-button {
+.about-bac .block3-content.right-text .action-button {
     margin-top: 46px;
 }
 
-.about-bac .action-button {
+.about-bac .block3-content .action-button {
     text-align: center;
+    margin-top: 46px;
 }
 
-.about-bac .action-button a {
+.about-bac .block3-content .action-button a {
     background: #5AB9AC;
     border-radius: 3px;
     padding: 14px 56px;
@@ -2815,10 +2816,10 @@ a.policy-link {
     color: #fff;
 }
 
-.about-bac .action-button a:hover {
+.about-bac .block3-content .action-button a:hover {
     text-decoration: none;
 }
 
-.about-bac .right-text .action-button:nth-child(3) {
+.about-bac .block3-content .right-text .action-button:nth-child(3) {
     margin-top: 32px;
 }
