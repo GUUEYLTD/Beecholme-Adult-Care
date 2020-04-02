@@ -22,7 +22,7 @@
 	<!-- End Google Analytics -->
 </head>
 
-<body>
+<body class="page-<?php echo $cur_page; ?>">
 
     <!-- Load Facebook SDK for JavaScript -->
     <div id="fb-root"></div>
