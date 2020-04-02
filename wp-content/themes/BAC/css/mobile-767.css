@@ -746,3 +746,14 @@
 		margin-top: 32px;
 	}
 }
+
+/*faq page*/
+
+.faq .topic,
+.faq .questions {
+	padding: 24px 30px;
+}
+
+.faq .name {
+	font-size: 18px;
+}

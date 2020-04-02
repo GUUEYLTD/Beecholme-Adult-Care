@@ -239,3 +239,22 @@ jQuery(document).ready(function($){
     $('.' + $(this).attr('data-tab')).addClass('active');
   });
 });
+
+// FAQ
+
+jQuery(document).ready(function($){
+  $('.faq .topic').on('click',function(){
+    var opened = $(this).hasClass('open');
+
+    $('.faq-content .questions-wrapper').slideUp();
+    $('.faq .topic').removeClass('open');
+
+    if(!opened) {
+      $(this).addClass('open');
+      $(this).parent('.single-topic').find('.questions-wrapper').slideToggle();
+    }
+
+    $('.faq .topic').removeClass('active');
+    $(this).addClass('active');
+  });
+});
