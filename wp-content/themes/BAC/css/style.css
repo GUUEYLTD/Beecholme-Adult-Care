@@ -2404,6 +2404,10 @@ a.policy-link {
     border-radius: 6px;
 }
 
+.training-info .right-text .action-button {
+    margin-top: 46px;
+}
+
 .training-info .reasons {
     background: #F4F4F5;
     padding: 104px 0;
@@ -2491,6 +2495,18 @@ a.policy-link {
     text-align: center;
 }
 
+.coaching-info .additional-text {
+    font-family: 'InterReg', sans-serif;
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
+    margin-top: 80px;
+}
+
+.coaching-info .reasons .action-button {
+    margin-top: 54px;
+}
+
 .training-info .infomation {
     padding: 120px 0;
 }
@@ -2556,4 +2572,23 @@ a.policy-link {
 
 .training-info .information .action-button a {
     padding: 14px 47px;
+}
+
+.training-info .slider {
+    background: #F4F4F5;
+    padding: 120px 0;
+}
+
+.training-info .slider h3 {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #333;
+    margin: 0 0 48px;
+}
+
+.training-info .slider-content {
+    max-width: 950px;
+    padding: 0 15px;
+    margin: auto;
 }

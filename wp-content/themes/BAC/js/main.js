@@ -9,13 +9,34 @@ jQuery(document).ready(function($) {
       navText: ["<img src='/wp-content/themes/BAC/images/carousel-arrow-left.svg' alt='arrow-left'>","<img src='/wp-content/themes/BAC/images/carousel-arrow-right.svg' alt='arrow-right'>"]
   });
 
-  var owl = $("#image-carousel");
+  var owl = $("#review-carousel");
+  owl.owlCarousel({
+    items : 1,
+    nav: true,
+    dots: false,
+    loop: true,
+    navText: ["<img src='/wp-content/themes/BAC/images/carousel-arrow-left.svg' alt='arrow-left'>","<img src='/wp-content/themes/BAC/images/carousel-arrow-right.svg' alt='arrow-right'>"]
+  });
+
+  var owl = $("#coaches-slider");
     owl.owlCarousel({
-      items : 1,
+      items : 4,
+      margin: 24,
       nav: true,
       dots: false,
       loop: true,
-      navText: ["<img src='/wp-content/themes/BAC/images/carousel-arrow-left.svg' alt='arrow-left'>","<img src='/wp-content/themes/BAC/images/carousel-arrow-right.svg' alt='arrow-right'>"]
+      navText: ["<img src='/wp-content/themes/BAC/images/carousel-arrow-left.svg' alt='arrow-left'>","<img src='/wp-content/themes/BAC/images/carousel-arrow-right.svg' alt='arrow-right'>"],
+      responsive: {
+        0: {
+          items: 1
+        },
+        768: {
+          items: 2,
+        },
+        992: {
+          items: 4,
+        }
+      }
   });
 
   $(document).on( "click", ".google-map-overlay", function() {
