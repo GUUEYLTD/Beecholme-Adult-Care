@@ -393,11 +393,14 @@ p {
 }
 
 .page-title {
-    font-size: 36px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    text-transform: capitalize;
     text-align: center;
-    color: #2C3136;
+    color: #333;
     margin: 0;
-    padding: 65px 0;
+    padding: 80px 0 55px;
 }
 
 .hero-image {
@@ -2063,7 +2066,7 @@ footer {
 
 .footer-contact p {
   line-height: 24px;
-  font-size: 16px;
+  font-size: 18px;
   color: #9E9FA1;
 }
 
@@ -2100,7 +2103,7 @@ footer {
 
 #menu-menu1-2 li a {
     line-height: 24px;
-    font-size: 16px;
+    font-size: 18px;
     color: #8C8D90;
 }
 
@@ -2159,7 +2162,8 @@ footer {
 }
 
 .copyrights {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 17px;
     color: #5A5B5C;
 }
 
@@ -2367,4 +2371,189 @@ a.policy-link {
 #footable_299 tbody tr td .book-button:hover {
     color: #fff;
     background: #5eb9ac;
+}
+
+/*Online Training, Lifecoaching pages*/
+
+.training-info .text {
+    justify-content: space-between;
+    align-items: center;
+    max-width: 950px;
+    margin: auto;
+    padding: 0 15px 104px;
+}
+
+.training-info .left-text,
+.training-info .right-text {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.training-info .left-text {
+    max-width: 420px;
+}
+
+.training-info .right-text {
+    font-style: italic;
+    padding: 40px;
+    border-top: 6px solid #5AB9AC;
+    max-width: 445px;
+    background: #F4F4F5;
+    border-radius: 6px;
+}
+
+.training-info .reasons {
+    background: #F4F4F5;
+    padding: 104px 0;
+}
+
+.training-info .reasons-content {
+    max-width: 760px;
+    padding: 0 15px;
+    margin: auto;
+}
+
+.training-info .reasons-content h2 {
+    font-family: InterReg, sans-serif;
+    font-size: 32px;
+    color: #333;
+    text-align: center;
+    margin: 0 0 64px;
+}
+
+.training-info .single-reason {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 64px;
+}
+
+.training-info .reason-image {
+    border-radius: 50%;
+    background: rgba(90, 185, 172, .1);
+    width: 88px;
+    height: 88px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.training-info .reason-info {
+    max-width: 610px;
+}
+
+.training-info .reason-heading,
+.training-info .reason-text {
+    font-family: 'InterReg', sans-serif;
+    color: #333;
+}
+
+.training-info .action-button {
+    text-align: center;
+}
+
+.training-info .action-button a {
+    background: #5AB9AC;
+    border-radius: 3px;
+    padding: 14px 56px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    color: #fff;
+}
+
+.training-info .action-button a:hover {
+    text-decoration: none;
+}
+
+.training-info .reason-heading {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+}
+
+.training-info .reason-text {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.training-info .ot-action-button {
+    margin-top: 105px;
+}
+
+.training-info .additional-text {
+    max-width: 390px;
+    margin: 38px auto 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    color: #C4C4C4;
+    text-align: center;
+}
+
+.training-info .infomation {
+    padding: 120px 0;
+}
+
+.training-info .information-content {
+    max-width: 950px;
+    padding: 0 15px;
+    margin: auto;
+}
+
+.training-info .information-content h2 {
+    text-align: center;
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    text-transform: capitalize;
+    color: #333;
+    margin: 0 0 48px;
+}
+
+.training-info .information-content .subheading {
+    max-width: 730px;
+    margin: 0 auto 64px;
+}
+
+.training-info .information-content .subheading p {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+    text-align: center;
+    margin: 0 0 24px;
+}
+
+.training-info .topics {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.training-info .single-topic {
+    max-width: 420px;
+    margin-bottom: 80px;
+}
+
+.training-info .single-topic img {
+    margin-bottom: 32px;
+}
+
+.training-info .single-topic h4 {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin: 0 0 8px;
+    color: #333;
+    text-align: left;
+}
+
+.training-info .single-topic p {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.training-info .information .action-button a {
+    padding: 14px 47px;
 }

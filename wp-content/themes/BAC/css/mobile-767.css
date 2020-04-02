@@ -706,3 +706,31 @@
 		justify-content: center!important;
 	}
 }
+
+/*Online Training, Lifecoaching pages*/
+
+.training-info .single-reason {
+	flex-flow: column;
+	margin-bottom: 48px;
+}
+
+.training-info .single-reason .reason-image {
+	margin-bottom: 24px;
+}
+
+.training-info .single-reason .reason-heading,
+.training-info .single-reason .reason-text {
+	text-align: center;
+}
+
+.training-info .single-reason .reason-heading {
+	margin-bottom: 16px;
+}
+
+.training-info .single-topic img {
+	max-width: 100%;
+}
+
+.training-info .single-topic h4 {
+	text-align: center;
+}

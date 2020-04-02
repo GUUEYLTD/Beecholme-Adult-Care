@@ -425,3 +425,18 @@
 .banner-content {
 	flex-flow: column;
 }
+
+/*online training and coaching pages*/
+
+.training-info .text {
+	flex-flow: column;
+}
+
+.training-info .left-text {
+	margin-bottom: 48px;
+}
+
+.training-info .topics {
+	flex-flow: column;
+	align-items: center;
+}
