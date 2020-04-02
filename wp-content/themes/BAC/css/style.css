@@ -2642,3 +2642,183 @@ a.policy-link {
 .coming-soon a:hover {
     text-decoration: none;
 }
+
+/*About BAC coaching and therapy page*/
+
+.about-bac .information {
+    margin: 17px auto 0;
+    max-width: 950px;
+    padding: 0 15px;
+    justify-content: space-between;
+}
+
+.about-bac .text-bar {
+    width: 420px;
+}
+
+.about-bac .heading,
+.about-bac .text {
+    color: #333;
+    font-family: 'InterReg', sans-serif;
+    margin: 0 0 24px;
+}
+
+.about-bac .heading {
+    font-size: 32px;
+    line-height: 39px;
+    font-weight: 600;
+}
+
+.about-bac .text {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.about-bac .diagram {
+    max-width: 909px;
+    height: 600px;
+    background: url('../images/diagram.png') center no-repeat;
+    margin: 120px auto;
+    display: flex;
+    align-items: center;
+}
+
+.about-bac .diagram-content {
+    width: 100%;
+    padding: 0 8px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about-bac .diagram-content .text p {
+    margin: 0 0 12px;
+    font-family: 'InterReg', sans-serif;
+    font-size: 20px;
+    line-height: 32px;
+    color: #333;
+}
+
+.about-bac .diagram-content .text.left-text {
+    width: 281px;
+    text-align: right;
+}
+
+.about-bac .diagram-content .text.center-text {
+    width: 186px;
+    text-align: center;
+}
+
+.about-bac .diagram-content .text.center-text p {
+    font-weight: 600;
+}
+
+.about-bac .diagram-content .text.right-text {
+    width: 281px;
+    text-align: left;
+}
+
+.about-bac .choice {
+    background: #F4F4F5;
+    padding: 120px 0;
+}
+
+.about-bac .choice-wrapper {
+    max-width: 950px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.about-bac .choice h2 {
+    font-family: 'InterReg', sans-serif;
+    font-size: 32px;
+    line-height: 39px;
+    color: #333;
+    margin: 0 0 40px;
+}
+
+.about-bac .choice-content {
+    justify-content: space-between;
+}
+
+.about-bac .choice .left-text,
+.about-bac .choice .right-text {
+    max-width: 420px;
+}
+
+.about-bac .choice p {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+    margin: 0 0 24px;
+}
+
+.about-bac .block3 {
+    padding: 104px 0;
+}
+
+.about-bac .block3-content {
+    max-width: 950px;
+    margin: auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about-bac .text {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+}
+
+.about-bac .left-text,
+.about-bac .right-text {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.about-bac .left-text {
+    max-width: 420px;
+}
+
+.about-bac .right-text {
+    font-style: italic;
+    padding: 40px;
+    border-top: 6px solid #5AB9AC;
+    max-width: 445px;
+    background: #F4F4F5;
+    border-radius: 6px;
+    text-align: center;
+    height: 272px;
+}
+
+.about-bac .right-text .action-button {
+    margin-top: 46px;
+}
+
+.about-bac .action-button {
+    text-align: center;
+}
+
+.about-bac .action-button a {
+    background: #5AB9AC;
+    border-radius: 3px;
+    padding: 14px 56px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    color: #fff;
+}
+
+.about-bac .action-button a:hover {
+    text-decoration: none;
+}
+
+.about-bac .right-text .action-button:nth-child(3) {
+    margin-top: 32px;
+}
