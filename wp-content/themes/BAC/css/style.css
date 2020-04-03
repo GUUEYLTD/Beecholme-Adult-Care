@@ -2895,3 +2895,303 @@ a.policy-link {
 .faq .answer:last-child {
     margin: 0;
 }
+
+/*Landing for counselors*/
+
+.page-930 .page-title {
+    display: none;
+}
+
+.page-930 #header {
+    position: relative;
+}
+
+.page-930 .header-menu {
+    z-index: 2;
+    background: transparent;
+    position: absolute;
+    width: 100%;
+    top: 88px;
+    margin: auto;
+    left: 50%;
+    transform: translatex(-50%);
+    border: none;
+}
+
+.page-930 #menu-menu1-1 li a:first-child {
+    color: #fff;
+}
+
+.landing .block1 {
+    position: relative;
+    min-height: 720px;
+    background: url('../images/landing_bg.png') 50% no-repeat;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+}
+
+.landing .block1 .top-bar-bg {
+    position: absolute;
+    width: 100%;
+    height: 120px;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, #333333 0%, rgba(51, 51, 51, 0) 100%);
+    opacity: 0.35;
+    z-index: 1;
+}
+
+.landing .block1 .text {
+    padding: 72px 64px 64px;
+    width: 920px;
+    margin: 0 auto -225px;
+    background: #fff;
+    border: 1px solid #F4F4F5;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+}
+
+.landing .block1 .text h2,
+.landing .block1 .text h4,
+.landing .block1 .text .message p {
+    text-align: center;
+    color: #333;
+}
+
+.landing .block1 .text h2 {
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    text-transform: capitalize;
+    margin: 0 0 48px;
+}
+
+.landing .block1 .text h4 {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    margin: 0 0 24px;
+}
+
+.landing .block1 .text .action-button {
+    text-align: center;
+    margin-bottom: 14px;
+}
+.landing .block1 .text .action-button a {
+    width: 160px;
+    padding: 14px 48px;
+    background: #5AB9AC;
+    border-radius: 3px;
+    text-align: center;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    color: #fff;
+}
+
+.landing .block1 .text .action-button a:hover {
+    text-decoration: none;
+}
+
+.landing .block1 .text .message p {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 46px;
+}
+
+.landing .block2 {
+    background: #333;
+}
+
+.landing .block2 .content {
+    max-width: 950px;
+    margin: auto;
+    padding: 345px 15px 120px;
+    justify-content: space-between;
+}
+
+.landing .block2 .text {
+    max-width: 420px;
+}
+
+.landing .block2 .text h4,
+.landing .block2 .text p {
+    color: #fff;
+    font-family: 'InterReg', sans-serif;
+}
+
+.landing .block2 .text h4 {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    margin: 0 0 24px;
+}
+.landing .block2 .text p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.landing .block3 {
+    padding: 120px 0;
+    background: #F4F4F5;
+}
+
+.landing .block3 .content {
+    max-width: 950px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.landing .block3 .content h2 {
+    margin: 0 0 64px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #333;
+}
+
+.landing .block3 .benefits {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.landing .block3 .single-benefit {
+    max-width: 420px;
+    margin: 0 0 72px;
+}
+
+.landing .block3 .single-benefit img {
+    margin-bottom: 24px;
+}
+
+.landing .block3 .single-benefit h4 {
+    color: #333;
+    font-family: 'InterReg',sans-serif;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.landing .block3 .single-benefit p {
+    font-family: 'InterReg', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.landing .block4 {
+    padding: 120px 0 45px;
+}
+
+.landing .block4 .content {
+    max-width: 950px;
+    padding: 0 15px;
+    margin: auto;
+}
+
+.landing .block4 h2 {
+    text-align: center;
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    text-transform: capitalize;
+    color: #333;
+    margin: 0 0 88px;
+}
+
+.landing .block4 .single-step {
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 72px;
+}
+
+.landing .block4 .step-number {
+    width: 120px;
+    text-transform: uppercase;
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    letter-spacing: 0.2em;
+    color: #C4C4C4;
+    margin-right: 40px;
+}
+
+.landing .block4 .image-wrapper {
+    margin-right: 40px;
+    position: relative;
+}
+
+.landing .block4 .image-wrapper:after {
+    position: absolute;
+    content: '';
+    border: 1px dashed #C4C4C4;
+    bottom: -72px;
+    left: 56px;
+    height: 72px;
+}
+
+.landing .block4 .single-step:last-child .image-wrapper:after {
+    content: none;
+}
+
+.landing .block4 .text {
+    flex-flow: column;
+    width: 608px;
+}
+
+.landing .block4 .text h4 {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #333;
+    margin: 0 0 12px;
+}
+
+.landing .block4 .text p {
+    font-family: 'InterReg', sans-serif;
+    color: #333;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.landing .block5 {
+    background: #F4F4F5;
+    padding: 104px 0;
+}
+
+.landing .block5 h3 {
+    font-family: 'InterBold', sans-serif;
+    font-size: 42px;
+    line-height: 51px;
+    color: #333;
+    text-transform: capitalize;
+    text-align: center;
+    margin: 0 0 56px;
+}
+
+.landing .block5 img {
+    margin-right: 12px;
+    margin-bottom: 2px;
+}
+
+.landing .block5 a {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: #5AB9AC;
+}
+
+.landing .block5 a:hover {
+    text-decoration: none;
+}

@@ -475,3 +475,60 @@
 .about-bac .diagram {
 	display: none;
 }
+
+/*landing page*/
+
+.landing .block1 .text {
+	max-width: 90%;
+	padding: 36px 32px 32px;
+}
+
+.landing .block1 .text h2 {
+	font-size: 32px;
+	line-height: 44px;
+	margin: 0 0 32px;
+}
+
+.landing .block2 .content {
+	flex-flow: column;
+	align-items: center;
+}
+
+.landing .block2 .content .text {
+	max-width: 90%;
+}
+
+.landing .block2 .content .left-text {
+	margin-bottom: 32px;
+}
+
+.landing .block3 .benefits {
+	justify-content: center;
+}
+
+.landing .block3 .single-benefit {
+	margin: 0 25px 72px;
+	text-align: center;
+}
+
+.landing .block4 .single-step {
+	flex-wrap: wrap;
+}
+
+.landing .block4 .text {
+	text-align: center;
+	width: 100%;
+	padding: 0 25px;
+}
+
+.landing .block4 .step-number {
+	margin-right: 20px;
+}
+
+.landing .block4 .single-step .image-wrapper {
+	margin-bottom: 24px;
+}
+
+.landing .block4 .single-step .image-wrapper:after {
+	content: none;
+}
