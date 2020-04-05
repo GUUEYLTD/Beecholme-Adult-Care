@@ -266,6 +266,37 @@ jQuery(document).ready(function($){
   $('.our-counsellors .single-tab').on('click', function(){
     $('.our-counsellors .single-tab').removeClass('active');
     $(this).addClass('active');
+    $('.filter-bar .question-filter').css('display','none');
+
+    if($(this).hasClass('all')) {
+      $('.filter-bar .empty-filter').css('display','flex');
+    }
+
+    if($(this).hasClass('therapist')) {
+      $('.filter-bar .therapist-question-filter').css('display','flex');
+    }
+
+    if($(this).hasClass('coach')) {
+      $('.filter-bar .coach-question-filter').css('display','flex');
+    }
+  });
+
+
+
+  $('.mobile-filter-bar-button').on('click', function(){
+    if ($(window).width() <= 1200) {
+      var opened = $('.filter-bar-wrapper').hasClass('open');
+
+      if(!opened) {
+        $('.filter-bar-wrapper').addClass('open');
+        $('.filter-bar').stop().slideDown(500, function() {
+          $(this).css('display', 'flex');
+        });
+      } else {
+        $('.filter-bar-wrapper').removeClass('open');
+        $('.filter-bar').stop().slideUp();
+      }
+    }
   });
 });
 
@@ -359,6 +390,14 @@ jQuery(document).ready(function($){
 
   $(document).ready(function() {
     create_custom_dropdowns();
+  });
+
+  $('.our-counsellors .order-filter').on('click', function(){
+    if($(this).hasClass('ascending')) {
+      $(this).removeClass('ascending').addClass('descending');
+    } else {
+      $(this).removeClass('descending').addClass('ascending');
+    }
   });
 
 });

@@ -3208,12 +3208,42 @@ a.policy-link {
     padding: 0 15px;
     margin: auto;
 }
+.our-counsellors .filter-bar-wrapper {
+    margin: 0 0 32px;
+    border: 1px solid #F4F4F5;
+}
 
 .our-counsellors .filter-bar {
+    display: flex;
     justify-content: space-between;
     align-items: flex-end;
     padding: 24px 32px;
-    margin: 0 0 32px;
+    background: #FFFFFF;
+    border: 1px solid #F4F4F5;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+}
+
+.our-counsellors .mobile-filter-bar-button {
+    cursor: pointer;
+    display: none;
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #5AB9AC;
+    padding: 12px 0;
+    background: #fff;
+    border: 1px solid #F4F4F5;
+    border-radius: 6px;
+}
+
+.our-counsellors .mobile-filter-bar-button.open {
+    border-radius: 6px 6px 0 0;
+}
+
+.our-counsellors .mobile-filter-bar-button img {
+    margin-right: 8px;
 }
 
 .our-counsellors .filter-bar .caption {
@@ -3222,6 +3252,15 @@ a.policy-link {
     line-height: 24px;
     color: #333;
     margin-bottom: 8px;
+}
+
+
+.our-counsellors .question-filter {
+    display: none;
+}
+
+.our-counsellors .question-filter.therapist-question-filter {
+    display: flex;
 }
 
 .our-counsellors .type-tabs .single-tab {
@@ -3235,7 +3274,7 @@ a.policy-link {
     border: 1px solid rgba(196, 196, 196, .5);
 
     font-family: 'InterReg', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #5AB9AC;
@@ -3243,17 +3282,57 @@ a.policy-link {
 
 .our-counsellors .type-tabs .single-tab.active {
     background: #5AB9AC;
-    border-radius: 0px;
+    border-radius: 0;
     color: #fff;
+}
+
+.our-counsellors .filter-bar .empty-filter {
+    width: 246px;
+}
+
+.our-counsellors .filter-bar .search-button button {
+    width: 104px;
+    height: 40px;
+    background: #5AB9AC;
+    border-radius: 3px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    color: #fff;
+    border: none;
 }
 
 .our-counsellors .sort-bar {
     margin: 0 0 24px;
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+}
+
+.our-counsellors .sort-bar .caption {
+    margin-right: 16px;
+}
+
+.our-counsellors .order-filter {
+    cursor: pointer;
+    margin-left: 12px;
+}
+
+.our-counsellors .order-filter img {
+    transition: transform .2s ease;
+}
+
+.our-counsellors .order-filter.descending img {
+    transform: scale(1,-1);
+}
+
+.our-counsellors .sort-bar .results-amount {
+    color: #C4C4C4;
 }
 
 .question-select {
     display: none;
-
 }
 
 .dropdown {
@@ -3342,7 +3421,7 @@ a.policy-link {
     margin-bottom: 0;
 }
 .dropdown .option {
-    cursor: default;
+    cursor: pointer;
     font-weight: 400;
     font-family: 'InterReg', sans-serif;
     font-size: 16px;
@@ -3362,3 +3441,204 @@ a.policy-link {
 .dropdown .option.selected:focus {
     background: #f6f6f6;
 }
+
+.sort-filter .dropdown {
+    width: 112px;
+}
+
+.our-counsellors .counsellors-list {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.our-counsellors .single-item {
+    max-width: 255px;
+    background: #FFFFFF;
+    border: 1px solid #F4F4F5;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    padding: 32px;
+    margin: 0 30px 30px 0;
+}
+
+@media screen and (max-width: 1200px) {
+
+}
+
+.our-counsellors .single-item:nth-child(4n) {
+    margin-right: 0;
+}
+
+.our-counsellors .single-item .personal-info {
+    flex-flow: column;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.our-counsellors .single-item .personal-info .avatar {
+    margin-bottom: 24px;
+}
+
+.our-counsellors .single-item .info {
+    flex-flow: column;
+    align-items: center;
+}
+
+.our-counsellors .single-item .personal-info .name {
+    font-family: 'InterBold', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #5AB9AC;
+    margin: 0 0 6px;
+}
+
+.our-counsellors .single-item .personal-info .type {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    color: #C4C4C4;
+}
+
+.our-counsellors .single-item .specialty {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+    margin: 0 0 16px;
+}
+
+.our-counsellors .single-item .rating {
+    margin-bottom: 16px;
+}
+
+.our-counsellors .single-item .rating img {
+    margin-right: 4px;
+}
+.our-counsellors .single-item .rating img:last-child {
+    margin-right: 0;
+}
+
+.our-counsellors .single-item .price-wrapper {
+    margin-bottom: 24px;
+}
+
+.our-counsellors .single-item .price {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    color: #C4C4C4;
+}
+
+.our-counsellors .single-item .price span {
+    color: #333;
+}
+
+.our-counsellors .single-item .languages img {
+    margin-right: 8px;
+}
+.our-counsellors .single-item .languages img:last-child {
+    margin-right: 0;
+}
+
+.our-counsellors .single-item .button-wrapper button {
+    width: 100%;
+    height: 40px;
+    background: #5AB9AC;
+    border-radius: 3px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    color: #fff;
+}
+
+.our-counsellors .single-item .button-wrapper button:focus {
+    outline: none;
+}
+
+
+.our-counsellors .pagination {
+ margin: 18px 0 120px;
+}
+
+.our-counsellors .pagination-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 48px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    color: #5AB9AC;
+    background: #fff;
+    border: 1px solid rgba(196, 196, 196, .5);
+    border-radius: 3px;
+    margin-right: 12px;
+}
+
+.pagination-item.empty {
+    border: none;
+}
+
+.our-counsellors .pagination-item.active {
+    color: #fff;
+    background: #5AB9AC;
+}
+
+.our-counsellors .pagination-item:last-child {
+    margin-right: 0;
+}
+
+@media screen and (max-width: 1200px) {
+    .our-counsellors .filter-bar {
+        display: none;
+        background: #F4F4F5;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        flex-flow: column;
+        align-items: center;
+    }
+
+    .our-counsellors .type-tabs .single-tab {
+        width: auto;
+        padding: 0 12px;
+    }
+
+    .our-counsellors .type-tabs .single-tab:nth-child(3) {
+        padding: 0 19px;
+    }
+    .our-counsellors .language-filter .dropdown,
+    .our-counsellors .question-filter:not(.sort-filter) .dropdown {
+        width: 263px;
+    }
+
+    .our-counsellors .type-filter,
+    .our-counsellors .question-filter:not(.sort-filter),
+    .our-counsellors .language-filter {
+        margin-bottom: 24px;
+    }
+
+    .our-counsellors .filter-bar-wrapper {
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+        border-radius: 6px;
+    }
+
+    .our-counsellors .mobile-filter-bar-button {
+        display: flex;
+    }
+
+    .our-counsellors .counsellors-list {
+        justify-content: center;
+    }
+
+    .our-counsellors .single-item,
+    .our-counsellors .single-item:nth-child(4n) {
+        margin: 0 15px 30px;
+    }
+}
+
+

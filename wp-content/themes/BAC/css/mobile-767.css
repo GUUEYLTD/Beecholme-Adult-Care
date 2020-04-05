@@ -778,3 +778,42 @@
 		padding: 0;
 	}
 }
+
+/*our counsellors*/
+
+.our-counsellors .single-item {
+	padding: 24px;
+	max-width: 327px;
+}
+
+.our-counsellors .single-item .personal-info {
+	flex-flow: row;
+	align-items: center;
+	margin-bottom: 16px;
+}
+
+.our-counsellors .single-item .personal-info .avatar {
+	margin: 0 16px 0 0;
+}
+
+.our-counsellors .single-item .personal-info img {
+	max-width: 64px;
+}
+
+.our-counsellors .single-item .specialty {
+	text-align: left;
+}
+
+.our-counsellors .single-item .details {
+	display: flex;
+	justify-content: space-between;
+}
+
+.our-counsellors .single-item .rating img {
+	max-width: 16px;
+	max-height: 16px;
+}
+
+.our-counsellors .single-item .languages {
+	margin-left: 16px;
+}
