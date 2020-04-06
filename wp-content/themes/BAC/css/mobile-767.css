@@ -817,3 +817,15 @@
 .our-counsellors .single-item .languages {
 	margin-left: 16px;
 }
+
+/*profile page*/
+
+.profile .details .single-detail:nth-child(4),
+.profile .details .single-detail:nth-child(5) {
+	flex-flow: column;
+}
+
+.profile .details .single-detail:nth-child(4) .caption,
+.profile .details .single-detail:nth-child(5) .caption {
+	margin-bottom: 8px;
+}

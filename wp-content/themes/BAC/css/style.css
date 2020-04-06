@@ -3542,7 +3542,7 @@ a.policy-link {
     margin-right: 0;
 }
 
-.our-counsellors .single-item .button-wrapper button {
+.button-wrapper button {
     width: 100%;
     height: 40px;
     background: #5AB9AC;
@@ -3554,10 +3554,9 @@ a.policy-link {
     color: #fff;
 }
 
-.our-counsellors .single-item .button-wrapper button:focus {
+.button-wrapper button:focus {
     outline: none;
 }
-
 
 .our-counsellors .pagination {
  margin: 18px 0 120px;
@@ -3641,4 +3640,170 @@ a.policy-link {
     }
 }
 
+/*profile page*/
 
+.page-962 .page-title {
+    display: none;
+}
+
+.profile {
+    padding-bottom: 40px;
+}
+
+.profile .back-button {
+    cursor: pointer;
+    margin: 80px 0 48px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 16px;
+    color: #5AB9AC;
+    text-decoration: none;
+}
+
+.profile .back-button img {
+    margin-right: 4px;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px;
+}
+
+.profile .left {
+    max-width: 635px;
+}
+
+.profile .right {
+    min-width: 350px;
+    max-width: 350px;
+}
+
+.profile-container.block1 {
+    align-items: center;
+}
+
+.profile .avatar {
+    margin-right: 40px;
+}
+
+.profile .rating {
+    margin-bottom: 24px;
+}
+
+.profile .name {
+    font-family: 'InterBold', sans-serif;
+    font-size: 32px;
+    color: #333;
+    margin: 0 0 4px;
+}
+
+.profile .specialty {
+    font-family: 'InterReg';
+    font-size: 16px;
+    color: #c4c4c4;
+    margin: 0 0 20px;
+}
+
+.profile .price {
+    margin-right: 24px;
+    font-family: 'InterReg';
+    font-size: 14px;
+    color: #C4C4C4;
+}
+
+.profile .price span {
+    font-weight: 600;
+    font-size: 24px;
+    color: #5AB9AC;
+}
+
+.profile .button-wrapper button {
+    width: 180px;
+}
+
+.profile .summary .single-item {
+    margin-bottom: 40px;
+}
+
+.profile .summary .single-item:last-child {
+    margin-bottom: 0;
+}
+
+.profile .summary img {
+    align-self: flex-start;
+    margin-right: 18px;
+}
+
+.profile .summary .caption {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 16px;
+    color: #C4C4C4;
+    margin: 0 0 8px;
+}
+
+.profile .summary .message {
+    font-family: 'InterReg';
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.profile .heading {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+    margin: 0 0 24px;
+}
+
+.profile .text {
+    font-family: 'InterReg';
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.profile .specializations {
+    max-width: 350px;
+}
+
+.profile .details .caption {
+    color: #c4c4c4;
+    min-width: 144px;
+}
+
+.profile .details .button-wrapper {
+    display: none;
+}
+
+.profile .single-detail {
+    margin-bottom: 12px;
+}
+
+.profile .education .single-item {
+    margin-bottom: 32px;
+}
+
+.profile .education .details .heading {
+    margin: 0 0 8px;
+}
+
+.profile .education .date {
+    font-family: 'InterReg';
+    font-size: 16px;
+    line-height: 24px;
+    color: #c4c4c4;
+}
+
+.profile .link a {
+    font-family: 'InterBold';
+    font-size: 16px;
+    line-height: 24px;
+    color: #5AB9AC;
+}
+
+.profile .link a:hover {
+    text-decoration: none;
+}

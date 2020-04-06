@@ -532,3 +532,98 @@
 .landing .block4 .single-step .image-wrapper:after {
 	content: none;
 }
+
+/*profile page*/
+
+.profile {
+	padding: 0 24px 50px;
+}
+
+.profile .divider {
+	height: 1px;
+	background: #C4C4C4;
+	opacity: 0.2;
+	margin-bottom: 40px;
+}
+
+.profile-container {
+	flex-flow: column;
+	margin-bottom: 0;
+}
+
+.profile-container.block1 {
+	margin-bottom: 40px;
+}
+
+.profile .left {
+	max-width: none;
+}
+
+.profile .right {
+	max-width: none;
+	min-width: auto;
+}
+
+.profile .heading {
+	font-size: 20px;
+	line-height: 24px;
+	margin: 0 0 16px;
+}
+
+.profile .text {
+	font-size: 16px;
+}
+
+.profile .back-button {
+	margin-bottom: 24px;
+}
+
+.profile .personal-info {
+	flex-flow: column;
+	margin-bottom: 48px;
+}
+
+.profile .avatar {
+	text-align: center;
+	margin: 0 0 24px;
+}
+
+.profile .avatar img {
+	max-width: 128px;
+}
+
+.profile .personal-info .info {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
+
+.profile .rating {
+	margin-bottom: 16px;
+}
+
+.profile .personal-info .name {
+	font-size: 24px;
+	line-height: 32px;
+	margin: 0 0 4px;
+}
+
+.profile .personal-info .actions {
+	flex-flow: column;
+}
+
+.profile .personal-info .actions .price {
+	margin: 0 0 16px;
+}
+
+.profile .about,
+.profile .specializations,
+.profile .details {
+	margin-bottom: 64px;
+}
+
+.profile .details .button-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 24px;
+}
