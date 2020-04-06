@@ -15,6 +15,16 @@
   </div>
 
   <div class="diagram">
+    <div class="sign-text top-left">Therapy</div>
+    <div class="sign-text top-right">Life<br>Coaching</div>
+    <div class="sign-text bottom-left d-flex flex-column align-items-start">
+      <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/arrow_left.png" alt="">
+      <span>Past</span>
+    </div>
+    <div class="sign-text bottom-right d-flex flex-column align-items-end">
+      <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/arrow_right.png" alt="">
+      <span>Future</span>
+    </div>
     <div class="diagram-content">
       <div class="text left-text"><?php the_field('about_diagram_left'); ?></div>
       <div class="text center-text"><?php the_field('about_diagram_center'); ?></div>
@@ -28,9 +38,23 @@
       <div class="choice-content d-flex">
         <div class="left-text">
           <?php the_field('about_choice_lt'); ?>
+          <p>
+            <span>– </span><?php the_field('about_choice_lt_1'); ?><br>
+            <span>– </span><?php the_field('about_choice_lt_2'); ?><br>
+            <span>– </span><?php the_field('about_choice_lt_3'); ?><br>
+            <span>– </span><?php the_field('about_choice_lt_4'); ?><br>
+          </p>
         </div>
         <div class="right-text">
           <?php the_field('about_choice_rt'); ?>
+          <p>
+            <span>– </span><?php the_field('about_choice_rt_1'); ?><br>
+            <span>– </span><?php the_field('about_choice_rt_2'); ?><br>
+            <span>– </span><?php the_field('about_choice_rt_3'); ?><br>
+            <span>– </span><?php the_field('about_choice_rt_4'); ?><br>
+            <span>– </span><?php the_field('about_choice_rt_5'); ?><br>
+            <span>– </span><?php the_field('about_choice_rt_6'); ?><br>
+          </p>
         </div>
       </div>
     </div>

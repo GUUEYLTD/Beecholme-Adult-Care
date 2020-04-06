@@ -134,6 +134,9 @@
           </div>
         </div>
       </div>
+      <div class="button-wrapper">
+        <button>Join Our Team Now</button>
+      </div>
     </div>
   </div>
 

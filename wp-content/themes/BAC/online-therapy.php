@@ -5,7 +5,10 @@
 <div class="training-info">
   <div class="text d-flex">
     <div class="left-text"><?php the_field('ot_lefttext'); ?></div>
-    <div class="right-text"><?php the_field('ot_righttext'); ?></div>
+    <div class="right-text">
+      <?php the_field('ot_righttext'); ?>
+      <div class="action-button"><a href="#">Start your journey</a></div>
+    </div>
   </div>
 
   <div class="reasons">

@@ -24,7 +24,7 @@
         <div class="specialty">Therapist</div>
         <div class="actions d-flex align-items-center">
           <div class="price">
-            <span>&#163;150</span> / hour
+            <span>&#163;150</span> / session
           </div>
           <div class="button-wrapper">
             <button>Book a session</button>
@@ -63,7 +63,7 @@
       <div class="text">Therapy, also called counseling or psychotherapy, is a long-term process in which a client works with a healthcare professional to diagnose and resolve problematic beliefs, behaviors, relationship issues, feelings and sometimes physical responses.</div>
     </div>
     <div class="specializations right">
-      <div class="heading">Specializations</div>
+      <div class="heading">Areas of Expertise</div>
       <div class="text">
         - Relationship issues<br>
         - Substance abuse disorder

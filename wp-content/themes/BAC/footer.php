@@ -18,10 +18,10 @@
             </div>
             <div class="footer-controls d-flex justify-content-between">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <a href="#">For Practitioner</a>
+                    <a href="#">For Counsellors</a>
                     <a href="/make-a-referral" class="referral-button">Make a Referral</a>
                     <a href="#">Therapists</a>
-                    <a href="#">Coaches</a>
+                    <a href="#">Life Coaches</a>
                 </div>
                 <div class="trustpilot">
                     <a href="#"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo_trustpilot_footer.png" alt=""></a>
@@ -30,7 +30,7 @@
         </div>
         <div class="footer-bottom d-flex justify-content-between">
             <div class="copyrights align-self-center">
-                Copyright 2017. All Rights Reserved.
+                Copyright 2020. All Rights Reserved.
                 <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Privacy Policy</a>
                 <a href="<?php echo get_the_permalink(397); ?>" class="policy-link">Cookie Policy</a>
             </div>

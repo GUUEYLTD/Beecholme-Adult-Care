@@ -259,25 +259,24 @@ jQuery(document).ready(function($){
   });
 });
 
-
 /*Our Counsellors*/
 
 jQuery(document).ready(function($){
-  $('.our-counsellors .single-tab').on('click', function(){
-    $('.our-counsellors .single-tab').removeClass('active');
+  $('.single-tab').on('click', function(){
+    $('.single-tab').removeClass('active');
     $(this).addClass('active');
-    $('.filter-bar .question-filter').css('display','none');
+    $('.question-filter').css('display','none');
 
     if($(this).hasClass('all')) {
-      $('.filter-bar .empty-filter').css('display','flex');
+      $('.empty-filter').css('display','flex');
     }
 
     if($(this).hasClass('therapist')) {
-      $('.filter-bar .therapist-question-filter').css('display','flex');
+      $('.therapist-question-filter').css('display','flex');
     }
 
     if($(this).hasClass('coach')) {
-      $('.filter-bar .coach-question-filter').css('display','flex');
+      $('.coach-question-filter').css('display','flex');
     }
   });
 

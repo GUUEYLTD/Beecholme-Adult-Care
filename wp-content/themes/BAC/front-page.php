@@ -12,13 +12,83 @@
     </div>
 		<div class="home-form-wrapper">
 		<div class="tabs d-flex justify-content-center">
-			<div class="tab" data-tab="find-tab">Find Practitioner</div>
-			<div class="tab active" data-tab="referral-tab">Make a Referral</div>
+			<div class="tab active" data-tab="find-tab">Find Practitioner</div>
+			<div class="tab" data-tab="referral-tab">Make a Referral</div>
 		</div>
-		<div class="tab-content find-tab">
+		<div class="tab-content find-tab active">
+			<div class="homepage-filter type-filter d-flex flex-column align-left">
+				<div class="caption">I am looking for a</div>
+				<div class="type-tabs d-flex">
+					<div class="single-tab coach" data-type="coach">Life Coach</div>
+					<div class="single-tab therapist active" data-type="therapist">Therapist</div>
+					<div class="single-tab all" data-type="all">All</div>
+				</div>
+			</div>
 
+			<div class="homepage-filter question-filter therapist-question-filter flex-column align-left">
+				<div class="caption">What are you suffering from?</div>
+				<select class="question-select">
+					<option value="" data-display-text="All">All</option>
+					<option value="apples">Stress, Anxiety</option>
+					<option value="bananas">Depression</option>
+					<option value="oranges">Trauma and abuse</option>
+					<option value="oranges">Relationship / Couples issues</option>
+					<option value="oranges">Domestic Violence</option>
+					<option value="oranges">Anger management</option>
+					<option value="oranges">Substance abuse disorder</option>
+					<option value="oranges">Eating Disorders</option>
+					<option value="oranges">Self esteem</option>
+					<option value="oranges">Other</option>
+				</select>
+			</div>
+
+			<div class="homepage-filter question-filter coach-question-filter flex-column align-left">
+				<div class="caption">Type of coaching</div>
+				<select class="question-select">
+					<option value="" data-display-text="All">All</option>
+					<option value="apples">Life</option>
+					<option value="bananas">Health and Wellness</option>
+					<option value="oranges">Family or Parenting</option>
+					<option value="oranges">Relationship or Dating</option>
+					<option value="oranges">Career</option>
+					<option value="oranges">Business</option>
+					<option value="oranges">Finance</option>
+					<option value="oranges">Retirement</option>
+					<option value="oranges">Women Empowerment</option>
+				</select>
+			</div>
+
+			<div class="homepage-filter question-filter empty-filter flex-column align-left">
+				<div class="caption">Choose type</div>
+				<select class="question-select">
+					<option value="" data-display-text="All">All</option>
+					<option value="apples">Life</option>
+					<option value="bananas">Health and Wellness</option>
+					<option value="oranges">Family or Parenting</option>
+					<option value="oranges">Relationship or Dating</option>
+					<option value="oranges">Career</option>
+					<option value="oranges">Business</option>
+					<option value="oranges">Finance</option>
+					<option value="oranges">Retirement</option>
+					<option value="oranges">Women Empowerment</option>
+					<option value="apples">Stress, Anxiety</option>
+					<option value="bananas">Depression</option>
+					<option value="oranges">Trauma and abuse</option>
+					<option value="oranges">Relationship / Couples issues</option>
+					<option value="oranges">Domestic Violence</option>
+					<option value="oranges">Anger management</option>
+					<option value="oranges">Substance abuse disorder</option>
+					<option value="oranges">Eating Disorders</option>
+					<option value="oranges">Self esteem</option>
+					<option value="oranges">Other</option>
+				</select>
+			</div>
+
+			<div class="button-wrapper">
+				<button>Search</button>
+			</div>
 		</div>
-		<div class="tab-content referral-tab active">
+		<div class="tab-content referral-tab">
 			<?php echo do_shortcode('[contact-form-7 id="18" title="Home page"]'); ?>
 			<div class="form-addition">
 				<div class="form-addition-text">or you can call us directly</div>
@@ -50,7 +120,7 @@
 			</a>		
 		<?php } ?>
 		<?php if(get_field('serv_h3')) { ?>
-			<a href="/step-down-service/" class="single-service-container d-flex align-items-center justify-content-center">
+			<a href="/online-life-coaching/" class="single-service-container d-flex align-items-center justify-content-center">
 				<div class="single-service">
 					<h3><?php the_field('serv_h3'); ?></h3>
 					<p><?php the_field('serv_t3'); ?></p>
@@ -58,7 +128,7 @@
 			</a>		
 		<?php } ?>
 		<?php if(get_field('serv_h4')) { ?>
-			<a href="/outreach-community-engagement-center/" class="single-service-container d-flex align-items-center justify-content-center">
+			<a href="/online-therapy/" class="single-service-container d-flex align-items-center justify-content-center">
 				<div class="single-service">
 					<h3><?php the_field('serv_h4'); ?></h3>
 					<p><?php the_field('serv_t4'); ?></p>
@@ -117,10 +187,10 @@
 				<h3><?php the_field('feat_h8'); ?></h3>
 				<p><?php the_field('feat_t8'); ?></p>
 			</div>
-		<?php } ?>												
+		<?php } ?>
 	</div>
 	<div class="features-booking">
-		<a class="cta-button" href="/24-hour-residential-care-home/">View Our Homes and Book a Visit <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="arrow right"></a>
+		<a class="cta-button" href="/24-hour-residential-care-home/">View Our Homes and Book a Visit</a>
 	</div>
 </div>
 <div class="boxes">
@@ -300,7 +370,7 @@
    <div class="text">
     <h2><?php the_field('home_lc_heading'); ?></h2>
     <?php the_field('home_lc_text'); ?>
-    <div class="link"><a href="#">Read More</a></div>
+    <div class="link"><a href="/online-life-coaching/">Read More</a></div>
    </div>
    <div class="perks d-flex flex-column">
     <div class="single-perk d-flex align-items-center">
@@ -332,7 +402,7 @@
    <div class="text">
     <h2><?php the_field('home_therapy_heading'); ?></h2>
     <?php the_field('home_therapy_text'); ?>
-    <div class="link"><a href="#">Read More</a></div>
+    <div class="link"><a href="/online-therapy/">Read More</a></div>
    </div>
    <div class="perks d-flex flex-column">
     <div class="single-perk d-flex align-items-center">

@@ -360,11 +360,13 @@ p {
     width: 200px;
     background: #fff;
     z-index: 10;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid transparent;
+    border-radius: 6px;
 }
 
 #menu-menu1-1 li .sub-menu li {
     background: #fff;
-    border-radius: 6px;
     padding: 16px 24px;
     margin: 0;
     border-bottom: 1px solid rgba(196, 196, 196, .3);
@@ -496,6 +498,10 @@ p {
     display: none;
 }
 
+.banner-content .type-tabs .all {
+    width: 60px;
+}
+
 .banner-content .tab-content.active {
     display: block;
 }
@@ -503,6 +509,18 @@ p {
 .banner-content .tab.active {
     color: #333;
     border-color: #5AB9AC;
+}
+
+.banner-content .homepage-filter {
+    margin-bottom: 32px;
+}
+
+.banner-content .homepage-filter .caption {
+    margin-bottom: 8px;
+}
+
+.banner-content .homepage-filter .dropdown {
+    width: 100%;
 }
 
 .banner-content .heading {
@@ -550,6 +568,11 @@ p {
     margin-bottom: 20px;
     text-align: center;
 }
+
+.banner-content .wpcf7-form p {
+    margin-bottom: 22px;
+}
+
 
 #wpcf7-f188-o1 .wpcf7-form p:nth-child(9) {
     margin-bottom: 0;
@@ -1003,7 +1026,7 @@ p {
     border-radius: 3px;
     padding: 15px 40px;
 
-    font-family: 'InterReg', sans-serif;
+    font-family: 'InterBold', sans-serif;
     color: #fff;
     font-size: 16px;
     line-height: 19px;
@@ -1011,6 +1034,7 @@ p {
 
 .information .link a:hover {
     text-decoration: none;
+    background: #5da299;
 }
 .information .link a:focus {
     outline: none;
@@ -2433,8 +2457,10 @@ a.policy-link {
 }
 
 .training-info .reasons-content h2 {
-    font-family: InterReg, sans-serif;
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
     font-size: 32px;
+    line-height: 44px;
     color: #333;
     text-align: center;
     margin: 0 0 64px;
@@ -2464,6 +2490,7 @@ a.policy-link {
 .training-info .reason-text {
     font-family: 'InterReg', sans-serif;
     color: #333;
+    margin-bottom: 0;
 }
 
 .training-info .action-button {
@@ -2477,6 +2504,7 @@ a.policy-link {
     font-family: 'InterBold', sans-serif;
     font-size: 16px;
     color: #fff;
+    font-style: normal;
 }
 
 .training-info .action-button a:hover {
@@ -2511,6 +2539,7 @@ a.policy-link {
 .coaching-info .additional-text {
     font-family: 'InterReg', sans-serif;
     font-size: 24px;
+    line-height: 28px;
     color: #333;
     font-weight: 500;
     margin-top: 80px;
@@ -2534,6 +2563,7 @@ a.policy-link {
     text-align: center;
     font-family: 'InterBold', sans-serif;
     font-size: 42px;
+    line-height: 44px;
     text-transform: capitalize;
     color: #333;
     margin: 0 0 48px;
@@ -2571,6 +2601,7 @@ a.policy-link {
     font-family: 'InterReg', sans-serif;
     font-weight: 600;
     font-size: 24px;
+    line-height: 32px;
     margin: 0 0 8px;
     color: #333;
     text-align: left;
@@ -2626,7 +2657,6 @@ a.policy-link {
     margin: auto;
     text-align: center;
     padding: 0 0 160px;
-    height: calc(100% - 866px);
 }
 
 .coming-soon p {
@@ -2646,7 +2676,7 @@ a.policy-link {
     border-radius: 3px;
     padding: 14px 55px;
 
-    font-family: 'InterReg';
+    font-family: 'InterBold';
     font-size: 16px;
     color: #fff;
     text-align: center;
@@ -2694,6 +2724,7 @@ a.policy-link {
     margin: 120px auto;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .about-bac .diagram-content {
@@ -2703,6 +2734,47 @@ a.policy-link {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+}
+
+.about-bac .diagram .sign-text {
+    font-family: 'InterReg';
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 32px;
+    color: #333333;
+    text-transform: uppercase;
+    position: absolute;
+}
+
+.about-bac .diagram .sign-text span {
+    opacity: .05;
+}
+
+.about-bac .diagram .sign-text img {
+    margin-bottom: 12px;
+}
+
+.about-bac .diagram .sign-text.top-left {
+    opacity: 0.05;
+    left: -95px;
+    top: 0;
+}
+.about-bac .diagram .sign-text.top-right {
+    opacity: 0.05;
+    right: -106px;
+    top: 0;
+    text-align: right;
+}
+
+.about-bac .diagram .sign-text.bottom-left {
+    bottom: 0;
+    left: -95px;
+}
+
+.about-bac .diagram .sign-text.bottom-right {
+    bottom: 0;
+    right: -106px;
 }
 
 .about-bac .diagram-content .text p {
@@ -2745,6 +2817,7 @@ a.policy-link {
 
 .about-bac .choice h2 {
     font-family: 'InterReg', sans-serif;
+    font-weight: 600;
     font-size: 32px;
     line-height: 39px;
     color: #333;
@@ -2758,6 +2831,10 @@ a.policy-link {
 .about-bac .choice .left-text,
 .about-bac .choice .right-text {
     max-width: 420px;
+}
+
+.about-bac .choice-content span {
+    color: #5AB9AC;
 }
 
 .about-bac .choice p {
@@ -2788,8 +2865,8 @@ a.policy-link {
     margin: auto;
 }
 
-.about-bac .block3-content .left-text,
-.about-bac .block3-content .right-text {
+.about-bac .block3-content .left-text p,
+.about-bac .block3-content .right-text p {
     font-family: 'InterReg', sans-serif;
     font-size: 18px;
     line-height: 24px;
@@ -2827,6 +2904,7 @@ a.policy-link {
     font-family: 'InterBold', sans-serif;
     font-size: 16px;
     color: #fff;
+    font-style: normal;
 }
 
 .about-bac .block3-content .action-button a:hover {
@@ -2835,6 +2913,10 @@ a.policy-link {
 
 .about-bac .block3-content .right-text .action-button:nth-child(3) {
     margin-top: 32px;
+}
+
+.about-bac .block3-content .right-text .action-button:nth-child(3) a {
+    padding: 14px 61px;
 }
 
 /*FAQ page*/
@@ -2850,6 +2932,7 @@ a.policy-link {
 }
 
 .faq .single-topic {
+    cursor: pointer;
     border: 1px solid #F4F4F5;
     box-sizing: border-box;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
@@ -2935,6 +3018,10 @@ a.policy-link {
     color: #fff;
 }
 
+.page-930 #menu-menu1-1 .sub-menu li a:first-child {
+    color: #868F9B;
+}
+
 .landing .block1 {
     position: relative;
     min-height: 720px;
@@ -2973,6 +3060,10 @@ a.policy-link {
     color: #333;
 }
 
+.landing .block1 .text .message p {
+    padding: 0 50px;
+}
+
 .landing .block1 .text h2 {
     font-family: 'InterBold', sans-serif;
     font-size: 42px;
@@ -3007,6 +3098,7 @@ a.policy-link {
 
 .landing .block1 .text .action-button a:hover {
     text-decoration: none;
+    background: #5da299;
 }
 
 .landing .block1 .text .message p {
@@ -3028,7 +3120,7 @@ a.policy-link {
 }
 
 .landing .block2 .text {
-    max-width: 420px;
+    max-width: 415px;
 }
 
 .landing .block2 .text h4,
@@ -3101,7 +3193,7 @@ a.policy-link {
 }
 
 .landing .block4 {
-    padding: 120px 0 45px;
+    padding: 120px 0 120px;
 }
 
 .landing .block4 .content {
@@ -3152,6 +3244,10 @@ a.policy-link {
     height: 72px;
 }
 
+.landing .block4 .single-step:last-child {
+    margin: 0 0 64px;
+}
+
 .landing .block4 .single-step:last-child .image-wrapper:after {
     content: none;
 }
@@ -3176,6 +3272,22 @@ a.policy-link {
     font-size: 18px;
     line-height: 24px;
     margin: 0;
+}
+
+.landing .block4 .text a {
+    color: #5AB9AC;
+}
+.landing .block4 .button-wrapper {
+    text-align: center;
+}
+
+.landing .block4 button {
+    max-width: 240px;
+    height: 48px;
+}
+
+.landing .block4 .text a:hover {
+    text-decoration: none;
 }
 
 .landing .block5 {
@@ -3259,7 +3371,7 @@ a.policy-link {
     margin-right: 8px;
 }
 
-.our-counsellors .filter-bar .caption {
+.filter-bar .caption {
     font-family: 'InterReg', sans-serif;
     font-size: 14px;
     line-height: 24px;
@@ -3268,15 +3380,21 @@ a.policy-link {
 }
 
 
-.our-counsellors .question-filter {
+.question-filter {
     display: none;
 }
 
-.our-counsellors .question-filter.therapist-question-filter {
+.question-filter.therapist-question-filter {
     display: flex;
 }
 
-.our-counsellors .type-tabs .single-tab {
+.type-tabs {
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.type-tabs .single-tab {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -3293,7 +3411,7 @@ a.policy-link {
     color: #5AB9AC;
 }
 
-.our-counsellors .type-tabs .single-tab.active {
+.type-tabs .single-tab.active {
     background: #5AB9AC;
     border-radius: 0;
     color: #fff;
@@ -3315,6 +3433,10 @@ a.policy-link {
     border: none;
 }
 
+.our-counsellors .filter-bar .search-button button:hover {
+    background: #5da299;
+}
+
 .our-counsellors .sort-bar {
     margin: 0 0 24px;
     font-family: 'InterReg', sans-serif;
@@ -3323,7 +3445,7 @@ a.policy-link {
     color: #333;
 }
 
-.our-counsellors .sort-bar .caption {
+.sort-bar .caption {
     margin-right: 16px;
 }
 
@@ -3418,7 +3540,7 @@ a.policy-link {
     transform: scale(.75);
     transform-origin: 50% 0;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .09);
-    border-radius: 3px;
+    border-radius: 6px;
     opacity: 0;
     overflow: hidden;
     pointer-events: none;
@@ -3456,7 +3578,7 @@ a.policy-link {
 }
 
 .sort-filter .dropdown {
-    width: 112px;
+    width: 170px;
 }
 
 .our-counsellors .counsellors-list {
@@ -3567,6 +3689,10 @@ a.policy-link {
     color: #fff;
 }
 
+.button-wrapper button:hover {
+    background: #5da299;
+}
+
 .button-wrapper button:focus {
     outline: none;
 }
@@ -3615,12 +3741,12 @@ a.policy-link {
         align-items: center;
     }
 
-    .our-counsellors .type-tabs .single-tab {
+    .type-tabs .single-tab {
         width: auto;
         padding: 0 12px;
     }
 
-    .our-counsellors .type-tabs .single-tab:nth-child(3) {
+    .type-tabs .single-tab:nth-child(3) {
         padding: 0 19px;
     }
     .our-counsellors .language-filter .dropdown,
