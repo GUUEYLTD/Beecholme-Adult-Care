@@ -69,7 +69,7 @@
 </div>
 <div class="features">
 	<h2>Why Choose BAC Supported<br>Living Accommodation?</h2>
-	<div class="features-container mid-container grid" data-masonry='{ "itemSelector": ".single-feature", "gutter": 20, "horizontalOrder": true }'>
+	<div class="features-container mid-container d-flex flex-wrap">
 		<?php if(get_field('feat_h1', $cur_page)) { ?>
 			<div class="single-feature">
 				<h3><?php the_field('feat_h1'); ?></h3>

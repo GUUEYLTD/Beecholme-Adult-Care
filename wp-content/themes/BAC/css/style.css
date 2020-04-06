@@ -383,7 +383,7 @@ p {
 }
 
 #menu-menu1-1 .sub-menu li:hover a {
-    color: #5AB9AC!important;
+    color: #5AB9AC!important;.single-service-container
 }
 
 .mobile-menu {
@@ -687,6 +687,11 @@ p {
 .single-service-container {
     width: 23%;
     background: rgba(196, 196, 196, .1);
+    text-decoration: none;
+}
+
+.single-service-container:hover {
+    text-decoration: none;
 }
 
 .single-service {
@@ -695,6 +700,7 @@ p {
 
 .single-service h3,
 .single-service p {
+    text-decoration: none;
     font-family: 'InterReg', sans-serif;
     text-align: left;
     line-height: 24px;
@@ -726,6 +732,10 @@ p {
     margin: 0 0 48px;
     text-align: center;
     color: #333;
+}
+
+.features-container {
+    justify-content: space-between;
 }
 
 .features-container .single-feature {
