@@ -341,9 +341,10 @@ p {
 }
 
 #menu-menu1-1 li a:first-child {
+    font-family: 'InterReg';
     font-size: 16px;
-    line-height: 16px;
-    color: #868F9B;
+    line-height: 20px;
+    color: #333;
 }
 
 #menu-menu1-1 li a:first-child:hover, #menu-menu1-1 li a:first-child:focus {
@@ -362,9 +363,11 @@ p {
 }
 
 #menu-menu1-1 li .sub-menu li {
-    padding: 15px 10px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 16px 24px;
     margin: 0;
-    border-bottom: 1px solid #868F9B;
+    border-bottom: 1px solid rgba(196, 196, 196, .3);
 }
 
 #menu-menu1-1 li .sub-menu li:last-child {
@@ -376,11 +379,11 @@ p {
 }
 
 #menu-menu1-1 .sub-menu li:hover {
-    background: #AAB2BD;
+    background: #F4F4F5;
 }
 
 #menu-menu1-1 .sub-menu li:hover a {
-    color: #fff!important;
+    color: #5AB9AC!important;
 }
 
 .mobile-menu {
