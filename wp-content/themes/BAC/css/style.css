@@ -374,6 +374,7 @@ p {
 
 #menu-menu1-1 li .sub-menu li:last-child {
     border: none;
+    border-radius: 0 0 6px 6px;
 }
 
 #menu-menu1-1 li:hover .sub-menu {
