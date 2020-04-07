@@ -644,6 +644,7 @@ p {
     font-size: 16px;
     font-weight: bold;
     padding: 7px 0;
+    border: none;
 }
 .wpcf7-form input[type="submit"]:hover {
     background: #5da299;
@@ -2150,7 +2151,7 @@ footer {
 }
 
 .footer-menu #menu-menu1-2 li .sub-menu {
-    left: 120px;
+    left: 160px;
     position: absolute;
     top: 37px;
     width: 300px;
@@ -3417,10 +3418,6 @@ a.policy-link {
     color: #fff;
 }
 
-.our-counsellors .filter-bar .empty-filter {
-    width: 246px;
-}
-
 .our-counsellors .filter-bar .search-button button {
     width: 104px;
     height: 40px;
@@ -3741,7 +3738,7 @@ a.policy-link {
         align-items: center;
     }
 
-    .type-tabs .single-tab {
+    .our-counsellors .type-tabs .single-tab {
         width: auto;
         padding: 0 12px;
     }
@@ -3902,6 +3899,10 @@ a.policy-link {
     font-size: 18px;
     line-height: 24px;
     color: #333;
+}
+
+.profile .text span {
+    color: #5AB9AC;
 }
 
 .profile .specializations {

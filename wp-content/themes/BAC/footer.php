@@ -30,7 +30,7 @@
         </div>
         <div class="footer-bottom d-flex justify-content-between">
             <div class="copyrights align-self-center">
-                Copyright 2020. All Rights Reserved.
+                <span>Copyright 2020. All Rights Reserved.</span>
                 <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Privacy Policy</a>
                 <a href="<?php echo get_the_permalink(397); ?>" class="policy-link">Cookie Policy</a>
             </div>

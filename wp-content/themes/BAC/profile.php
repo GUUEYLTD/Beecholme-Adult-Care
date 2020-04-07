@@ -65,8 +65,8 @@
     <div class="specializations right">
       <div class="heading">Areas of Expertise</div>
       <div class="text">
-        - Relationship issues<br>
-        - Substance abuse disorder
+        <span>- </span>Relationship issues<br>
+        <span>- </span>Substance abuse disorder
       </div>
     </div>
   </div>

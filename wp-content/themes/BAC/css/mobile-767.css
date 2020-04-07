@@ -46,11 +46,6 @@
 	display: none!important;
 }
 
-.header-mobile-controls {
-	display: flex!important;
-	justify-content: center;
-}
-
 .header-container {
 	position: fixed;
 	top: 0;
@@ -60,7 +55,8 @@
 }
 
 .header-menu {
-	margin-top: 88px;
+	margin-top: 40px;
+	border: none;
 }
 
 .header-menu.home-header {
@@ -79,6 +75,23 @@
 	.header-mobile-controls a:first-child {
 		display: none;
 	}
+}
+
+.services {
+	padding: 60px 0;
+}
+
+.services h3,
+.services p {
+	text-align: center;
+}
+
+.page-8 .information {
+	padding: 60px 0;
+}
+
+.page-8 .information h2 {
+	text-align: center;
 }
 
 .mobile-menu {
@@ -686,6 +699,24 @@
 	margin: 0;
 }
 
+.footer-container .copyrights {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.footer-container .copyrights span {
+	display: block;
+	width: 100%;
+	order: 2;
+	text-align: center;
+}
+
+.footer-container .copyrights .policy-link {
+	margin: 0 5px 8px;
+	order: 1;
+}
+
 @media screen and (max-width: 400px) {
 	.footer-bottom {
 		flex-flow: column;
@@ -708,6 +739,18 @@
 }
 
 /*Online Training, Lifecoaching pages*/
+
+.training-info .text {
+	padding: 0 15px 60px;
+}
+
+.training-info .text .right-text {
+	text-align: center;
+}
+
+.training-info .reasons {
+	padding: 60px 0;
+}
 
 .training-info .single-reason {
 	flex-flow: column;
@@ -733,6 +776,31 @@
 
 .training-info .single-topic h4 {
 	text-align: center;
+}
+
+.training-info .information {
+	padding: 60px 0;
+}
+
+.about-bac .heading {
+	font-size: 22px;
+}
+
+.about-bac .choice,
+.about-bac .block3 {
+	padding: 60px 0;
+}
+
+.about-bac .choice-wrapper h2 {
+	font-size: 22px;
+}
+
+.about-bac .block3-content .right-text {
+	height: auto;
+}
+
+.about-bac .block3-content .right-text .action-button:nth-child(3) a {
+	padding: 12px 50px;
 }
 
 @media screen and (max-width: 386px) {
@@ -764,9 +832,23 @@
 	padding: 0;
 }
 
+.landing .block2 .content {
+	padding: 285px 15px 60px;
+}
+
+.landing .block2 .text h4 {
+	text-align: center;
+}
+
+.landing .block3,
+.landing .block4 {
+	padding: 60px 0;
+}
+
 .landing .block5 h3 {
-	font-size: 24px;
+	font-size: 28px;
 	line-height: 32px;
+	margin: 0 0 40px;
 }
 
 .landing .block5 a {
@@ -777,7 +859,7 @@
 
 @media screen and (max-width: 500px) {
 	.landing .block5 a {
-		font-size: 16px;
+		font-size: 18px;
 		line-height: 22px;
 		padding: 0;
 	}
@@ -818,11 +900,24 @@
 	max-height: 16px;
 }
 
+.our-counsellors .single-item .price {
+	font-size: 12px;
+}
+
+.our-counsellors .single-item .price span {
+	font-size: 16px;
+}
+
 .our-counsellors .single-item .languages {
 	margin-left: 16px;
 }
 
-/*profile page*/
+.sort-filter .dropdown {
+	width: 150px;
+	padding: 0 18px 0 10px;
+}
+
+	/*profile page*/
 
 .profile .details .single-detail:nth-child(4),
 .profile .details .single-detail:nth-child(5) {
