@@ -717,19 +717,17 @@
 	order: 1;
 }
 
-@media screen and (max-width: 400px) {
-	.footer-bottom {
-		flex-flow: column;
-		padding: 15px 0;
-	}
-	.footer-social {
-		order: 1;
-		margin-bottom: 20px;
-		text-align: center;
-	}
-	.copyrights {
-		order: 2;
-	}
+.footer-bottom {
+	flex-flow: column;
+	padding: 15px 0;
+}
+.footer-social {
+	order: 1;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.copyrights {
+	order: 2;
 }
 
 @media screen and (max-width: 364px) {

@@ -18,7 +18,7 @@
             </div>
             <div class="footer-controls d-flex justify-content-between">
                 <div class="buttons d-flex flex-wrap justify-content-between">
-                    <a href="#">For Counsellors</a>
+                    <a href="/landing/">For Counsellors</a>
                     <a href="/make-a-referral" class="referral-button">Make a Referral</a>
                     <a href="#">Therapists</a>
                     <a href="#">Life Coaches</a>
@@ -33,6 +33,7 @@
                 <span>Copyright 2020. All Rights Reserved.</span>
                 <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Privacy Policy</a>
                 <a href="<?php echo get_the_permalink(397); ?>" class="policy-link">Cookie Policy</a>
+                <a href="/msas/" class="policy-link">Modern Slavary Act Statement</a>
             </div>
             <div class="footer-social">
                 <a href="https://www.facebook.com/BeecholmeAdultCare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/social-fb.svg" alt="fb"></a>

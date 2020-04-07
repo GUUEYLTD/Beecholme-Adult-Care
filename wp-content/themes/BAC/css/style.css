@@ -2192,6 +2192,11 @@ footer {
 
 .footer-controls .buttons a:hover {
     text-decoration: none;
+    background: #5da299;
+}
+
+.footer-controls .buttons a.referral-button:hover {
+    background: #bfbebe;
 }
 
 .footer-bottom {
@@ -2510,12 +2515,14 @@ a.policy-link {
 
 .training-info .action-button a:hover {
     text-decoration: none;
+    background: #5da299;
 }
 
 .training-info .reason-heading {
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
+    margin-bottom: 8px;
 }
 
 .training-info .reason-text {
@@ -2685,6 +2692,7 @@ a.policy-link {
 
 .coming-soon a:hover {
     text-decoration: none;
+    background: #5da299;
 }
 
 /*About BAC coaching and therapy page*/
@@ -2910,6 +2918,7 @@ a.policy-link {
 
 .about-bac .block3-content .action-button a:hover {
     text-decoration: none;
+    background: #5da299;
 }
 
 .about-bac .block3-content .right-text .action-button:nth-child(3) {
