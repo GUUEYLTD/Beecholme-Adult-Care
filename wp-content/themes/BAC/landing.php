@@ -74,7 +74,7 @@
           </div>
         </div>
         <div class="single-step d-flex">
-          <div class="step-number">step 1</div>
+          <div class="step-number">step 2</div>
           <div class="image-wrapper">
             <img src="<?php the_field('block4_si_2'); ?>" alt="">
           </div>
@@ -86,7 +86,7 @@
           </div>
         </div>
         <div class="single-step d-flex">
-          <div class="step-number">step 1</div>
+          <div class="step-number">step 3</div>
           <div class="image-wrapper">
             <img src="<?php the_field('block4_si_3'); ?>" alt="">
           </div>
@@ -98,7 +98,7 @@
           </div>
         </div>
         <div class="single-step d-flex">
-          <div class="step-number">step 1</div>
+          <div class="step-number">step 4</div>
           <div class="image-wrapper">
             <img src="<?php the_field('block4_si_4'); ?>" alt="">
           </div>
@@ -110,7 +110,7 @@
           </div>
         </div>
         <div class="single-step d-flex">
-          <div class="step-number">step 1</div>
+          <div class="step-number">step 5</div>
           <div class="image-wrapper">
             <img src="<?php the_field('block4_si_5'); ?>" alt="">
           </div>
@@ -122,7 +122,7 @@
           </div>
         </div>
         <div class="single-step d-flex">
-          <div class="step-number">step 1</div>
+          <div class="step-number">step 6</div>
           <div class="image-wrapper">
             <img src="<?php the_field('block4_si_6'); ?>" alt="">
           </div>
