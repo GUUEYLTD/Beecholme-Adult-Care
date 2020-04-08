@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+	<!-- TrustBox script -->
+	<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+	<!-- End TrustBox script -->
     <?php wp_head(); ?>
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/mobile-991.css" media="only screen and (max-width: 991px)">
@@ -41,7 +44,12 @@
 				</a>
 			</div>
 			<div class="header-controls d-flex">
-				<a href="#" class="logo-trustpilot"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo_trustpilot.png" alt=""></a>
+				<!-- TrustBox widget - Micro Review Count -->
+				<div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="160px" data-theme="light">
+					<a href="https://uk.trustpilot.com/review/beecholmeadultcare.co.uk" target="_blank" rel="noopener">Trustpilot</a>
+				</div>
+				<!-- End TrustBox widget -->
+				<!--<a href="#" class="logo-trustpilot"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo_trustpilot.png" alt=""></a>-->
 <!--				<a class="align-self-center" href="tel:+442086486681">+442086486681</a>
 				<a class="align-self-center" href="/make-a-referral">Make a Referral</a>
 				<a class="align-self-center" href="/contact-us">Book a visit</a>-->
