@@ -23,16 +23,18 @@
           <div class="caption">What are you suffering from?</div>
           <select class="question-select">
             <option value="" data-display-text="All">All</option>
-            <option value="apples">Stress, Anxiety</option>
-            <option value="bananas">Depression</option>
-            <option value="oranges">Trauma and abuse</option>
-            <option value="oranges">Relationship / Couples issues</option>
-            <option value="oranges">Domestic Violence</option>
-            <option value="oranges">Anger management</option>
-            <option value="oranges">Substance abuse disorder</option>
-            <option value="oranges">Eating Disorders</option>
-            <option value="oranges">Self esteem</option>
-            <option value="oranges">Other</option>
+            <?php
+    global $wpdb;
+
+    $options = $wpdb->get_results(
+            "SELECT
+            id, name
+            FROM {$wpdb->prefix}amelia_services WHERE categoryId=1
+            ");
+            foreach($options as $option) {
+            echo '<option value="apples" data-id="'.$option->id.'">'.$option->name.'</option>';
+            }
+            ?>
           </select>
         </div>
 
@@ -40,22 +42,25 @@
           <div class="caption">Type of coaching</div>
           <select class="question-select">
             <option value="" data-display-text="All">All</option>
-            <option value="apples">Life</option>
-            <option value="bananas">Health and Wellness</option>
-            <option value="oranges">Family or Parenting</option>
-            <option value="oranges">Relationship or Dating</option>
-            <option value="oranges">Career</option>
-            <option value="oranges">Business</option>
-            <option value="oranges">Finance</option>
-            <option value="oranges">Retirement</option>
-            <option value="oranges">Women Empowerment</option>
+            <?php
+    global $wpdb;
+
+    $options = $wpdb->get_results(
+            "SELECT
+            id, name
+            FROM {$wpdb->prefix}amelia_services WHERE categoryId=2
+            ");
+            foreach($options as $option) {
+            echo '<option value="apples" data-id="'.$option->id.'">'.$option->name.'</option>';
+            }
+            ?>
           </select>
         </div>
 
         <div class="question-filter empty-filter flex-column align-left">
           <div class="caption">Choose type</div>
           <select class="question-select">
-            <option value="" data-display-text="All">All</option>
+            <option value="" data-display-text="All" data-id="0">All</option>
             <option value="apples">Life</option>
             <option value="bananas">Health and Wellness</option>
             <option value="oranges">Family or Parenting</option>

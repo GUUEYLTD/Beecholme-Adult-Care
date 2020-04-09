@@ -1,4 +1,4 @@
-<div class="single-item">
+<div class="single-item" data-category="<?= $listingUser->category->name ?>">
     <div class="personal-info d-flex">
         <div class="avatar"><img
                     src="<?php echo $listingUser->pictureThumbPath ?? get_stylesheet_directory_uri(); ?>/images/profile-placeholder.png" alt=""
