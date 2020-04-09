@@ -37,6 +37,10 @@ p {
     color: #656D78;
 }
 
+img {
+    max-width: 100%;
+}
+
 /*Flexbox classes*/
 
 .d-flex {
