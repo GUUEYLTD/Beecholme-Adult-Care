@@ -45,7 +45,7 @@
 			</div>
 			<div class="header-controls d-flex">
 				<!-- TrustBox widget - Micro Review Count -->
-				<div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="160px" data-theme="light">
+				<div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="301px" data-theme="light">
 					<a href="https://uk.trustpilot.com/review/beecholmeadultcare.co.uk" target="_blank" rel="noopener">Trustpilot</a>
 				</div>
 				<!-- End TrustBox widget -->

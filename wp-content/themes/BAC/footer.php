@@ -24,7 +24,7 @@
                     <a href="#">Life Coaches</a>
                 </div>
                 <div class="trustpilot">
-                    <div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="160px" data-theme="dark">
+                    <div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="340px" data-theme="dark">
                         <a href="https://uk.trustpilot.com/review/beecholmeadultcare.co.uk" target="_blank" rel="noopener">Trustpilot</a>
                     </div>
                 </div>

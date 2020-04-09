@@ -377,7 +377,6 @@ img {
 }
 
 #menu-menu1-1 li .sub-menu li:first-child {
-    border: none;
     border-radius: 6px 6px 0 0;
 }
 
@@ -3632,6 +3631,11 @@ a.policy-link {
 
 .our-counsellors .single-item .personal-info .avatar {
     margin-bottom: 24px;
+}
+
+.our-counsellors .single-item .personal-info .avatar img {
+    max-width: 112px;
+    max-height: 112px;
 }
 
 .our-counsellors .single-item .info {
