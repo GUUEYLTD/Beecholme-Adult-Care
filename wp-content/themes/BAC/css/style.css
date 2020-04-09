@@ -3633,6 +3633,11 @@ a.policy-link {
     margin-bottom: 24px;
 }
 
+.our-counsellors .single-item .personal-info .avatar img {
+    max-width: 112px;
+    max-height: 112px;
+}
+
 .our-counsellors .single-item .info {
     flex-flow: column;
     align-items: center;

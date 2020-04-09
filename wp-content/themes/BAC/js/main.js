@@ -313,7 +313,8 @@ jQuery(document).ready(function($){
         dropdown.find('.current').html(selected.data('display-text') || selected.text());
         options.each(function(j, o) {
           var display = $(o).data('display-text') || '';
-          dropdown.find('ul').append('<li class="option ' + ($(o).is(':selected') ? 'selected' : '') + '" data-value="' + $(o).val() + '" data-display-text="' + display + '">' + $(o).text() + '</li>');
+          var id = $(o).data('id') || '';
+          dropdown.find('ul').append('<li class="option ' + ($(o).is(':selected') ? 'selected' : '') + '" data-value="' + $(o).val() + '" data-display-text="' + display + '" data-id="' + id + '">' + $(o).text() + '</li>');
         });
       }
     });
