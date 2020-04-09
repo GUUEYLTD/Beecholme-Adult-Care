@@ -1,23 +1,4 @@
 <?php
-
-/**
- * Theme Classes Autoload
- */
-//try {
-//    spl_autoload_register(function ($classname) {
-//
-//        $class     = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($classname));
-//        $classpath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . $class . '.php';
-//
-//        if (file_exists($classpath)) {
-//            include_once $classpath;
-//        }
-//
-//    });
-//} catch (Exception $e) {
-//
-//}
-
 require_once 'includes/Practitioners.php';
 require_once 'includes/Category.php';
 require_once 'includes/Service.php';
@@ -183,3 +164,13 @@ add_action( 'rl_gallery_tab_fields', 'bac_rl_gallery_tab_fields' );
 
 
 new \BAC\Practitioners();
+
+//change author/username base to users/userID
+function change_author_permalinks() {
+    global $wp_rewrite;
+    // Change the value of the author permalink base to whatever you want here
+    $wp_rewrite->author_base = 'counsellor';
+    $wp_rewrite->flush_rules();
+}
+
+add_action('init','change_author_permalinks');
