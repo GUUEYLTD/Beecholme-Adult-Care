@@ -6,6 +6,11 @@ namespace BAC;
 
 class Service
 {
+    /**
+     * @param $practitionerId
+     *
+     * @return array|object|null
+     */
     public static function getAllByPractitionerId($practitionerId)
     {
         global $wpdb;
@@ -21,6 +26,23 @@ class Service
             LEFT JOIN {$wpdb->prefix}amelia_services as s
             ON s.id=ps.serviceId
             WHERE ps.userId={$practitionerId}
+        ");
+    }
+
+    /**
+     * Get all existing service names
+     *
+     * @return array|object|null
+     */
+    public static function all()
+    {
+        global $wpdb;
+        return $wpdb->get_results("
+            SELECT
+                name,
+                description,
+                duration
+            FROM {$wpdb->prefix}amelia_services
         ");
     }
 }
