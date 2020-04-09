@@ -123,7 +123,7 @@
     <div class="counsellors-list d-flex">
 
         <?php do_action('bac_list_counsellors'); ?>
-
+    </div>
     <div class="pagination d-flex justify-content-center">
       <div class="pagination-item"><</div>
       <div class="pagination-item">1</div>
