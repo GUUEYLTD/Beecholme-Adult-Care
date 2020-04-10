@@ -30,7 +30,10 @@
             <select class="question-select" name="therapy">
                 <option value="" data-display-text="All">All</option>
                 <?php foreach (\BAC\Service::getServiceNames('therap') as $serviceName) : ?>
-                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                    <option
+                            value="<?php echo $serviceName ?>"
+                        <?php echo isset($_GET['therapy']) && $_GET['therapy'] === $serviceName ? 'selected' : '' ?>
+                    ><?php echo $serviceName ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -40,7 +43,10 @@
             <select class="question-select" name="coaching">
                 <option value="" data-display-text="All">All</option>
                 <?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
-                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                    <option
+                        value="<?php echo $serviceName ?>"
+                        <?php echo isset($_GET['coaching']) && $_GET['coaching'] === $serviceName ? 'selected' : '' ?>
+                    ><?php echo $serviceName ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -50,7 +56,10 @@
             <select class="question-select" name="common">
                 <option value="" data-display-text="All">All</option>
                 <?php foreach (\BAC\Service::getServiceNames() as $serviceName) : ?>
-                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                    <option
+                            value="<?php echo $serviceName ?>"
+                        <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
+                    ><?php echo $serviceName ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
