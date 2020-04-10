@@ -3432,6 +3432,7 @@ a.policy-link {
     font-size: 16px;
     line-height: 24px;
     color: #5AB9AC;
+    margin-bottom: 0;
 }
 
 .type-tabs .single-tab.active {
