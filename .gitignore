@@ -13,3 +13,5 @@ wp-content/*
 wp-content/plugins/hello.php
 
 .idea
+wp-config.php
+.htaccess
