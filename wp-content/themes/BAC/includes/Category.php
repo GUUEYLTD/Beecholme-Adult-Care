@@ -4,6 +4,11 @@ namespace BAC;
 
 class Category
 {
+    /**
+     * @param $practitionerId
+     *
+     * @return mixed
+     */
     public static function getByPractitionerId($practitionerId)
     {
         global $wpdb;
@@ -22,6 +27,11 @@ class Category
         "));
     }
 
+    /**
+     * @param $serviceId
+     *
+     * @return mixed
+     */
     public function getByServiceId($serviceId)
     {
         global $wpdb;

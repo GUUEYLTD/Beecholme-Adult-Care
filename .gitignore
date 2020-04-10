@@ -11,3 +11,5 @@ wp-content/*
 
 # ignore these plugins
 wp-content/plugins/hello.php
+
+.idea
