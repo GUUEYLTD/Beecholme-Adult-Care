@@ -7,9 +7,21 @@
         <div class="type-filter d-flex flex-column align-left">
             <div class="caption">I am looking for a</div>
             <div class="type-tabs d-flex">
-                <div class="single-tab coach" data-type="coach">Life Coach</div>
-                <div class="single-tab therapist active" data-type="therapist">Therapist</div>
-                <div class="single-tab all" data-type="all">All</div>
+                <label for="radio-type-coach"
+                       class="single-tab coach <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'active' : ''; ?>"
+                       data-type="coach">Life Coach</label>
+                <label for="radio-type-therapist"
+                       class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'active' : ''; ?>"
+                       data-type="therapist">Therapist</label>
+                <label for="radio-type-all"
+                       class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
+                       data-type="all">All</label>
+                <input type="radio" name="type" value="" class="hidden"
+                       id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
+                <input type="radio" name="type" value="therap" class="hidden"
+                       id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
+                <input type="radio" name="type" value="coach" class="hidden"
+                       id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
             </div>
         </div>
 
@@ -17,7 +29,7 @@
             <div class="caption">What are you suffering from?</div>
             <select class="question-select" name="therapy">
                 <option value="" data-display-text="All">All</option>
-                <?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
+                <?php foreach (\BAC\Service::getServiceNames('therap') as $serviceName) : ?>
                     <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
                 <?php endforeach; ?>
             </select>

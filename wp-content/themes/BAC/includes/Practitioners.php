@@ -47,21 +47,74 @@ class Practitioners
      *
      * @return array|object|null
      */
-    public function all()
+    public function all($args = [])
     {
         global $wpdb;
 
-        return $wpdb->get_results("
+        $results = $wpdb->get_results("
             SELECT 
                 *
             FROM 
-                {$wpdb->prefix}amelia_users
+                {$wpdb->prefix}amelia_users as u
             WHERE 
                 status='visible' AND 
                 type='provider'
         ");
+
+        if ( ! empty($args)) {
+            $results = $this->filterUsers($results, $args);
+        }
+
+        return $results;
     }
 
+    /**
+     * @param $practitionerId
+     * @param $serviceName
+     *
+     * @return bool
+     */
+    public static function offersService($practitionerId, $serviceName)
+    {
+        global $wpdb;
+
+        return ! empty($wpdb->get_results("
+            SELECT DISTINCT(ps.serviceId)
+            FROM {$wpdb->prefix}amelia_providers_to_services as ps
+            LEFT JOIN {$wpdb->prefix}amelia_services as s
+            ON ps.serviceId=s.id
+            WHERE ps.userId={$practitionerId}
+            AND s.name='{$serviceName}'
+        "));
+    }
+
+    /**
+     * @param $practitionerId
+     * @param $category
+     *
+     * @return bool
+     */
+    public function belongsToCategory($practitionerId, $category)
+    {
+        global $wpdb;
+
+        return ! empty($wpdb->get_results("
+            SELECT distinct(s.id)
+            FROM {$wpdb->prefix}amelia_providers_to_services as ps
+            LEFT JOIN {$wpdb->prefix}amelia_services as s
+            ON ps.serviceId=s.id
+            LEFT JOIN {$wpdb->prefix}amelia_categories as c
+            ON c.id=s.categoryId 
+            WHERE c.name LIKE '%{$category}%'
+            AND ps.userId={$practitionerId}
+        "));
+    }
+
+    /**
+     * @param $practitionerId
+     *
+     * @return mixed
+     */
     public static function getPriceByPractitionerId($practitionerId)
     {
         global $wpdb;
@@ -82,7 +135,7 @@ class Practitioners
      */
     public function listCatalogue()
     {
-        foreach ($this->all() as $user) {
+        foreach ($this->all($_GET) as $user) {
             $this->show($this->getUserInfo($user));
         }
     }
@@ -111,4 +164,34 @@ class Practitioners
 
         return $user;
     }
+
+    /**
+     * @param  array  $results
+     * @param  array  $args
+     *
+     * @return array
+     */
+    private function filterUsers(array $results, array $args)
+    {
+        if (isset($args['type']) && in_array($args['type'], array('therap', 'coach'))) {
+            $results = array_filter($results, function ($user) use ($args) {
+                return self::belongsToCategory($user->id, $args['type']);
+            });
+        }
+
+        if (isset($args['therapy']) && in_array($args['therapy'], Service::getServiceNames('therap'))) {
+            $results = array_filter($results, function ($user) use ($args) {
+                return self::offersService($user->id, $args['therapy']);
+            });
+        }
+
+        if (isset($args['coaching']) && in_array($args['coaching'], Service::getServiceNames('coach'))) {
+            $results = array_filter($results, function ($user) use ($args) {
+                return self::offersService($user->id, $args['coaching']);
+            });
+        }
+
+        return $results;
+    }
+
 }
