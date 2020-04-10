@@ -1,4 +1,4 @@
-<div class="single-item">
+<div class="single-item" data-rating="" data-price="<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->id) ?>" data-index="<?= $listingUser->id ?>">
     <a href="<?php echo get_author_posts_url($listingUser->wp_user->ID) ?>">
         <div class="personal-info d-flex">
             <div class="avatar"><img

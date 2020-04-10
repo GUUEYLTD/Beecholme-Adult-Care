@@ -398,6 +398,24 @@ jQuery(document).ready(function($){
     } else {
       $(this).removeClass('descending').addClass('ascending');
     }
+    sortCounsellors();
   });
+
+  $('.sort-by').change(function(e){
+    sortCounsellors();
+  });
+
+  function sortCounsellors() {
+    var sortBy = document.querySelector('.sort-by').value;
+    var result = $('.single-item').sort(function (a, b) {
+      var contentA =parseInt( $(a).data(sortBy));
+      var contentB =parseInt( $(b).data(sortBy));
+      return $('.order-filter').hasClass('ascending')
+          ? ((contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0)
+          : ((contentA > contentB) ? -1 : (contentA < contentB) ? 1 : 0);
+    });
+
+    $('.counsellors-list').html(result);
+  }
 
 });
