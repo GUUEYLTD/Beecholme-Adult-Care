@@ -45,4 +45,21 @@ class Service
             FROM {$wpdb->prefix}amelia_services
         ");
     }
+
+    public static function getServiceNames($category = '')
+    {
+        global $wpdb;
+
+        $serviceNames = [];
+        foreach($wpdb->get_results("
+            SELECT s.name
+            FROM {$wpdb->prefix}amelia_services as s
+            LEfT JOIN {$wpdb->prefix}amelia_categories as c
+            ON c.id=s.categoryId
+            WHERE c.name LIKE '%{$category}%'
+        ") as $service)
+            $serviceNames[] = $service->name;
+
+        return $serviceNames;
+    }
 }

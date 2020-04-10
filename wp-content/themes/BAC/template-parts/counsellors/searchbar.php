@@ -3,7 +3,7 @@
         <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-filters.png" alt="">
         Filters
     </div>
-    <div class="filter-bar">
+    <form class="filter-bar" method="GET" action="">
         <div class="type-filter d-flex flex-column align-left">
             <div class="caption">I am looking for a</div>
             <div class="type-tabs d-flex">
@@ -15,66 +15,37 @@
 
         <div class="question-filter therapist-question-filter flex-column align-left">
             <div class="caption">What are you suffering from?</div>
-            <select class="question-select">
+            <select class="question-select" name="therapy">
                 <option value="" data-display-text="All">All</option>
-                <option value="apples">Stress, Anxiety</option>
-                <option value="bananas">Depression</option>
-                <option value="oranges">Trauma and abuse</option>
-                <option value="oranges">Relationship / Couples issues</option>
-                <option value="oranges">Domestic Violence</option>
-                <option value="oranges">Anger management</option>
-                <option value="oranges">Substance abuse disorder</option>
-                <option value="oranges">Eating Disorders</option>
-                <option value="oranges">Self esteem</option>
-                <option value="oranges">Other</option>
+                <?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
+                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
 
         <div class="question-filter coach-question-filter flex-column align-left">
             <div class="caption">Type of coaching</div>
-            <select class="question-select">
+            <select class="question-select" name="coaching">
                 <option value="" data-display-text="All">All</option>
-                <option value="apples">Life</option>
-                <option value="bananas">Health and Wellness</option>
-                <option value="oranges">Family or Parenting</option>
-                <option value="oranges">Relationship or Dating</option>
-                <option value="oranges">Career</option>
-                <option value="oranges">Business</option>
-                <option value="oranges">Finance</option>
-                <option value="oranges">Retirement</option>
-                <option value="oranges">Women Empowerment</option>
+                <?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
+                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
 
         <div class="question-filter empty-filter flex-column align-left">
             <div class="caption">Choose type</div>
-            <select class="question-select">
+            <select class="question-select" name="common">
                 <option value="" data-display-text="All">All</option>
-                <option value="apples">Life</option>
-                <option value="bananas">Health and Wellness</option>
-                <option value="oranges">Family or Parenting</option>
-                <option value="oranges">Relationship or Dating</option>
-                <option value="oranges">Career</option>
-                <option value="oranges">Business</option>
-                <option value="oranges">Finance</option>
-                <option value="oranges">Retirement</option>
-                <option value="oranges">Women Empowerment</option>
-                <option value="apples">Stress, Anxiety</option>
-                <option value="bananas">Depression</option>
-                <option value="oranges">Trauma and abuse</option>
-                <option value="oranges">Relationship / Couples issues</option>
-                <option value="oranges">Domestic Violence</option>
-                <option value="oranges">Anger management</option>
-                <option value="oranges">Substance abuse disorder</option>
-                <option value="oranges">Eating Disorders</option>
-                <option value="oranges">Self esteem</option>
-                <option value="oranges">Other</option>
+                <?php foreach (\BAC\Service::getServiceNames() as $serviceName) : ?>
+                    <option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
 
         <div class="language-filter flex-column align-left">
             <div class="caption">Select language</div>
-            <select class="question-select">
+            <select class="question-select" name="language">
                 <option value="" data-display-text="All">All</option>
                 <option value="apples">English</option>
                 <option value="bananas">French</option>
@@ -92,5 +63,5 @@
             <button>Search</button>
         </div>
 
-    </div>
+    </form>
 </div>
