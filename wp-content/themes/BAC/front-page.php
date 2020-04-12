@@ -29,16 +29,9 @@
 				<div class="caption">What are you suffering from?</div>
 				<select class="question-select">
 					<option value="" data-display-text="All">All</option>
-					<option value="apples">Stress, Anxiety</option>
-					<option value="bananas">Depression</option>
-					<option value="oranges">Trauma and abuse</option>
-					<option value="oranges">Relationship / Couples issues</option>
-					<option value="oranges">Domestic Violence</option>
-					<option value="oranges">Anger management</option>
-					<option value="oranges">Substance abuse disorder</option>
-					<option value="oranges">Eating Disorders</option>
-					<option value="oranges">Self esteem</option>
-					<option value="oranges">Other</option>
+					<?php foreach (\BAC\Service::getServiceNames('therap') as $serviceName) : ?>
+						<option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 
@@ -46,15 +39,9 @@
 				<div class="caption">Type of coaching</div>
 				<select class="question-select">
 					<option value="" data-display-text="All">All</option>
-					<option value="apples">Life</option>
-					<option value="bananas">Health and Wellness</option>
-					<option value="oranges">Family or Parenting</option>
-					<option value="oranges">Relationship or Dating</option>
-					<option value="oranges">Career</option>
-					<option value="oranges">Business</option>
-					<option value="oranges">Finance</option>
-					<option value="oranges">Retirement</option>
-					<option value="oranges">Women Empowerment</option>
+					<?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
+						<option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 
@@ -62,25 +49,9 @@
 				<div class="caption">Choose type</div>
 				<select class="question-select">
 					<option value="" data-display-text="All">All</option>
-					<option value="apples">Life</option>
-					<option value="bananas">Health and Wellness</option>
-					<option value="oranges">Family or Parenting</option>
-					<option value="oranges">Relationship or Dating</option>
-					<option value="oranges">Career</option>
-					<option value="oranges">Business</option>
-					<option value="oranges">Finance</option>
-					<option value="oranges">Retirement</option>
-					<option value="oranges">Women Empowerment</option>
-					<option value="apples">Stress, Anxiety</option>
-					<option value="bananas">Depression</option>
-					<option value="oranges">Trauma and abuse</option>
-					<option value="oranges">Relationship / Couples issues</option>
-					<option value="oranges">Domestic Violence</option>
-					<option value="oranges">Anger management</option>
-					<option value="oranges">Substance abuse disorder</option>
-					<option value="oranges">Eating Disorders</option>
-					<option value="oranges">Self esteem</option>
-					<option value="oranges">Other</option>
+					<?php foreach (\BAC\Service::getServiceNames() as $serviceName) : ?>
+						<option value="<?php echo $serviceName ?>"><?php echo $serviceName ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 
