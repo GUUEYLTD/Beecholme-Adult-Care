@@ -12,7 +12,7 @@
     </div>
 		<div class="home-form-wrapper">
 		<div class="tabs d-flex justify-content-center">
-			<div class="tab active" data-tab="find-tab">Find Practitioner</div>
+			<div class="tab active" data-tab="find-tab">Find a Counsellor</div>
 			<div class="tab" data-tab="referral-tab">Make a Referral</div>
 		</div>
 		<div class="tab-content find-tab active">
