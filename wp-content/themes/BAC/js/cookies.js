@@ -40,7 +40,7 @@ function getCookie(name) {
 
 jQuery(document).ready(function(){
     var isAccepted = getCookie('cookies-accepted');
-    // console.log(isAccepted);
+
     if(!isAccepted && jQuery('.cookies_banner').length) {
         setTimeout(function(){
             jQuery('body').css({

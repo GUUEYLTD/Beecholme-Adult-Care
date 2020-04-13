@@ -3013,6 +3013,25 @@ a.policy-link {
     margin: 0 0 48px;
 }
 
+.faq .answer ul {
+    padding-left: 20px;
+}
+
+.faq .answer p {
+    font-family: 'InterReg';
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+}
+
+.faq .answer a {
+    color: #5AB9AC;
+}
+
+.faq .answer a:hover {
+    text-decoration: none;
+}
+
 .faq .answer:last-child {
     margin: 0;
 }
@@ -3607,7 +3626,7 @@ a.policy-link {
 }
 
 .our-counsellors .single-item {
-    max-width: 255px;
+    width: 255px;
     background: #FFFFFF;
     border: 1px solid #F4F4F5;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
@@ -3632,6 +3651,7 @@ a.policy-link {
 
 .our-counsellors .single-item .personal-info .avatar {
     margin-bottom: 24px;
+    min-height: 112px;
 }
 
 .our-counsellors .single-item .personal-info .avatar img {
@@ -3666,6 +3686,8 @@ a.policy-link {
     line-height: 24px;
     color: #333;
     margin: 0 0 16px;
+    height: 48px;
+    overflow: hidden;
 }
 
 .our-counsellors .single-item .rating {
