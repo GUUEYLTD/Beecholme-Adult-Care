@@ -32,9 +32,11 @@
             <div class="languages d-flex">
                 <?php
                 if (have_rows('languages', "user_{$listingUser->wp_user->id}")) :
-                    while (have_rows('languages', "user_{$listingUser->wp_user->id}")) : the_row(); ?>
+                    $count = 0;
+                    while (have_rows('languages', "user_{$listingUser->wp_user->id}") && $count < 2) : the_row(); ?>
                         <img src="<?php echo get_stylesheet_directory_uri() . '/images/counsellor-lang-' . sanitize_title(get_sub_field('language')) . '.png'; ?>" alt="">
-                    <?php endwhile; ?>
+                    <?php $count++;
+                    endwhile; ?>
                 <?php endif; ?>
 
             </div>
