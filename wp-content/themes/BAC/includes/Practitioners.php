@@ -193,6 +193,27 @@ class Practitioners
             });
         }
 
+        if (isset($args['language']) && $args['language']) {
+            $results = array_filter($results, function ($user) use ($args) {
+                $queriedLanguages = (array)$args['language'];
+                $usersLanguages   = get_field('languages', 'user_' . $user->externalId);
+
+                if(!$usersLanguages)
+                    return false;
+
+                $flattenedUserLanguages = array();
+                foreach ($usersLanguages as $language)
+                    $flattenedUserLanguages[] = $language['language'];
+
+                foreach ($queriedLanguages as $language) {
+                    if(in_array($language, $flattenedUserLanguages))
+                    return true;
+                }
+
+                return false;
+            });
+        }
+
         return $results;
     }
 

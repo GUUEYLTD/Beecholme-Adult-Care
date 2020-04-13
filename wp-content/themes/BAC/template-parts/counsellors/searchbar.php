@@ -68,15 +68,15 @@
             <div class="caption">Select language</div>
             <select class="question-select" name="language">
                 <option value="" data-display-text="All">All</option>
-                <option value="apples">English</option>
-                <option value="bananas">French</option>
-                <option value="oranges">German</option>
-                <option value="oranges">Spanish</option>
-                <option value="oranges">Italian</option>
-                <option value="oranges">Portoguese</option>
-                <option value="oranges">Russian</option>
-                <option value="oranges">Chinese</option>
-                <option value="oranges">Japanese</option>
+                <option value="English">English</option>
+                <option value="French">French</option>
+                <option value="German">German</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Italian">Italian</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Russian">Russian</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Japanese">Japanese</option>
             </select>
         </div>
 
