@@ -15,7 +15,7 @@
 			<div class="tab active" data-tab="find-tab">Find a Counsellor</div>
 			<div class="tab" data-tab="referral-tab">Make a Referral</div>
 		</div>
-		<form class="tab-content find-tab active" action="our-counsellors.php">
+		<form class="tab-content find-tab active" action="our-counsellors">
 			<div class="homepage-filter type-filter d-flex flex-column align-left">
 				<div class="caption">I am looking for a</div>
 				<div class="type-tabs d-flex">
