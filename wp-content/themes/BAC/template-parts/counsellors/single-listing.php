@@ -2,7 +2,7 @@
     <a href="<?php echo get_author_posts_url($listingUser->wp_user->ID) ?>">
         <div class="personal-info d-flex">
             <div class="avatar"><img
-                        src="<?php echo $listingUser->pictureThumbPath ?? get_stylesheet_directory_uri(); ?>/images/profile-placeholder.png"
+                        src="<?php echo $listingUser->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>"
                         alt=""></div>
             <div class="info d-flex">
                 <div class="name"><?= "{$listingUser->firstName} {$listingUser->lastName}" ?></div>
