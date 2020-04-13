@@ -17,7 +17,7 @@ class Practitioners
      */
     public function hooks()
     {
-        add_action('bac_list_counsellors', array($this, 'listCatalogue'));
+//        add_action('bac_list_counsellors', array($this, 'listCatalogue'), 10, 1);
     }
 
     /**
@@ -132,11 +132,13 @@ class Practitioners
 
     /**
      * List practitioners
+     *
+     * @param $counsellors
      */
-    public function listCatalogue()
+    public function listCatalogue($counsellors)
     {
-        foreach ($this->all($_GET) as $user) {
-            $this->show($this->getUserInfo($user));
+        foreach ($counsellors as $user) {
+            self::show(self::getUserInfo($user));
         }
     }
 
@@ -145,7 +147,7 @@ class Practitioners
      *
      * @param $user
      */
-    public function show($user)
+    public static function show($user)
     {
         set_query_var('listingUser', $user);
         get_template_part('template-parts/counsellors/single', 'listing');
@@ -156,7 +158,7 @@ class Practitioners
      *
      * @return mixed
      */
-    protected function getUserInfo($user)
+    protected static function getUserInfo($user)
     {
         $user->wp_user  = get_user_by_email($user->email);
         $user->category = Category::getByPractitionerId($user->id);

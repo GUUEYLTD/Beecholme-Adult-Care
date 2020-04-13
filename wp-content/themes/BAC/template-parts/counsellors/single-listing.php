@@ -32,11 +32,9 @@
             <div class="languages d-flex">
                 <?php
                 if (have_rows('languages', "user_{$listingUser->wp_user->id}")) :
-                    while (have_rows('languages', "user_{$listingUser->wp_user->id}")) : the_row();
-                        echo get_sub_field('language');
-                    endwhile; ?>
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/counsellor-lang-fr.png" alt="">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/counsellor-lang-en.png" alt="">
+                    while (have_rows('languages', "user_{$listingUser->wp_user->id}")) : the_row(); ?>
+                        <img src="<?php echo get_stylesheet_directory_uri() . '/images/counsellor-lang-' . sanitize_title(get_sub_field('language')) . '.png'; ?>" alt="">
+                    <?php endwhile; ?>
                 <?php endif; ?>
 
             </div>
