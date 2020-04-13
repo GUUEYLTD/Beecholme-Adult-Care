@@ -6,7 +6,7 @@
     add_action('bac_list_counsellors', array('\BAC\Practitioners', 'listCatalogue'), 10, 1);
     add_filter('bac_total_results', function ($total) use ($counsellors){
         return count($counsellors);
-    })
+    });
 ?>
 
 <div class="our-counsellors">

@@ -137,6 +137,7 @@ class Practitioners
      */
     public function listCatalogue($counsellors)
     {
+        $counsellors = $counsellors->id ? array($counsellors) : $counsellors;
         foreach ($counsellors as $user) {
             self::show(self::getUserInfo($user));
         }
