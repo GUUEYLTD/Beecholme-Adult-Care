@@ -3657,6 +3657,7 @@ a.policy-link {
 .our-counsellors .single-item .personal-info .avatar img {
     max-width: 112px;
     max-height: 112px;
+    border-radius: 50%;
 }
 
 .our-counsellors .single-item .info {
