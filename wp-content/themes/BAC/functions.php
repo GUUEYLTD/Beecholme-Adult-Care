@@ -165,7 +165,7 @@ add_action( 'rl_gallery_tab_fields', 'bac_rl_gallery_tab_fields' );
 
 new \BAC\Practitioners();
 
-//change author/username base to users/userID
+# Change author/username base to users/userID
 function change_author_permalinks() {
     global $wp_rewrite;
     // Change the value of the author permalink base to whatever you want here
@@ -185,3 +185,19 @@ function array_flatten($array) {
     return $return;
 
 }
+
+add_action('user_register', function ($user_id) {
+    if(!$requestBody = json_decode(file_get_contents('php://input'))) {
+        return;
+    }
+
+    $fullName            = "{$requestBody->firstName} {$requestBody->lastName}";
+
+    $user                = get_user_by('ID', $user_id);
+    $user->user_nicename = sanitize_title($fullName) . '-' . time();
+    $user->display_name  = $fullName;
+    wp_update_user($user);
+
+    update_user_meta($user_id, 'first_name', $requestBody->firstName);
+    update_user_meta($user_id, 'last_name', $requestBody->lastName);
+}, 10, 1);
