@@ -3998,3 +3998,143 @@ a.policy-link {
 .profile .link a:hover {
     text-decoration: none;
 }
+
+/*booking page*/
+
+.booking-page .booking-form {
+    width: 594px;
+}
+
+.booking-form #amelia-step-booking0-calendar {
+    max-width: 290px;
+}
+
+.booking-form .am-appointment-times .el-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.booking-form .am-appointment-times .el-radio-button {
+    width: 120px;
+}
+
+.booking-form .am-appointment-times .el-radio-button .el-radio-button__inner  {
+    max-width: 100%;
+    border: 1px solid #dcdfe6;
+}
+
+.booking-form #am-calendar-picker .c-day-content div {
+    margin-bottom: -9px;
+}
+
+.booking-form #am-confirm-booking .am-confirmation-booking-header,
+.booking-form #am-confirm-booking .am-confirm-booking-form .am-confirm-booking-data .el-col:first-child,
+.booking-form .am-add-coupon,
+.booking-form .am-confirmation-booking-cost{
+    opacity: 0;
+    height: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.booking-page .about-info {
+    width: 445px;
+}
+
+.booking-page .information-wrapper {
+    border-radius: 6px;
+}
+
+.booking-page .information-wrapper .content {
+    background: #FBFBFB;
+    padding: 40px 32px;
+}
+
+.booking-page .information-wrapper .content h3 {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    color: #333;
+    margin: 0 0 24px;
+}
+
+.booking-page .information-wrapper .info {
+    padding: 24px 52px;
+    background: linear-gradient(0deg, rgba(90, 185, 172, 0.2), rgba(90, 185, 172, 0.2)), #FFFFFF;
+
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-style: italic;
+    text-align: center;
+    color: #333;
+}
+
+.booking-page .user-details {
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 24px;
+}
+
+.booking-page .user-details .user-image {
+    width: 64px;
+    height: 64px;
+}
+
+.booking-page .user-details .name {
+    font-family: 'InterBold', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #5AB9AC;
+    margin: 0 0 4px;
+}
+
+.booking-page .user-details .type {
+    font-family: 'InterReg', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1;
+    color: #c4c4c4;
+}
+
+.booking-page .user-price {
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-page .user-details .price {
+    font-family: 'InterBold', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333;
+    margin: 0 0 4px;
+}
+
+.booking-page .user-details .price-caption {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #c4c4c4;
+}
+
+.booking-page .extended-info:first-child {
+    margin: 0 0 32px;
+}
+
+.booking-page .extended-info .heading {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #c4c4c4;
+    margin: 0 0 4px;
+}
+
+.booking-page .extended-info .text {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+}
