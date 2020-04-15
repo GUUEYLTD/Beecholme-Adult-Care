@@ -4045,7 +4045,7 @@ a.policy-link {
 }
 
 .booking-form #am-confirm-booking .am-confirmation-booking-header,
-.booking-form #am-confirm-booking .am-confirm-booking-form .am-confirm-booking-data .el-col:first-child,
+.booking-form #am-confirm-booking .am-confirm-booking-data .el-col:first-child,
 .booking-form .am-add-coupon,
 .booking-form .am-confirmation-booking-cost{
     opacity: 0;
@@ -4153,4 +4153,59 @@ a.policy-link {
     font-size: 16px;
     line-height: 24px;
     color: #333;
+}
+
+.booking-page .am-confirm-booking-data {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.booking-page .am-confirm-booking-data .el-col {
+    max-width: 50%;
+}
+
+.booking-page .am-confirm-booking-data .el-col:first-child {
+    display: none;
+}
+
+.booking-page .am-confirm-booking-data .am-custom-fields {
+    width: 100%;
+    padding: 0 12px;
+}
+
+.booking-page #am-confirm-booking .am-custom-fields .el-col:first-child {
+    display: block;
+    height: auto;
+    opacity: 1;
+    max-height: none;
+}
+
+.booking-page .el-form-item__label {
+    font-family: 'InterReg', sans-serif;
+    font-size: 14px;
+    line-height: 16px!important;
+    margin: 0 0 8px;
+}
+
+.booking-page .el-input input {
+    max-width: 276px;
+    width: 100%;
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+}
+
+.booking-page .el-input input::placeholder {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+    opacity: .7;
+}
+
+.booking-page .el-input.el-input--suffix .el-input__inner {
+    max-width: 198px;
 }

@@ -230,19 +230,15 @@ jQuery(document).ready(function($) {
   });
 });
 
-// Home page banner tabs
-
 jQuery(document).ready(function($){
+  // Home page banner tabs
   $('.banner-content .tab').on('click',function(){
     $('.banner-content .tab, .banner-content .tab-content').removeClass('active');
     $(this).addClass('active');
     $('.' + $(this).attr('data-tab')).addClass('active');
   });
-});
 
-// FAQ
-
-jQuery(document).ready(function($){
+  // FAQ
   $('.faq .topic').on('click',function(){
     var opened = $(this).hasClass('open');
 
@@ -257,11 +253,9 @@ jQuery(document).ready(function($){
     $('.faq .topic').removeClass('active');
     $(this).addClass('active');
   });
-});
 
-/*Our Counsellors*/
+  /*Our Counsellors*/
 
-jQuery(document).ready(function($){
   $('.single-tab').on('click', function(){
     $('.single-tab').removeClass('active');
     $(this).addClass('active');
