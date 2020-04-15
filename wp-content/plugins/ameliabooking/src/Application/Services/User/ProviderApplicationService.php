@@ -6,6 +6,7 @@ use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
+use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Location\Location;
 use AmeliaBooking\Domain\Entity\Schedule\Period;
@@ -15,6 +16,7 @@ use AmeliaBooking\Domain\Entity\Schedule\SpecialDayPeriod;
 use AmeliaBooking\Domain\Entity\Schedule\SpecialDayPeriodService;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
+use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Factory\Location\ProviderLocationFactory;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
 use AmeliaBooking\Domain\Repository\User\UserRepositoryInterface;
@@ -657,18 +659,16 @@ class ProviderApplicationService
     }
 
     /**
-     * @param array $providers
+     * @param array        $providers
+     * @param AbstractUser $currentUser
      *
      * @return array
      * @throws \Interop\Container\Exception\ContainerException
      */
-    public function removeAllExceptCurrentUser($providers)
+    public function removeAllExceptUser($providers, $currentUser)
     {
-        /** @var Provider $currentUser */
-        $currentUser = $this->container->get('logged.in.user');
-
         if ($currentUser !== null &&
-            $currentUser->getType() === 'provider' &&
+            $currentUser->getType() === AbstractUser::USER_ROLE_PROVIDER &&
             !$this->container->getPermissionsService()->currentUserCanReadOthers(Entities::APPOINTMENTS)
         ) {
             if ($currentUser->getId() === null) {
@@ -693,9 +693,15 @@ class ProviderApplicationService
      * @param Collection $appointments
      *
      * @throws InvalidArgumentException
+     * @throws \Interop\Container\Exception\ContainerException
      */
     public function addAppointmentsToAppointmentList($providers, $appointments)
     {
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsDomainService */
+        $settingsDomainService = $this->container->get('domain.settings.service');
+
+        $isGloballyBusySlot = $settingsDomainService->getSetting('appointments', 'isGloballyBusySlot');
+
         foreach ($appointments->keys() as $appointmentKey) {
             $appointment = $appointments->getItem($appointmentKey);
 
@@ -704,7 +710,14 @@ class ProviderApplicationService
 
                 if ($appointment->getProviderId()->getValue() === $provider->getId()->getValue()) {
                     $provider->getAppointmentList()->addItem($appointment);
-                    break;
+
+                    if (!$isGloballyBusySlot) {
+                        break;
+                    }
+                } else if ($isGloballyBusySlot) {
+                    $provider->getAppointmentList()->addItem(
+                        AppointmentFactory::create(array_merge($appointment->toArray(), ['providerId' => $providerKey]))
+                    );
                 }
             }
         }
@@ -1196,5 +1209,54 @@ class ProviderApplicationService
             $eventProvidersRepository->deleteByEntityId($provider->getId()->getValue(), 'userId') &&
             $providerRepository->deleteViewStats($provider->getId()->getValue()) &&
             $userRepository->delete($provider->getId()->getValue());
+    }
+
+    /**
+     * @param AbstractUser $currentUser
+     *
+     * @return Collection
+     *
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws QueryExecutionException
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     */
+    public function getAllowedCustomers($currentUser)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->container->get('domain.users.repository');
+
+        /** @var Collection $customers */
+        $customers = $userRepository->getAllWithAllowedBooking();
+
+        if (!$this->container->getPermissionsService()->currentUserCanReadOthers(Entities::CUSTOMERS)) {
+            /** @var AppointmentRepository $appointmentRepository */
+            $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
+
+            /** @var Collection $appointments */
+            $appointments = $appointmentRepository->getFiltered(
+                ['providerId' => $currentUser->getId()->getValue()]
+            );
+
+            /** @var Collection $customersWithoutBooking */
+            $customersWithoutBooking = $userRepository->getAllWithoutBookings();
+
+            /** @var Appointment $appointment */
+            foreach ($appointments->getItems() as $appointment) {
+                /** @var CustomerBooking $booking */
+                foreach ($appointment->getBookings()->getItems() as $booking) {
+                    if (!$customersWithoutBooking->keyExists($booking->getCustomerId()->getValue())) {
+                        $customersWithoutBooking->addItem(
+                            $customers->getItem($booking->getCustomerId()->getValue()),
+                            $booking->getCustomerId()->getValue()
+                        );
+                    }
+                }
+            }
+
+            return $customersWithoutBooking;
+        }
+
+        return $customers;
     }
 }

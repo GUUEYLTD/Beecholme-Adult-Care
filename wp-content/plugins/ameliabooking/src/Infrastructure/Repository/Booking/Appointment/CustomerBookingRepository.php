@@ -82,7 +82,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -125,7 +125,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -160,7 +160,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -193,7 +193,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -226,7 +226,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -373,7 +373,7 @@ class CustomerBookingRepository extends AbstractRepository implements CustomerBo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 }

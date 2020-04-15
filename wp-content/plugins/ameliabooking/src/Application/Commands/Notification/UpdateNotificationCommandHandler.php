@@ -14,6 +14,9 @@ use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationRepository;
 use DOMDocument;
+use DOMElement;
+use \Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class UpdateNotificationCommandHandler
@@ -31,12 +34,12 @@ class UpdateNotificationCommandHandler extends CommandHandler
      * @param UpdateNotificationCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
      * @throws NotFoundException
      * @throws InvalidArgumentException
      * @throws AccessDeniedException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function handle(UpdateNotificationCommand $command)
     {
@@ -60,7 +63,7 @@ class UpdateNotificationCommandHandler extends CommandHandler
         $parsedContent = null;
 
         try {
-            $parsedContent = $this->parseContent($content);
+            $parsedContent = class_exists('DOMDocument') ? $this->parseContent($content) : $content;
         } catch (\Exception $e) {
             $content = $command->getField('content');
         }
@@ -126,6 +129,7 @@ class UpdateNotificationCommandHandler extends CommandHandler
 
         $hasParsedContent = false;
 
+        /** @var DOMElement $image */
         foreach ($html->getElementsByTagName('img') as $image) {
             $src = $image->getAttribute('src');
 

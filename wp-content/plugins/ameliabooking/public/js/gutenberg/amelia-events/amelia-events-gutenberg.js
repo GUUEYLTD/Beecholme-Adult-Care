@@ -84,6 +84,10 @@
       eventOptions: {
         type: 'string',
         default: ''
+      },
+      parametars: {
+        type: 'boolean',
+        default: false
       }
     },
     edit: function (props) {

@@ -8,7 +8,7 @@ namespace AmeliaBooking\Application\Services\Notification;
 
 use AmeliaBooking\Application\Services\Helper\HelperService;
 use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
-use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Application\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Notification\Notification;
 use AmeliaBooking\Domain\Entity\User\Customer;
@@ -91,7 +91,7 @@ class EmailNotificationService extends AbstractNotificationService
                     $mailService->send(
                         $user['email'],
                         $subject,
-                        $body,
+                        $this->getParsedBody($body),
                         $settingsAS->getBccEmails()
                     );
 
@@ -166,7 +166,12 @@ class EmailNotificationService extends AbstractNotificationService
                     );
 
                     try {
-                        $mailService->send($data['customer_email'], $subject, $body, $settingsAS->getBccEmails());
+                        $mailService->send(
+                            $data['customer_email'],
+                            $subject,
+                            $this->getParsedBody($body),
+                            $settingsAS->getBccEmails()
+                        );
 
                         $notificationLogRepo->add(
                             $notification,
@@ -233,9 +238,30 @@ class EmailNotificationService extends AbstractNotificationService
             );
 
             try {
-                $mailService->send($data['customer_email'], $subject, $body, false);
+                $mailService->send($data['customer_email'], $subject, $this->getParsedBody($body), false);
             } catch (\Exception $e) {
             }
         }
+    }
+
+    /**
+     * @param string $body
+     *
+     * @return string
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function getParsedBody($body)
+    {
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $body = str_replace('class="ql-size-small"', 'style="font-size: 0.75em;"', $body);
+        $body = str_replace('class="ql-size-large"', 'style="font-size: 1.5em;"', $body);
+        $body = str_replace('class="ql-size-huge"', 'style="font-size: 2.5em;"', $body);
+
+        $breakReplacement = $settingsService->getSetting('notifications', 'breakReplacement');
+
+        return !$breakReplacement ? $body : str_replace('<p><br></p>', $breakReplacement, $body);
     }
 }

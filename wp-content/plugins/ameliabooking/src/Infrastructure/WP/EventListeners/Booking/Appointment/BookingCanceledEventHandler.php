@@ -7,14 +7,18 @@
 namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment;
 
 use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
+use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
+use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
+use AmeliaBooking\Application\Services\Zoom\ZoomApplicationService;
 
 /**
  * Class BookingCanceledEventHandler
@@ -49,23 +53,40 @@ class BookingCanceledEventHandler
         $settingsService = $container->get('domain.settings.service');
         /** @var WebHookApplicationService $webHookService */
         $webHookService = $container->get('application.webHook.service');
+        /** @var BookingApplicationService $bookingApplicationService */
+        $bookingApplicationService = $container->get('application.booking.booking.service');
+        /** @var ZoomApplicationService $zoomService */
+        $zoomService = $container->get('application.zoom.service');
 
         $appointment = $commandResult->getData()[$commandResult->getData()['type']];
-        $booking = $commandResult->getData()[Entities::BOOKING];
-        $appStatusChanged = $commandResult->getData()['appointmentStatusChanged'];
 
         if ($commandResult->getData()['type'] === Entities::APPOINTMENT) {
-            $appointmentObject = AppointmentFactory::create($appointment);
+            /** @var Appointment $reservationObject */
+            $reservationObject = AppointmentFactory::create($appointment);
+
+            $bookingApplicationService->setReservationEntities($reservationObject);
+
+            if ($zoomService) {
+                $zoomService->handleAppointmentMeeting($reservationObject, self::BOOKING_CANCELED);
+
+                if ($reservationObject->getZoomMeeting()) {
+                    $appointment['zoomMeeting'] = $reservationObject->getZoomMeeting()->toArray();
+                }
+            }
 
             try {
-                $googleCalendarService->handleEvent($appointmentObject, self::BOOKING_CANCELED);
+                $googleCalendarService->handleEvent($reservationObject, self::BOOKING_CANCELED);
             } catch (\Exception $e) {
             }
 
-            if ($appointmentObject->getGoogleCalendarEventId() !== null) {
-                $appointment['googleCalendarEventId'] = $appointmentObject->getGoogleCalendarEventId()->getValue();
+            if ($reservationObject->getGoogleCalendarEventId() !== null) {
+                $appointment['googleCalendarEventId'] = $reservationObject->getGoogleCalendarEventId()->getValue();
             }
         }
+
+        $booking = $commandResult->getData()[Entities::BOOKING];
+
+        $appStatusChanged = $commandResult->getData()['appointmentStatusChanged'];
 
         $emailNotificationService->sendCustomerBookingNotification($appointment, $booking);
 

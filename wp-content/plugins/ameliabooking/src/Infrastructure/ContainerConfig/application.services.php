@@ -307,3 +307,14 @@ $entries['application.customField.service'] = function ($c) {
 $entries['application.webHook.service'] = function ($c) {
     return new AmeliaBooking\Application\Services\WebHook\WebHookApplicationService($c);
 };
+
+/**
+ * Zoom Service
+ *
+ * @param Container $c
+ *
+ * @return \AmeliaBooking\Application\Services\Zoom\ZoomApplicationService
+ */
+$entries['application.zoom.service'] = function ($c) {
+    return new AmeliaBooking\Application\Services\Zoom\ZoomApplicationService($c);
+};

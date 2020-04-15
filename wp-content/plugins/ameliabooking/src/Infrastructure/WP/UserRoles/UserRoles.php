@@ -29,7 +29,7 @@ class UserRoles
      */
     public static function getUserAmeliaRole($wpUser)
     {
-        if (in_array('administrator', $wpUser->roles, true)) {
+        if (in_array('administrator', $wpUser->roles, true) || is_super_admin($wpUser->ID)) {
             return 'admin';
         }
 

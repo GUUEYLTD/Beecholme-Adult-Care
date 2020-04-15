@@ -87,6 +87,10 @@ class UpdateAppointmentCommandHandler extends CommandHandler
         /** @var Appointment $oldAppointment */
         $oldAppointment = $appointmentRepo->getById($appointment->getId()->getValue());
 
+        if ($oldAppointment->getZoomMeeting()) {
+            $appointment->setZoomMeeting($oldAppointment->getZoomMeeting());
+        }
+
         if ($bookingAS->isBookingApprovedOrPending($appointment->getStatus()->getValue()) &&
             $bookingAS->isBookingCanceledOrRejected($oldAppointment->getStatus()->getValue())
         ) {

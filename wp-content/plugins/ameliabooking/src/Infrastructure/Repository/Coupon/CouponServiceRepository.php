@@ -52,7 +52,7 @@ class CouponServiceRepository extends AbstractRepository
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 

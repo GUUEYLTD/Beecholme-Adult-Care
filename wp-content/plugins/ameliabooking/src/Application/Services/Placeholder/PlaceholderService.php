@@ -102,6 +102,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      * @param int    $bookingKey
      * @param string $token
      * @param string $type
+     * @param AbstractUser $customer
      *
      * @return array
      *
@@ -112,13 +113,13 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    public function getPlaceholdersData($appointment, $bookingKey = null, $token = null, $type = null)
+    public function getPlaceholdersData($appointment, $bookingKey = null, $token = null, $type = null, $customer = null)
     {
         $data = $this->getEntityPlaceholdersData($appointment, $bookingKey, $token);
 
         $data = array_merge($data, $this->getBookingData($appointment, $bookingKey, $token));
         $data = array_merge($data, $this->getCompanyData());
-        $data = array_merge($data, $this->getCustomersData($appointment, $bookingKey, $type));
+        $data = array_merge($data, $this->getCustomersData($appointment, $type, $bookingKey, $customer));
         $data = array_merge($data, $this->getCustomFieldsData($appointment, $bookingKey));
         $data = array_merge($data, $this->getCouponsData($appointment, $bookingKey));
 
@@ -276,10 +277,12 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         ];
     }
 
+    /** @noinspection MoreThanThreeArgumentsInspection */
     /**
-     * @param array  $appointment
-     * @param null   $bookingKey
-     * @param string $type
+     * @param array        $appointment
+     * @param string       $type
+     * @param null         $bookingKey
+     * @param Customer     $customerEntity
      *
      * @return array
      *
@@ -290,7 +293,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      * @throws QueryExecutionException
      * @throws \Interop\Container\Exception\ContainerException
      */
-    private function getCustomersData($appointment, $bookingKey = null, $type)
+    private function getCustomersData($appointment, $type, $bookingKey = null, $customerEntity = null)
     {
         /** @var UserRepository $userRepository */
         $userRepository = $this->container->get('domain.users.repository');
@@ -311,7 +314,12 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                 true
             );
 
+            $bookedCustomerFullName = '';
+            $bookedCustomerEmail    = '';
+            $bookedCustomerPhone    = '';
+
             foreach ((array)$appointment['bookings'] as $customerBooking) {
+                /** @var AbstractUser $customer */
                 $customer = $userRepository->getById($customerBooking['customerId']);
 
                 if ((!$hasApprovedOrPendingStatus && $customerBooking['isChangedStatus']) ||
@@ -329,6 +337,12 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
                     $customers[] = $customer;
                 }
+
+                if ($customerBooking['isChangedStatus']) {
+                    $bookedCustomerFullName = $customer->getFullName();
+                    $bookedCustomerEmail    = $customer->getEmail() ? $customer->getEmail()->getValue() : '';
+                    $bookedCustomerPhone    = $customer->getPhone() ? $customer->getPhone()->getValue() : '';
+                }
             }
 
             $phones = '';
@@ -340,7 +354,13 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                 }
             }
 
+            $bookedCustomer = '<p>' . BackendStrings::getNotificationsStrings()['ph_customer_full_name'] . ': ' . $bookedCustomerFullName . '</p>';
+
+            $bookedCustomer .= $bookedCustomerPhone ? '<p>' . BackendStrings::getNotificationsStrings()['ph_customer_phone'] . ': ' . $bookedCustomerPhone . '</p>' : '';
+            $bookedCustomer .= $bookedCustomerEmail ? '<p>' . BackendStrings::getNotificationsStrings()['ph_customer_email'] . ': ' . $bookedCustomerEmail . '</p>' : '';
+
             return [
+                'booked_customer' => substr($bookedCustomer, 3, strlen($bookedCustomer) - 7),
                 'customer_email'      => implode(', ', array_map(function ($customer) {
                     /** @var Customer $customer */
                     return $customer->getEmail()->getValue();
@@ -364,7 +384,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
         // If data is for customer
         /** @var Customer $customer */
-        $customer = $userRepository->getById($appointment['bookings'][$bookingKey]['customerId']);
+        $customer = $customerEntity ?? $userRepository->getById($appointment['bookings'][$bookingKey]['customerId']);
 
         $info = json_decode($appointment['bookings'][$bookingKey]['info']);
 
@@ -378,13 +398,18 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         $helperService = $this->container->get('application.helper.service');
 
         return [
-            'customer_email'       => $customer->getEmail()->getValue(),
+            'customer_email'       => $customer->getEmail() ? $customer->getEmail()->getValue() : '',
             'customer_first_name'  => $info ? $info->firstName : $customer->getFirstName()->getValue(),
             'customer_last_name'   => $info ? $info->lastName : $customer->getLastName()->getValue(),
             'customer_full_name'   => $info ? $info->firstName . ' ' . $info->lastName : $customer->getFullName(),
             'customer_phone'       => $phone,
             'customer_note'        => $customer->getNote() ? $customer->getNote()->getValue() : '',
-            'customer_panel_url'   => $helperService->getCustomerCabinetUrl($customer->getEmail()->getValue(), $type)
+            'customer_panel_url'   => $helperService->getCustomerCabinetUrl(
+                $customer->getEmail()->getValue(),
+                $type,
+                !empty($appointment['bookingStart']) ? explode(' ', $appointment['bookingStart'])[0] : null,
+                !empty($appointment['bookingEnd']) ? explode(' ', $appointment['bookingEnd'])[0] : null
+            )
         ];
     }
 
@@ -436,7 +461,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                 foreach ((array)$bookingCustomFields as $bookingCustomFieldKey => $bookingCustomField) {
                     $bookingCustomFieldsKeys[(int)$bookingCustomFieldKey] = true;
 
-                    if (array_key_exists('type', $bookingCustomField) && $bookingCustomField['type'] === 'file') {
+                    if (is_array($bookingCustomField) && array_key_exists('type', $bookingCustomField) && $bookingCustomField['type'] === 'file') {
                         continue;
                     }
 

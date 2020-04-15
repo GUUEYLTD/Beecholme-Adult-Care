@@ -102,7 +102,7 @@ class CouponRepository extends AbstractRepository implements CouponRepositoryInt
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {
@@ -387,7 +387,7 @@ class CouponRepository extends AbstractRepository implements CouponRepositoryInt
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 

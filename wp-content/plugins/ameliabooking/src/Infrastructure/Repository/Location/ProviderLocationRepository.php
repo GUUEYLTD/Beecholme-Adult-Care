@@ -43,7 +43,7 @@ class ProviderLocationRepository extends AbstractRepository
                 throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
             }
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         return $this->connection->lastInsertId();
@@ -93,7 +93,7 @@ class ProviderLocationRepository extends AbstractRepository
                 throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
             }
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         return $this->connection->lastInsertId();

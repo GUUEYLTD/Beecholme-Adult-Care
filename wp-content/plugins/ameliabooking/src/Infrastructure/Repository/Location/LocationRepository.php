@@ -123,7 +123,7 @@ class LocationRepository extends AbstractRepository implements LocationRepositor
                 throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
             }
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         return $this->connection->lastInsertId();
@@ -171,7 +171,7 @@ class LocationRepository extends AbstractRepository implements LocationRepositor
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -205,7 +205,7 @@ class LocationRepository extends AbstractRepository implements LocationRepositor
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -572,7 +572,7 @@ class LocationRepository extends AbstractRepository implements LocationRepositor
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {

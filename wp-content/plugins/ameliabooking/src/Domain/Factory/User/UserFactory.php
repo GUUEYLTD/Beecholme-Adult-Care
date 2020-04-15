@@ -158,6 +158,10 @@ class UserFactory
                     $user->setGoogleCalendar(GoogleCalendarFactory::create($data['googleCalendar']));
                 }
 
+                if (!empty($data['zoomUserId'])) {
+                    $user->setZoomUserId(new Name($data['zoomUserId']));
+                }
+
                 if (!empty($data['id'])) {
                     $user->setId(new Id($data['id']));
                 }

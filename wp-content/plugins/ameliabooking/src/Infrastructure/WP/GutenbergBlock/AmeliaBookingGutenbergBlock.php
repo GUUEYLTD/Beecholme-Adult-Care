@@ -30,6 +30,7 @@ class AmeliaBookingGutenbergBlock extends GutenbergBlock
             'amelia_booking_gutenberg_block',
             'wpAmeliaLabels',
             array_merge(
+                BackendStrings::getCommonStrings(),
                 BackendStrings::getWordPressStrings(),
                 self::getEntitiesData()
             )

@@ -257,7 +257,7 @@ abstract class AbstractNotificationService
     {
         /** @var Notification $customerNotification */
         $customerNotification =
-            $this->getByNameAndType("customer_{$appointmentArray['type']}_{$appointmentArray['status']}", $this->type);
+            $this->getByNameAndType("customer_{$appointmentArray['type']}_{$bookingArray['status']}", $this->type);
 
         if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             // Notify customer that scheduled the appointment

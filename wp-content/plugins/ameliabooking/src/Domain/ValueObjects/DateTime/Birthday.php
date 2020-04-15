@@ -32,9 +32,6 @@ final class Birthday
         if (!($date instanceof \DateTime)) {
             throw new InvalidArgumentException('Date must be a instance of DateTime');
         }
-        if ($date >= DateTimeService::getNowDateTimeObject()) {
-            throw new InvalidArgumentException('Birth date cannot be today or in the future');
-        }
 
         $this->date = $date;
     }

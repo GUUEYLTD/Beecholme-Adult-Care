@@ -22,6 +22,7 @@ use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ExtraRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
+use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
 use DateTime;
 
 /**
@@ -53,26 +54,29 @@ class AppointmentPlaceholderService extends PlaceholderService
         $timestamp = date_create()->getTimestamp();
 
         return [
-            'appointment_date'       => date_i18n($dateFormat, strtotime($timestamp)),
-            'appointment_date_time'  => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp)),
-            'appointment_start_time' => date_i18n($timeFormat, $timestamp),
-            'appointment_end_time'   => date_i18n($timeFormat, date_create('1 hour')->getTimestamp()),
-            'appointment_notes'      => 'Appointment note',
-            'appointment_price'      => $helperService->getFormattedPrice(100),
-            'employee_email'         => 'employee@domain.com',
-            'employee_first_name'    => 'Richard',
-            'employee_last_name'     => 'Roe',
-            'employee_full_name'     => 'Richard Roe',
-            'employee_phone'         => '150-698-1858',
-            'employee_note'          => 'Employee Note',
-            'location_address'       => $companySettings['address'],
-            'location_name'          => 'Location Name',
-            'location_description'   => 'Location Description',
-            'category_name'          => 'Category Name',
-            'service_description'    => 'Service Description',
-            'service_duration'       => $helperService->secondsToNiceDuration(5400),
-            'service_name'           => 'Service Name',
-            'service_price'          => $helperService->getFormattedPrice(100)
+            'appointment_date'        => date_i18n($dateFormat, strtotime($timestamp)),
+            'appointment_date_time'   => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp)),
+            'appointment_start_time'  => date_i18n($timeFormat, $timestamp),
+            'appointment_end_time'    => date_i18n($timeFormat, date_create('1 hour')->getTimestamp()),
+            'appointment_notes'       => 'Appointment note',
+            'appointment_price'       => $helperService->getFormattedPrice(100),
+            'employee_email'          => 'employee@domain.com',
+            'employee_first_name'     => 'Richard',
+            'employee_last_name'      => 'Roe',
+            'employee_full_name'      => 'Richard Roe',
+            'employee_phone'          => '150-698-1858',
+            'employee_note'           => 'Employee Note',
+            'location_address'        => $companySettings['address'],
+            'location_phone'          => $companySettings['phone'],
+            'location_name'           => 'Location Name',
+            'location_description'    => 'Location Description',
+            'category_name'           => 'Category Name',
+            'service_description'     => 'Service Description',
+            'reservation_description' => 'Service Description',
+            'service_duration'        => $helperService->secondsToNiceDuration(5400),
+            'service_name'            => 'Service Name',
+            'reservation_name'        => 'Service Name',
+            'service_price'           => $helperService->getFormattedPrice(100)
         ];
     }
 
@@ -134,12 +138,26 @@ class AppointmentPlaceholderService extends PlaceholderService
             $bookingEnd = DateTime::createFromFormat('Y-m-d H:i:s', $appointment['bookingEnd']);
         }
 
+        $zoomStartUrl = '';
+        $zoomJoinUrl = '';
+
+        if (isset($appointment['zoomMeeting']['joinUrl'], $appointment['zoomMeeting']['startUrl'])) {
+            $zoomStartUrl = $appointment['zoomMeeting']['startUrl'];
+            $zoomJoinUrl = $appointment['zoomMeeting']['joinUrl'];
+        }
+
         return [
             'appointment_notes'      => $appointment['internalNotes'],
             'appointment_date'       => date_i18n($dateFormat, $bookingStart->getTimestamp()),
             'appointment_date_time'  => date_i18n($dateFormat . ' ' . $timeFormat, $bookingStart->getTimestamp()),
             'appointment_start_time' => date_i18n($timeFormat, $bookingStart->getTimestamp()),
             'appointment_end_time'   => date_i18n($timeFormat, $bookingEnd->getTimestamp()),
+            'zoom_host_url'         => $zoomStartUrl ?
+                '<a href="' . $zoomStartUrl . '">' . BackendStrings::getCommonStrings()['zoom_click_to_start'] . '</a>'
+                : $zoomStartUrl,
+            'zoom_join_url'          => $zoomJoinUrl ?
+                '<a href="' . $zoomJoinUrl . '">' . BackendStrings::getCommonStrings()['zoom_click_to_join'] . '</a>'
+                : $zoomJoinUrl,
         ];
     }
 
@@ -169,11 +187,13 @@ class AppointmentPlaceholderService extends PlaceholderService
         $category = $categoryRepository->getById($service->getCategoryId()->getValue());
 
         $data = [
-            'category_name'       => $category->getName()->getValue(),
-            'service_description' => $service->getDescription()->getValue(),
-            'service_duration'    => $helperService->secondsToNiceDuration($service->getDuration()->getValue()),
-            'service_name'        => $service->getName()->getValue(),
-            'service_price'       => $helperService->getFormattedPrice($service->getPrice()->getValue())
+            'category_name'           => $category->getName()->getValue(),
+            'service_description'     => $service->getDescription()->getValue(),
+            'reservation_description' => $service->getDescription()->getValue(),
+            'service_duration'        => $helperService->secondsToNiceDuration($service->getDuration()->getValue()),
+            'service_name'            => $service->getName()->getValue(),
+            'reservation_name'        => $service->getName()->getValue(),
+            'service_price'           => $helperService->getFormattedPrice($service->getPrice()->getValue())
         ];
 
         $bookingExtras = [];
@@ -237,17 +257,19 @@ class AppointmentPlaceholderService extends PlaceholderService
         $location = $locationId ? $locationRepository->getById($locationId) : null;
 
         return [
-            'employee_email'      => $user->getEmail()->getValue(),
-            'employee_first_name' => $user->getFirstName()->getValue(),
-            'employee_last_name'  => $user->getLastName()->getValue(),
-            'employee_full_name'  => $user->getFirstName()->getValue() . ' ' . $user->getLastName()->getValue(),
-            'employee_phone'      => $user->getPhone()->getValue(),
-            'employee_note'       => $user->getNote() ? $user->getNote()->getValue() : '',
-            'location_address'    => !$location ?
+            'employee_email'       => $user->getEmail()->getValue(),
+            'employee_first_name'  => $user->getFirstName()->getValue(),
+            'employee_last_name'   => $user->getLastName()->getValue(),
+            'employee_full_name'   => $user->getFirstName()->getValue() . ' ' . $user->getLastName()->getValue(),
+            'employee_phone'       => $user->getPhone()->getValue(),
+            'employee_note'        => $user->getNote() ? $user->getNote()->getValue() : '',
+            'location_address'     => !$location ?
                 $settingsService->getSetting('company', 'address') : $location->getAddress()->getValue(),
-            'location_name'       => !$location ?
+            'location_phone'       => !$location ?
+                $settingsService->getSetting('company', 'phone') : $location->getPhone()->getValue(),
+            'location_name'        => !$location ?
                 $settingsService->getSetting('company', 'address') : $location->getName()->getValue(),
-            'location_description'       => $location && $location->getDescription() ?
+            'location_description' => $location && $location->getDescription() ?
                 $location->getDescription()->getValue() : ''
         ];
     }

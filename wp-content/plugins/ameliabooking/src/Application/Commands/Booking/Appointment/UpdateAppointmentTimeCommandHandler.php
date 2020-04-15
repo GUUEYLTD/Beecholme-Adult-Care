@@ -65,8 +65,8 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
 
         /** @var CustomerApplicationService $customerAS */
         $customerAS = $this->container->get('application.user.customer.service');
-        /** @var SettingsService $settingsService */
-        $settingsService = $this->container->get('domain.settings.service');
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
         /** @var AppointmentRepository $appointmentRepo */
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
         /** @var AppointmentApplicationService $appointmentAS */
@@ -90,7 +90,7 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
             return $result;
         }
 
-        if ($customerAS->isCustomer($user) && !$settingsService->getSetting('roles', 'allowCustomerReschedule')) {
+        if ($customerAS->isCustomer($user) && !$settingsDS->getSetting('roles', 'allowCustomerReschedule')) {
             throw new AccessDeniedException('You are not allowed to update appointment');
         }
 
@@ -115,8 +115,16 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
             }
         }
 
+        $minimumCancelTimeInSeconds = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getMinimumTimeRequirementPriorToCanceling();
+
         try {
-            $reservationService->inspectMinimumCancellationTime($appointment->getBookingStart()->getValue());
+            $reservationService->inspectMinimumCancellationTime(
+                $appointment->getBookingStart()->getValue(),
+                $minimumCancelTimeInSeconds
+            );
         } catch (BookingCancellationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('You are not allowed to update booking');
@@ -130,7 +138,7 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
         $bookingStart = $command->getField('bookingStart');
 
         // Convert UTC slot to slot in TimeZone based on Settings
-        if ($command->getField('utcOffset') !== null && $settingsService->getSetting('general', 'showClientTimeZone')) {
+        if ($command->getField('utcOffset') !== null && $settingsDS->getSetting('general', 'showClientTimeZone')) {
             $bookingStart = DateTimeService::getCustomDateTimeFromUtc(
                 $bookingStart
             );

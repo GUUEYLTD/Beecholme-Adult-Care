@@ -40,6 +40,7 @@ class UpdateProviderController extends Controller
         'dayOffList',
         'pictureFullPath',
         'pictureThumbPath',
+        'zoomUserId',
         'googleCalendar'
     ];
 

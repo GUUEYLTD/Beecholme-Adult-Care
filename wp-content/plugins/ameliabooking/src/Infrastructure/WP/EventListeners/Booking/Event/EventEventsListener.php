@@ -61,6 +61,9 @@ class EventEventsListener implements ListenerInterface
                 case 'EventEdited':
                     EventEditedEventHandler::handle($param, $this->container);
                     break;
+                case 'EventAdded':
+                    EventAddedEventHandler::handle($param, $this->container);
+                    break;
             }
         }
     }

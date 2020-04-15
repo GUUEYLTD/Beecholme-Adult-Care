@@ -9,6 +9,7 @@ namespace AmeliaBooking\Application\Commands\Activation;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Infrastructure\WP\InstallActions\AutoUpdateHook;
 
 /**
  * Class DeactivatePluginCommandHandler
@@ -36,9 +37,11 @@ class DeactivatePluginCommandHandler extends CommandHandler
 
         // Get the base domain from query string
         $domain = $command->getField('params')['domain'];
+        $domain = AutoUpdateHook::getDomain($domain);
 
         // Get the subdomain from query string
         $subdomain = $command->getField('params')['subdomain'];
+        $subdomain = AutoUpdateHook::getSubDomain($subdomain);
 
         // Call the TMS Store API to check if purchase code is valid
         $ch = curl_init(

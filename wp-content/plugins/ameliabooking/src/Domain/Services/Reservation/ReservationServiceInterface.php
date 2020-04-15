@@ -221,6 +221,7 @@ interface ReservationServiceInterface
 
     /**
      * @param \DateTime $bookingStart
+     * @param int       $minimumCancelTime
      *
      * @return boolean
      *
@@ -228,5 +229,5 @@ interface ReservationServiceInterface
      * @throws \Interop\Container\Exception\ContainerException
      * @throws BookingCancellationException
      */
-    function inspectMinimumCancellationTime($bookingStart);
+    function inspectMinimumCancellationTime($bookingStart, $minimumCancelTime);
 }

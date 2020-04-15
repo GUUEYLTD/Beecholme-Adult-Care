@@ -12,6 +12,7 @@ use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\WP\UserService\CreateWPUser;
+use AmeliaBooking\Infrastructure\WP\UserService\UserService;
 
 /**
  * Class UserApplicationService
@@ -58,7 +59,7 @@ class UserApplicationService
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
 
         /** @var Collection $appointments */
-        $appointments = null;
+        $appointments = new Collection();
 
         switch ($user->getType()) {
             case (AbstractUser::USER_ROLE_PROVIDER):
@@ -137,7 +138,14 @@ class UserApplicationService
         /** @var AbstractUser $wpUser */
         $wpUser = $this->container->get('logged.in.user');
 
-        if ($wpUser->getType() !== AbstractUser::USER_ROLE_ADMIN) {
+        if (!$wpUser && $user->getExternalId()) {
+            /** @var UserService $userService */
+            $userService = $this->container->get('users.service');
+
+            $wpUser = $userService->getWpUserById($user->getExternalId()->getValue());
+        }
+
+        if ($wpUser && $wpUser->getType() !== AbstractUser::USER_ROLE_ADMIN) {
             $createWPUserService->update(
                 $externalId,
                 'wpamelia-' . $user->getType()

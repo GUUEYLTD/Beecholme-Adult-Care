@@ -63,9 +63,11 @@ class UpdateCustomerCommandHandler extends CommandHandler
             if ($oldUser === null) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setMessage('Could not retrieve user');
-                $result->setData([
-                    'reauthorize' => true
-                ]);
+                $result->setData(
+                    [
+                        'reauthorize' => true
+                    ]
+                );
 
                 return $result;
             }
@@ -103,9 +105,11 @@ class UpdateCustomerCommandHandler extends CommandHandler
         ) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Email already exist.');
-            $result->setData([
+            $result->setData(
+                [
                 'existing_email' => true
-            ]);
+                ]
+            );
 
             return $result;
         }
@@ -145,7 +149,8 @@ class UpdateCustomerCommandHandler extends CommandHandler
         $result = $customerAS->getAuthenticatedUserResponse(
             $newUser,
             $oldUser->getEmail()->getValue() !== $newUser->getEmail()->getValue(),
-            true
+            true,
+            $oldUser->getLoginType()
         );
 
         $result->setMessage('Successfully updated user');

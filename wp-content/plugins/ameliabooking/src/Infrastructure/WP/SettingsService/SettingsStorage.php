@@ -104,6 +104,7 @@ class SettingsStorage implements SettingsStorageInterface
         $phoneCountryCode = $this->getSetting('general', 'phoneDefaultCountryCode');
 
         $capabilities = [];
+        $additionalCapabilities = [];
         if (is_admin()) {
             $currentScreenId = get_current_screen()->id;
             $currentScreen = substr($currentScreenId, strrpos($currentScreenId, '-') + 1);
@@ -115,6 +116,10 @@ class SettingsStorage implements SettingsStorageInterface
                 'canWriteOthers' => current_user_can('amelia_write_others_' . $currentScreen),
                 'canDelete'      => current_user_can('amelia_delete_' . $currentScreen),
                 'canWriteStatus' => current_user_can('amelia_write_status_' . $currentScreen),
+            ];
+
+            $additionalCapabilities = [
+                'canWriteCustomers' => current_user_can('amelia_write_customers'),
             ];
         }
 
@@ -132,6 +137,7 @@ class SettingsStorage implements SettingsStorageInterface
 
         return [
             'capabilities'   => $capabilities,
+            'additionalCapabilities' => $additionalCapabilities,
             'daysOff'        => $this->getCategorySettings('daysOff'),
             'general'        => [
                 'itemsPerPage'                    => $this->getSetting('general', 'itemsPerPage'),
@@ -147,6 +153,8 @@ class SettingsStorage implements SettingsStorageInterface
                 'numberOfDaysAvailableForBooking' => $this->getSetting('general', 'numberOfDaysAvailableForBooking'),
                 'minimumTimeRequirementPriorToBooking' =>
                     $this->getSetting('general', 'minimumTimeRequirementPriorToBooking'),
+                'minimumTimeRequirementPriorToCanceling' =>
+                    $this->getSetting('general', 'minimumTimeRequirementPriorToCanceling'),
                 'showClientTimeZone'              => $this->getSetting('general', 'showClientTimeZone'),
                 'redirectUrlAfterAppointment'     => $this->getSetting('general', 'redirectUrlAfterAppointment'),
                 'customFieldsUploadsPath'         => $this->getSetting('general', 'customFieldsUploadsPath'),
@@ -154,6 +162,9 @@ class SettingsStorage implements SettingsStorageInterface
             ],
             'googleCalendar' =>
                 $this->getSetting('googleCalendar', 'clientID') && $this->getSetting('googleCalendar', 'clientSecret'),
+            'zoom'           => [
+                'enabled' => $this->getSetting('zoom', 'enabled') && $this->getSetting('zoom', 'apiKey') && $this->getSetting('zoom', 'apiSecret')
+            ],
             'notifications'  => [
                 'senderName'       => $this->getSetting('notifications', 'senderName'),
                 'senderEmail'      => $this->getSetting('notifications', 'senderEmail'),
@@ -185,8 +196,10 @@ class SettingsStorage implements SettingsStorageInterface
 
                 ],
                 'wc'                    => [
-                    'enabled'   => $this->getSetting('payments', 'wc')['enabled'],
-                    'productId' => $this->getSetting('payments', 'wc')['productId']
+                    'enabled'      => $this->getSetting('payments', 'wc')['enabled'],
+                    'productId'    => $this->getSetting('payments', 'wc')['productId'],
+                    'page'         => $this->getSetting('payments', 'wc')['page'],
+                    'onSiteIfFree' => $this->getSetting('payments', 'wc')['onSiteIfFree']
                 ]
             ],
             'role'           => $userType,
@@ -203,6 +216,7 @@ class SettingsStorage implements SettingsStorageInterface
                 'allowConfigureSchedule'      => $this->getSetting('roles', 'allowConfigureSchedule'),
                 'allowConfigureDaysOff'       => $this->getSetting('roles', 'allowConfigureDaysOff'),
                 'allowConfigureSpecialDays'   => $this->getSetting('roles', 'allowConfigureSpecialDays'),
+                'allowConfigureServices'      => $this->getSetting('roles', 'allowConfigureServices'),
                 'allowWriteAppointments'      => $this->getSetting('roles', 'allowWriteAppointments'),
                 'automaticallyCreateCustomer' => $this->getSetting('roles', 'automaticallyCreateCustomer'),
                 'inspectCustomerInfo'         => $this->getSetting('roles', 'inspectCustomerInfo'),

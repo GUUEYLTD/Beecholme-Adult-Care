@@ -116,7 +116,7 @@ class WooCommercePaymentCommandHandler extends CommandHandler
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Proceed to WooCommerce Cart');
         $result->setData([
-            'cartUrl' => WooCommerceService::getCartUrl()
+            'cartUrl' => WooCommerceService::getPageUrl()
         ]);
 
         return $result;

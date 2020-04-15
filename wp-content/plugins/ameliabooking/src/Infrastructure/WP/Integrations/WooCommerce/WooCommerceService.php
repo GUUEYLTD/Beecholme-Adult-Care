@@ -84,7 +84,7 @@ class WooCommerceService
         $wooCommerceCart = self::getWooCommerceCart();
 
         foreach ($wooCommerceCart->get_cart() as $wc_key => $wc_item) {
-            if (isset($wc_item[self::AMELIA])) {
+            if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
                 /** @var \WC_Product $wc_item ['data'] */
                 $wc_item['data']->set_price(
                     self::getPaymentAmount(
@@ -111,9 +111,18 @@ class WooCommerceService
      *
      * @return string
      */
-    public static function getCartUrl()
+    public static function getPageUrl()
     {
-        return wc_get_cart_url();
+        switch (self::$settingsService->getCategorySettings('payments')['wc']['page']) {
+            case 'checkout':
+                return wc_get_checkout_url();
+                break;
+            case 'cart':
+                return wc_get_cart_url();
+                break;
+            default:
+                return wc_get_cart_url();
+        }
     }
 
     /**
@@ -540,7 +549,7 @@ class WooCommerceService
 
         if (!Cache::getAll()) {
             foreach ($wooCommerceCart->get_cart() as $wc_key => $wc_item) {
-                if (isset($wc_item[self::AMELIA])) {
+                if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
                     if ($inspectData && ($errorMessage = self::validateBooking($wc_item[self::AMELIA]))) {
                         wc_add_notice(
                             $errorMessage . FrontendStrings::getCommonStrings()['wc_appointment_is_removed'],
@@ -559,7 +568,7 @@ class WooCommerceService
         }
 
         foreach ($wooCommerceCart->get_cart() as $wc_key => $wc_item) {
-            if (isset($wc_item[self::AMELIA])) {
+            if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
                 /** @var \WC_Product $wc_item ['data'] */
                 $wc_item['data']->set_price(
                     self::getPaymentAmount(
@@ -572,7 +581,7 @@ class WooCommerceService
 
         $wooCommerceCart->calculate_totals();
 
-        if (isset($wc_item[self::AMELIA])) {
+        if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
             wc_print_notices();
         }
     }
@@ -686,7 +695,7 @@ class WooCommerceService
      */
     public static function getItemData($other_data, $wc_item)
     {
-        if (isset($wc_item[self::AMELIA])) {
+        if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
             if (self::getWooCommerceCart()) {
                 self::processCart(false);
             }
@@ -799,7 +808,7 @@ class WooCommerceService
      */
     public static function cartItemPrice($product_price, $wc_item, $cart_item_key)
     {
-        if (isset($wc_item[self::AMELIA])) {
+        if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
             $product_price = wc_price(
                 self::getPaymentAmount(
                     $wc_item[self::AMELIA],
@@ -827,7 +836,7 @@ class WooCommerceService
 
         if (empty(self::$checkout_info)) {
             foreach ($wooCommerceCart->get_cart() as $wc_key => $wc_item) {
-                if (array_key_exists(self::AMELIA, $wc_item)) {
+                if (array_key_exists(self::AMELIA, $wc_item) && is_array($wc_item[self::AMELIA])) {
                     self::$checkout_info = [
                         'billing_first_name' => $wc_item[self::AMELIA]['bookings'][0]['customer']['firstName'],
                         'billing_last_name'  => $wc_item[self::AMELIA]['bookings'][0]['customer']['lastName'],
@@ -855,7 +864,7 @@ class WooCommerceService
      */
     public static function addOrderItemMeta($item_id, $values, $wc_key)
     {
-        if (isset($values[self::AMELIA])) {
+        if (isset($values[self::AMELIA]) && is_array($values[self::AMELIA])) {
             wc_update_order_item_meta($item_id, self::AMELIA, $values[self::AMELIA]);
         }
     }
@@ -870,7 +879,7 @@ class WooCommerceService
      */
     public static function checkoutCreateOrderLineItem($item, $cart_item_key, $values, $order)
     {
-        if (isset($values[self::AMELIA])) {
+        if (isset($values[self::AMELIA]) && is_array($values[self::AMELIA])) {
             $item->update_meta_data(self::AMELIA, $values[self::AMELIA]);
         }
     }
@@ -884,7 +893,7 @@ class WooCommerceService
     {
         $data = wc_get_order_item_meta($item_id, self::AMELIA);
 
-        if ($data) {
+        if ($data && is_array($data)) {
             $other_data = self::getItemData([], [self::AMELIA => $data]);
 
             echo '<br/>' . $other_data[0]['name'] . '<br/>' . nl2br($other_data[0]['value']);
@@ -903,9 +912,9 @@ class WooCommerceService
         $wooCommerceCart = self::getWooCommerceCart();
 
         foreach ($wooCommerceCart->get_cart() as $wc_key => $wc_item) {
-            if (isset($wc_item[self::AMELIA])) {
+            if (isset($wc_item[self::AMELIA]) && is_array($wc_item[self::AMELIA])) {
                 if ($errorMessage = self::validateBooking($wc_item[self::AMELIA])) {
-                    $cartUrl = self::getCartUrl();
+                    $cartUrl = self::getPageUrl();
                     $removeAppointmentMessage = FrontendStrings::getCommonStrings()['wc_appointment_is_removed'];
 
                     throw new \Exception($errorMessage . "<a href='{$cartUrl}'>{$removeAppointmentMessage}</a>");
@@ -927,7 +936,11 @@ class WooCommerceService
             $data = wc_get_order_item_meta($item_id, self::AMELIA);
 
             try {
-                if ($data && !isset($data['processed'])) {
+                if ($data && is_array($data) && !isset($data['processed'])) {
+                    $data['processed'] = true;
+
+                    wc_update_order_item_meta($item_id, self::AMELIA, $data);
+
                     $data['payment']['gatewayTitle'] = $order->get_payment_method_title();
                     $data['payment']['amount'] = 0;
                     $data['payment']['status'] = $order->get_payment_method() === 'cod' ?
@@ -962,8 +975,6 @@ class WooCommerceService
                             $booking['customer']['externalId']
                         );
                     }
-
-                    $data['processed'] = true;
 
                     wc_update_order_item_meta($item_id, self::AMELIA, $data);
                 }

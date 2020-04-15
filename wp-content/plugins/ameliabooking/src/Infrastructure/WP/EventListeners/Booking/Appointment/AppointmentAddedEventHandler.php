@@ -7,13 +7,18 @@
 namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment;
 
 use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
+use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
+use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
+use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
+use AmeliaBooking\Application\Services\Zoom\ZoomApplicationService;
 
 /**
  * Class AppointmentAddedEventHandler
@@ -25,6 +30,9 @@ class AppointmentAddedEventHandler
     /** @var string */
     const APPOINTMENT_ADDED = 'appointmentAdded';
 
+    /** @var string */
+    const BOOKING_ADDED = 'bookingAdded';
+
     /**
      * @param CommandResult $commandResult
      * @param Container     $container
@@ -32,6 +40,7 @@ class AppointmentAddedEventHandler
      * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
      * @throws \Interop\Container\Exception\ContainerException
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      */
     public static function handle($commandResult, $container)
     {
@@ -43,11 +52,30 @@ class AppointmentAddedEventHandler
         $smsNotificationService = $container->get('application.smsNotification.service');
         /** @var SettingsService $settingsService */
         $settingsService = $container->get('domain.settings.service');
+        /** @var WebHookApplicationService $webHookService */
+        $webHookService = $container->get('application.webHook.service');
+        /** @var BookingApplicationService $bookingApplicationService */
+        $bookingApplicationService = $container->get('application.booking.booking.service');
+        /** @var ZoomApplicationService $zoomService */
+        $zoomService = $container->get('application.zoom.service');
 
         $appointment = $commandResult->getData()[Entities::APPOINTMENT];
 
+        /** @var Appointment|Event $reservationObject */
+        $reservationObject = AppointmentFactory::create($appointment);
+
+        $bookingApplicationService->setReservationEntities($reservationObject);
+
+        if ($zoomService) {
+            $zoomService->handleAppointmentMeeting($reservationObject, self::APPOINTMENT_ADDED);
+
+            if ($reservationObject->getZoomMeeting()) {
+                $appointment['zoomMeeting'] = $reservationObject->getZoomMeeting()->toArray();
+            }
+        }
+
         try {
-            $googleCalendarService->handleEvent(AppointmentFactory::create($appointment), self::APPOINTMENT_ADDED);
+            $googleCalendarService->handleEvent($reservationObject, self::APPOINTMENT_ADDED);
         } catch (\Exception $e) {
         }
 
@@ -56,5 +84,7 @@ class AppointmentAddedEventHandler
         if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
             $smsNotificationService->sendAppointmentStatusNotifications($appointment, false, true);
         }
+
+        $webHookService->process(self::BOOKING_ADDED, $appointment, $appointment['bookings']);
     }
 }

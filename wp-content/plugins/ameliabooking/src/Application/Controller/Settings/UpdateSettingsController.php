@@ -31,6 +31,7 @@ class UpdateSettingsController extends Controller
         'roles',
         'weekSchedule',
         'webHooks',
+        'zoom',
         'appointments',
     ];
 

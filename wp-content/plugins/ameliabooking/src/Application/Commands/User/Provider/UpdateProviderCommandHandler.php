@@ -9,6 +9,7 @@ use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\User\Provider;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
@@ -44,6 +45,8 @@ class UpdateProviderCommandHandler extends CommandHandler
      */
     public function handle(UpdateProviderCommand $command)
     {
+        $this->checkMandatoryFields($command);
+
         $userId = (int)$command->getArg('id');
 
         /** @var AbstractUser $currentUser */
@@ -58,21 +61,20 @@ class UpdateProviderCommandHandler extends CommandHandler
             throw new AccessDeniedException('You are not allowed to update employee.');
         }
 
+        $result = new CommandResult();
+
         /** @var ProviderRepository $providerRepository */
         $providerRepository = $this->container->get('domain.users.providers.repository');
 
         /** @var ProviderApplicationService $providerAS */
         $providerAS = $this->container->get('application.user.provider.service');
 
-        $result = new CommandResult();
-
-        $this->checkMandatoryFields($command);
-
         /** @var Provider $oldUser */
         $oldUser = $providerAS->getProviderWithServicesAndSchedule($userId);
 
         $command->setField('id', $userId);
 
+        /** @var Provider $newUser */
         $newUser = UserFactory::create($command->getFields());
 
         if (!$newUser instanceof AbstractUser) {
@@ -80,6 +82,29 @@ class UpdateProviderCommandHandler extends CommandHandler
             $result->setMessage('Could not update user.');
 
             return $result;
+        }
+
+        if ($currentUser->getType() === AbstractUser::USER_ROLE_PROVIDER) {
+            /** @var SettingsService $settingsDS */
+            $settingsDS = $this->container->get('domain.settings.service');
+
+            $rolesSettings = $settingsDS->getCategorySettings('roles');
+
+            if (!$rolesSettings['allowConfigureServices']) {
+                $newUser->setServiceList($oldUser->getServiceList());
+            }
+
+            if (!$rolesSettings['allowConfigureSchedule']) {
+                $newUser->setWeekDayList($oldUser->getWeekDayList());
+            }
+
+            if (!$rolesSettings['allowConfigureDaysOff']) {
+                $newUser->setDayOffList($oldUser->getDayOffList());
+            }
+
+            if (!$rolesSettings['allowConfigureSpecialDays']) {
+                $newUser->setSpecialDayList($oldUser->getSpecialDayList());
+            }
         }
 
         $providerRepository->beginTransaction();

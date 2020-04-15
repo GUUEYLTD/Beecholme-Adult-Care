@@ -136,9 +136,14 @@ class GetSearchCommandHandler extends CommandHandler
 
             $bookableService->checkServiceTimes($service);
 
+            $minimumBookingTimeInSeconds = $settingsDS
+                ->getEntitySettings($service->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToBooking();
+
             // get start DateTime based on minimum time prior to booking
             $offset = DateTimeService::getNowDateTimeObject()
-                ->modify("+{$settingsDS->getSetting('general', 'minimumTimeRequirementPriorToBooking')} seconds");
+                ->modify("+{$minimumBookingTimeInSeconds} seconds");
 
             $startDateTime = DateTimeService::getCustomDateTimeObject($searchStartDateString);
             $startDateTime = $offset > $startDateTime ? $offset : $startDateTime;
@@ -178,7 +183,8 @@ class GetSearchCommandHandler extends CommandHandler
                 $endDateTime->modify('+1 day'),
                 1,
                 $bookIfPending,
-                $bookIfNotMin
+                $bookIfNotMin,
+                false
             );
 
             $requiredTime = $appointmentAS->getAppointmentRequiredTime($service);
@@ -206,15 +212,19 @@ class GetSearchCommandHandler extends CommandHandler
             foreach ($freeSlots as $dateSlot) {
                 foreach ($dateSlot as $timeSlot) {
                     foreach ($timeSlot as $infoSlot) {
-                        $providersIds[$infoSlot[0]][] =  $infoSlot[1];
+                        $providersIds[$infoSlot[0]][] = [
+                            $infoSlot[1],
+                            isset($infoSlot[2]) ? $infoSlot[2] : null
+                        ];
                     }
                 }
             }
 
-            foreach ($providersIds as $providersId => $providersLocations) {
+            foreach ($providersIds as $providersId => $providersData) {
                 $resultData[] = [
                     $service->getId()->getValue() => $providersId,
-                    'locations'                   => array_values(array_unique($providersLocations)),
+                    'places'                      => (min(array_filter(array_column($providersData, 1)) ?: [0]) ?: 0) ?: null,
+                    'locations'                   => array_values(array_unique(array_column($providersData, 0))),
                     'price'                       => $providersList
                         ->getItem($providersId)
                         ->getServiceList()

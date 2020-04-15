@@ -6,8 +6,10 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Services\TimeSlot\TimeSlotService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use Exception;
 use Interop\Container\Exception\ContainerException;
 
@@ -45,27 +47,45 @@ class GetTimeSlotsCommandHandler extends CommandHandler
         $timeSlotService = $this->container->get('application.timeSlot.service');
         /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsDS */
         $settingsDS = $this->container->get('domain.settings.service');
+        /** @var ServiceRepository $serviceRepository */
+        $serviceRepository = $this->container->get('domain.bookable.service.repository');
+
+        /** @var Service $service */
+        $service = $serviceRepository->getByIdWithExtras($command->getField('serviceId'));
+
+        $minimumBookingTimeInSeconds = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getMinimumTimeRequirementPriorToBooking();
+
+        $maximumBookingTimeInDays = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getNumberOfDaysAvailableForBooking();
 
         $startDateTime = $timeSlotService->getMinimumDateTimeForBooking(
             DateTimeService::getCustomDateTimeObject($command->getField('startDateTime'))
                 ->modify('-1 days')->format('Y-m-d H:i:s'),
-            $command->getField('page') === 'booking' || $command->getField('page') === 'cabinet'
+            $command->getField('page') === 'booking' || $command->getField('page') === 'cabinet',
+            $minimumBookingTimeInSeconds
         );
 
         $endDateTime = $timeSlotService->getMaximumDateTimeForBooking(
             $command->getField('endDateTime'),
-            $command->getField('page') === 'booking' || $command->getField('page') === 'cabinet'
+            $command->getField('page') === 'booking' || $command->getField('page') === 'cabinet',
+            $maximumBookingTimeInDays
         );
 
         $freeSlots = $timeSlotService->getFreeSlots(
-            $command->getField('serviceId'),
+            $service,
             $command->getField('locationId') ?: null,
             $startDateTime,
             $endDateTime,
             $command->getField('providerIds'),
             $command->getField('extras'),
             $command->getField('excludeAppointmentId'),
-            $command->getField('group') ? $command->getField('persons') : null
+            $command->getField('group') ? $command->getField('persons') : null,
+            $command->getField('page') === 'booking' || $command->getField('page') === 'cabinet'
         );
 
         $utcFreeSlots = [];

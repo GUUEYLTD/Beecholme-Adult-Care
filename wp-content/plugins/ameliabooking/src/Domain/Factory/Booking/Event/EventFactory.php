@@ -196,6 +196,10 @@ class EventFactory
 
         $event->setProviders($providers);
 
+        if (!empty($data['zoomUserId'])) {
+            $event->setZoomUserId(new Name($data['zoomUserId']));
+        }
+
         return $event;
     }
 
@@ -244,7 +248,8 @@ class EventFactory
                     'customLocation'        => $row['event_customLocation'],
                     'parentId'              => $row['event_parentId'],
                     'created'               => $row['event_created'],
-                    'settings'              => isset($row['event_settings']) ? $row['event_settings'] : null
+                    'settings'              => isset($row['event_settings']) ? $row['event_settings'] : null,
+                    'zoomUserId'            => isset($row['event_zoomUserId']) ? $row['event_zoomUserId'] : null
                 ];
             }
 
@@ -274,11 +279,19 @@ class EventFactory
 
 
             if ($eventPeriodId && !isset($events[$eventId]['periods'][$eventPeriodId])) {
+                $zoomMeetingJson = !empty($row['event_periodZoomMeeting']) ?
+                    json_decode($row['event_periodZoomMeeting'], true) : null;
+
                 $events[$eventId]['periods'][$eventPeriodId] = [
                     'id'             => $eventPeriodId,
                     'eventId'        => $eventId,
                     'periodStart'    => DateTimeService::getCustomDateTimeFromUtc($row['event_periodStart']),
                     'periodEnd'      => DateTimeService::getCustomDateTimeFromUtc($row['event_periodEnd']),
+                    'zoomMeeting'    => [
+                        'id'       => $zoomMeetingJson ? $zoomMeetingJson['id'] : null,
+                        'startUrl' => $zoomMeetingJson ? $zoomMeetingJson['startUrl'] : null,
+                        'joinUrl'  => $zoomMeetingJson ? $zoomMeetingJson['joinUrl'] : null,
+                    ],
                     'bookings'       => []
                 ];
             }

@@ -48,7 +48,7 @@ class DayOffRepository extends AbstractRepository
                 throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
             }
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         return $this->connection->lastInsertId();
@@ -87,7 +87,7 @@ class DayOffRepository extends AbstractRepository
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add save in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add save in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 }

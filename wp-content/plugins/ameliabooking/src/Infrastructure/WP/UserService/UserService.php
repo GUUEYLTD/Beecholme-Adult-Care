@@ -44,9 +44,16 @@ class UserService
      */
     public function getCurrentUser()
     {
+        // Return null user if WP user id is guest id (0)
+        $uid = get_current_user_id();
+
+        if ($uid === 0) {
+            return null;
+        }
+
         try {
             // First try to get from repository
-            $currentUserEntity = $this->usersRepository->findByExternalId(get_current_user_id());
+            $currentUserEntity = $this->usersRepository->findByExternalId($uid);
             if (!$currentUserEntity instanceof AbstractUser) {
                 throw new NotFoundException('User not found');
             }
@@ -76,6 +83,35 @@ class UserService
 
             return $currentUserEntity;
         }
+    }
+
+    /**
+     * Return the user entity for currently logged in user
+     *
+     * @param $userId
+     *
+     * @return AbstractUser|bool|null
+     * @throws InvalidArgumentException
+     */
+    public function getWpUserById($userId)
+    {
+        $userType = UserRoles::getUserAmeliaRole($wpUser = get_user_by('id', $userId)) ?: 'customer';
+
+        if (!$wpUser || empty($wpUser->ID)) {
+            return null;
+        }
+
+        return UserFactory::create(
+            [
+                'type'       => $userType,
+                'firstName'  =>
+                    $wpUser->get('first_name') !== '' ? $wpUser->get('first_name') : $wpUser->get('user_nicename'),
+                'lastName'   =>
+                    $wpUser->get('last_name') !== '' ? $wpUser->get('last_name') : $wpUser->get('user_nicename'),
+                'email'      => $wpUser->get('user_email') ?: 'guest@example.com',
+                'externalId' => $wpUser->ID
+            ]
+        );
     }
 
     /**

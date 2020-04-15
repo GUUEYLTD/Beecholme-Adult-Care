@@ -10,7 +10,9 @@
   var bookingEntitiesIds = (typeof bookingEntitiesIds === 'undefined') ? [] : bookingEntitiesIds
   bookingEntitiesIds.push(
     {
-      'counter': '<?php echo $atts['counter']; ?>'
+      'counter': '<?php echo $atts['counter']; ?>',
+      'appointments': '<?php echo $atts['appointments']; ?>',
+      'events': '<?php echo $atts['events']; ?>'
     }
   )
 </script>

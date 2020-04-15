@@ -62,7 +62,7 @@ class CustomerBookingExtraRepository extends AbstractRepository implements Custo
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -104,7 +104,7 @@ class CustomerBookingExtraRepository extends AbstractRepository implements Custo
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 }

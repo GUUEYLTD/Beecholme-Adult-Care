@@ -2,6 +2,10 @@
 
 namespace AmeliaBooking\Domain\Services\Settings;
 
+use AmeliaBooking\Domain\Entity\Settings\Settings;
+use AmeliaBooking\Domain\Factory\Settings\SettingsFactory;
+use AmeliaBooking\Domain\ValueObjects\Json;
+
 /**
  * Class SettingsService
  *
@@ -109,5 +113,17 @@ class SettingsService
     public function setAllSettings($settings)
     {
         return $this->settingsStorage->setAllSettings($settings);
+    }
+
+    /**
+     * @param Json $entitySettingsJson
+     *
+     * @return Settings
+     *
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function getEntitySettings($entitySettingsJson)
+    {
+        return SettingsFactory::create($entitySettingsJson, $this->getAllSettingsCategorized());
     }
 }

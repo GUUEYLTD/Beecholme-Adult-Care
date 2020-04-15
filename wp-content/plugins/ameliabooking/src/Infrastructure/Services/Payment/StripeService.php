@@ -33,13 +33,23 @@ class StripeService extends AbstractPaymentService implements PaymentServiceInte
         $intent = null;
 
         if ($data['paymentMethodId']) {
-            $intent = PaymentIntent::create([
+            $stripeData = [
                 'payment_method'      => $data['paymentMethodId'],
                 'amount'              => $data['amount'],
                 'currency'            => $this->settingsService->getCategorySettings('payments')['currency'],
                 'confirmation_method' => 'manual',
                 'confirm'             => true,
-            ]);
+            ];
+
+            if ($data['metaData']) {
+                $stripeData['metadata'] = $data['metaData'];
+            }
+
+            if ($data['description']) {
+                $stripeData['description'] = $data['description'];
+            }
+
+            $intent = PaymentIntent::create($stripeData);
         }
 
         if ($data['paymentIntentId']) {

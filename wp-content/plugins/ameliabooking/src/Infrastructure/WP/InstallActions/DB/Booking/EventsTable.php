@@ -50,6 +50,7 @@ class EventsTable extends AbstractDatabaseTable
                    `notifyParticipants` TINYINT(1) NOT NULL,
                    `created` DATETIME NOT NULL,
                    `settings` text({$description}) NULL DEFAULT NULL,
+                   `zoomUserId` varchar({$name}) DEFAULT NULL,
                    PRIMARY KEY (`id`),
                    CONSTRAINT FOREIGN KEY (`parentId`) REFERENCES {$table}(`id`)
                    ON DELETE SET NULL

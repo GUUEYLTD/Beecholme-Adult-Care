@@ -15,6 +15,9 @@ use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use Slim\Exception\ContainerValueNotFoundException;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class DeleteAppointmentCommandHandler
@@ -27,11 +30,11 @@ class DeleteAppointmentCommandHandler extends CommandHandler
      * @param DeleteAppointmentCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws InvalidArgumentException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function handle(DeleteAppointmentCommand $command)
     {
@@ -53,13 +56,6 @@ class DeleteAppointmentCommandHandler extends CommandHandler
         /** @var Appointment $appointment */
         $appointment = $appointmentRepository->getById($command->getArg('id'));
 
-        if (!$appointment instanceof Appointment) {
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not delete appointment');
-
-            return $result;
-        }
-
         $appointmentRepository->beginTransaction();
 
         if (!$appointmentApplicationService->delete($appointment)) {
@@ -74,12 +70,15 @@ class DeleteAppointmentCommandHandler extends CommandHandler
         // Set status to rejected, to send the notification that appointment is rejected
         $appointment->setStatus(new BookingStatus(BookingStatus::REJECTED));
 
+        $bookingsWithChangedStatus = [];
+
         /** @var CustomerBooking $customerBooking */
         foreach ($appointment->getBookings()->getItems() as $customerBooking) {
             $bookingStatus = $customerBooking->getStatus()->getValue();
 
             if ($bookingStatus === BookingStatus::PENDING || $bookingStatus === BookingStatus::APPROVED) {
                 $customerBooking->setChangedStatus(new BooleanValueObject(true));
+                $bookingsWithChangedStatus[] = $customerBooking->toArray();
             }
 
             $customerBooking->setStatus(new BookingStatus(BookingStatus::REJECTED));
@@ -95,7 +94,8 @@ class DeleteAppointmentCommandHandler extends CommandHandler
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully deleted appointment');
         $result->setData([
-            Entities::APPOINTMENT => $appointment->toArray()
+            Entities::APPOINTMENT       => $appointment->toArray(),
+            'bookingsWithChangedStatus' => $bookingsWithChangedStatus
         ]);
 
         return $result;

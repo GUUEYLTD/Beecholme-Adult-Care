@@ -50,6 +50,7 @@ class UsersTable extends AbstractDatabaseTable
                   `pictureThumbPath` varchar ({$picture}) NULL,
                   `password` varchar ({$password}) NULL,
                   `usedTokens` text NULL,
+                  `zoomUserId` varchar({$name}) DEFAULT NULL,
                   PRIMARY KEY (`id`),
                   UNIQUE KEY `email` (`email`),
                   UNIQUE KEY `id` (`id`)

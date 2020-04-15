@@ -51,14 +51,14 @@ class Menu
             [
                 'parentSlug' => 'amelia',
                 'pageTitle'  => 'Appointments',
-                'menuTitle'  => BackendStrings::getAppointmentStrings()['appointments'],
+                'menuTitle'  => BackendStrings::getCommonStrings()['appointments'],
                 'capability' => 'amelia_read_appointments',
                 'menuSlug'   => 'wpamelia-appointments',
             ],
             [
                 'parentSlug' => 'amelia',
                 'pageTitle'  => 'Events',
-                'menuTitle'  => BackendStrings::getEventStrings()['events'],
+                'menuTitle'  => BackendStrings::getCommonStrings()['events'],
                 'capability' => 'amelia_read_events',
                 'menuSlug'   => 'wpamelia-events',
             ]

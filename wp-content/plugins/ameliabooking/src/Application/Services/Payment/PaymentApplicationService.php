@@ -3,8 +3,10 @@
 namespace AmeliaBooking\Application\Services\Payment;
 
 use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Bookable\AbstractBookable;
+use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Booking\Reservation;
@@ -15,6 +17,7 @@ use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
+use AmeliaBooking\Domain\ValueObjects\String\PaymentType;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventRepository;
 use AmeliaBooking\Infrastructure\Repository\Payment\PaymentRepository;
@@ -164,6 +167,12 @@ class PaymentApplicationService
                 /** @var CurrencyService $currencyService */
                 $currencyService = $this->container->get('infrastructure.payment.currency.service');
 
+                $additionalInformation = $this->getBookingInformationForPaymentSettings(
+                    $reservation->getReservation(),
+                    $reservation->getBooking(),
+                    PaymentType::STRIPE
+                );
+
                 try {
                     $response = $paymentService->execute([
                         'paymentMethodId' => !empty($paymentData['data']['paymentMethodId']) ?
@@ -171,6 +180,8 @@ class PaymentApplicationService
                         'paymentIntentId' => !empty($paymentData['data']['paymentIntentId']) ?
                             $paymentData['data']['paymentIntentId'] : null,
                         'amount'          => $currencyService->getAmountInFractionalUnit(new Price($paymentAmount)),
+                        'metaData'        => $additionalInformation['metaData'],
+                        'description'     => $additionalInformation['description']
                     ]);
                 } catch (\Exception $e) {
                     $result->setResult(CommandResult::RESULT_ERROR);
@@ -293,5 +304,77 @@ class PaymentApplicationService
         }
 
         return true;
+    }
+
+    /**
+     * @param Appointment|Event $reservation
+     * @param CustomerBooking   $booking
+     * @param string            $paymentType
+     *
+     * @return array
+     *
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function getBookingInformationForPaymentSettings($reservation, $booking, $paymentType)
+    {
+        $reservationType = $reservation->getType()->getValue();
+
+        /** @var PlaceholderService $placeholderService */
+        $placeholderService = $this->container->get("application.placeholder.{$reservationType}.service");
+
+        /** @var SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $paymentsSettings = $settingsService->getSetting('payments', $paymentType);
+
+        $setDescription = isset($paymentsSettings['description']) && $paymentsSettings['description']['enabled'];
+        $setMetaData = isset($paymentsSettings['metaData']) && $paymentsSettings['metaData']['enabled'];
+
+        $placeholderData = [];
+
+        if ($setDescription || $setMetaData) {
+            $reservationData = $reservation->toArray();
+
+            $reservationData['bookings'] = [
+                $booking->getId() ? $booking->getId()->getValue() : 0 => $booking->toArray()
+            ];
+
+            try {
+                $placeholderData = $placeholderService->getPlaceholdersData(
+                    $reservationData,
+                    $booking->getId() ? $booking->getId()->getValue() : 0,
+                    null,
+                    null,
+                    $booking->getCustomer()
+                );
+            } catch (\Exception $e) {
+                $placeholderData = [];
+            }
+        }
+
+        $metaData = [];
+        $description = '';
+
+        if ($placeholderData && $setDescription) {
+            $description = $placeholderService->applyPlaceholders(
+                $paymentsSettings['description'][$reservationType],
+                $placeholderData
+            );
+        }
+
+        if ($placeholderData && $setMetaData) {
+            foreach ((array)$paymentsSettings['metaData'][$reservationType] as $metaDataKay => $metaDataValue) {
+                $metaData[$metaDataKay] = $placeholderService->applyPlaceholders(
+                    $metaDataValue,
+                    $placeholderData
+                );
+            }
+        }
+
+        return [
+            'description' => $description,
+            'metaData'    => $metaData,
+        ];
     }
 }

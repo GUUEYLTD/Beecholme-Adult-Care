@@ -108,6 +108,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.providerId AS appointment_providerId,
                     a.locationId AS appointment_locationId,
                     a.googleCalendarEventId AS appointment_google_calendar_event_id,
+                    a.zoomMeeting AS appointment_zoom_meeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -184,6 +185,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.providerId AS appointment_providerId,
                     a.locationId AS appointment_locationId,
                     a.googleCalendarEventId AS appointment_google_calendar_event_id,
+                    a.zoomMeeting AS appointment_zoom_meeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -298,7 +300,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -350,7 +352,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -384,7 +386,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -622,7 +624,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     $params[$param] = $value;
                 }
 
-                $where[] = 'pl.locationId IN (' . implode(', ', $queryLocations) . ')';
+                $where[] = 'a.locationId IN (' . implode(', ', $queryLocations) . ')';
             }
 
             if (isset($criteria['bookingId'])) {
@@ -649,6 +651,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.providerId AS appointment_providerId,
                     a.locationId AS appointment_locationId,
                     a.googleCalendarEventId AS appointment_google_calendar_event_id,
+                    a.zoomMeeting AS appointment_zoom_meeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -694,6 +697,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     s.timeAfter AS service_timeAfter,
                     s.timeBefore AS service_timeBefore,
                     s.duration AS service_duration,
+                    s.settings AS service_settings,
                     
                     p.id AS payment_id,
                     p.amount AS payment_amount,

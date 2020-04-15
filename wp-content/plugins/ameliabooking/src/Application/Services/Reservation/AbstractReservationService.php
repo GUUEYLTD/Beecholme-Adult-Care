@@ -27,7 +27,6 @@ use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\Factory\Payment\PaymentFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
-use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
@@ -304,7 +303,12 @@ abstract class AbstractReservationService implements ReservationServiceInterface
         $result->setMessage('Successfully added booking');
         $result->setData([
             'type'                     => $bookingType->getValue(),
-            $bookingType->getValue()   => $reservation->getReservation()->toArray(),
+            $bookingType->getValue()   => array_merge(
+                $reservation->getReservation()->toArray(),
+                ['bookings' => [
+                    $reservation->getBooking()->toArray()
+                ]]
+            ),
             Entities::BOOKING          => $reservation->getBooking()->toArray(),
             'utcTime'                  => $this->getBookingPeriods(
                 $reservation->getReservation(),
@@ -346,7 +350,7 @@ abstract class AbstractReservationService implements ReservationServiceInterface
                 ($booking->getCoupon()->getDiscount()->getValue() ?: 0) +
                 ($booking->getCoupon()->getDeduction()->getValue() ?: 0);
 
-            return ((floor($price * 100) - floor($subtraction * 100)) / 100);
+            return round($price - $subtraction, 2);
         }
 
         return $price;
@@ -405,6 +409,7 @@ abstract class AbstractReservationService implements ReservationServiceInterface
 
     /**
      * @param \DateTime $bookingStart
+     * @param int       $minimumCancelTime
      *
      * @return boolean
      *
@@ -412,13 +417,8 @@ abstract class AbstractReservationService implements ReservationServiceInterface
      * @throws \Interop\Container\Exception\ContainerException
      * @throws BookingCancellationException
      */
-    function inspectMinimumCancellationTime($bookingStart)
+    function inspectMinimumCancellationTime($bookingStart, $minimumCancelTime)
     {
-        /** @var SettingsService $settingsService */
-        $settingsService = $this->container->get('domain.settings.service');
-
-        $minimumCancelTime = $settingsService->getCategorySettings('general')['minimumTimeRequirementPriorToCanceling'];
-
         if (DateTimeService::getNowDateTimeObject() >=
             DateTimeService::getCustomDateTimeObject(
                 $bookingStart->format('Y-m-d H:i:s'))->modify("-{$minimumCancelTime} second")

@@ -111,7 +111,7 @@ class GetAppointmentsCommandHandler extends CommandHandler
             $customFieldsValues = [];
 
             foreach ((array)$appointment['bookings'] as $booking) {
-                $customers[] = $booking['customer']['firstName'] . ' ' . $booking['customer']['lastName'];
+                $customers[] = $booking['customer']['firstName'] . ' ' . $booking['customer']['lastName'] . ' ' . ($booking['customer']['email'] ?: '') . ' ' . ($booking['customer']['phone'] ?: '');
                 $customFieldsJson = json_decode($booking['customFields'], true);
                 foreach ((array)$customFieldsJson as $customFiled) {
                     if (array_key_exists('type', $customFiled) && $customFiled['type'] === 'file') {

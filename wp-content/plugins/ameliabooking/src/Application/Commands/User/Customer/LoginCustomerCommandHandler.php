@@ -6,6 +6,7 @@ use AmeliaBooking\Application\Services\User\CustomerApplicationService;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\LoginType;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\WP\UserService\UserService;
 
@@ -43,7 +44,7 @@ class LoginCustomerCommandHandler extends CommandHandler
         $user = $this->container->get('logged.in.user');
 
         if ($user && $user->getId() !== null) {
-            $result = $customerAS->getAuthenticatedUserResponse($user, true, false);
+            $result = $customerAS->getAuthenticatedUserResponse($user, true, false, LoginType::WP_USER);
 
             $result->setData(array_merge($result->getData(), ['is_wp_user' => true]));
 
@@ -52,9 +53,11 @@ class LoginCustomerCommandHandler extends CommandHandler
 
         if ($command->getField('checkIfWpUser')) {
             $result->setResult(CommandResult::RESULT_SUCCESS);
-            $result->setData([
+            $result->setData(
+                [
                 'authentication_required' => true
-            ]);
+                ]
+            );
 
             return $result;
         }
@@ -68,22 +71,26 @@ class LoginCustomerCommandHandler extends CommandHandler
             if ($user === null) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setMessage('Could not retrieve user');
-                $result->setData([
-                    'reauthorize' => true
-                ]);
+                $result->setData(
+                    [
+                        'reauthorize' => true
+                    ]
+                );
 
                 return $result;
             }
 
-            return $customerAS->getAuthenticatedUserResponse($user, true, true);
+            return $customerAS->getAuthenticatedUserResponse($user, true, true, $user->getLoginType());
         }
 
         if (!$command->getField('email') || !$command->getField('password')) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Could not retrieve user');
-            $result->setData([
-                'invalid_credentials' => true
-            ]);
+            $result->setData(
+                [
+                    'invalid_credentials' => true
+                ]
+            );
 
             return $result;
         }
@@ -103,19 +110,21 @@ class LoginCustomerCommandHandler extends CommandHandler
             $user = $userService->getAuthenticatedUser($command->getField('email'), $command->getField('password'));
 
             if ($user) {
-                return $customerAS->getAuthenticatedUserResponse($user, true, false);
+                return $customerAS->getAuthenticatedUserResponse($user, true, false, LoginType::WP_CREDENTIALS);
             }
 
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Could not retrieve user');
-            $result->setData([
-                'invalid_credentials' => true
-            ]);
+            $result->setData(
+                [
+                    'invalid_credentials' => true
+                ]
+            );
 
             return $result;
         }
 
-        return $customerAS->getAuthenticatedUserResponse($user, true, true);
+        return $customerAS->getAuthenticatedUserResponse($user, true, true, LoginType::AMELIA_CREDENTIALS);
     }
 
 

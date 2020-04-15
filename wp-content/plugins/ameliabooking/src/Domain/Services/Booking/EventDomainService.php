@@ -9,6 +9,7 @@ use AmeliaBooking\Domain\Entity\Gallery\GalleryImage;
 use AmeliaBooking\Domain\Factory\Gallery\GalleryImageFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Recurring;
 use AmeliaBooking\Domain\ValueObjects\String\Cycle;
 
@@ -100,12 +101,13 @@ class EventDomainService
 
     /**
      * @param Collection $eventPeriods
+     * @param bool       $setId
      *
      * @return Collection
      *
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      */
-    public function getClonedEventPeriods($eventPeriods)
+    public function getClonedEventPeriods($eventPeriods, $setId = false)
     {
         $clonedPeriods = new Collection();
 
@@ -126,6 +128,14 @@ class EventDomainService
 
             $newEventPeriod->setPeriodStart(new DateTimeValue($periodStart));
             $newEventPeriod->setPeriodEnd(new DateTimeValue($periodEnd));
+
+            if ($eventPeriod->getZoomMeeting()) {
+                $newEventPeriod->setZoomMeeting($eventPeriod->getZoomMeeting());
+            }
+
+            if ($setId) {
+                $newEventPeriod->setId(new Id($eventPeriod->getId()->getValue()));
+            }
 
             $clonedPeriods->addItem($newEventPeriod);
         }
@@ -202,6 +212,10 @@ class EventDomainService
             $followingEvent->setShow($originEvent->getShow());
         }
 
+        if ($originEvent->getZoomUserId()) {
+            $followingEvent->setZoomUserId($originEvent->getZoomUserId());
+        }
+
         $modifyCycle = 'days';
         $modifyBaseValue = 0;
 
@@ -240,6 +254,34 @@ class EventDomainService
                         $clonedOriginEventPeriod->getPeriodEnd()->getValue()->format('Y-m-d H:i:s')
                     )->modify("+{$modifyValue} {$modifyCycle}")
                 ));
+            } else {
+                $followingEvent->getPeriods()->deleteItem($key);
+            }
+        }
+
+        /** @var EventPeriod $originEventPeriod */
+        foreach ($originEvent->getPeriods()->getItems() as $key => $originEventPeriod) {
+            if (!$followingEvent->getPeriods()->keyExists($key)) {
+                $modifyValue = $modifyBaseValue * ($followingEvent->getRecurring()->getOrder()->getValue() - 1);
+
+                /** @var EventPeriod $followingEventPeriod */
+                $newFollowingEventPeriod = new EventPeriod();
+
+                $newFollowingEventPeriod->setPeriodStart(new DateTimeValue(
+                    DateTimeService::getCustomDateTimeObject(
+                        $originEventPeriod->getPeriodStart()->getValue()->format('Y-m-d H:i:s')
+                    )->modify("+{$modifyValue} {$modifyCycle}")
+                ));
+
+                $newFollowingEventPeriod->setPeriodEnd(new DateTimeValue(
+                    DateTimeService::getCustomDateTimeObject(
+                        $originEventPeriod->getPeriodEnd()->getValue()->format('Y-m-d H:i:s')
+                    )->modify("+{$modifyValue} {$modifyCycle}")
+                ));
+
+                $newFollowingEventPeriod->setEventId(new Id($followingEvent->getId()->getValue()));
+
+                $followingEvent->getPeriods()->addItem($newFollowingEventPeriod);
             }
         }
     }

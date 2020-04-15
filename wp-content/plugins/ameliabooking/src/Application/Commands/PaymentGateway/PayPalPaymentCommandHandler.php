@@ -4,17 +4,13 @@ namespace AmeliaBooking\Application\Commands\PaymentGateway;
 
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
-use AmeliaBooking\Application\Services\Coupon\CouponApplicationService;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
-use AmeliaBooking\Domain\Common\Exceptions\CouponInvalidException;
-use AmeliaBooking\Domain\Common\Exceptions\CouponUnknownException;
-use AmeliaBooking\Domain\Entity\Bookable\AbstractBookable;
-use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
-use AmeliaBooking\Domain\Entity\Coupon\Coupon;
+use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
+use AmeliaBooking\Application\Services\Payment\PaymentApplicationService;
+use AmeliaBooking\Domain\Entity\Booking\Reservation;
+use AmeliaBooking\Domain\Entity\Booking\Validator;
 use AmeliaBooking\Domain\Entity\Entities;
-use AmeliaBooking\Domain\Entity\User\AbstractUser;
-use AmeliaBooking\Domain\Factory\Booking\Appointment\CustomerBookingFactory;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
+use AmeliaBooking\Domain\ValueObjects\String\PaymentType;
 use AmeliaBooking\Infrastructure\Services\Payment\PayPalService;
 use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
 
@@ -26,10 +22,8 @@ use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
 class PayPalPaymentCommandHandler extends CommandHandler
 {
     public $mandatoryFields = [
-        'amount',
-        'couponCode',
         'bookings',
-        'bookable'
+        'payment'
     ];
 
     /**
@@ -52,58 +46,40 @@ class PayPalPaymentCommandHandler extends CommandHandler
 
         /** @var ReservationServiceInterface $reservationService */
         $reservationService = $this->container->get('application.reservation.service')->get($type);
+        /** @var BookingApplicationService $bookingAS */
+        $bookingAS = $this->container->get('application.booking.booking.service');
+        /** @var PaymentApplicationService $paymentAS */
+        $paymentAS = $this->container->get('application.payment.service');
 
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        $validator = new Validator();
 
-        /** @var AbstractUser $user */
-        $user = $customerAS->getNewOrExistingCustomer($command->getField('bookings')[0]['customer'], $result);
+        $validator->setCouponValidation(true);
+        $validator->setCustomFieldsValidation(true);
+        $validator->setTimeSlotValidation(true);
+
+        /** @var Reservation $reservation */
+        $reservation = $reservationService->processBooking(
+            $result,
+            $bookingAS->getAppointmentData($command->getFields()),
+            $validator,
+            false
+        );
 
         if ($result->getResult() === CommandResult::RESULT_ERROR) {
             return $result;
         }
 
-        /** @var CustomerBooking $booking */
-        $booking = CustomerBookingFactory::create($command->getField('bookings')[0]);
+        $additionalInformation = $paymentAS->getBookingInformationForPaymentSettings(
+            $reservation->getReservation(),
+            $reservation->getBooking(),
+            PaymentType::PAY_PAL
+        );
 
-        /** @var AbstractBookable $bookable */
-        $bookable = $reservationService->getBookableEntity($command->getField('bookable'));
-
-        if ($command->getField('couponCode')) {
-            /** @var CouponApplicationService $couponAS */
-            $couponAS = $this->container->get('application.coupon.service');
-
-            try {
-                /** @var Coupon $coupon */
-                $coupon = $couponAS->processCoupon(
-                    $command->getField('couponCode'),
-                    $bookable->getId()->getValue(),
-                    $type,
-                    ($user && $user->getId()) ? $user->getId()->getValue() : null,
-                    true
-                );
-            } catch (CouponUnknownException $e) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage($e->getMessage());
-                $result->setData([
-                    'couponUnknown' => true
-                ]);
-
-                return $result;
-            } catch (CouponInvalidException $e) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage($e->getMessage());
-                $result->setData([
-                    'couponInvalid' => true
-                ]);
-
-                return $result;
-            }
-
-            $booking->setCoupon($coupon);
+        if ($result->getResult() === CommandResult::RESULT_ERROR) {
+            return $result;
         }
 
-        $paymentAmount = $reservationService->getPaymentAmount($booking, $bookable);
+        $paymentAmount = $reservationService->getPaymentAmount($reservation->getBooking(), $reservation->getBookable());
 
         if (!$paymentAmount) {
             $result->setResult(CommandResult::RESULT_ERROR);
@@ -121,9 +97,10 @@ class PayPalPaymentCommandHandler extends CommandHandler
 
         $response = $paymentService->execute(
             [
-                'returnUrl' => AMELIA_ACTION_URL . '/payment/payPal/callback&status=true',
-                'cancelUrl' => AMELIA_ACTION_URL . '/payment/payPal/callback&status=false',
-                'amount'    => $paymentAmount,
+                'returnUrl'   => AMELIA_ACTION_URL . '/payment/payPal/callback&status=true',
+                'cancelUrl'   => AMELIA_ACTION_URL . '/payment/payPal/callback&status=false',
+                'amount'      => $paymentAmount,
+                'description' => $additionalInformation['description']
             ]
         );
 

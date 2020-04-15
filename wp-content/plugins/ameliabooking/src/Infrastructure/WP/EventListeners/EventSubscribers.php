@@ -43,5 +43,6 @@ class EventSubscribers
         $eventListener = new EventEventsListener($container);
         $eventBus->addListener('EventStatusUpdated', $eventListener);
         $eventBus->addListener('EventEdited', $eventListener);
+        $eventBus->addListener('EventAdded', $eventListener);
     }
 }

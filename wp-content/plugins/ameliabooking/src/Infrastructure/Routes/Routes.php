@@ -27,6 +27,7 @@ use AmeliaBooking\Infrastructure\Routes\User\User;
 use AmeliaBooking\Infrastructure\Routes\Report\Report;
 use AmeliaBooking\Infrastructure\Routes\Google\Google;
 use AmeliaBooking\Infrastructure\Routes\CustomField\CustomField;
+use AmeliaBooking\Infrastructure\Routes\Zoom\Zoom;
 use Slim\App;
 
 /**
@@ -86,5 +87,7 @@ class Routes
         User::routes($app);
 
         CustomField::routes($app);
+
+        Zoom::routes($app);
     }
 }

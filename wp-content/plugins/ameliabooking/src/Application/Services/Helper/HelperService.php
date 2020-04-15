@@ -4,8 +4,12 @@ namespace AmeliaBooking\Application\Services\Helper;
 
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\LoginType;
 use AmeliaBooking\Infrastructure\Common\Container;
 use Firebase\JWT\JWT;
+use Interop\Container\Exception\ContainerException;
+use DateTime;
+use Exception;
 
 /**
  * Class HelperService
@@ -32,7 +36,7 @@ class HelperService
      * @param int|float $price
      *
      * @return string
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function getFormattedPrice($price)
     {
@@ -75,7 +79,7 @@ class HelperService
     }
 
     /**
-     * @param $seconds
+     * @param int $seconds
      *
      * @return string
      */
@@ -84,32 +88,28 @@ class HelperService
         $hours = floor($seconds / 3600);
         $minutes = $seconds / 60 % 60;
 
-        $duration =
-            ($hours ? ($hours . 'h ') : '') . ($hours && $minutes ? ' ' : '') . ($minutes ? ($minutes . 'min') : '');
-
-        return $duration;
+        return ($hours ? ($hours . 'h ') : '') . ($hours && $minutes ? ' ' : '') . ($minutes ? ($minutes . 'min') : '');
     }
 
     /**
      * @param string $email
      * @param string $secret
      * @param int    $expireTimeStamp
+     * @param int    $loginType
      *
      * @return mixed
-     * @throws \Slim\Exception\ContainerException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws Exception
      */
-    public function getGeneratedJWT($email, $secret, $expireTimeStamp)
+    public function getGeneratedJWT($email, $secret, $expireTimeStamp, $loginType)
     {
-        /** @var \DateTime $now */
-        $now = new \DateTime();
+        /** @var DateTime $now */
+        $now = new DateTime();
 
         $data = [
             'iss'   => AMELIA_SITE_URL,
             'iat'   => $now->getTimestamp(),
-            'email' => $email
+            'email' => $email,
+            'wp'    => $loginType
         ];
 
         if ($expireTimeStamp !== null) {
@@ -122,15 +122,15 @@ class HelperService
     /**
      * @param string $email
      * @param string $type
+     * @param string $dateStartString
+     * @param string $dateEndString
      *
      * @return string
      *
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
+     * @throws Exception
      */
-    public function getCustomerCabinetUrl($email, $type)
+    public function getCustomerCabinetUrl($email, $type, $dateStartString, $dateEndString)
     {
         /** @var SettingsService $cabinetSettings */
         $cabinetSettings = $this->container->get('domain.settings.service')->getSetting('roles', 'customerCabinet');
@@ -142,11 +142,16 @@ class HelperService
                 $this->getGeneratedJWT(
                     $email,
                     $cabinetSettings['urlJwtSecret'],
-                    DateTimeService::getNowDateTimeObject()->getTimestamp() + $cabinetSettings['tokenValidTime']
+                    DateTimeService::getNowDateTimeObject()->getTimestamp() + $cabinetSettings['tokenValidTime'],
+                    LoginType::AMELIA_URL_TOKEN
                 ) : '';
 
             $cabinetPlaceholder = substr($cabinetURL, -1) === '/' ?
                 substr($cabinetURL, 0, -1) . $tokenParam : $cabinetURL . $tokenParam;
+
+            if ($cabinetSettings['filterDate'] && $dateStartString && $dateEndString) {
+                $cabinetPlaceholder .= '&end=' . $dateEndString . '&start=' . $dateStartString;
+            }
         }
 
         return $cabinetPlaceholder;

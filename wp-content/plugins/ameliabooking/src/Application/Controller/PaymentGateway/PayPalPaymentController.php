@@ -20,10 +20,15 @@ class PayPalPaymentController extends Controller
      */
     protected $allowedFields = [
         'type',
-        'amount',
-        'bookable',
+        'bookings',
+        'bookingStart',
+        'notifyParticipants',
+        'eventId',
+        'serviceId',
+        'providerId',
+        'locationId',
         'couponCode',
-        'bookings'
+        'payment'
     ];
 
     /**
