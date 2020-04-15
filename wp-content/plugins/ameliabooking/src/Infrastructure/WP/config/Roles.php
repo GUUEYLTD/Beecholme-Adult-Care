@@ -39,6 +39,7 @@ class Roles
         'amelia_read_others_calendar',
         'amelia_read_others_appointments',
         'amelia_read_others_employees',
+        'amelia_read_others_customers',
 
         'amelia_write_dashboard',
         'amelia_write_calendar',
@@ -117,6 +118,7 @@ class Roles
                     'amelia_read_appointments'         => true,
                     'amelia_read_events'               => true,
                     'amelia_read_employees'            => true,
+                    'amelia_read_others_customers'     => true,
                     'amelia_write_employees'           => true,
                     'amelia_write_status_appointments' => true,
                     'amelia_write_status_events'       => true,
@@ -150,6 +152,7 @@ class Roles
                     'amelia_read_others_calendar'      => true,
                     'amelia_read_others_appointments'  => true,
                     'amelia_read_others_employees'     => true,
+                    'amelia_read_others_customers'     => true,
                     'amelia_write_dashboard'           => true,
                     'amelia_write_calendar'            => true,
                     'amelia_write_appointments'        => true,

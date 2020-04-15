@@ -29,9 +29,15 @@ $entries['errorHandler'] = function (Container $c) {
                 $status = \AmeliaBooking\Application\Controller\Controller::STATUS_INTERNAL_SERVER_ERROR;
         }
 
+        $responseMessage = ['message' => $exception->getMessage()];
+
+        if (method_exists($request, 'getParam') && $request->getParam('showAmeliaSqlExceptions')) {
+            $responseMessage['exception'] = $exception->getPrevious() ? $exception->getPrevious()->getMessage() : '';
+        }
+
         return $response->withStatus($status)
             ->withHeader('Content-Type', 'text/html')
-            ->write(json_encode(['message' => $exception->getMessage()]));
+            ->write(json_encode($responseMessage));
     };
 };
 

@@ -37,18 +37,65 @@
       short_code: {
         type: 'string',
         default: '[ameliacustomerpanel]'
+      },
+      appointmentsPanel: {
+        type: 'boolean',
+        default: true
+      },
+      eventsPanel: {
+        type: 'boolean',
+        default: true
       }
     },
     edit: function (props) {
       var inspectorElements = []
+      var attributes = props.attributes
 
-      function getShortCode(props, attributes) {
-        var shortCode = '[ameliacustomerpanel]'
+      function getShortCode (props, attributes) {
+        var shortCode = '[ameliacustomerpanel'
+
+        if (!attributes.appointmentsPanel && !attributes.eventsPanel) {
+          shortCode = 'Notice: Please select at least one panel.'
+        } else {
+          if (attributes.appointmentsPanel) {
+            shortCode += ' appointments=1'
+          }
+
+          if (attributes.eventsPanel) {
+            shortCode += ' events=1'
+          }
+
+          shortCode += ']'
+        }
 
         props.setAttributes({short_code: shortCode})
 
-        return shortCode;
+        return shortCode
       }
+
+      inspectorElements.push(el(components.PanelRow,
+        {},
+        el('label', {htmlFor: 'amelia-js-appointments-panel'}, wpAmeliaLabels.appointments),
+        el(components.FormToggle, {
+          id: 'amelia-js-appointments-panel',
+          checked: attributes.appointmentsPanel,
+          onChange: function () {
+            return props.setAttributes({appointmentsPanel: !props.attributes.appointmentsPanel})
+          }
+        })
+      ))
+
+      inspectorElements.push(el(components.PanelRow,
+        {},
+        el('label', {htmlFor: 'amelia-js-events-panel'}, wpAmeliaLabels.events),
+        el(components.FormToggle, {
+          id: 'amelia-js-events-panel',
+          checked: attributes.eventsPanel,
+          onChange: function () {
+            return props.setAttributes({eventsPanel: !props.attributes.eventsPanel})
+          }
+        })
+      ))
 
       return [
         el(blockControls, {key: 'controls'}),

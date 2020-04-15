@@ -11,6 +11,8 @@ use AmeliaBooking\Domain\Entity\Booking\Event\EventPeriod;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\String\Url;
+use AmeliaBooking\Domain\Factory\Zoom\ZoomFactory;
 
 /**
  * Class EventPeriodFactory
@@ -44,6 +46,14 @@ class EventPeriodFactory
 
         if (isset($data['periodEnd'])) {
             $eventPeriod->setPeriodEnd(new DateTimeValue(DateTimeService::getCustomDateTimeObject($data['periodEnd'])));
+        }
+
+        if (!empty($data['zoomMeeting']['id'])) {
+            $zoomMeeting = ZoomFactory::create(
+                $data['zoomMeeting']
+            );
+
+            $eventPeriod->setZoomMeeting($zoomMeeting);
         }
 
         return $eventPeriod;

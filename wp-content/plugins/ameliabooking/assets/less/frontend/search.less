@@ -5,6 +5,10 @@
 
   h2 {
     padding: 0;
+
+    &:before {
+      display: none;
+    }
   }
 }
 
@@ -48,6 +52,10 @@
           margin: 0 0 @margin-small;
           font-size: @small-fs;
           color: @color-text-second;
+        }
+
+        .el-checkbox__label {
+          display: inline;
         }
       }
 
@@ -464,6 +472,7 @@
 
                 .el-checkbox__label {
                   padding-left: 0;
+                  display: inline;
                 }
 
                 .el-row {
@@ -494,7 +503,7 @@
                 border-bottom: 1px solid @color-divider-gray;
 
                 h4 {
-                  margin-bottom: 0;
+                  margin: 0;
                   font-weight: @regular;
                 }
               }

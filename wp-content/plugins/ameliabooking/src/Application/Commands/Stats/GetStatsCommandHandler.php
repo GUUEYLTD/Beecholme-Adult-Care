@@ -48,7 +48,6 @@ class GetStatsCommandHandler extends CommandHandler
 
         /** @var AppointmentRepository $appointmentRepo */
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
-
         /** @var StatsService $statsAS */
         $statsAS = $this->container->get('application.stats.service');
         /** @var SettingsService $settingsDS */
@@ -101,9 +100,6 @@ class GetStatsCommandHandler extends CommandHandler
             return $result;
         }
 
-        // Get general settings
-        $generalSettings = $settingsDS->getCategorySettings('general');
-
         // Get current date time object
         $currentDateTime = DateTimeService::getNowDateTimeObject();
 
@@ -128,9 +124,14 @@ class GetStatsCommandHandler extends CommandHandler
                 }
             }
 
+            $minimumCancelTimeInSeconds = $settingsDS
+                ->getEntitySettings($appointment->getService()->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToCanceling();
+
             $minimumCancelTime = DateTimeService::getCustomDateTimeObject(
                 $appointment->getBookingStart()->getValue()->format('Y-m-d H:i:s')
-            )->modify("-{$generalSettings['minimumTimeRequirementPriorToCanceling']} seconds");
+            )->modify("-{$minimumCancelTimeInSeconds} seconds");
 
             $upcomingAppointmentsArr[] = array_merge(
                 $appointment->toArray(),

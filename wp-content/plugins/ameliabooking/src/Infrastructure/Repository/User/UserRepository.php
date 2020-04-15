@@ -53,6 +53,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             ':pictureThumbPath' => $data['pictureThumbPath'],
             ':password'         => isset($data['password']) ? $data['password'] : null,
             ':usedTokens'       => isset($data['usedTokens']) ? $data['usedTokens'] : null,
+            ':zoomUserId'       => isset($data['zoomUserId']) ? $data['zoomUserId'] : null,
         ];
 
         try {
@@ -70,6 +71,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 `birthday`,
                 `pictureFullPath`,
                 `pictureThumbPath`,
+                `zoomUserId`,
                 `usedTokens`,
                 `password`
                 ) VALUES (
@@ -85,6 +87,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 STR_TO_DATE(:birthday, '%Y-%m-%d'),
                 :pictureFullPath,
                 :pictureThumbPath,
+                :zoomUserId,
                 :usedTokens,
                 :password
                 )"
@@ -96,7 +99,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
             }
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         return $this->connection->lastInsertId();
@@ -124,6 +127,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             ':birthday'         => isset($data['birthday']) ? $data['birthday']->format('Y-m-d') : null,
             ':pictureFullPath'  => $data['pictureFullPath'],
             ':pictureThumbPath' => $data['pictureThumbPath'],
+            ':zoomUserId'       => isset($data['zoomUserId']) ? $data['zoomUserId'] : null,
             ':id'               => $id,
         ];
 
@@ -139,6 +143,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 `phone` = :phone,
                 `gender` = :gender,
                 `birthday` = STR_TO_DATE(:birthday, '%Y-%m-%d'),
+                `zoomUserId` = :zoomUserId,
                 `pictureFullPath` = :pictureFullPath,
                 `pictureThumbPath` = :pictureThumbPath
                 WHERE 
@@ -153,7 +158,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -249,25 +254,48 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
         $items = [];
         foreach ($rows as $row) {
-            $items[] = call_user_func([static::FACTORY, 'create'], $row);
+            $items[$row['id']] = call_user_func([static::FACTORY, 'create'], $row);
         }
 
         return new Collection($items);
     }
 
     /**
+     * Returns Collection of all customers and other users that have at least one booking
+     *
      * @return Collection
-     * @throws InvalidArgumentException
      * @throws QueryExecutionException
+     * @throws InvalidArgumentException
      */
-    public function getAllVisible()
+    public function getAllWithoutBookings()
     {
-        try {
-            $statement = $this->connection->prepare($this->selectQuery() . ' WHERE status = :status');
+        $bookingsTable = CustomerBookingsTable::getTableName();
 
-            $statement->execute([
-                ':status' => Status::VISIBLE
-            ]);
+        try {
+            $statement = $this->connection->query("
+                SELECT
+                    u.id AS id,
+                    u.firstName AS firstName,
+                    u.lastName AS lastName,
+                    u.email AS email,
+                    u.note AS note,
+                    u.phone AS phone,
+                    u.gender AS gender,
+                    u.status AS status
+                FROM {$this->table} u
+                LEFT JOIN {$bookingsTable} cb ON cb.customerId = u.id
+                WHERE
+                (u.type = 'customer' OR (cb.id IS NOT NULL AND u.type IN ('admin', 'provider', 'manager')))
+                AND cb.appointmentId IS NULL
+                AND u.id NOT IN (
+                    SELECT u2.id
+                    FROM {$this->table} u2
+                    INNER JOIN {$bookingsTable} cb2 ON cb2.customerId = u2.id
+                    WHERE cb2.appointmentId IS NOT NULL
+                )
+                GROUP BY u.id
+                ORDER BY CONCAT(firstName, ' ', lastName)
+            ");
 
             $rows = $statement->fetchAll();
         } catch (\Exception $e) {
@@ -276,7 +304,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
         $items = [];
         foreach ($rows as $row) {
-            $items[] = call_user_func([static::FACTORY, 'create'], $row);
+            $items[$row['id']] = call_user_func([static::FACTORY, 'create'], $row);
         }
 
         return new Collection($items);

@@ -14,12 +14,12 @@ use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Entity\User\Customer;
-use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\LoginType;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
@@ -96,39 +96,6 @@ class CustomerApplicationService
         }
 
         return true;
-    }
-
-    /**
-     * @param array $customers
-     *
-     * @return array
-     * @throws \Interop\Container\Exception\ContainerException
-     */
-    public function removeAllExceptCurrentUser($customers)
-    {
-        /** @var Provider $currentUser */
-        $currentUser = $this->container->get('logged.in.user');
-
-        if ($currentUser === null) {
-            return [];
-        }
-
-        if ($currentUser->getType() === 'customer'
-            && !$this->container->getPermissionsService()->currentUserCanReadOthers(Entities::APPOINTMENTS)
-        ) {
-            if ($currentUser->getId() === null) {
-                return [];
-            }
-
-            $currentUserId = $currentUser->getId()->getValue();
-            foreach ($customers as $key => $provider) {
-                if ($provider['id'] !== $currentUserId) {
-                    unset($customers[$key]);
-                }
-            }
-        }
-
-        return array_values($customers);
     }
 
     /**
@@ -370,6 +337,8 @@ class CustomerApplicationService
         /** @var Customer $user */
         $user = $userRepository->getByEmail($jwtObject->email, true, true);
 
+        $user->setLoginType($jwtObject->wp);
+
         if (!($user instanceof AbstractUser)) {
             return null;
         }
@@ -406,6 +375,7 @@ class CustomerApplicationService
      * @param AbstractUser $user
      * @param boolean      $sendToken
      * @param boolean      $checkIfSavedPassword
+     * @param int          $loginType
      *
      * @return CommandResult
      *
@@ -415,10 +385,10 @@ class CustomerApplicationService
      * @throws \Firebase\JWT\SignatureInvalidException
      * @throws \Firebase\JWT\ExpiredException
      * @throws \Firebase\JWT\BeforeValidException
-     * @throws \Slim\Exception\ContainerException
      * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Exception
      */
-    public function getAuthenticatedUserResponse($user, $sendToken, $checkIfSavedPassword)
+    public function getAuthenticatedUserResponse($user, $sendToken, $checkIfSavedPassword, $loginType)
     {
         /** @var HelperService $helperService */
         $helperService = $this->container->get('application.helper.service');
@@ -432,7 +402,8 @@ class CustomerApplicationService
 
         $responseData = [Entities::USER => $user->toArray(), 'is_wp_user' => false];
 
-        if ($checkIfSavedPassword &&
+        if (($loginType === LoginType::AMELIA_URL_TOKEN || $loginType === LoginType::AMELIA_CREDENTIALS) &&
+            $checkIfSavedPassword &&
             $cabinetSettings['loginEnabled'] &&
             ($user->getPassword() === null || $user->getPassword()->getValue() === null)
         ) {
@@ -443,7 +414,8 @@ class CustomerApplicationService
             $responseData['token'] = $helperService->getGeneratedJWT(
                 $user->getEmail()->getValue(),
                 $cabinetSettings['headerJwtSecret'],
-                DateTimeService::getNowDateTimeObject()->getTimestamp() + $cabinetSettings['tokenValidTime']
+                DateTimeService::getNowDateTimeObject()->getTimestamp() + $cabinetSettings['tokenValidTime'],
+                $loginType
             );
         }
 
@@ -489,6 +461,10 @@ class CustomerApplicationService
             throw new AuthorizationException('Authorization Exception.');
         }
 
+        if (!$isAmeliaWPUser && $user->getLoginType() === LoginType::WP_USER) {
+            throw new AuthorizationException('Authorization Exception.');
+        }
+
         // if user is not logged in as Word Press User or token not exist/valid
         if (!$this->isAmeliaUser($user)) {
             throw new AuthorizationException('Authorization Exception.');
@@ -502,6 +478,7 @@ class CustomerApplicationService
             $userType !== AbstractUser::USER_ROLE_MANAGER &&
             $cabinetSettings['loginEnabled'] &&
             $this->isAmeliaUser($user) &&
+            ($user->getLoginType() === LoginType::AMELIA_URL_TOKEN || $user->getLoginType() === LoginType::AMELIA_CREDENTIALS) &&
             (!$user->getPassword() || !$user->getPassword()->getValue())
         ) {
             throw new AuthorizationException('Authorization Exception.');

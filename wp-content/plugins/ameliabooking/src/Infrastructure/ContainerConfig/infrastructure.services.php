@@ -98,3 +98,16 @@ $entries['infrastructure.frontend.lessParser.service'] = function () {
 $entries['infrastructure.google.calendar.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService($c);
 };
+
+/**
+ * Zoom Service
+ *
+ * @param Container $c
+ *
+ * @return \AmeliaBooking\Infrastructure\Services\Zoom\ZoomService
+ */
+$entries['infrastructure.zoom.service'] = function ($c) {
+    return new AmeliaBooking\Infrastructure\Services\Zoom\ZoomService(
+        $c->get('domain.settings.service')
+    );
+};

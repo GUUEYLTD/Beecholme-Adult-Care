@@ -269,6 +269,20 @@
 
           case ('customer_panel'):
 
+            viewBody.push({
+              type: 'checkbox',
+              name: 'am_cabinet_appointments',
+              label: wpAmeliaLabels.appointments,
+              classes: 'am_cabinet_appointments',
+            })
+
+            viewBody.push({
+              type: 'checkbox',
+              name: 'am_cabinet_events',
+              label: wpAmeliaLabels.events,
+              classes: 'am_cabinet_events',
+            })
+
             break
         }
 
@@ -348,7 +362,15 @@
                 break
 
               case ('customer_panel'):
-                editor.insertContent('[ameliacustomerpanel]')
+                if (e.data.am_cabinet_appointments) {
+                  shortCodeString += ' appointments=1'
+                }
+
+                if (e.data.am_cabinet_events) {
+                  shortCodeString += ' events=1'
+                }
+
+                editor.insertContent('[ameliacustomerpanel' + shortCodeString + ']')
 
                 break
             }

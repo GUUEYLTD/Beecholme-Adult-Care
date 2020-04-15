@@ -156,11 +156,14 @@ class GetAppointmentsCommandHandler extends CommandHandler
                 continue;
             }
 
+            $minimumCancelTimeInSeconds = $settingsDS
+                ->getEntitySettings($appointment->getService()->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToCanceling();
+
             $minimumCancelTime = DateTimeService::getCustomDateTimeObject(
                 $appointment->getBookingStart()->getValue()->format('Y-m-d H:i:s')
-            )->modify(
-                "-{$settingsDS->getCategorySettings('general')['minimumTimeRequirementPriorToCanceling']} seconds"
-            );
+            )->modify("-{$minimumCancelTimeInSeconds} seconds");
 
             $date = $appointment->getBookingStart()->getValue()->format('Y-m-d');
 

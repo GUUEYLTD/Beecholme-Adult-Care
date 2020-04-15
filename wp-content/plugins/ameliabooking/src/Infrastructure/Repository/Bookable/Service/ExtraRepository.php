@@ -72,7 +72,7 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -123,7 +123,7 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
 
             return $result;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 }

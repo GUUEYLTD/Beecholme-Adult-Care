@@ -86,7 +86,7 @@ class DeleteUserCommandHandler extends CommandHandler
             }
         }
 
-        if ($user->getType() === AbstractUser::USER_ROLE_CUSTOMER) {
+        if ($user->getType() === AbstractUser::USER_ROLE_CUSTOMER || $user->getType() === AbstractUser::USER_ROLE_ADMIN) {
             /** @var CustomerApplicationService $customerApplicationService */
             $customerApplicationService = $this->getContainer()->get('application.user.customer.service');
 

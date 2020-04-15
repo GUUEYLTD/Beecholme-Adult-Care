@@ -10,6 +10,7 @@ use AmeliaBooking\Application\Controller\Report\GetCustomersController;
 use AmeliaBooking\Application\Controller\Report\GetAppointmentsController;
 use AmeliaBooking\Application\Controller\Report\GetPaymentsController;
 use AmeliaBooking\Application\Controller\Report\GetCouponsController;
+use AmeliaBooking\Application\Controller\Report\GetEventAttendeesController;
 use Slim\App;
 
 /**
@@ -33,5 +34,7 @@ class Report
         $app->post('/report/payments', GetPaymentsController::class)->setOutputBuffering(false);
 
         $app->post('/report/coupons', GetCouponsController::class)->setOutputBuffering(false);
+
+        $app->post('/report/event/attendees', GetEventAttendeesController::class)->setOutputBuffering(false);
     }
 }

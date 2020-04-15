@@ -11,6 +11,7 @@ use AmeliaBooking\Domain\Entity\Booking\AbstractBooking;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Location\Location;
 use AmeliaBooking\Domain\Entity\User\Provider;
+use AmeliaBooking\Domain\Entity\Zoom\ZoomMeeting;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
@@ -49,6 +50,9 @@ class Appointment extends AbstractBooking
 
     /** @var DateTimeValue */
     protected $bookingEnd;
+
+    /** @var ZoomMeeting */
+    private $zoomMeeting;
 
     /**
      * Appointment constructor.
@@ -226,6 +230,22 @@ class Appointment extends AbstractBooking
     }
 
     /**
+     * @return ZoomMeeting
+     */
+    public function getZoomMeeting()
+    {
+        return $this->zoomMeeting;
+    }
+
+    /**
+     * @param ZoomMeeting $zoomMeeting
+     */
+    public function setZoomMeeting(ZoomMeeting $zoomMeeting)
+    {
+        $this->zoomMeeting = $zoomMeeting;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -241,6 +261,7 @@ class Appointment extends AbstractBooking
                 'location'              => null !== $this->getLocation() ? $this->getLocation()->toArray() : null,
                 'googleCalendarEventId' => null !== $this->getGoogleCalendarEventId() ?
                     $this->getGoogleCalendarEventId()->getValue() : null,
+                'zoomMeeting'           => $this->getZoomMeeting() ? $this->getZoomMeeting()->toArray() : null,
                 'bookingStart'          => $this->getBookingStart()->getValue()->format('Y-m-d H:i:s'),
                 'bookingEnd'            => $this->getBookingEnd()->getValue()->format('Y-m-d H:i:s'),
                 'type'                  => $this->getType()->getValue()

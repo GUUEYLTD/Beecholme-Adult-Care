@@ -10,6 +10,8 @@ use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
+use AmeliaBooking\Domain\ValueObjects\String\Url;
+use AmeliaBooking\Domain\Factory\Zoom\ZoomFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
@@ -70,6 +72,14 @@ class AppointmentFactory
             $appointment->setGoogleCalendarEventId(new Token($data['googleCalendarEventId']));
         }
 
+        if (!empty($data['zoomMeeting']['id'])) {
+            $zoomMeeting = ZoomFactory::create(
+                $data['zoomMeeting']
+            );
+
+            $appointment->setZoomMeeting($zoomMeeting);
+        }
+
         $bookings = new Collection();
 
         if (isset($data['bookings'])) {
@@ -107,6 +117,9 @@ class AppointmentFactory
             $serviceId = isset($row['service_id']) ? $row['service_id'] : null;
 
             if (!array_key_exists($appointmentId, $appointments)) {
+                $zoomMeetingJson = !empty($row['appointment_zoom_meeting']) ?
+                    json_decode($row['appointment_zoom_meeting'], true) : null;
+
                 $appointments[$appointmentId] = [
                     'id'                    => $appointmentId,
                     'bookingStart'          => DateTimeService::getCustomDateTimeFromUtc(
@@ -125,6 +138,11 @@ class AppointmentFactory
                         $row['appointment_internalNotes'] : null,
                     'status'                => $row['appointment_status'],
                     'googleCalendarEventId' => $row['appointment_google_calendar_event_id'],
+                    'zoomMeeting'    => [
+                        'id'       => $zoomMeetingJson ? $zoomMeetingJson['id'] : null,
+                        'startUrl' => $zoomMeetingJson ? $zoomMeetingJson['startUrl'] : null,
+                        'joinUrl'  => $zoomMeetingJson ? $zoomMeetingJson['joinUrl'] : null,
+                    ],
                 ];
             }
 
@@ -225,6 +243,8 @@ class AppointmentFactory
                     ? $row['service_timeAfter'] : null;
                 $appointments[$appointmentId]['service']['aggregatedPrice'] = isset($row['service_aggregatedPrice'])
                     ? $row['service_aggregatedPrice'] : null;
+                $appointments[$appointmentId]['service']['settings'] = isset($row['service_settings'])
+                    ? $row['service_settings'] : null;
             }
         }
 

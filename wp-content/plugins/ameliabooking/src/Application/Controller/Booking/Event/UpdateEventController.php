@@ -39,7 +39,8 @@ class UpdateEventController extends Controller
         'locationId',
         'customLocation',
         'settings',
-        'applyGlobally'
+        'applyGlobally',
+        'zoomUserId',
     ];
 
     /**

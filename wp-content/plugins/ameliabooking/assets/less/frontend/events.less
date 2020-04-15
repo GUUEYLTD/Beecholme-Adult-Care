@@ -28,6 +28,19 @@
 
 .amelia-app-booking {
   #am-events-booking {
+    .am-empty-state {
+      font-family: inherit;
+      text-align: center;
+      padding: @padding-big 0;
+      max-width: 300px;
+      margin: 0 auto;
+      svg {
+        path#Oval-8 {
+          fill: @color-accent;
+        }
+      }
+    }
+
     .el-textarea__inner {
       &:focus {
         border-color: @color-gray;
@@ -505,5 +518,6 @@
         }
       }
     }
+
   }
 }

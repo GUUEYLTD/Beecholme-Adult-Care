@@ -37,6 +37,7 @@
     color: @color-blue;
     cursor: pointer;
     font-weight: 500;
+    box-shadow: none;
 
     &:hover {
       text-decoration: underline;
@@ -491,6 +492,12 @@
         line-height: 1.1;
       }
 
+      h3 + span + span {
+        color: @color-text-second;
+        display: block;
+        line-height: 1.1;
+      }
+
       h4 {
         margin-top: 0;
         margin-bottom: 0;
@@ -607,6 +614,18 @@
 
       .am-appointment-collapsed-field:nth-child(odd) {
         clear: both;
+      }
+
+      .am-zoom {
+        .am-zoom-col-icon {
+          display: flex;
+          align-items: end;
+
+          svg {
+            width: 25px;
+            margin-right: 8px;
+          }
+        }
       }
     }
   }
@@ -1669,17 +1688,17 @@
     overflow: visible;
     .el-form-item__content {
       height: 100%;
-      &:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 12px;
-        bottom: 2px;
-        right: 8px;
-        height: 16px;
-        width: 16px;
-        background: #fff url('../../img/calendar-grey.svg') no-repeat center / contain;
-      }
+      //&:after {
+      //  content: "";
+      //  display: block;
+      //  position: absolute;
+      //  top: 12px;
+      //  bottom: 2px;
+      //  right: 8px;
+      //  height: 16px;
+      //  width: 16px;
+      //  background: #fff url('../../img/calendar-grey.svg') no-repeat center / contain;
+      //}
       input {
         padding-right: @padding-big;
       }

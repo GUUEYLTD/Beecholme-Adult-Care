@@ -8,6 +8,7 @@ namespace AmeliaBooking\Infrastructure\WP\GutenbergBlock;
 
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
@@ -141,7 +142,6 @@ class GutenbergBlock
      */
     public static function getEntitiesData()
     {
-
         return (new self)->getAllEntitiesForGutenbergBlocks();
     }
 
@@ -204,7 +204,13 @@ class GutenbergBlock
                 $provider->setServiceList($providerServiceList);
             }
 
-            $resultData['employees'] = $providerAS->removeAllExceptCurrentUser($providers->toArray());
+            /** @var Provider $currentUser */
+            $currentUser = self::$container->get('logged.in.user');
+
+            $resultData['employees'] = $providerAS->removeAllExceptUser(
+                $providers->toArray(),
+                $currentUser
+            );
 
             $finalData = self::getOnlyCatSerLocEmp($resultData);
 

@@ -144,8 +144,18 @@ class GetEventsCommandHandler extends CommandHandler
             $bookingCloses = $event->getBookingCloses() ?
                 $event->getBookingCloses()->getValue() : $event->getPeriods()->getItem(0)->getPeriodStart()->getValue();
 
+            $minimumCancelTimeInSeconds = $settingsDS
+                ->getEntitySettings($event->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToCanceling();
+
+            $minimumCancelTime = DateTimeService::getCustomDateTimeObject(
+                $event->getPeriods()->getItem(0)->getPeriodStart()->getValue()->format('Y-m-d H:i:s')
+            )->modify("-{$minimumCancelTimeInSeconds} seconds");
+
             $eventsInfo = [
                 'bookable'   => $reservationService->isBookable($event, null, $currentDateTime),
+                'cancelable' => $currentDateTime <= $minimumCancelTime,
                 'opened'     => ($currentDateTime > $bookingOpens) && ($currentDateTime < $bookingCloses),
                 'closed'     => $currentDateTime > $bookingCloses,
                 'places'     => $event->getMaxCapacity()->getValue() - $persons

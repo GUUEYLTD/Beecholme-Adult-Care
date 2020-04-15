@@ -20,7 +20,9 @@ class CabinetShortcodeService extends AmeliaShortcodeService
     {
         $atts = shortcode_atts(
             [
-                'counter' => self::$counter
+                'counter'      => self::$counter,
+                'appointments' => null,
+                'events'       => null
             ],
             $atts
         );

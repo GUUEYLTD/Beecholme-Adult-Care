@@ -49,13 +49,16 @@ class ActivationSettingsHook
         self::initAppointmentsSettings();
 
         self::initWebHooksSettings();
+
+        self::initZoomSettings();
     }
 
     /**
      * @param string $category
      * @param array  $settings
+     * @param bool   $replace
      */
-    public static function initSettings($category, $settings)
+    public static function initSettings($category, $settings, $replace = false)
     {
         $settingsService = new SettingsService(new SettingsStorage());
 
@@ -67,7 +70,7 @@ class ActivationSettingsHook
         }
 
         foreach ($settings as $key => $value) {
-            if (null === $settingsService->getSetting($category, $key)) {
+            if ($replace || null === $settingsService->getSetting($category, $key)) {
                 $settingsService->setSetting(
                     $category,
                     $key,
@@ -83,23 +86,23 @@ class ActivationSettingsHook
     private static function initGeneralSettings()
     {
         $settings = [
-            'timeSlotLength'                            => 1800,
-            'serviceDurationAsSlot'                     => false,
-            'defaultAppointmentStatus'                  => 'approved',
-            'minimumTimeRequirementPriorToBooking'      => 0,
-            'minimumTimeRequirementPriorToCanceling'    => 0,
-            'numberOfDaysAvailableForBooking'           => SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING,
-            'phoneDefaultCountryCode'                   => 'auto',
-            'requiredPhoneNumberField'                  => false,
-            'requiredEmailField'                        => true,
-            'itemsPerPage'                              => 12,
-            'gMapApiKey'                                => '',
-            'addToCalendar'                             => true,
-            'defaultPageOnBackend'                      => 'Dashboard',
-            'showClientTimeZone'                        => false,
-            'redirectUrlAfterAppointment'               => '',
-            'customFieldsUploadsPath'                   => '',
-            'sortingServices'                           => 'nameAsc',
+            'timeSlotLength'                         => 1800,
+            'serviceDurationAsSlot'                  => false,
+            'defaultAppointmentStatus'               => 'approved',
+            'minimumTimeRequirementPriorToBooking'   => 0,
+            'minimumTimeRequirementPriorToCanceling' => 0,
+            'numberOfDaysAvailableForBooking'        => SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING,
+            'phoneDefaultCountryCode'                => 'auto',
+            'requiredPhoneNumberField'               => false,
+            'requiredEmailField'                     => true,
+            'itemsPerPage'                           => 12,
+            'gMapApiKey'                             => '',
+            'addToCalendar'                          => true,
+            'defaultPageOnBackend'                   => 'Dashboard',
+            'showClientTimeZone'                     => false,
+            'redirectUrlAfterAppointment'            => '',
+            'customFieldsUploadsPath'                => '',
+            'sortingServices'                        => 'nameAsc',
         ];
 
         self::initSettings('general', $settings);
@@ -146,6 +149,7 @@ class ActivationSettingsHook
             'bccEmail'         => '',
             'cancelSuccessUrl' => '',
             'cancelErrorUrl'   => '',
+            'breakReplacement' => ''
         ];
 
         self::initSettings('notifications', $settings);
@@ -233,6 +237,23 @@ class ActivationSettingsHook
     }
 
     /**
+     * Init Zoom Settings
+     */
+    private static function initZoomSettings()
+    {
+        $settings = [
+            'enabled'                     => true,
+            'apiKey'                      => '',
+            'apiSecret'                   => '',
+            'meetingTitle'                => '%reservation_name%',
+            'meetingAgenda'               => '%reservation_description%',
+            'pendingAppointmentsMeetings' => false,
+        ];
+
+        self::initSettings('zoom', $settings);
+    }
+
+    /**
      * Init Payments Settings
      */
     private static function initPaymentsSettings()
@@ -252,7 +273,12 @@ class ActivationSettingsHook
                 'liveApiClientId' => '',
                 'liveApiSecret'   => '',
                 'testApiClientId' => '',
-                'testApiSecret'   => ''
+                'testApiSecret'   => '',
+                'description'     => [
+                    'enabled'     => false,
+                    'appointment' => '',
+                    'event'       => ''
+                ],
             ],
             'stripe'                => [
                 'enabled'            => false,
@@ -260,15 +286,39 @@ class ActivationSettingsHook
                 'livePublishableKey' => '',
                 'liveSecretKey'      => '',
                 'testPublishableKey' => '',
-                'testSecretKey'      => ''
+                'testSecretKey'      => '',
+                'description'        => [
+                    'enabled'     => false,
+                    'appointment' => '',
+                    'event'       => ''
+                ],
+                'metaData'           => [
+                    'enabled'     => false,
+                    'appointment' => null,
+                    'event'       => null
+                ],
             ],
             'wc'                    => [
-                'enabled'   => false,
-                'productId' => ''
+                'enabled'      => false,
+                'productId'    => '',
+                'onSiteIfFree' => false,
+                'page'         => 'cart',
             ]
         ];
 
         self::initSettings('payments', $settings);
+
+        self::setNewSettingsToExistingSettings(
+            'payments',
+            [
+                ['stripe', 'description'],
+                ['stripe', 'metaData'],
+                ['payPal', 'description'],
+                ['wc', 'onSiteIfFree'],
+                ['wc', 'page'],
+            ],
+            $settings
+        );
     }
 
     /**
@@ -362,6 +412,7 @@ class ActivationSettingsHook
                 $general['allowConfigureSchedule'] : false,
             'allowConfigureDaysOff'       => false,
             'allowConfigureSpecialDays'   => false,
+            'allowConfigureServices'      => false,
             'allowWriteAppointments'      => isset($general['allowWriteAppointments']) ?
                 $general['allowWriteAppointments'] : false,
             'automaticallyCreateCustomer' => isset($general['automaticallyCreateCustomer']) ?
@@ -378,10 +429,19 @@ class ActivationSettingsHook
                 'tokenValidTime'  => 2592000,
                 'pageUrl'         => '',
                 'loginEnabled'    => true,
+                'filterDate'      => false,
             ],
         ];
 
         self::initSettings('roles', $settings);
+
+        self::setNewSettingsToExistingSettings(
+            'roles',
+            [
+                ['customerCabinet', 'filterDate'],
+            ],
+            $settings
+        );
     }
 
     /**
@@ -395,9 +455,11 @@ class ActivationSettingsHook
 
         // TODO - Fallback. Remove fallback after 1.4.5.
         $settings = [
+            'isGloballyBusySlot'    => false,
             'allowBookingIfPending' => isset($general['allowBookingIfPending']) ?
                 $general['allowBookingIfPending'] : true,
             'allowBookingIfNotMin'  => true,
+            'openedBookingAfterMin' => false
         ];
 
         self::initSettings('appointments', $settings);
@@ -411,5 +473,42 @@ class ActivationSettingsHook
         $settings = [];
 
         self::initSettings('webHooks', $settings);
+    }
+
+    /**
+     * Add new settings ti global parent settings
+     *
+     * @param string $category
+     * @param array  $pathsKeys
+     * @param array  $initSettings
+     */
+    private static function setNewSettingsToExistingSettings($category, $pathsKeys, $initSettings)
+    {
+        $settingsService = new SettingsService(new SettingsStorage());
+
+        $savedSettings = $settingsService->getCategorySettings($category);
+
+        $setSettings = false;
+
+        foreach ($pathsKeys as $keys) {
+            $current = &$savedSettings;
+            $currentInit = &$initSettings;
+
+            foreach ((array)$keys as $key) {
+                if (!isset($current[$key])) {
+                    $current[$key] = $currentInit[$key];
+                    $setSettings = true;
+
+                    continue 2;
+                }
+
+                $current = &$current[$key];
+                $currentInit = &$initSettings[$key];
+            }
+        }
+
+        if ($setSettings) {
+            self::initSettings($category, $savedSettings, true);
+        }
     }
 }

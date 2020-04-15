@@ -35,9 +35,15 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
             $appointmentsTable = AppointmentsTable::getTableName();
 
             $params = [
-                ':type'                 => AbstractUser::USER_ROLE_CUSTOMER,
+                ':type_customer'        => AbstractUser::USER_ROLE_CUSTOMER,
+                ':type_admin'           => AbstractUser::USER_ROLE_ADMIN,
                 ':bookingPendingStatus' => BookingStatus::PENDING,
                 ':statusVisible'        => Status::VISIBLE,
+            ];
+
+            $where = [
+                'u.type IN (:type_customer, :type_admin)',
+                'u.status = :statusVisible'
             ];
 
             $limit = '';
@@ -56,14 +62,26 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
                 $order = "ORDER BY {$orderColumn} {$orderDirection}";
             }
 
-            $search = '';
             if (!empty($criteria['search'])) {
                 $params[':search1'] = $params[':search2'] = $params[':search3'] = "%{$criteria['search']}%";
 
-                $search = " AND (CONCAT(u.firstName, ' ', u.lastName) LIKE :search1
+                $where[] = "((CONCAT(u.firstName, ' ', u.lastName) LIKE :search1
                             OR wpu.display_name LIKE :search2
-                            OR u.note LIKE :search3)";
+                            OR u.note LIKE :search3))";
             }
+
+            if (!empty($criteria['customers'])) {
+                $customersCriteria = [];
+
+                foreach ((array)$criteria['customers'] as $key => $customerId) {
+                    $params[":customerId$key"] = $customerId;
+                    $customersCriteria[] = ":customerId$key";
+                }
+
+                $where[] = 'u.id IN (' . implode(', ', $customersCriteria) . ')';
+            }
+
+            $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
             $statement = $this->connection->prepare(
                 "SELECT 
@@ -85,7 +103,7 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
                 LEFT JOIN {$wpUserTable} wpu ON u.externalId = wpu.id
                 LEFT JOIN {$bookingsTable} cb ON u.id = cb.customerId
                 LEFT JOIN {$appointmentsTable} app ON app.id = cb.appointmentId
-                WHERE u.type = :type AND u.status = :statusVisible $search
+                $where
                 GROUP BY u.id
                 {$order}
                 {$limit}"
@@ -121,25 +139,43 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
         $wpUserTable = WPUsersTable::getTableName();
 
         $params = [
-            ':type'          => AbstractUser::USER_ROLE_CUSTOMER,
+            ':type_customer' => AbstractUser::USER_ROLE_CUSTOMER,
+            ':type_admin'    => AbstractUser::USER_ROLE_ADMIN,
             ':statusVisible' => Status::VISIBLE,
         ];
 
-        $search = '';
+        $where = [
+            'u.type IN (:type_customer, :type_admin)',
+            'u.status = :statusVisible'
+        ];
+
         if (!empty($criteria['search'])) {
             $params[':search1'] = $params[':search2'] = $params[':search3'] = "%{$criteria['search']}%";
 
-            $search = " AND (CONCAT(u.firstName, ' ', u.lastName) LIKE :search1
+            $where[] = "((CONCAT(u.firstName, ' ', u.lastName) LIKE :search1
                             OR wpu.display_name LIKE :search2
-                            OR u.note LIKE :search3)";
+                            OR u.note LIKE :search3))";
         }
+
+        if (!empty($criteria['customers'])) {
+            $customersCriteria = [];
+
+            foreach ((array)$criteria['customers'] as $key => $customerId) {
+                $params[":customerId$key"] = $customerId;
+                $customersCriteria[] = ":customerId$key";
+            }
+
+            $where[] = 'u.id IN (' . implode(', ', $customersCriteria) . ')';
+        }
+
+        $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
         try {
             $statement = $this->connection->prepare(
                 "SELECT COUNT(*) as count
                 FROM {$this->table} as u 
                 LEFT JOIN {$wpUserTable} wpu ON u.externalId = wpu.id
-                WHERE u.type = :type AND u.status = :statusVisible $search"
+                $where"
             );
 
             $statement->execute($params);

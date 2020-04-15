@@ -152,6 +152,7 @@ class FrontendStrings
             'wc_appointment_remove'        => __('On-line', 'wpamelia'),
             'wc_error'                     => __('Sorry, there was an error while adding booking to WooCommerce cart.', 'wpamelia'),
             'wc_product_name'              => __('Appointment', 'wpamelia'),
+            'zoom_click_to_join'           => __('Join Zoom Meeting', 'wpamelia'),
         ];
     }
 
@@ -222,15 +223,16 @@ class FrontendStrings
     public static function getEventStrings()
     {
         return [
-            'event'                        => __('Event', 'wpamelia'),
-            'events'                       => __('Events', 'wpamelia'),
-            'event_about'                  => __('About this Event', 'wpamelia'),
-            'event_free'                   => __('Free', 'wpamelia'),
-            'event_book'                   => __('Book this event', 'wpamelia'),
-            'event_book_persons'           => __('Number of persons', 'wpamelia'),
-            'event_pick_min_date'          => __('Show from date', 'wpamelia'),
-            'event_type'                   => __('Event Type', 'wpamelia'),
-            'event_capacity'               => __('Capacity:', 'wpamelia'),
+            'event'               => __('Event', 'wpamelia'),
+            'events'              => __('Events', 'wpamelia'),
+            'event_about'         => __('About this Event', 'wpamelia'),
+            'event_free'          => __('Free', 'wpamelia'),
+            'event_book'          => __('Book this event', 'wpamelia'),
+            'event_book_persons'  => __('Number of persons', 'wpamelia'),
+            'event_pick_min_date' => __('Show from date', 'wpamelia'),
+            'event_type'          => __('Event Type', 'wpamelia'),
+            'event_capacity'      => __('Capacity:', 'wpamelia'),
+            'no_events'           => __('No results found...', 'wpamelia'),
         ];
     }
 

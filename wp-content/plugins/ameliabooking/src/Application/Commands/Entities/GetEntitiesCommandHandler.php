@@ -5,13 +5,12 @@ namespace AmeliaBooking\Application\Commands\Entities;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
-use AmeliaBooking\Domain\Collection\AbstractCollection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
@@ -44,6 +43,7 @@ class GetEntitiesCommandHandler extends CommandHandler
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
      * @throws \Interop\Container\Exception\ContainerException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      */
     public function handle(GetEntitiesCommand $command)
     {
@@ -72,13 +72,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             /** @var Collection $events **/
             $events = $eventRepository->getFiltered(['dates' => [DateTimeService::getNowDateTime()]]);
 
-            if (!$events instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
-
-                return $result;
-            }
-
             $resultData['events'] = $events->toArray();
         }
 
@@ -92,13 +85,6 @@ class GetEntitiesCommandHandler extends CommandHandler
                 $events->length() ? ['eventIds' => array_column($events->toArray(), 'id')] : []
             );
 
-            if (!$eventsTags instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
-
-                return $result;
-            }
-
             $resultData['tags'] = $eventsTags->toArray();
         }
 
@@ -109,19 +95,11 @@ class GetEntitiesCommandHandler extends CommandHandler
 
             $locations = $locationRepository->getAllOrderedByName();
 
-            if (!$locations instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
-
-                return $result;
-            }
-
             $resultData['locations'] = $locations->toArray();
         }
 
         /** Categories */
-        if (in_array(Entities::CATEGORIES, $params['types'], true)
-        ) {
+        if (in_array(Entities::CATEGORIES, $params['types'], true)) {
             /** @var ServiceRepository $serviceRepository */
             $serviceRepository = $this->container->get('domain.bookable.service.repository');
             /** @var CategoryRepository $categoryRepository */
@@ -138,21 +116,7 @@ class GetEntitiesCommandHandler extends CommandHandler
                 }
             }
 
-            if (!$services instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities.');
-
-                return $result;
-            }
-
             $categories = $categoryRepository->getAllIndexedById();
-
-            if (!$categories instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
-
-                return $result;
-            }
 
             $bookableAS->addServicesToCategories($categories, $services);
 
@@ -161,21 +125,37 @@ class GetEntitiesCommandHandler extends CommandHandler
 
         /** Customers */
         if (in_array(Entities::CUSTOMERS, $params['types'], true)) {
-            /** @var UserRepository $userRepository */
-            $userRepository = $this->getContainer()->get('domain.users.repository');
-            /** @var CustomerApplicationService $customerAS */
-            $customerAS = $this->container->get('application.user.customer.service');
+            /** @var UserRepository $userRepo */
+            $userRepo = $this->getContainer()->get('domain.users.repository');
+            /** @var ProviderApplicationService $providerAS */
+            $providerAS = $this->container->get('application.user.provider.service');
 
-            $customers = $userRepository->getAllWithAllowedBooking();
+            $resultData['customers'] = [];
 
-            if (!$customers instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
+            if ($currentUser) {
+                switch ($currentUser->getType()) {
+                    case (AbstractUser::USER_ROLE_CUSTOMER):
+                        if ($currentUser->getId()) {
+                            /** @var Customer $customer */
+                            $customer = $userRepo->getById($currentUser->getId()->getValue());
 
-                return $result;
+                            $resultData['customers'] = [$customer->toArray()];
+                        }
+
+                        break;
+
+                    case (AbstractUser::USER_ROLE_PROVIDER):
+                        $resultData['customers'] = $providerAS->getAllowedCustomers($currentUser)->toArray();
+
+                        break;
+
+                    default:
+                        /** @var Collection $customers */
+                        $customers = $userRepo->getAllWithAllowedBooking();
+
+                        $resultData['customers'] = $customers->toArray();
+                }
             }
-
-            $resultData['customers'] = $customerAS->removeAllExceptCurrentUser($customers->toArray());
         }
 
         /** Providers */
@@ -233,16 +213,14 @@ class GetEntitiesCommandHandler extends CommandHandler
                 }
             }
 
-            if (!$providers instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
 
-                return $result;
-            }
+            $resultData['employees'] = $providerAS->removeAllExceptUser(
+                $providers->toArray(),
+                (array_key_exists('page', $params) && $params['page'] === Entities::BOOKING) ?
+                    null : $currentUser
+            );
 
-            $resultData['employees'] = $providerAS->removeAllExceptCurrentUser($providers->toArray());
-
-            if ($currentUser === null) {
+            if ($currentUser === null || $currentUser->getType() === AbstractUser::USER_ROLE_CUSTOMER) {
                 foreach ($resultData['employees'] as &$employee) {
                     unset(
                         $employee['birthday'],
@@ -264,17 +242,18 @@ class GetEntitiesCommandHandler extends CommandHandler
             ];
 
             if (!$this->getContainer()->getPermissionsService()->currentUserCanReadOthers(Entities::APPOINTMENTS)) {
-                if ($this->getContainer()->get('logged.in.user')->getId() === null) {
+                if ($currentUser->getId() === null) {
                     $userParams[$currentUser->getType() . 'Id'] = 0;
                 } else {
                     $userParams[$currentUser->getType() . 'Id'] =
-                        $this->getContainer()->get('logged.in.user')->getId()->getValue();
+                        $currentUser->getId()->getValue();
                 }
             }
 
             /** @var AppointmentRepository $appointmentRepo */
             $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
 
+            /** @var Collection $appointments */
             $appointments = $appointmentRepo->getFiltered($userParams);
 
             $resultData[Entities::APPOINTMENTS] = [
@@ -288,13 +267,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             $customFieldRepository = $this->container->get('domain.customField.repository');
 
             $customFields = $customFieldRepository->getAll();
-
-            if (!$customFields instanceof AbstractCollection) {
-                $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setMessage('Could not get entities');
-
-                return $result;
-            }
 
             $resultData['customFields'] = $customFields->toArray();
         }

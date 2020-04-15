@@ -194,12 +194,12 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
             $result = $statement->execute($params);
 
             if (!$result) {
-                throw new QueryExecutionException($result->getMessage());
+                throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
             }
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -271,7 +271,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
 
             return $result;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__ . $e->getMessage());
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -421,6 +421,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.pictureThumbPath AS service_picture_thumb,
                 s.show AS service_show,
                 s.aggregatedPrice AS service_aggregatedPrice,
+                s.settings AS service_settings,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -482,6 +483,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.pictureFullPath AS service_picture_full,
                 s.pictureThumbPath AS service_picture_thumb,
                 s.aggregatedPrice AS service_aggregatedPrice,
+                s.settings AS service_settings,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -539,7 +541,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -699,7 +701,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {

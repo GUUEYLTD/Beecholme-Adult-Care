@@ -87,7 +87,11 @@ class EventApplicationService
 
             /** @var Collection $recurringEventPeriods */
             foreach ($recurringEventsPeriods->getItems() as $key => $recurringEventPeriods) {
-                $event->getRecurring()->setOrder(new WholeNumber($event->getRecurring()->getOrder()->getValue() + 1));
+                $order = $event->getRecurring()->getOrder()->getValue() + 1;
+
+                $event = EventFactory::create($event->toArray());
+
+                $event->getRecurring()->setOrder(new WholeNumber($order));
 
                 $event->setPeriods($recurringEventPeriods);
                 $this->addSingle($event);
@@ -103,7 +107,7 @@ class EventApplicationService
      * @param Event $newEvent
      * @param bool  $updateFollowing
      *
-     * @return Collection
+     * @return array
      *
      * @throws \Slim\Exception\ContainerValueNotFoundException
      * @throws QueryExecutionException
@@ -120,6 +124,17 @@ class EventApplicationService
 
         /** @var Collection $rescheduledEvents */
         $rescheduledEvents = new Collection();
+
+        /** @var Collection $clonedEvents */
+        $clonedEvents = new Collection();
+
+        /** @var Collection $addedEvents */
+        $addedEvents = new Collection();
+
+        /** @var Collection $deletedEvents */
+        $deletedEvents = new Collection();
+
+        $clonedEvents->addItem(EventFactory::create($oldEvent->toArray()), $oldEvent->getId()->getValue());
 
         $isNewRecurring = $this->isSeparateRecurringEvent($newEvent, $oldEvent);
         $isRescheduled = $newEvent->getPeriods()->toArray() !== $oldEvent->getPeriods()->toArray();
@@ -149,6 +164,10 @@ class EventApplicationService
 
             /** @var Event $followingEvent */
             foreach ($followingEvents->getItems() as $key => $followingEvent) {
+                if (!$clonedEvents->keyExists($followingEvent->getId()->getValue())) {
+                    $clonedEvents->addItem(EventFactory::create($followingEvent->toArray()), $followingEvent->getId()->getValue());
+                }
+
                 if ($followingEvent->getId()->getValue() > $newEvent->getId()->getValue()) {
                     $eventRepository->updateParentId($followingEvent->getId()->getValue(), $firstFollowingEventId);
 
@@ -171,13 +190,18 @@ class EventApplicationService
 
             /** @var Collection $clonedOriginEventPeriods **/
             $clonedOriginEventPeriods = $eventDomainService->getClonedEventPeriods(
-                $isNewRecurring ? $newEvent->getPeriods() : $firstEvent->getPeriods()
+                $isNewRecurring ? $newEvent->getPeriods() : $firstEvent->getPeriods(),
+                false
             );
 
             $followingRecurringOrder = $newEvent->getRecurring()->getOrder()->getValue();
 
             /** @var Event $followingEvent */
             foreach ($followingEvents->getItems() as $key => $followingEvent) {
+                if (!$clonedEvents->keyExists($followingEvent->getId()->getValue())) {
+                    $clonedEvents->addItem(EventFactory::create($followingEvent->toArray()), $followingEvent->getId()->getValue());
+                }
+
                 if ($followingEvent->getId()->getValue() < $newEvent->getId()->getValue()) {
                     $followingEvent->getRecurring()->setUntil(
                         $isNewRecurring ?
@@ -202,6 +226,12 @@ class EventApplicationService
                         ]
                     ));
 
+                    /** @var Collection $clonedFollowingEventPeriods */
+                    $clonedFollowingEventPeriods = $eventDomainService->getClonedEventPeriods(
+                        $followingEvent->getPeriods(),
+                        true
+                    );
+
                     $eventDomainService->buildFollowingEvent($followingEvent, $newEvent, $clonedOriginEventPeriods);
 
                     if ($isRescheduled && $followingEvent->getStatus()->getValue() === BookingStatus::APPROVED) {
@@ -216,9 +246,15 @@ class EventApplicationService
                             $followingEvent->setParentId($newEvent->getId());
                         }
 
-                        $this->updateSingle($followingEvent, $followingEvent, false);
+                        $followingEventClone = EventFactory::create($followingEvent->toArray());
+
+                        $followingEventClone->setPeriods($clonedFollowingEventPeriods);
+
+                        $this->updateSingle($followingEventClone, $followingEvent, false);
                     } else {
                         $this->deleteEvent($followingEvent);
+
+                        $deletedEvents->addItem($followingEvent, $followingEvent->getId()->getValue());
                     }
                 }
             }
@@ -246,12 +282,12 @@ class EventApplicationService
                     ]
                 ));
 
-                $lastEvent->setPeriods($eventDomainService->getClonedEventPeriods($clonedOriginEventPeriods));
+                $lastEvent->setPeriods($eventDomainService->getClonedEventPeriods($clonedOriginEventPeriods, false));
 
                 $eventDomainService->buildFollowingEvent(
                     $lastEvent,
                     $newEvent,
-                    $eventDomainService->getClonedEventPeriods($clonedOriginEventPeriods)
+                    $eventDomainService->getClonedEventPeriods($clonedOriginEventPeriods, false)
                 );
 
                 $lastEvent->setParentId(
@@ -263,11 +299,25 @@ class EventApplicationService
                     $newEvent->getRecurring()->getUntil()->getValue()
                 ) {
                     $this->addSingle($lastEvent);
+
+                    $addedEvents->addItem($lastEvent, $lastEvent->getId()->getValue());
                 }
             }
         }
 
-        return $rescheduledEvents;
+        if ($newEvent->getZoomUserId() && !$oldEvent->getZoomUserId()) {
+            /** @var Event $event **/
+            foreach ($clonedEvents->getItems() as $event) {
+                $event->setZoomUserId($newEvent->getZoomUserId());
+            }
+        }
+
+        return [
+            'rescheduled' => $rescheduledEvents->toArray(),
+            'added'       => $addedEvents->toArray(),
+            'deleted'     => $deletedEvents->toArray(),
+            'cloned'      => $clonedEvents->toArray()
+        ];
     }
 
     /**

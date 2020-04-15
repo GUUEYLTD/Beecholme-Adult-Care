@@ -9,6 +9,7 @@
 namespace AmeliaBooking\Infrastructure\WP\InstallActions;
 
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Infrastructure\WP\HelperService\HelperService;
 use AmeliaBooking\Infrastructure\WP\SettingsService\SettingsStorage;
 use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
 use WP_Error;
@@ -169,20 +170,20 @@ class AutoUpdateHook
                     'slug'             => 'ameliabooking',
                     'purchaseCode'     => $purchaseCode,
                     'envatoTokenEmail' => $envatoTokenEmail,
-                    'domain'           => self::extractDomain(
+                    'domain'           => self::getDomain(
                         $_SERVER['SERVER_NAME']
                     ),
-                    'subdomain'        => self::extractSubdomain(
+                    'subdomain'        => self::getSubDomain(
                         $_SERVER['SERVER_NAME']
                     )
                 ]
             ]
         );
 
-        if (isset($request['body']) && (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200)) {
+        if ((!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) && isset($request['body'])) {
             $body = json_decode($request['body']);
 
-            return isset($body->info) ? unserialize($body->info) : false;
+            return $body && isset($body->info) ? unserialize($body->info) : false;
         }
 
         return false;
@@ -193,13 +194,27 @@ class AutoUpdateHook
      *
      * @return mixed
      */
-    private static function extractDomain($domain)
+    public static function extractDomain($domain)
     {
-        if (preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i", $domain, $matches)) {
-            return $matches['domain'];
+        $topLevelDomainsJSON = require( AMELIA_PATH . '/view/backend/top-level-domains.php');
+        $topLevelDomains =  json_decode($topLevelDomainsJSON, true) ;
+        $tempDomain= '';
+
+        $extractDomainArray = explode('.', $domain);
+        for ($i = 0; $i <= count($extractDomainArray); $i++) {
+            $slicedDomainArray = array_slice($extractDomainArray, $i);
+            $slicedDomainString = implode('.', $slicedDomainArray);
+
+            if (in_array($slicedDomainString, $topLevelDomains)) {
+                $tempDomain = array_slice($extractDomainArray, $i-1);
+                break;
+            }
+        }
+        if ($tempDomain == '') {
+            $tempDomain = $extractDomainArray;
         }
 
-        return $domain;
+        return implode( '.', $tempDomain);
     }
 
     /**
@@ -207,12 +222,70 @@ class AutoUpdateHook
      *
      * @return string
      */
-    private static function extractSubdomain($domain)
+    public static function extractSubdomain($domain)
     {
-        $subdomains = $domain;
-        $domain = self::extractDomain($subdomains);
-        $subdomains = rtrim(strstr($subdomains, $domain, true), '.');
+        $host = explode('.', $domain);
+        $domain = self::extractDomain($domain);
+        $domain = explode('.', $domain);
+        return implode( '.', array_diff($host, $domain));
+    }
 
-        return $subdomains;
+    /**
+     * Check if serve name is IPv4 or Ipv6
+     *
+     * @param $domain
+     *
+     * @return boolean
+     */
+    public static function isIP($domain)
+    {
+        if (preg_match("/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/", $domain) ||
+            preg_match("/^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/", $domain)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Remove www from server name
+     *
+     * @param $url
+     *
+     * @return string
+     */
+    public static function removeWWW($url)
+    {
+        if (in_array(substr( $url, 0, 5 ),['www1.','www2.','www3.','www4.'])) {
+            return substr_replace ($url,"", 0,5 );
+        } else if (substr( $url, 0, 4 ) ==='www.') {
+            return substr_replace($url, "", 0, 4);
+        }
+        return $url;
+    }
+
+    /**
+     * Get filtered domain
+     *
+     * @param $domain
+     *
+     * @return string
+     */
+    public static function getDomain($domain)
+    {
+        $domain = self::isIP($domain) ? $domain : self::extractDomain( self::removeWWW($domain) );
+        return $domain;
+    }
+    /**
+     * Get filtered subdomain
+     *
+     * @param $subdomain
+     *
+     * @return string
+     */
+    public static function getSubDomain($subdomain)
+    {
+        $subdomain = self::isIP($subdomain) ? '' : self::extractSubdomain( self::removeWWW($subdomain) );
+        return $subdomain;
     }
 }

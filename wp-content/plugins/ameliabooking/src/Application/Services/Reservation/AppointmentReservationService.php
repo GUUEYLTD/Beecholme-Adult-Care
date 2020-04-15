@@ -2,7 +2,6 @@
 
 namespace AmeliaBooking\Application\Services\Reservation;
 
-use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Application\Services\TimeSlot\TimeSlotService;
@@ -23,6 +22,7 @@ use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\CustomerBookingFactory;
 use AmeliaBooking\Domain\Services\Booking\AppointmentDomainService;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
@@ -72,6 +72,8 @@ class AppointmentReservationService extends AbstractReservationService
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
         /** @var BookableApplicationService $bookableAS */
         $bookableAS = $this->container->get('application.bookable.service');
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
 
         $appointmentStatusChanged = false;
 
@@ -84,6 +86,13 @@ class AppointmentReservationService extends AbstractReservationService
             'services'  => [$appointmentData['serviceId']],
             'providers' => [$appointmentData['providerId']]
         ]);
+
+        $bookingStatus = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getDefaultAppointmentStatus();
+
+        $appointmentData['bookings'][0]['status'] = $bookingStatus;
 
         /** @var Appointment $existingAppointment */
         $existingAppointment = $existingAppointments->length() ?
@@ -208,19 +217,26 @@ class AppointmentReservationService extends AbstractReservationService
         $appointmentDS = $this->container->get('domain.booking.appointment.service');
         /** @var BookableApplicationService $bookableAS */
         $bookableAS = $this->container->get('application.bookable.service');
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
 
         /** @var Appointment $appointment */
         $appointment = $appointmentRepository->getById($booking->getAppointmentId()->getValue());
-
-        if ($requestedStatus === BookingStatus::CANCELED) {
-            $this->inspectMinimumCancellationTime($appointment->getBookingStart()->getValue());
-        }
 
         /** @var Service $service */
         $service = $bookableAS->getAppointmentService(
             $appointment->getServiceId()->getValue(),
             $appointment->getProviderId()->getValue()
         );
+
+        if ($requestedStatus === BookingStatus::CANCELED) {
+            $minimumCancelTime = $settingsDS
+                ->getEntitySettings($service->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToCanceling();
+
+            $this->inspectMinimumCancellationTime($appointment->getBookingStart()->getValue(), $minimumCancelTime);
+        }
 
         $appointment->getBookings()->getItem($booking->getId()->getValue())->setStatus(
             new BookingStatus($requestedStatus)

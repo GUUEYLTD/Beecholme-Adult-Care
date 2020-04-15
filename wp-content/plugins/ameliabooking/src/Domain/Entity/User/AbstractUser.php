@@ -62,6 +62,12 @@ abstract class AbstractUser
     /** @var Json */
     private $usedTokens;
 
+    /** @var int */
+    private $loginType;
+
+    /** @var Name */
+    private $zoomUserId;
+
     /**
      * AbstractUser constructor.
      *
@@ -256,6 +262,22 @@ abstract class AbstractUser
     }
 
     /**
+     * @return Name
+     */
+    public function getZoomUserId()
+    {
+        return $this->zoomUserId;
+    }
+
+    /**
+     * @param Name $zoomUserId
+     */
+    public function setZoomUserId(Name $zoomUserId)
+    {
+        $this->zoomUserId = $zoomUserId;
+    }
+
+    /**
      * @return Password
      */
     public function getPassword()
@@ -288,6 +310,22 @@ abstract class AbstractUser
     }
 
     /**
+     * @return int
+     */
+    public function getLoginType()
+    {
+        return $this->loginType;
+    }
+
+    /**
+     * @param int $loginType
+     */
+    public function setLoginType($loginType)
+    {
+        $this->loginType = $loginType;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -301,6 +339,7 @@ abstract class AbstractUser
             'type'             => $this->getType(),
             'status'           => null !== $this->getStatus() ? $this->getStatus()->getValue() : null,
             'note'             => null !== $this->getNote() ? $this->getNote()->getValue() : null,
+            'zoomUserId'       => null !== $this->getZoomUserId() ? $this->getZoomUserId()->getValue() : null,
             'externalId'       => null !== $this->getExternalId() ? $this->getExternalId()->getValue() : null,
             'pictureFullPath'  => null !== $this->getPicture() ? $this->getPicture()->getFullPath() : null,
             'pictureThumbPath' => null !== $this->getPicture() ? $this->getPicture()->getThumbPath() : null

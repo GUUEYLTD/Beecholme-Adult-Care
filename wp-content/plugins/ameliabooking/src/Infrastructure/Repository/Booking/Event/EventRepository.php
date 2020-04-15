@@ -63,7 +63,8 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             ':customLocation'       => $data['customLocation'],
             ':parentId'             => $data['parentId'],
             ':created'              => $data['created'],
-            ':settings'         => $data['settings'],
+            ':settings'             => $data['settings'],
+            ':zoomUserId'           => $data['zoomUserId'],
         ];
 
         try {
@@ -87,7 +88,8 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 `customLocation`,
                 `parentId`,
                 `created`,
-                `settings`
+                `settings`,
+                `zoomUserId`
                 )
                 VALUES (
                 :bookingOpens,
@@ -107,7 +109,8 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 :customLocation,
                 :parentId,
                 :created,
-                :settings
+                :settings,
+                :zoomUserId
                 )"
             );
 
@@ -119,7 +122,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
             return $this->connection->lastInsertId();
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -154,6 +157,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             ':customLocation'       => $data['customLocation'],
             ':parentId'             => $data['parentId'],
             ':settings'             => $data['settings'],
+            ':zoomUserId'           => $data['zoomUserId'],
         ];
 
         try {
@@ -176,7 +180,8 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 `locationId` = :locationId,
                 `customLocation` = :customLocation,
                 `parentId` = :parentId,
-                `settings` = :settings
+                `settings` = :settings,
+                `zoomUserId` = :zoomUserId
                 WHERE id = :id"
             );
 
@@ -188,7 +193,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -222,7 +227,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -256,7 +261,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 
@@ -451,10 +456,12 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.created AS event_created,
                     e.notifyParticipants AS event_notifyParticipants,
                     e.settings AS event_settings,
+                    e.zoomUserId AS event_zoomUserId,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
                     ep.periodEnd AS event_periodEnd,
+                    ep.zoomMeeting AS event_periodZoomMeeting,
                     
                     et.id AS event_tagId,
                     et.name AS event_tagName,
@@ -858,10 +865,12 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.parentId AS event_parentId,
                     e.created AS event_created,
                     e.settings AS event_settings,
+                    e.zoomUserId AS event_zoomUserId,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
                     ep.periodEnd AS event_periodEnd,
+                    ep.zoomMeeting AS event_periodZoomMeeting,
                     
                     et.id AS event_tagId,
                     et.name AS event_tagName,
@@ -875,6 +884,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     cb.info AS booking_info,
                     cb.aggregatedPrice AS booking_aggregatedPrice,
                     cb.token AS booking_token,
+                    cb.utcOffset AS booking_utcOffset,
                     
                     cu.id AS customer_id,
                     cu.firstName AS customer_firstName,
@@ -987,6 +997,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.customLocation AS event_customLocation,
                     e.parentId AS event_parentId,
                     e.created AS event_created,
+                    e.settings AS event_settings,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,

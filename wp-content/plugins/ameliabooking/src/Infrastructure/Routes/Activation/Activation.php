@@ -9,6 +9,7 @@ namespace AmeliaBooking\Infrastructure\Routes\Activation;
 use AmeliaBooking\Application\Controller\Activation\ActivatePluginController;
 use AmeliaBooking\Application\Controller\Activation\DeactivatePluginController;
 use AmeliaBooking\Application\Controller\Activation\DeactivatePluginEnvatoController;
+use AmeliaBooking\Application\Controller\Activation\ParseDomainController;
 use Slim\App;
 
 /**
@@ -28,5 +29,7 @@ class Activation
         $app->get('/activation/code/deactivate', DeactivatePluginController::class);
 
         $app->get('/activation/envato/deactivate', DeactivatePluginEnvatoController::class);
+
+        $app->post('/activation/parse-domain', ParseDomainController::class);
     }
 }

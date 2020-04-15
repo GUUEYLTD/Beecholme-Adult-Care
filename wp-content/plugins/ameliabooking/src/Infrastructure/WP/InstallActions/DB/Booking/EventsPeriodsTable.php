@@ -3,6 +3,7 @@
 namespace AmeliaBooking\Infrastructure\WP\InstallActions\DB\Booking;
 
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use AmeliaBooking\Domain\ValueObjects\String\Description;
 use AmeliaBooking\Infrastructure\WP\InstallActions\DB\AbstractDatabaseTable;
 
 /**
@@ -25,11 +26,14 @@ class EventsPeriodsTable extends AbstractDatabaseTable
 
         $eventTable = EventsTable::getTableName();
 
+        $description = Description::MAX_LENGTH;
+
         return "CREATE TABLE {$table} (
                    `id` INT(11) NOT NULL AUTO_INCREMENT,
                    `eventId` INT(11) NOT NULL,
                    `periodStart` DATETIME NOT NULL,
                    `periodEnd` DATETIME NOT NULL,
+                   `zoomMeeting` TEXT({$description}) NULL,
                     PRIMARY KEY (`id`),
                     CONSTRAINT FOREIGN KEY (`eventId`) REFERENCES {$eventTable}(`id`)
                     ON DELETE CASCADE ON UPDATE CASCADE

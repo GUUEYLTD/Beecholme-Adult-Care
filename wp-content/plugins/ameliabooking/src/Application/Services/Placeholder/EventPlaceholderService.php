@@ -43,21 +43,23 @@ class EventPlaceholderService extends PlaceholderService
         $timestamp = date_create()->getTimestamp();
 
         return [
-            'event_name'            => 'Event Name',
-            'location_address'      => $companySettings['address'],
-            'event_periods'         =>
+            'event_name'              => 'Event Name',
+            'reservation_name'        => 'Event Name',
+            'event_location'          => $companySettings['address'],
+            'event_periods'           =>
                 '<ul>' .
                 '<li>' . date_i18n($dateFormat, strtotime($timestamp)) . '</li>' .
                 '<li>' . date_i18n($dateFormat, strtotime($timestamp . ' +1 day')) . '</li>' .
                 '</ul>',
-            'event_start_date'      => date_i18n($dateFormat, strtotime($timestamp)),
-            'event_start_time'      => date_i18n($timeFormat, $timestamp),
-            'event_start_date_time' => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp)),
-            'event_end_date'        => date_i18n($dateFormat, strtotime($timestamp . ' +1 day')),
-            'event_end_time'        => date_i18n($timeFormat, $timestamp),
-            'event_end_date_time'   => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp . ' +1 day')),
-            'event_price'           => $helperService->getFormattedPrice(100),
-            'event_description'     => 'Event Description',
+            'event_start_date'        => date_i18n($dateFormat, strtotime($timestamp)),
+            'event_start_time'        => date_i18n($timeFormat, $timestamp),
+            'event_start_date_time'   => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp)),
+            'event_end_date'          => date_i18n($dateFormat, strtotime($timestamp . ' +1 day')),
+            'event_end_time'          => date_i18n($timeFormat, $timestamp),
+            'event_end_date_time'     => date_i18n($dateFormat . ' ' . $timeFormat, strtotime($timestamp . ' +1 day')),
+            'event_price'             => $helperService->getFormattedPrice(100),
+            'event_description'       => 'Event Description',
+            'reservation_description' => 'Event Description',
         ];
     }
 
@@ -141,11 +143,11 @@ class EventPlaceholderService extends PlaceholderService
         }
 
         $staff = [
-            'employee_first_name'        =>
+            'employee_first_name'       =>
                 implode(', ', array_column($staff, 'employee_first_name')),
-            'employee_last_name'         =>
+            'employee_last_name'        =>
                 implode(', ', array_column($staff, 'employee_last_name')),
-            'employee_full_name'         =>
+            'employee_full_name'        =>
                 implode(', ', array_column($staff, 'employee_full_name')),
             'employee_note'             =>
                 implode(', ', array_column($staff, 'employee_note')),
@@ -163,27 +165,31 @@ class EventPlaceholderService extends PlaceholderService
                 $settingsService->getSetting('general', 'showClientTimeZone')
             ) {
                 $dateTimes[] = [
-                    'start'    => DateTimeService::getClientUtcCustomDateTimeObject(
+                    'start' => DateTimeService::getClientUtcCustomDateTimeObject(
                         DateTimeService::getCustomDateTimeInUtc($period['periodStart']),
                         $event['bookings'][$bookingKey]['utcOffset']
                     ),
-                    'end'      => DateTimeService::getClientUtcCustomDateTimeObject(
+                    'end'   => DateTimeService::getClientUtcCustomDateTimeObject(
                         DateTimeService::getCustomDateTimeInUtc($period['periodEnd']),
                         $event['bookings'][$bookingKey]['utcOffset']
                     )
                 ];
             } else {
                 $dateTimes[] = [
-                    'start'    => DateTime::createFromFormat('Y-m-d H:i:s', $period['periodStart']),
-                    'end'      => DateTime::createFromFormat('Y-m-d H:i:s', $period['periodEnd'])
+                    'start' => DateTime::createFromFormat('Y-m-d H:i:s', $period['periodStart']),
+                    'end'   => DateTime::createFromFormat('Y-m-d H:i:s', $period['periodEnd'])
                 ];
             }
         }
 
         $eventDateList = [];
         $eventDateTimeList = [];
+        $eventZoomStartDateList = [];
+        $eventZoomStartDateTimeList = [];
+        $eventZoomJoinDateList = [];
+        $eventZoomJoinDateTimeList = [];
 
-        foreach ($dateTimes as $dateTime) {
+        foreach ($dateTimes as $key => $dateTime) {
             /** @var \DateTime $startDateTime */
             $startDateTime = $dateTime['start'];
 
@@ -209,6 +215,16 @@ class EventPlaceholderService extends PlaceholderService
 
             $eventDateList[] = "<li>{$dateString}</li>";
             $eventDateTimeList[] = "<li>{$dateTimeString}</li>";
+
+            if ($event['zoomUserId']) {
+                $startUrl = $event['periods'][$key]['zoomMeeting']['startUrl'];
+                $joinUrl = $event['periods'][$key]['zoomMeeting']['joinUrl'];
+
+                $eventZoomStartDateList[] = '<li><a href="' . $startUrl . '">' . $dateString . '</a></li>';
+                $eventZoomStartDateTimeList[] = '<li><a href="' . $startUrl . '">' . $dateTimeString . '</a></li>';
+                $eventZoomJoinDateList[] = '<li><a href="' . $joinUrl . '">' . $dateString . '</a></li>';
+                $eventZoomJoinDateTimeList[] = '<li><a href="' . $joinUrl . '">' . $dateTimeString . '</a></li>';
+            }
         }
 
         /** @var \DateTime $eventStartDateTime */
@@ -220,21 +236,39 @@ class EventPlaceholderService extends PlaceholderService
         $attendeeCode = $bookingKey !== null && $token ? $token : '';
 
         return array_merge([
-            'attendee_code'             => substr($attendeeCode, 0, 5),
-            'event_name'                => $event['name'],
-            'event_price'               => $helperService->getFormattedPrice($event['price']),
-            'event_description'         => $event['description'],
-            'event_location'            => $locationAddress,
-            'event_period_date'         => '<ul>' . implode('', $eventDateList) . '</ul>',
-            'event_period_date_time'    => '<ul>' . implode('', $eventDateTimeList) . '</ul>',
-            'event_start_date'          => date_i18n($dateFormat, $eventStartDateTime->getTimestamp()),
-            'event_end_date'            => date_i18n($dateFormat, $eventEndDateTime->getTimestamp()),
-            'event_start_date_time'     => date_i18n(
+            'attendee_code'            => substr($attendeeCode, 0, 5),
+            'reservation_name'         => $event['name'],
+            'event_name'               => $event['name'],
+            'event_price'              => $helperService->getFormattedPrice($event['price']),
+            'event_description'        => $event['description'],
+            'reservation_description'  => $event['description'],
+            'event_location'           => $locationAddress,
+            'event_period_date'        => '<ul>' . implode('', $eventDateList) . '</ul>',
+            'event_period_date_time'   => '<ul>' . implode('', $eventDateTimeList) . '</ul>',
+            'zoom_host_url_date'      => count($eventZoomStartDateList) === 0 ?
+                '' : '<ul>' . implode('', $eventZoomStartDateList) . '</ul>',
+            'zoom_host_url_date_time' => count($eventZoomStartDateTimeList) === 0 ?
+                '' : '<ul>' . implode('', $eventZoomStartDateTimeList) . '</ul>',
+            'zoom_join_url_date'       => count($eventZoomJoinDateList) === 0 ?
+                '' : '<ul>' . implode('', $eventZoomJoinDateList) . '</ul>',
+            'zoom_join_url_date_time'  => count($eventZoomJoinDateTimeList) === 0 ?
+                '' : '<ul>' . implode('', $eventZoomJoinDateTimeList) . '</ul>',
+            'event_start_date'         => date_i18n($dateFormat, $eventStartDateTime->getTimestamp()),
+            'event_end_date'           => date_i18n($dateFormat, $eventEndDateTime->getTimestamp()),
+            'event_start_date_time'    => date_i18n(
                 $dateFormat . ' ' . $timeFormat,
                 $eventStartDateTime->getTimestamp()
             ),
-            'event_end_date_time'       => date_i18n(
+            'event_end_date_time'      => date_i18n(
                 $dateFormat . ' ' . $timeFormat,
+                $eventEndDateTime->getTimestamp()
+            ),
+            'event_start_time'         => date_i18n(
+                $timeFormat,
+                $eventStartDateTime->getTimestamp()
+            ),
+            'event_end_time'           => date_i18n(
+                $timeFormat,
                 $eventEndDateTime->getTimestamp()
             ),
         ], $staff);

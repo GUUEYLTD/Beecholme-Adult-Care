@@ -8,6 +8,7 @@ use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Booking\EventApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
+use AmeliaBooking\Domain\Entity\Booking\Event\EventPeriod;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Event\EventFactory;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
@@ -91,10 +92,20 @@ class UpdateEventCommandHandler extends CommandHandler
             return $result;
         }
 
+        /** @var EventPeriod $oldEventPeriod */
+        foreach ($oldEvent->getPeriods()->getItems() as $oldEventPeriod) {
+            /** @var EventPeriod $eventPeriod */
+            foreach ($event->getPeriods()->getItems() as $eventPeriod) {
+                if ($eventPeriod->getId() && $oldEventPeriod->getId()->getValue() === $eventPeriod->getId()->getValue() && $oldEventPeriod->getZoomMeeting()) {
+                    $eventPeriod->setZoomMeeting($oldEventPeriod->getZoomMeeting());
+                }
+            }
+        }
+
         $eventRepository->beginTransaction();
 
         try {
-            $rescheduledEvents = $eventApplicationService->update(
+            $parsedEvents = $eventApplicationService->update(
                 $oldEvent,
                 $event,
                 $command->getField('applyGlobally')
@@ -110,7 +121,8 @@ class UpdateEventCommandHandler extends CommandHandler
         $result->setMessage('Successfully updated event.');
         $result->setData(
             [
-                Entities::EVENTS => $rescheduledEvents->toArray(),
+                Entities::EVENTS => $parsedEvents,
+                'zoomUserAdded'  => $event->getZoomUserId() && !$oldEvent->getZoomUserId()
             ]
         );
 

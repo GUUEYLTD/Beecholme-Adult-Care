@@ -78,6 +78,9 @@ class Event extends AbstractBookable
     /** @var DateTimeValue */
     protected $created;
 
+    /** @var Name */
+    private $zoomUserId;
+
     /**
      * Event constructor.
      *
@@ -372,6 +375,22 @@ class Event extends AbstractBookable
     }
 
     /**
+     * @return Name
+     */
+    public function getZoomUserId()
+    {
+        return $this->zoomUserId;
+    }
+
+    /**
+     * @param Name $zoomUserId
+     */
+    public function setZoomUserId(Name $zoomUserId)
+    {
+        $this->zoomUserId = $zoomUserId;
+    }
+
+    /**
      * @return BookingType
      */
     public function getType()
@@ -406,6 +425,7 @@ class Event extends AbstractBookable
                 'customLocation'     => $this->getCustomLocation() ? $this->getCustomLocation()->getValue() : null,
                 'parentId'           => $this->getParentId() ? $this->getParentId()->getValue() : null,
                 'created'            => $this->getCreated() ? $this->getCreated()->getValue()->format('Y-m-d H:i:s') : null,
+                'zoomUserId'         => $this->getZoomUserId() ? $this->getZoomUserId()->getValue() : null,
                 'type'               => $this->getType()->getValue(),
             ]
         );

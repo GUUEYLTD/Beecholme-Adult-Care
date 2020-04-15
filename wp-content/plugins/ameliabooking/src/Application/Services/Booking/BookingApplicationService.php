@@ -4,6 +4,7 @@ namespace AmeliaBooking\Application\Services\Booking;
 
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Entity\Bookable\Service\Category;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
@@ -20,6 +21,7 @@ use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Container;
+use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
@@ -320,5 +322,94 @@ class BookingApplicationService
         }
 
         return $booking;
+    }
+
+    /**
+     * @param Appointment|Event $reservation
+     *
+     * @return void
+     *
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function setReservationEntities($reservation)
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->container->get('domain.users.repository');
+
+        /** @var ProviderRepository $providerRepository */
+        $providerRepository = $this->container->get('domain.users.providers.repository');
+
+        /** @var LocationRepository $locationRepository */
+        $locationRepository = $this->container->get('domain.locations.repository');
+
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = $this->container->get('domain.bookable.category.repository');
+
+        /** @var CustomerBooking $booking */
+        foreach ($reservation->getBookings()->getItems() as $booking) {
+            if ($booking->getCustomer() === null && $booking->getCustomerId() !== null) {
+                /** @var Customer $customer */
+                $customer = $userRepository->getById($booking->getCustomerId()->getValue());
+
+                $booking->setCustomer(UserFactory::create(array_merge($customer->toArray(), ['type' => 'customer'])));
+            }
+        }
+
+        $locationId = $reservation->getLocation() === null && $reservation->getLocationId() !== null ?
+            $reservation->getLocationId()->getValue() : null;
+
+        switch ($reservation->getType()->getValue()) {
+            case Entities::APPOINTMENT:
+                if ($reservation->getService() === null && $reservation->getServiceId() !== null) {
+                    /** @var BookableApplicationService $bookableAS */
+                    $bookableAS = $this->container->get('application.bookable.service');
+
+                    /** @var Service $service */
+                    $service = $bookableAS->getAppointmentService(
+                        $reservation->getServiceId()->getValue(),
+                        $reservation->getProviderId()->getValue()
+                    );
+
+                    if ($service->getCategory() === null && $service->getCategoryId() !== null) {
+                        /** @var Category $category */
+                        $category = $categoryRepository->getById($service->getCategoryId()->getValue());
+
+                        $service->setCategory($category);
+                    }
+
+                    $reservation->setService($service);
+                }
+
+                if ($reservation->getProvider() === null && $reservation->getProviderId() !== null) {
+                    /** @var Provider $provider */
+                    $provider = $providerRepository->getByCriteriaWithSchedule(
+                        [
+                            Entities::PROVIDERS => [$reservation->getProviderId()->getValue()]
+                        ]
+                    )->getItem($reservation->getProviderId()->getValue());
+
+                    $reservation->setProvider($provider);
+                }
+
+                if ($reservation->getLocation() === null &&
+                    $reservation->getLocationId() === null &&
+                    $reservation->getProvider() !== null &&
+                    $reservation->getProvider()->getLocationId() !== null
+                ) {
+                    $locationId = $reservation->getProvider()->getLocationId()->getValue();
+                }
+
+                break;
+        }
+
+        if ($locationId !== null) {
+            /** @var Location $location */
+            $location = $locationRepository->getById($locationId);
+
+            $reservation->setLocation($location);
+        }
     }
 }

@@ -97,7 +97,7 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {
@@ -138,7 +138,7 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to save data in ' . __CLASS__ . $e->getMessage());
+            throw new QueryExecutionException('Unable to save data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {

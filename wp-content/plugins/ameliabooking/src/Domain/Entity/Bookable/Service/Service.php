@@ -56,6 +56,9 @@ class Service extends AbstractBookable
     /** @var  Id */
     protected $categoryId;
 
+    /** @var  Category */
+    protected $category;
+
     /** @var  BooleanValueObject */
     protected $show;
 
@@ -111,6 +114,22 @@ class Service extends AbstractBookable
     public function setCategoryId(Id $categoryId)
     {
         $this->categoryId = $categoryId;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category = $category;
     }
 
     /**
@@ -307,6 +326,7 @@ class Service extends AbstractBookable
                 'aggregatedPrice' => $this->getAggregatedPrice() ? $this->getAggregatedPrice()->getValue() : null,
                 'status'          => $this->getStatus()->getValue(),
                 'categoryId'      => $this->getCategoryId()->getValue(),
+                'category'        => $this->getCategory() ? $this->getCategory()->toArray() : null,
                 'priority'        => $this->getPriority() ? $this->getPriority()->getValue() : [],
                 'gallery'         => $this->getGallery() ? $this->getGallery()->toArray() : []
             ]

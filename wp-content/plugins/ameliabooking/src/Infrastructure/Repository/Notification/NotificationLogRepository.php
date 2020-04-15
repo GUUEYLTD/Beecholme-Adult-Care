@@ -103,7 +103,7 @@ class NotificationLogRepository extends AbstractRepository
 
             return $res;
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
     }
 

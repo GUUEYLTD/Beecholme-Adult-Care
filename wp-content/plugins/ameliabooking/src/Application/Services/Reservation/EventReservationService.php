@@ -17,12 +17,12 @@ use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\CustomerBookingFactory;
 use AmeliaBooking\Domain\Factory\Booking\Event\CustomerBookingEventPeriodFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Domain\ValueObjects\String\Token;
-use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingExtraRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
@@ -162,12 +162,22 @@ class EventReservationService extends AbstractReservationService
     {
         /** @var CustomerBookingRepository $bookingRepository */
         $bookingRepository = $this->container->get('domain.booking.customerBooking.repository');
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
 
         /** @var Event $reservation */
         $event = $this->getReservationByBookingId($booking->getId()->getValue());
 
         if ($requestedStatus === BookingStatus::CANCELED) {
-            $this->inspectMinimumCancellationTime($event->getPeriods()->getItem(0)->getPeriodStart()->getValue());
+             $minimumCancelTimeInSeconds = $settingsDS
+                ->getEntitySettings($event->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToCanceling();
+
+            $this->inspectMinimumCancellationTime(
+                $event->getPeriods()->getItem(0)->getPeriodStart()->getValue(),
+                $minimumCancelTimeInSeconds
+            );
         }
 
         $booking->setStatus(new BookingStatus($requestedStatus));

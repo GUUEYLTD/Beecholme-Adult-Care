@@ -69,7 +69,12 @@ class SendTestEmailCommandHandler extends CommandHandler
             $dummyData
         );
 
-        $mailService->send($command->getField('recipientEmail'), $subject, $content, $settingsAS->getBccEmails());
+        $mailService->send(
+            $command->getField('recipientEmail'),
+            $subject,
+            $notificationService->getParsedBody($content),
+            $settingsAS->getBccEmails()
+        );
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Test email successfully sent');

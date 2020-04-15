@@ -495,6 +495,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     u.firstName AS user_firstName,
                     u.lastName AS user_lastName,
                     u.email AS user_email,
+                    u.zoomUserId AS user_zoom_user_id,
                     u.note AS note,
                     u.phone AS phone,
                     u.pictureFullPath AS picture_full_path,
@@ -1387,7 +1388,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
 
             $response = $statement->execute($params);
         } catch (\Exception $e) {
-            throw new QueryExecutionException('Unable to add data in ' . __CLASS__);
+            throw new QueryExecutionException('Unable to add data in ' . __CLASS__, $e->getCode(), $e);
         }
 
         if (!$response) {
@@ -1483,6 +1484,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                 'email'            => $row['user_email'],
                 'note'             => isset($row['note']) ? $row['note'] : null,
                 'phone'            => isset($row['phone']) ? $row['phone'] : null,
+                'zoomUserId'       => isset($row['user_zoom_user_id']) ? $row['user_zoom_user_id'] : null,
                 'locationId'       => isset($row['user_locationId']) ? $row['user_locationId'] : null,
                 'pictureFullPath'  => isset($row['picture_full_path']) ? $row['picture_full_path'] : null,
                 'pictureThumbPath' => isset($row['picture_thumb_path']) ? $row['picture_thumb_path'] : null,

@@ -9,7 +9,10 @@ namespace AmeliaBooking\Application\Commands\Report;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
+use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Entities;
+use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Report\AbstractReportService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
@@ -51,7 +54,22 @@ class GetCustomersCommandHandler extends CommandHandler
 
         $this->checkMandatoryFields($command);
 
-        $customers = $customerRepository->getFiltered($command->getField('params'), null);
+        $params = $command->getField('params');
+
+        if (!$this->getContainer()->getPermissionsService()->currentUserCanReadOthers(Entities::CUSTOMERS)) {
+            /** @var ProviderApplicationService $providerAS */
+            $providerAS = $this->container->get('application.user.provider.service');
+
+            /** @var AbstractUser $currentUser */
+            $currentUser = $this->container->get('logged.in.user');
+
+            /** @var Collection $customers */
+            $providerCustomers = $providerAS->getAllowedCustomers($currentUser);
+
+            $params['customers'] = array_column($providerCustomers->toArray(), 'id');
+        }
+
+        $customers = $customerRepository->getFiltered($params, null);
 
         $rows = [];
 

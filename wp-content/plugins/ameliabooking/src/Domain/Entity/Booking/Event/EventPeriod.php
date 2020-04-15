@@ -9,6 +9,7 @@ namespace AmeliaBooking\Domain\Entity\Booking\Event;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\Entity\Zoom\ZoomMeeting;
 
 /**
  * Class EventPeriod
@@ -28,6 +29,9 @@ class EventPeriod
 
     /** @var DateTimeValue */
     protected $periodEnd;
+
+    /** @var ZoomMeeting */
+    private $zoomMeeting;
 
     /** @var  Collection */
     protected $bookings;
@@ -97,6 +101,22 @@ class EventPeriod
     }
 
     /**
+     * @return ZoomMeeting
+     */
+    public function getZoomMeeting()
+    {
+        return $this->zoomMeeting;
+    }
+
+    /**
+     * @param ZoomMeeting $zoomMeeting
+     */
+    public function setZoomMeeting(ZoomMeeting $zoomMeeting)
+    {
+        $this->zoomMeeting = $zoomMeeting;
+    }
+
+    /**
      * @return Collection
      */
     public function getBookings()
@@ -122,6 +142,7 @@ class EventPeriod
             'eventId'        => $this->getEventId() ? $this->getEventId()->getValue() : null,
             'periodStart'    => $this->getPeriodStart()->getValue()->format('Y-m-d H:i:s'),
             'periodEnd'      => $this->getPeriodEnd()->getValue()->format('Y-m-d H:i:s'),
+            'zoomMeeting'    => $this->getZoomMeeting() ? $this->getZoomMeeting()->toArray() : null,
             'bookings'       => $this->getBookings() ? $this->getBookings()->toArray() : [],
         ];
     }

@@ -68,7 +68,13 @@ class ButtonService
     public static function exportVars()
     {
         HelperService::exportJSVar('wpAmeliaPluginURL', AMELIA_URL);
-        HelperService::exportJSVar('wpAmeliaLabels', BackendStrings::getWordPressStrings());
+        HelperService::exportJSVar(
+            'wpAmeliaLabels',
+            array_merge(
+                BackendStrings::getCommonStrings(),
+                BackendStrings::getWordPressStrings()
+            )
+        );
 
         HelperService::printJSVars();
     }

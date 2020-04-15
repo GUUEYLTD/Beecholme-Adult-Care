@@ -18,6 +18,7 @@ use AmeliaBooking\Application\Commands\Report;
 use AmeliaBooking\Application\Commands\Search;
 use AmeliaBooking\Application\Commands\Google;
 use AmeliaBooking\Application\Commands\CustomField;
+use AmeliaBooking\Application\Commands\Zoom;
 
 // @codingStandardsIgnoreStart
 $entries['command.bus'] = function ($c) {
@@ -27,6 +28,7 @@ $entries['command.bus'] = function ($c) {
             Activation\ActivatePluginCommand::class                   => new Activation\ActivatePluginCommandHandler($c),
             Activation\DeactivatePluginCommand::class                 => new Activation\DeactivatePluginCommandHandler($c),
             Activation\DeactivatePluginEnvatoCommand::class           => new Activation\DeactivatePluginEnvatoCommandHandler($c),
+            Activation\ParseDomainCommand::class                      => new Activation\ParseDomainCommandHandler($c),
             // Bookable/Category
             Bookable\Category\AddCategoryCommand::class               => new Bookable\Category\AddCategoryCommandHandler($c),
             Bookable\Category\DeleteCategoryCommand::class            => new Bookable\Category\DeleteCategoryCommandHandler($c),
@@ -125,6 +127,7 @@ $entries['command.bus'] = function ($c) {
             Report\GetCouponsCommand::class                           => new Report\GetCouponsCommandHandler($c),
             Report\GetCustomersCommand::class                         => new Report\GetCustomersCommandHandler($c),
             Report\GetPaymentsCommand::class                          => new Report\GetPaymentsCommandHandler($c),
+            Report\GetEventAttendeesCommand::class                    => new Report\GetEventAttendeesCommandHandler($c),
             // Search
             Search\GetSearchCommand::class                            => new Search\GetSearchCommandHandler($c),
             // Settings
@@ -135,7 +138,6 @@ $entries['command.bus'] = function ($c) {
             Stats\GetStatsCommand::class                              => new AmeliaBooking\Application\Commands\Stats\GetStatsCommandHandler($c),
             // User/Customer
             User\Customer\AddCustomerCommand::class                   => new User\Customer\AddCustomerCommandHandler($c),
-            User\Customer\GetCustomerCommand::class                   => new User\Customer\GetCustomerCommandHandler($c),
             User\Customer\GetCustomerCommand::class                   => new User\Customer\GetCustomerCommandHandler($c),
             User\Customer\GetCustomersCommand::class                  => new User\Customer\GetCustomersCommandHandler($c),
             User\Customer\UpdateCustomerCommand::class                => new User\Customer\UpdateCustomerCommandHandler($c),
@@ -152,6 +154,8 @@ $entries['command.bus'] = function ($c) {
             User\Provider\GetProvidersCommand::class                  => new User\Provider\GetProvidersCommandHandler($c),
             User\Provider\UpdateProviderCommand::class                => new User\Provider\UpdateProviderCommandHandler($c),
             User\Provider\UpdateProviderStatusCommand::class          => new User\Provider\UpdateProviderStatusCommandHandler($c),
+
+            Zoom\GetUsersCommand::class                               => new Zoom\GetUsersCommandHandler($c),
         ]
     );
 };

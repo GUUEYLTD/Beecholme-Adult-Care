@@ -41,7 +41,7 @@ class TimeSlotService
 
     /** @noinspection MoreThanThreeArgumentsInspection */
     /**
-     * @param int       $serviceId
+     * @param Service   $service
      * @param int       $locationId
      * @param \DateTime $startDateTime
      * @param \DateTime $endDateTime
@@ -49,6 +49,7 @@ class TimeSlotService
      * @param array     $selectedExtras
      * @param int       $excludeAppointmentId
      * @param int       $personsCount
+     * @param int       $isFrontEndBooking
      *
      * @return array
      * @throws \Slim\Exception\ContainerValueNotFoundException
@@ -58,17 +59,16 @@ class TimeSlotService
      * @throws \Interop\Container\Exception\ContainerException
      */
     public function getFreeSlots(
-        $serviceId,
+        $service,
         $locationId,
         $startDateTime,
         $endDateTime,
         $providerIds,
         $selectedExtras,
         $excludeAppointmentId,
-        $personsCount
+        $personsCount,
+        $isFrontEndBooking
     ) {
-        /** @var ServiceRepository $serviceRepository */
-        $serviceRepository = $this->container->get('domain.bookable.service.repository');
         /** @var AppointmentRepository $appointmentRepository */
         $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
         /** @var ProviderRepository $providerRepository */
@@ -88,24 +88,23 @@ class TimeSlotService
         /** @var GoogleCalendarService $googleCalendarService */
         $googleCalendarService = $this->container->get('infrastructure.google.calendar.service');
 
-        /** @var Service $service */
-        $service = $serviceRepository->getByIdWithExtras($serviceId);
-
         $bookableApplicationService->checkServiceTimes($service);
 
         /** @var Collection $extras */
         $extras = $bookableApplicationService->filterServiceExtras(array_column($selectedExtras, 'id'), $service);
 
+        $isGloballyBusySlot = $settingsDomainService->getSetting('appointments', 'isGloballyBusySlot');
+
         /** @var Collection $futureAppointments */
         $futureAppointments = $appointmentRepository->getFutureAppointments(
-            $providerIds,
+            $isGloballyBusySlot ? [] : $providerIds,
             $excludeAppointmentId,
             [BookingStatus::APPROVED, BookingStatus::PENDING]
         );
 
         /** @var Collection $providers */
         $providers = $providerRepository->getByCriteria([
-            'services'  => [$serviceId],
+            'services'  => [$service->getId()->getValue()],
             'providers' => $providerIds
         ]);
 
@@ -145,7 +144,8 @@ class TimeSlotService
             $endDateTime,
             $personsCount,
             $settingsDomainService->getSetting('appointments', 'allowBookingIfPending'),
-            $settingsDomainService->getSetting('appointments', 'allowBookingIfNotMin')
+            $settingsDomainService->getSetting('appointments', 'allowBookingIfNotMin'),
+            $isFrontEndBooking ? $settingsDomainService->getSetting('appointments', 'openedBookingAfterMin') : false
         );
 
         // Find slot length and required appointment time
@@ -192,21 +192,42 @@ class TimeSlotService
         $dateKey = $requiredDateTime->format('Y-m-d');
         $timeKey = $requiredDateTime->format('H:i');
 
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
+        /** @var ServiceRepository $serviceRepository */
+        $serviceRepository = $this->container->get('domain.bookable.service.repository');
+
+        /** @var Service $service */
+        $service = $serviceRepository->getByIdWithExtras($serviceId);
+
+        $minimumBookingTimeInSeconds = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getMinimumTimeRequirementPriorToBooking();
+
+        $maximumBookingTimeInDays = $settingsDS
+            ->getEntitySettings($service->getSettings())
+            ->getGeneralSettings()
+            ->getNumberOfDaysAvailableForBooking();
+
         $freeSlots = $this->getFreeSlots(
-            $serviceId,
+            $service,
             null,
             $this->getMinimumDateTimeForBooking(
                 '',
-                $isFrontEndBooking
+                $isFrontEndBooking,
+                $minimumBookingTimeInSeconds
             ),
             $this->getMaximumDateTimeForBooking(
                 '',
-                $isFrontEndBooking
+                $isFrontEndBooking,
+                $maximumBookingTimeInDays
             ),
             [$providerId],
             $selectedExtras,
             $excludeAppointmentId,
-            $personsCount
+            $personsCount,
+            $isFrontEndBooking
         );
 
         return array_key_exists($dateKey, $freeSlots) && array_key_exists($timeKey, $freeSlots[$dateKey]);
@@ -215,19 +236,15 @@ class TimeSlotService
     /**
      * @param string  $requiredBookingDateTimeString
      * @param boolean $isFrontEndBooking
+     * @param string  $minimumTime
      *
      * @return \DateTime
      * @throws \Exception
      * @throws \Interop\Container\Exception\ContainerException
      */
-    public function getMinimumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking)
+    public function getMinimumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking, $minimumTime)
     {
-        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsDS */
-        $settingsDS = $this->container->get('domain.settings.service');
-
-        $generalSettings = $settingsDS->getCategorySettings('general');
-
-        $requiredTimeOffset = $isFrontEndBooking ? $generalSettings['minimumTimeRequirementPriorToBooking'] : 0;
+        $requiredTimeOffset = $isFrontEndBooking ? $minimumTime : 0;
 
         $minimumBookingDateTime = DateTimeService::getNowDateTimeObject()->modify("+{$requiredTimeOffset} seconds");
 
@@ -239,27 +256,21 @@ class TimeSlotService
     }
 
     /**
-     * @param string $requiredBookingDateTimeString
+     * @param string  $requiredBookingDateTimeString
      * @param boolean $isFrontEndBooking
+     * @param int     $maximumTime
      *
      * @return \DateTime
      * @throws \Exception
      * @throws \Interop\Container\Exception\ContainerException
      */
-    public function getMaximumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking)
+    public function getMaximumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking, $maximumTime)
     {
-        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsDS */
-        $settingsDS = $this->container->get('domain.settings.service');
-
-        $generalSettings = $settingsDS->getCategorySettings('general');
-
-        $days =
-            $generalSettings['numberOfDaysAvailableForBooking'] >
-            SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING ?
-                $generalSettings['numberOfDaysAvailableForBooking'] :
+        $days = $maximumTime > SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING ?
+                $maximumTime :
                 SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING;
 
-        $daysAvailableForBooking = $isFrontEndBooking ? $generalSettings['numberOfDaysAvailableForBooking'] : $days;
+        $daysAvailableForBooking = $isFrontEndBooking ? $maximumTime : $days;
 
         $maximumBookingDateTime = DateTimeService::getNowDateTimeObject()->modify("+{$daysAvailableForBooking} day");
 

@@ -346,8 +346,14 @@
     }
 
     .am-cabinet-button {
+      display: flex;
+
       i {
         font-size: medium;
+      }
+
+      .am-cabinet-button-zoom {
+        padding: 2px 12px;
       }
     }
 
@@ -431,6 +437,11 @@
 
 .am-cabinet-buttons-align-right  {
   text-align: right;
+
+  i {
+    cursor: pointer;
+    font-size: 18px;
+  }
 
   @media @less-then-large {
     text-align: center;

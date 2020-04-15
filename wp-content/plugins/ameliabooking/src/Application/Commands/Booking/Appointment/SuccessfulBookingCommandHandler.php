@@ -9,7 +9,12 @@ use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
+use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use Slim\Exception\ContainerValueNotFoundException;
+use Interop\Container\Exception\ContainerException;
+use Exception;
 
 /**
  * Class SuccessfulBookingCommandHandler
@@ -29,11 +34,11 @@ class SuccessfulBookingCommandHandler extends CommandHandler
      * @param SuccessfulBookingCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws InvalidArgumentException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws ContainerException
+     * @throws Exception
      */
     public function handle(SuccessfulBookingCommand $command)
     {
@@ -54,18 +59,18 @@ class SuccessfulBookingCommandHandler extends CommandHandler
             (int)$command->getArg('id')
         );
 
-        if (!$booking instanceof CustomerBooking) {
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not retrieve booking');
-
-            return $result;
-        }
+        $booking->setChangedStatus(new BooleanValueObject(true));
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully get booking');
         $result->setData([
             'type'                     => $type,
-            $type                      => $reservation->toArray(),
+            $type                      => array_merge(
+                $reservation->toArray(),
+                ['bookings' => [
+                    $booking->toArray()
+                ]]
+            ),
             Entities::BOOKING          => $booking->toArray(),
             'appointmentStatusChanged' => $command->getFields()['appointmentStatusChanged']
         ]);

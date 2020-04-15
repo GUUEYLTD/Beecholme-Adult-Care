@@ -36,7 +36,8 @@ class AddEventController extends Controller
         'show',
         'locationId',
         'settings',
-        'customLocation'
+        'customLocation',
+        'zoomUserId'
     ];
 
     /**

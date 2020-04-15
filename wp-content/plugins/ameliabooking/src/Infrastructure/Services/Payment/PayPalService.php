@@ -48,15 +48,19 @@ class PayPalService extends AbstractPaymentService implements PaymentServiceInte
     public function execute($data)
     {
         try {
-            $response = $this->getGateway()->purchase([
+            $payPalData = [
                 'cancelUrl'  => $data['cancelUrl'],
                 'returnUrl'  => $data['returnUrl'],
                 'amount'     => $data['amount'],
                 'currency'   => $this->settingsService->getCategorySettings('payments')['currency'],
                 'noShipping' => 1,
-            ])->send();
+            ];
 
-            return $response;
+            if ($data['description']) {
+                $payPalData['description'] = $data['description'];
+            }
+
+            return $this->getGateway()->purchase($payPalData)->send();
         } catch (\Exception $e) {
             throw $e;
         }

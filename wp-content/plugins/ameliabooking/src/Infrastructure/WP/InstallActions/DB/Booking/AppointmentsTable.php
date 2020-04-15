@@ -41,6 +41,7 @@ class AppointmentsTable extends AbstractDatabaseTable
                    `providerId` INT(11) NOT NULL,
                    `internalNotes` TEXT({$description}) NULL,
                    `googleCalendarEventId` VARCHAR(255) NULL,
+                   `zoomMeeting` TEXT({$description}) NULL,
                     PRIMARY KEY (`id`),
                     CONSTRAINT FOREIGN KEY (`serviceId`) REFERENCES {$serviceTable}(`id`) 
                     ON DELETE CASCADE ON UPDATE CASCADE,
