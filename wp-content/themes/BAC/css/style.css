@@ -4182,6 +4182,10 @@ a.policy-link {
     max-height: none;
 }
 
+.booking-page #am-confirm-booking .am-custom-fields .el-col:nth-child(3) {
+    max-width: 100%;
+}
+
 .booking-page .el-form-item__label {
     font-family: 'InterReg', sans-serif;
     font-size: 14px;
@@ -4196,6 +4200,12 @@ a.policy-link {
     font-size: 16px;
     line-height: 24px;
     color: #333;
+    border: 1px solid rgba(196, 196, 196, .5);
+}
+
+.booking-page .el-textarea__inner {
+    resize: none;
+    height: 80px;
 }
 
 .booking-page .el-input input::placeholder {
