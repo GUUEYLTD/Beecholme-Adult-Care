@@ -22,18 +22,18 @@
 					<label for="radio-type-coach"
 								 class="single-tab coach <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'active' : ''; ?>"
 								 data-type="coach">Life Coach</label>
+					<input type="radio" name="type" value="coach" class="hidden"
+								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
 					<label for="radio-type-therapist"
 								 class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'active' : ''; ?>"
 								 data-type="therapist">Therapist</label>
+					<input type="radio" name="type" value="therap" class="hidden"
+								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
 					<label for="radio-type-all"
 								 class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
 								 data-type="all">All</label>
 					<input type="radio" name="type" value="" class="hidden"
 								 id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
-					<input type="radio" name="type" value="therap" class="hidden"
-								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
-					<input type="radio" name="type" value="coach" class="hidden"
-								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
 				</div>
 			</div>
 

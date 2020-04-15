@@ -242,9 +242,10 @@ img {
 .cta-button {
     background: #5AB9AC;
     color: #fff;
-    font-family: InterBold;
+    font-family: InterBold, sans-serif;
     font-size: 16px;
-    line-height: 16px;
+    line-height: 19px;
+    border-radius: 3px;
 }
 
 .cta-button:hover, .cta-button:focus {
@@ -572,6 +573,15 @@ img {
 
 .home-form-wrapper h3 {
     margin: 0 0 25px;
+}
+
+.home-form-wrapper .dropdown .list {
+    margin-left: -1px;
+    width: 264px;
+}
+
+.home-form-wrapper .dropdown .list ul {
+    width: 264px;
 }
 
 .wpcf7-form p {
@@ -2137,7 +2147,10 @@ footer {
     margin-left: 5px;
 }
 
-#menu-menu1-2 li:last-child a:first-child:after {
+#menu-menu1-2 li.menu-item-976 a:first-child:after,
+#menu-menu1-2 li.menu-item-977 a:first-child:after,
+#menu-menu1-2 li.menu-item-978 a:first-child:after,
+#menu-menu1-2 li.menu-item-538 a:first-child:after {
     content: none;
 }
 
@@ -2164,7 +2177,7 @@ footer {
     left: 160px;
     position: absolute;
     top: 37px;
-    width: 300px;
+    width: 250px;
 }
 
 .footer-controls {
@@ -3594,6 +3607,8 @@ a.policy-link {
 }
 .dropdown .list ul {
     margin-bottom: 0;
+    max-height: 200px;
+    overflow-y: auto;
 }
 .dropdown .option {
     cursor: pointer;
