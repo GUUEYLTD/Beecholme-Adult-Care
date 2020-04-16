@@ -730,9 +730,19 @@
 	order: 2;
 }
 
-@media screen and (max-width: 364px) {
+@media screen and (max-width: 370px) {
 	.footer-controls .buttons {
+		flex-flow: column;
 		justify-content: center!important;
+	}
+
+	.footer-controls .buttons a,
+	.footer-controls .buttons a:nth-child(3) {
+		margin: 0 0 16px;
+	}
+
+	.footer-controls .buttons a:last-child {
+		margin-bottom: 0;
 	}
 }
 

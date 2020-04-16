@@ -85,7 +85,7 @@
 			<div class="form-addition">
 				<div class="form-addition-text">or you can call us directly</div>
 				<div class="form-addition-action d-flex justify-content-between">
-					<div class="d-flex"><a href="tel:555-555-5555">+44 20 8648 6681</a></div>
+					<div class="d-flex"><a href="tel:+44 20 8648 6681">+44 20 8648 6681</a></div>
 				</div>
 			</div>
 		</div>
@@ -182,7 +182,7 @@
 		<?php } ?>
 	</div>
 	<div class="features-booking">
-		<a class="cta-button" href="/24-hour-residential-care-home/">View Our Homes and Book a Visit</a>
+		<a class="cta-button" href="/contact-us/">View Our Homes and Book a Visit</a>
 	</div>
 </div>
 <div class="boxes">
