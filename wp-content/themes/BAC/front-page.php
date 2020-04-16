@@ -30,7 +30,7 @@
 					<input type="radio" name="type" value="therap" class="hidden"
 								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
 					<label for="radio-type-all"
-								 class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
+								 class="single-tab all active <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
 								 data-type="all">All</label>
 					<input type="radio" name="type" value="" class="hidden"
 								 id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>

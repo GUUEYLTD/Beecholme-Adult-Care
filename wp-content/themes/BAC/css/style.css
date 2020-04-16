@@ -509,7 +509,7 @@ img {
 }
 
 .banner-content .type-tabs .all {
-    width: 60px;
+    width: 62px;
 }
 
 .banner-content .tab-content.active {
@@ -3442,7 +3442,7 @@ a.policy-link {
     display: none;
 }
 
-.question-filter.therapist-question-filter {
+.question-filter.empty-filter {
     display: flex;
 }
 
