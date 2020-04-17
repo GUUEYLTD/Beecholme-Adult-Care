@@ -3499,12 +3499,14 @@ a.policy-link {
     margin-bottom: 0;
 }
 
-.home-form-wrapper .type-tabs .single-tab:first-child {
+.type-tabs .single-tab:first-child {
     border-right: 1px solid #c4c4c4;
+    border-radius: 3px 0 0 3px;
 }
 
-.home-form-wrapper .type-tabs .single-tab:nth-child(5) {
+.type-tabs .single-tab:nth-child(3) {
     border-left: 1px solid #c4c4c4;
+    border-radius: 0 3px 3px 0;
 }
 
 .type-tabs .single-tab.active {
