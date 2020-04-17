@@ -934,6 +934,7 @@
 .our-counsellors .single-item .details {
 	display: flex;
 	justify-content: space-between;
+	flex-flow: column;
 }
 
 .our-counsellors .single-item .rating img {
