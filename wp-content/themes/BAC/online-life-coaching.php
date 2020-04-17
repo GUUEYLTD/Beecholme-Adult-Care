@@ -7,7 +7,7 @@
     <div class="left-text"><?php the_field('lc_lefttext'); ?></div>
     <div class="right-text">
       <?php the_field('lc_righttext'); ?>
-      <div class="action-button"><a href="#"><?php the_field('lc_righttext_button'); ?></a></div>
+      <div class="action-button"><a href="/our-counsellors?type=coach&therapy=&coaching=&common="><?php the_field('lc_righttext_button'); ?></a></div>
     </div>
   </div>
 
@@ -69,7 +69,7 @@
       </div>
 
       <div class="action-button ot-action-button">
-        <a href="#"><?php the_field('lc_r_button'); ?></a>
+        <a href="/our-counsellors?type=coach&therapy=&coaching=&common="><?php the_field('lc_r_button'); ?></a>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@
         </div>
       </div>
       <div class="action-button">
-        <a href="#"><?php the_field('lc_i_button'); ?></a>
+        <a href="/our-counsellors?type=coach&therapy=&coaching=&common="><?php the_field('lc_i_button'); ?></a>
       </div>
     </div>
   </div>

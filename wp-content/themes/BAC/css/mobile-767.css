@@ -358,7 +358,7 @@
 }
 
 .principles {
-	margin: 40px 0;
+	margin: 40px 15px;
 }
 
 .single-principle {
@@ -448,6 +448,13 @@
 
 .twelve-week-booking .cta-button {
 	padding: 14px 10px;
+	font-size: 14px;
+}
+
+@media screen and (max-width: 380px) {
+	.twelve-week-booking .cta-button {
+		font-size: 12px;
+	}
 }
 
 @media screen and (max-width: 500px) {
@@ -756,6 +763,12 @@
 	text-align: center;
 }
 
+@media screen and (max-width: 400px) {
+	.training-info .text .right-text {
+		padding: 24px 10px;
+	}
+}
+
 .training-info .reasons {
 	padding: 60px 0;
 }
@@ -787,6 +800,10 @@
 }
 
 .training-info .information {
+	padding: 60px 0;
+}
+
+.training-info .slider {
 	padding: 60px 0;
 }
 
@@ -842,6 +859,16 @@
 
 .landing .block2 .content {
 	padding: 285px 15px 60px;
+}
+
+@media screen and (max-width: 600px) {
+	.landing .block1 .text {
+		margin-bottom: -350px;
+	}
+
+	.landing .block2 .content {
+		padding-top: 400px;
+	}
 }
 
 .landing .block2 .text h4 {
