@@ -3499,10 +3499,19 @@ a.policy-link {
     margin-bottom: 0;
 }
 
+.type-tabs .single-tab:first-child {
+    border-right: 1px solid #c4c4c4;
+}
+
+.type-tabs .single-tab:nth-child(5) {
+    border-left: 1px solid #c4c4c4;
+}
+
 .type-tabs .single-tab.active {
     background: #5AB9AC;
     border-radius: 0;
     color: #fff;
+    border: none;
 }
 
 .our-counsellors .filter-bar .search-button button {
