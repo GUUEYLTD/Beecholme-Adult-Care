@@ -913,12 +913,18 @@
 	margin-bottom: 16px;
 }
 
-.our-counsellors .single-item .personal-info .avatar {
-	margin: 0 16px 0 0;
+.our-counsellors .single-item .personal-info .info {
+	align-items: flex-start;
 }
 
-.our-counsellors .single-item .personal-info img {
+.our-counsellors .single-item .personal-info .avatar {
+	margin: 0 16px 0 0;
+	min-height: auto;
+}
+
+.our-counsellors .single-item .personal-info .avatar img {
 	max-width: 64px;
+	max-height: 64px;
 }
 
 .our-counsellors .single-item .specialty {
