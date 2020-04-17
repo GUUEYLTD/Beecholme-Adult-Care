@@ -905,6 +905,7 @@
 .our-counsellors .single-item {
 	padding: 24px;
 	max-width: 327px;
+	width: 100%;
 }
 
 .our-counsellors .single-item .personal-info {
