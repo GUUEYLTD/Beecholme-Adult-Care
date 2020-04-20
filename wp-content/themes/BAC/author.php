@@ -17,7 +17,7 @@ get_header(); ?>
             <div class="profile-container block1">
                 <div class="personal-info d-flex left">
                     <div class="avatar">
-                        <img src="<?php echo get_avatar_url($user->id) ?>" alt="">
+                        <img src="<?php echo $listingUser->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt="">
                     </div>
                     <div class="info">
 <!--                        <div class="rating">-->
@@ -34,7 +34,7 @@ get_header(); ?>
                                 <span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
                             </div>
                             <div class="button-wrapper">
-                                <a href="/book-session/?user=<?= $user->amelia_employee->id ?>">
+                                <a href="/booking/?user=<?= $user->amelia_employee->id ?>">
                                     <button>Book a session</button>
                                 </a>
                             </div>
@@ -86,8 +86,8 @@ get_header(); ?>
                 <div class="specializations right">
                     <div class="heading">Areas of Expertise</div>
                     <div class="text">
-                        <?php foreach ($userServices as $service) { ?>
-                            <span>- </span><?php echo $service->name ?><br>
+                        <?php foreach (getACFLoopValues('specializations', $user->ID) as $service) { ?>
+                            <span>- </span><?php echo $service; ?><br>
                         <?php } ?>
                     </div>
                 </div>
@@ -98,7 +98,9 @@ get_header(); ?>
                     <div class="heading">Session details</div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Duration</div>
-                        <div class="text info">1 hour</div>
+                        <div class="text info">
+                            <?= formatDuration($userServices[0]->duration); ?>
+                        </div>
                     </div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Price</div>
@@ -106,11 +108,11 @@ get_header(); ?>
                     </div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Approach</div>
-                        <div class="text info"><?php echo $userServices[0]->description ?></div>
+                        <div class="text info"><?php the_field('approach', "user_{$user->ID}"); ?></div>
                     </div>
                     <div class="single-detail d-flex">
                         <div class="text caption">How it works</div>
-                        <div class="text info">This approach emphasizes people's capacity to make rational choices and develop to their maximum potential. Concern and respect for others are also important themes.</div>
+                        <div class="text info"><?php the_field('how_it_works', "user_{$user->ID}"); ?></div>
                     </div>
                     <div class="button-wrapper">
                         <button>Book a Session</button>

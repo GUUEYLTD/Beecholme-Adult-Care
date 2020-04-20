@@ -175,15 +175,19 @@ function change_author_permalinks() {
 
 add_action('init','change_author_permalinks');
 
-function array_flatten($array) {
 
+function array_flatten($array)
+{
     $return = array();
     foreach ($array as $key => $value) {
-        if (is_array($value)){ $return = array_merge($return, array_flatten($value));}
-        else {$return[$key] = $value;}
+        if (is_array($value)) {
+            $return = array_merge($return, array_flatten($value));
+        } else {
+            $return[] = $value;
+        }
     }
-    return $return;
 
+    return $return;
 }
 
 add_action('user_register', function ($user_id) {
@@ -201,3 +205,41 @@ add_action('user_register', function ($user_id) {
     update_user_meta($user_id, 'first_name', $requestBody->firstName);
     update_user_meta($user_id, 'last_name', $requestBody->lastName);
 }, 10, 1);
+
+function hasFieldMatch($field, $value, $user_id)
+{
+    $values = getACFLoopValues($field, $user_id);
+
+    return in_array($value, $values);
+}
+
+function getACFLoopValues($field, $user_id)
+{
+    return array_flatten(get_field($field, "user_{$user_id}"));
+}
+
+function formatDuration($seconds)
+{
+    $hours   = floor((int)$seconds / 3600);
+    $minutes = (int)$seconds / 60 % 60;
+
+    $output = $hours ? "{$hours}h " : '';
+    $output .= $minutes ? "{$minutes}m " : '';
+
+    return $output;
+}
+
+
+function getServices($type = '') {
+    $services = get_field_object('specializations', "user_19")['choices'];
+
+    if($type === 'Therapist') {
+        return array_slice($services, 0, 9);
+    }
+
+    if($type === 'Life coach') {
+        return array_slice($services, 9, 9);
+    }
+
+    return $services;
+}
