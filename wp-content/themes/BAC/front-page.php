@@ -22,16 +22,16 @@
 					<label for="radio-type-coach"
 								 class="single-tab coach <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'active' : ''; ?>"
 								 data-type="coach">Life Coach</label>
-					<input type="radio" name="type" value="coach" class="hidden"
-								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
 					<label for="radio-type-therapist"
 								 class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'active' : ''; ?>"
 								 data-type="therapist">Therapist</label>
+					<label for="radio-type-all"
+								 class="single-tab all active <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
+								 data-type="all">All</label>
+					<input type="radio" name="type" value="coach" class="hidden"
+								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
 					<input type="radio" name="type" value="therap" class="hidden"
 								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
-					<label for="radio-type-all"
-								 class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
-								 data-type="all">All</label>
 					<input type="radio" name="type" value="" class="hidden"
 								 id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
 				</div>
@@ -85,7 +85,7 @@
 			<div class="form-addition">
 				<div class="form-addition-text">or you can call us directly</div>
 				<div class="form-addition-action d-flex justify-content-between">
-					<div class="d-flex"><a href="tel:555-555-5555">+44 20 8648 6681</a></div>
+					<div class="d-flex"><a href="tel:+44 20 8648 6681">+44 20 8648 6681</a></div>
 				</div>
 			</div>
 		</div>
@@ -182,7 +182,7 @@
 		<?php } ?>
 	</div>
 	<div class="features-booking">
-		<a class="cta-button" href="/24-hour-residential-care-home/">View Our Homes and Book a Visit</a>
+		<a class="cta-button" href="/contact-us/">View Our Homes and Book a Visit</a>
 	</div>
 </div>
 <div class="boxes">

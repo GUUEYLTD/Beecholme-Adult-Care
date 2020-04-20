@@ -7,9 +7,9 @@
                     <p>Beecholme Adult Care</p>
                     <p>2-4 Beecholme Ave Mitcham</p>
                     <p>Surrey CR4 2HT</p>
-                    <p>020 8648 6681</p>
+                    <p><a href="tel:020 8648 6681">020 8648 6681</a></p>
                     <p>United Kingdom</p>
-                    <p>info@beecholmeadultcare.co.uk</p>
+                    <p><a href="mailto:info@beecholmeadultcare.co.uk">info@beecholmeadultcare.co.uk</a></p>
                 </div>
                 <div class="footer-menu">
                     <h4>Links</h4>
@@ -20,8 +20,8 @@
                 <div class="buttons d-flex flex-wrap justify-content-between">
                     <a href="/landing/">For Counsellors</a>
                     <a href="/make-a-referral" class="referral-button">Make a Referral</a>
-                    <a href="#">Therapists</a>
-                    <a href="#">Life Coaches</a>
+                    <a href="/our-counsellors/?type=therap&therapy=&coaching=&common=">Therapists</a>
+                    <a href="/our-counsellors?type=coach&therapy=&coaching=&common=">Life Coaches</a>
                 </div>
                 <div class="trustpilot">
                     <div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="340px" data-theme="dark">

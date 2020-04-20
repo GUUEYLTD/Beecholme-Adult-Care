@@ -358,7 +358,7 @@
 }
 
 .principles {
-	margin: 40px 0;
+	margin: 40px 15px;
 }
 
 .single-principle {
@@ -448,6 +448,13 @@
 
 .twelve-week-booking .cta-button {
 	padding: 14px 10px;
+	font-size: 14px;
+}
+
+@media screen and (max-width: 380px) {
+	.twelve-week-booking .cta-button {
+		font-size: 12px;
+	}
 }
 
 @media screen and (max-width: 500px) {
@@ -730,9 +737,19 @@
 	order: 2;
 }
 
-@media screen and (max-width: 364px) {
+@media screen and (max-width: 370px) {
 	.footer-controls .buttons {
+		flex-flow: column;
 		justify-content: center!important;
+	}
+
+	.footer-controls .buttons a,
+	.footer-controls .buttons a:nth-child(3) {
+		margin: 0 0 16px;
+	}
+
+	.footer-controls .buttons a:last-child {
+		margin-bottom: 0;
 	}
 }
 
@@ -744,6 +761,12 @@
 
 .training-info .text .right-text {
 	text-align: center;
+}
+
+@media screen and (max-width: 400px) {
+	.training-info .text .right-text {
+		padding: 24px 10px;
+	}
 }
 
 .training-info .reasons {
@@ -777,6 +800,10 @@
 }
 
 .training-info .information {
+	padding: 60px 0;
+}
+
+.training-info .slider {
 	padding: 60px 0;
 }
 
@@ -834,6 +861,16 @@
 	padding: 285px 15px 60px;
 }
 
+@media screen and (max-width: 600px) {
+	.landing .block1 .text {
+		margin-bottom: -350px;
+	}
+
+	.landing .block2 .content {
+		padding-top: 400px;
+	}
+}
+
 .landing .block2 .text h4 {
 	text-align: center;
 }
@@ -868,6 +905,7 @@
 .our-counsellors .single-item {
 	padding: 24px;
 	max-width: 327px;
+	width: 100%;
 }
 
 .our-counsellors .single-item .personal-info {
@@ -876,12 +914,18 @@
 	margin-bottom: 16px;
 }
 
-.our-counsellors .single-item .personal-info .avatar {
-	margin: 0 16px 0 0;
+.our-counsellors .single-item .personal-info .info {
+	align-items: flex-start;
 }
 
-.our-counsellors .single-item .personal-info img {
+.our-counsellors .single-item .personal-info .avatar {
+	margin: 0 16px 0 0;
+	min-height: auto;
+}
+
+.our-counsellors .single-item .personal-info .avatar img {
 	max-width: 64px;
+	max-height: 64px;
 }
 
 .our-counsellors .single-item .specialty {
@@ -891,6 +935,7 @@
 .our-counsellors .single-item .details {
 	display: flex;
 	justify-content: space-between;
+	flex-flow: column;
 }
 
 .our-counsellors .single-item .rating img {

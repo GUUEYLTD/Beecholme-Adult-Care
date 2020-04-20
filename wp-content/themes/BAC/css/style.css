@@ -509,7 +509,7 @@ img {
 }
 
 .banner-content .type-tabs .all {
-    width: 60px;
+    width: 62px;
 }
 
 .banner-content .tab-content.active {
@@ -551,6 +551,13 @@ img {
     font-size: 18px;
     line-height: 24px;
     margin: 0 0 50px;
+}
+
+.banner-content .wpcf7-not-valid-tip {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    line-height: 16px;
 }
 
 .home-form-wrapper {
@@ -628,6 +635,15 @@ img {
     color: #737C8A;
     font-weight: normal;
     height: 100%;
+}
+
+.banner-content .wpcf7-form input,
+.banner-content .wpcf7-form select {
+    height: 45px;
+}
+
+.banner-content .wpcf7-response-output {
+    display: none!important;
 }
 
 #wpcf7-f18-o1 .wpcf7-form p:nth-child(2), #wpcf7-f18-o1 .wpcf7-form p:nth-child(3) {
@@ -732,6 +748,7 @@ img {
     width: 23%;
     background: rgba(196, 196, 196, .1);
     text-decoration: none;
+    border-radius: 6px;
 }
 
 .single-service-container:hover {
@@ -2125,7 +2142,15 @@ footer {
 .footer-contact p {
   line-height: 24px;
   font-size: 18px;
-  color: #9E9FA1;
+  color: #c4c4c4;
+}
+
+.footer-contact p a {
+    color: #c4c4c4;
+}
+
+.footer-contact p a:hover {
+    text-decoration: none;
 }
 
 .footer-menu {
@@ -2140,6 +2165,7 @@ footer {
     list-style-type: none;
     margin-bottom: 10px;
     cursor: pointer;
+    position: relative;
 }
 
 #menu-menu1-2 li a:first-child:after {
@@ -2165,7 +2191,7 @@ footer {
 #menu-menu1-2 li a {
     line-height: 24px;
     font-size: 18px;
-    color: #8C8D90;
+    color: #c4c4c4;
 }
 
 #menu-menu1-2 li a:hover {
@@ -2176,7 +2202,7 @@ footer {
 .footer-menu #menu-menu1-2 li .sub-menu {
     left: 160px;
     position: absolute;
-    top: 37px;
+    top: 0px;
     width: 250px;
 }
 
@@ -3142,7 +3168,7 @@ a.policy-link {
     text-align: center;
     margin-bottom: 14px;
 }
-.landing .block1 .text .action-button a {
+.landing .action-button a {
     width: 160px;
     padding: 14px 48px;
     background: #5AB9AC;
@@ -3154,7 +3180,7 @@ a.policy-link {
     color: #fff;
 }
 
-.landing .block1 .text .action-button a:hover {
+.landing .action-button a:hover {
     text-decoration: none;
     background: #5da299;
 }
@@ -3228,6 +3254,11 @@ a.policy-link {
 .landing .block3 .single-benefit {
     max-width: 420px;
     margin: 0 0 72px;
+}
+
+.landing .block3 .single-benefit:nth-child(3),
+.landing .block3 .single-benefit:nth-child(4) {
+    margin: 0;
 }
 
 .landing .block3 .single-benefit img {
@@ -3442,7 +3473,7 @@ a.policy-link {
     display: none;
 }
 
-.question-filter.therapist-question-filter {
+.question-filter.empty-filter {
     display: flex;
 }
 
@@ -3468,10 +3499,21 @@ a.policy-link {
     margin-bottom: 0;
 }
 
+.type-tabs .single-tab:first-child {
+    border-right: 1px solid #c4c4c4;
+    border-radius: 3px 0 0 3px;
+}
+
+.type-tabs .single-tab:nth-child(3) {
+    border-left: 1px solid #c4c4c4;
+    border-radius: 0 3px 3px 0;
+}
+
 .type-tabs .single-tab.active {
     background: #5AB9AC;
     border-radius: 0;
     color: #fff;
+    border: none;
 }
 
 .our-counsellors .filter-bar .search-button button {

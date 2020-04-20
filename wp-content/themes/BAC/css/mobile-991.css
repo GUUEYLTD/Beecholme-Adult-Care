@@ -182,7 +182,8 @@
 }
 
 .twelve-week-booking {
-	margin-bottom: 50px;
+	margin: 0 auto 50px;
+	max-width: 90%;
 }
 
 .twelve-week-booking .cta-button {
@@ -506,6 +507,8 @@
 	justify-content: center;
 }
 
+.landing .block3 .single-benefit:nth-child(3),
+.landing .block3 .single-benefit:nth-child(4),
 .landing .block3 .single-benefit {
 	margin: 0 25px 72px;
 	text-align: center;

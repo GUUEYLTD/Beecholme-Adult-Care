@@ -66,8 +66,8 @@
         <div class="left-text"><?php the_field('about_lt'); ?></div>
         <div class="right-text">
           <?php the_field('about_rt'); ?>
-          <div class="action-button"><a href="#"><?php the_field('about_rt_b_1'); ?></a></div>
-          <div class="action-button"><a href="#"><?php the_field('about_rt_b_2'); ?></a></div>
+          <div class="action-button"><a href="/our-counsellors?type=coach&therapy=&coaching=&common="><?php the_field('about_rt_b_1'); ?></a></div>
+          <div class="action-button"><a href="/our-counsellors?type=therap&therapy=&coaching=&common="><?php the_field('about_rt_b_2'); ?></a></div>
         </div>
       </div>
     </div>

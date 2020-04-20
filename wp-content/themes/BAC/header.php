@@ -75,7 +75,7 @@
 	<?php if(is_front_page() || is_home() ||  is_singular('post') || is_archive()) {} else { ?>
         <h1 class="page-title"><?php echo get_the_title(); ?></h1>
 		<?php if(get_field('hero_image', $cur_page)) { ?>
-		<div class="hero-image d-flex justify-content-center">
+		<div class="mid-container hero-image d-flex justify-content-center">
 			<img src="<?php the_field('hero_image', $cur_page); ?>" alt="hero">
 		</div>
 	<?php }

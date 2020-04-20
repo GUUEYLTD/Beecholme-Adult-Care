@@ -11,7 +11,7 @@
       <h4><?php the_field('b1_sh'); ?></h4>
       <div class="message"><?php the_field('b1_t'); ?></div>
       <div class="action-button">
-        <a href="#"><?php the_field('b1_b'); ?></a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScYEKnq_4eo1ABqfmYMvus3BXyswC44vqT4agy9M-I8zlbDgg/viewform?vc=0&c=0&w=1" target="_blank"><?php the_field('b1_b'); ?></a>
       </div>
     </div>
   </div>
@@ -115,9 +115,9 @@
             <img src="<?php the_field('block4_si_5'); ?>" alt="">
           </div>
           <div class="text d-flex">
-            <h4><?php the_field('block4_sh_4'); ?></h4>
+            <h4><?php the_field('block4_sh_5'); ?></h4>
             <div class="message">
-              <?php the_field('block4_st_4'); ?>
+              <?php the_field('block4_st_5'); ?>
             </div>
           </div>
         </div>
@@ -135,7 +135,9 @@
         </div>
       </div>
       <div class="button-wrapper">
-        <button>Join Our Team Now</button>
+        <div class="action-button">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYEKnq_4eo1ABqfmYMvus3BXyswC44vqT4agy9M-I8zlbDgg/viewform?vc=0&c=0&w=1" target="_blank"><?php the_field('b1_b'); ?></a>
+        </div>
       </div>
     </div>
   </div>

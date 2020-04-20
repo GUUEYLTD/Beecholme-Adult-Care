@@ -94,7 +94,7 @@
 		<?php } ?>																						
 	</div>
 	<div class="principles-button">
-		<a class="cta-button" href="">Contact Us <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="about"></a>
+		<a class="cta-button" href="/contact-us/">Contact Us <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="about"></a>
 	</div>
 </div>
 
