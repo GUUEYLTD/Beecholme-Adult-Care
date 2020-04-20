@@ -75,6 +75,11 @@ class Practitioners
                 status='visible' AND 
                 type='provider'
         ");
+
+        array_filter($results, function($practitioner){
+            return (bool)$practitioner->externalId;
+        });
+
         if ( ! empty($args)) {
             $results = $this->filterUsers($results, $args);
         }
