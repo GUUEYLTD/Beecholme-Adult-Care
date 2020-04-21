@@ -28,7 +28,7 @@ get_header(); ?>
 <!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
 <!--                        </div>-->
                         <div class="name"><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></div>
-                        <div class="specialty"><?= \BAC\Category::getByPractitionerId($user->amelia_employee->id)->name ?></div>
+                        <div class="specialty"><?= implode(", ", getACFLoopValues('type', $user->amelia_employee->wp_user->ID)) ?></div>
                         <div class="actions d-flex align-items-center">
                             <div class="price">
                                 <span>$<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
