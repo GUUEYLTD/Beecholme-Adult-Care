@@ -4171,3 +4171,11 @@ a.policy-link {
     line-height: 24px;
     color: #333;
 }
+
+.booking-form .am-confirm-booking-data .el-col.el-col-24.el-col-sm-24:first-child {
+    display: none;
+}
+
+.booking-form .am-confirmation-booking-cost {
+    display: none;
+}
