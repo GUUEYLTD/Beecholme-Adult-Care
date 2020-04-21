@@ -4063,8 +4063,12 @@ a.policy-link {
 
 /*booking page*/
 
+.booking-page {
+    justify-content: space-between;
+}
+
 .booking-page .booking-form {
-    width: 594px;
+    width: 500px;
 }
 
 .booking-page .about-info {
