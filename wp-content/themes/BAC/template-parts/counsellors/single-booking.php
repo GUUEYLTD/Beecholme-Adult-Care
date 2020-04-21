@@ -19,7 +19,7 @@
         <div class="type"><?php echo \BAC\Category::getByPractitionerId($user->amelia_employee->id)->name; ?></div>
       </div>
       <div class="user-price d-flex flex-column">
-        <div class="price">&#163;<?php echo \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
+        <div class="price">$<?php echo \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
         <div class="price-caption">session</div>
       </div>
     </div>
