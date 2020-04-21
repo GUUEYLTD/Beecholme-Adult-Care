@@ -16,7 +16,7 @@
       <div class="user-image"><img src="<?php echo $user->amelia_employee->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt=""></div>
       <div class="user-name d-flex flex-column">
         <div class="name"><?php echo $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></div>
-        <div class="type"><?= implode(", ", getACFLoopValues('type', "user_{$user->ID}")) ?></div>
+        <div class="type"><?= implode(", ", getACFLoopValues('type', $user->ID)) ?></div>
       </div>
       <div class="user-price d-flex flex-column">
         <div class="price">$<?php echo \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
