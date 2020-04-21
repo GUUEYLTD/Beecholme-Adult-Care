@@ -4179,3 +4179,11 @@ a.policy-link {
 .booking-form .am-confirmation-booking-cost {
     display: none;
 }
+
+.booking-form #amelia-step-booking0-calendar {
+    text-align: center;
+}
+
+.booking-form #amelia-step-booking0-calendar .am-calendar-picker {
+    max-width: 290px;
+}
