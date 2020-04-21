@@ -195,6 +195,10 @@ class Practitioners
      */
     private function filterUsers(array $results, array $args)
     {
+        $results = array_filter($results, function ($user){
+            return get_field('enable_search', "user_{$user->externalId}");
+        });
+
         $filterAcfArgs = ['type', 'specializations', 'languages'];
 
         switch ($args['type']) {
