@@ -6,9 +6,8 @@
 	<div class="dark-bg"></div>
 	<div class="banner-content d-flex">
     <div class="heading">
-      <h1>Your Mental Health Is On Our Mind</h1>
-      <h2 class="second-heading">BAC is a residential care home that provides support for individuals with mental health issues, dual diagnosis and complex needs as they progress through their path to independence.
-  Through well planned activities and a personalised mental health care package, we support each client to reach their goals and be proud of their achievements. </h2>
+      <h1><?php the_field('hero_heading); ?></h1>
+      <h2 class="second-heading"><?php the_field('hero_subheading); ?></h2>
     </div>
 		<div class="home-form-wrapper">
 		<div class="tabs d-flex justify-content-center">
