@@ -4145,6 +4145,10 @@ a.policy-link {
     height: 64px;
 }
 
+.booking-page .user-details .user-image img {
+    border-radius: 50%;
+}
+
 .booking-page .user-details .name {
     font-family: 'InterBold', sans-serif;
     font-size: 18px;
