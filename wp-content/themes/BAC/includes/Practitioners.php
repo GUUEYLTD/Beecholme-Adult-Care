@@ -76,8 +76,8 @@ class Practitioners
                 type='provider'
         ");
 
-        array_filter($results, function($practitioner){
-            return (bool)$practitioner->externalId;
+        $results = array_filter($results, function ($user){
+            return get_field('enable_search', "user_{$user->externalId}");
         });
 
         if ( ! empty($args)) {
@@ -195,10 +195,6 @@ class Practitioners
      */
     private function filterUsers(array $results, array $args)
     {
-        $results = array_filter($results, function ($user){
-            return get_field('enable_search', "user_{$user->externalId}");
-        });
-
         $filterAcfArgs = ['type', 'specializations', 'languages'];
 
         switch ($args['type']) {
