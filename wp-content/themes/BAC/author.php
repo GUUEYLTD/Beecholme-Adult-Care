@@ -125,7 +125,7 @@ get_header(); ?>
                         <div class="single-item d-flex flex-column">
                             <div class="name text"><?php the_sub_field('title'); ?></div>
                             <div class="info d-flex justify-content-between">
-                                <div class="date"><?php echo date(get_option('date_format'), get_sub_field('date')); ?></div>
+                                <div class="date"><?php the_sub_field('date'); ?></div>
                                 <?php if(get_sub_field('link')) : ?>
                                     <div class="link"><a href="<?php the_sub_field('link'); ?>" target="_blank">View</a></div>
                                 <?php endif; ?>
