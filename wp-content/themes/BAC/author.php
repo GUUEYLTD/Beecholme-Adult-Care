@@ -17,7 +17,7 @@ get_header(); ?>
             <div class="profile-container block1">
                 <div class="personal-info d-flex left">
                     <div class="avatar">
-                        <img src="<?php echo $listingUser->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt="">
+                        <img src="<?php echo $user->amelia_employee->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt="">
                     </div>
                     <div class="info">
 <!--                        <div class="rating">-->
