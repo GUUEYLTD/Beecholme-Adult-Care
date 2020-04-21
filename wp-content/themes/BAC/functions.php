@@ -243,3 +243,14 @@ function getServices($type = '') {
 
     return $services;
 }
+
+function mailtrap($phpmailer) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host = 'smtp.mailtrap.io';
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = 2525;
+    $phpmailer->Username = '228e63f59109f3';
+    $phpmailer->Password = '9e9a4c120ed8d2';
+}
+
+add_action('phpmailer_init', 'mailtrap');
