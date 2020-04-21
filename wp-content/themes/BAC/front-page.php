@@ -28,9 +28,9 @@
 					<label for="radio-type-all"
 								 class="single-tab all active <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
 								 data-type="all">All</label>
-					<input type="radio" name="type" value="coach" class="hidden"
+					<input type="radio" name="type" value="Life coach" class="hidden"
 								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
-					<input type="radio" name="type" value="therap" class="hidden"
+					<input type="radio" name="type" value="Therapist" class="hidden"
 								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
 					<input type="radio" name="type" value="" class="hidden"
 								 id="radio-type-all" value="" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
