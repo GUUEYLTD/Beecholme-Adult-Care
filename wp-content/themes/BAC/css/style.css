@@ -4067,39 +4067,6 @@ a.policy-link {
     width: 594px;
 }
 
-.booking-form #amelia-step-booking0-calendar {
-    max-width: 290px;
-}
-
-.booking-form .am-appointment-times .el-radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.booking-form .am-appointment-times .el-radio-button {
-    width: 120px;
-}
-
-.booking-form .am-appointment-times .el-radio-button .el-radio-button__inner  {
-    max-width: 100%;
-    border: 1px solid #dcdfe6;
-}
-
-.booking-form #am-calendar-picker .c-day-content div {
-    margin-bottom: -9px;
-}
-
-.booking-form #am-confirm-booking .am-confirmation-booking-header,
-.booking-form #am-confirm-booking .am-confirm-booking-data .el-col:first-child,
-.booking-form .am-add-coupon,
-.booking-form .am-confirmation-booking-cost{
-    opacity: 0;
-    height: 0;
-    max-height: 0;
-    overflow: hidden;
-}
-
 .booking-page .about-info {
     width: 445px;
 }
@@ -4203,69 +4170,4 @@ a.policy-link {
     font-size: 16px;
     line-height: 24px;
     color: #333;
-}
-
-.booking-page .am-confirm-booking-data {
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.booking-page .am-confirm-booking-data .el-col {
-    max-width: 50%;
-}
-
-.booking-page .am-confirm-booking-data .el-col:first-child {
-    display: none;
-}
-
-.booking-page .am-confirm-booking-data .am-custom-fields {
-    width: 100%;
-    padding: 0 12px;
-}
-
-.booking-page #am-confirm-booking .am-custom-fields .el-col:first-child {
-    display: block;
-    height: auto;
-    opacity: 1;
-    max-height: none;
-}
-
-.booking-page #am-confirm-booking .am-custom-fields .el-col:nth-child(3) {
-    max-width: 100%;
-}
-
-.booking-page .el-form-item__label {
-    font-family: 'InterReg', sans-serif;
-    font-size: 14px;
-    line-height: 16px!important;
-    margin: 0 0 8px;
-}
-
-.booking-page .el-input input {
-    max-width: 276px;
-    width: 100%;
-    font-family: 'InterReg', sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333;
-    border: 1px solid rgba(196, 196, 196, .5);
-}
-
-.booking-page .el-textarea__inner {
-    resize: none;
-    height: 80px;
-}
-
-.booking-page .el-input input::placeholder {
-    font-family: 'InterReg', sans-serif;
-    font-size: 16px;
-    line-height: 24px;
-    color: #333;
-    opacity: .7;
-}
-
-.booking-page .el-input.el-input--suffix .el-input__inner {
-    max-width: 198px;
 }
