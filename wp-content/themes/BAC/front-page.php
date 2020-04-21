@@ -6,8 +6,8 @@
 	<div class="dark-bg"></div>
 	<div class="banner-content d-flex">
     <div class="heading">
-      <h1><?php the_field('hero_heading); ?></h1>
-      <h2 class="second-heading"><?php the_field('hero_subheading); ?></h2>
+      <h1><?php the_field('hero_heading, $cur_page); ?></h1>
+      <h2 class="second-heading"><?php the_field('hero_subheading', $cur_page); ?></h2>
     </div>
 		<div class="home-form-wrapper">
 		<div class="tabs d-flex justify-content-center">
