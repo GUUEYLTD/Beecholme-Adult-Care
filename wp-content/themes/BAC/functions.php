@@ -229,9 +229,18 @@ function formatDuration($seconds)
     return $output;
 }
 
+function getRandomAmeliaWPUser(){
+    foreach (get_users() as $user) {
+        if(in_array('wpamelia-provider', $user->roles))
+            return $user->ID;
+    }
+
+    return 0;
+}
 
 function getServices($type = '') {
-    $services = get_field_object('specializations', "user_19")['choices'];
+    $ameliaEmployeesWPUserId = getRandomAmeliaWPUser();
+    $services = get_field_object('specializations', "user_{$ameliaEmployeesWPUserId}")['choices'];
 
     if($type === 'Therapist') {
         return array_slice($services, 0, 9);
