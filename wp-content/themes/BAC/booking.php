@@ -4,11 +4,15 @@
 
 <div class="booking-page mid-container d-flex">
   <div class="booking-form">
-    <?php $userId = $_GET['user']; ?>
-    <?php echo do_shortcode('[ameliabooking]'); ?>
+    <?php
+        $userId = $_GET['user'];
+        $service = \BAC\Service::getAllByPractitionerId($userId);
+        $shortcode = '[ameliabooking employee='.$userId.' service=' . $service[0]->id . ']';
+    ?>
+    <?php echo do_shortcode($shortcode); ?>
   </div>
   <div class="about-info">
-    <?php get_template_part('template-parts/counsellors/booking-counsellor-information'); ?>
+    <?php get_template_part('template-parts/counsellors/single', 'booking'); ?>
   </div>
 </div>
 <?php get_footer(); ?>

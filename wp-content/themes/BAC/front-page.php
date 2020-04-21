@@ -28,12 +28,12 @@
 					<label for="radio-type-all"
 								 class="single-tab all active <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
 								 data-type="all">All</label>
-					<input type="radio" name="type" value="coach" class="hidden"
+					<input type="radio" name="type" value="Life coach" class="hidden"
 								 id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
-					<input type="radio" name="type" value="therap" class="hidden"
+					<input type="radio" name="type" value="Therapist" class="hidden"
 								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
 					<input type="radio" name="type" value="" class="hidden"
-								 id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
+								 id="radio-type-all" value="" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
 				</div>
 			</div>
 
@@ -41,12 +41,12 @@
 				<div class="caption">What are you suffering from?</div>
 				<select class="question-select" name="therapy">
 					<option value="" data-display-text="All">All</option>
-					<?php foreach (\BAC\Service::getServiceNames('therap') as $serviceName) : ?>
-					<option
-						value="<?php echo $serviceName ?>"
-					<?php echo isset($_GET['therapy']) && $_GET['therapy'] === $serviceName ? 'selected' : '' ?>
-					><?php echo $serviceName ?></option>
-					<?php endforeach; ?>
+                    <?php foreach (getServices('Therapist') as $serviceName) : ?>
+                        <option
+                                value="<?php echo $serviceName ?>"
+                            <?php echo isset($_GET['therapy']) && $_GET['therapy'] === $serviceName ? 'selected' : '' ?>
+                        ><?php echo $serviceName ?></option>
+                    <?php endforeach; ?>
 				</select>
 			</div>
 
@@ -54,12 +54,12 @@
 				<div class="caption">Type of coaching</div>
 				<select class="question-select" name="coaching">
 					<option value="" data-display-text="All">All</option>
-					<?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
-					<option
-						value="<?php echo $serviceName ?>"
-					<?php echo isset($_GET['coaching']) && $_GET['coaching'] === $serviceName ? 'selected' : '' ?>
-					><?php echo $serviceName ?></option>
-					<?php endforeach; ?>
+                    <?php foreach (getServices('Life coach') as $serviceName) : ?>
+                        <option
+                                value="<?php echo $serviceName ?>"
+                            <?php echo isset($_GET['coaching']) && $_GET['coaching'] === $serviceName ? 'selected' : '' ?>
+                        ><?php echo $serviceName ?></option>
+                    <?php endforeach; ?>
 				</select>
 			</div>
 
@@ -67,12 +67,12 @@
 				<div class="caption">Choose type</div>
 				<select class="question-select" name="common">
 					<option value="" data-display-text="All">All</option>
-					<?php foreach (\BAC\Service::getServiceNames() as $serviceName) : ?>
-					<option
-						value="<?php echo $serviceName ?>"
-					<?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
-					><?php echo $serviceName ?></option>
-					<?php endforeach; ?>
+                    <?php foreach (getServices() as $serviceName) : ?>
+                        <option
+                                value="<?php echo $serviceName ?>"
+                            <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
+                        ><?php echo $serviceName ?></option>
+                    <?php endforeach; ?>
 				</select>
 			</div>
 

@@ -22,7 +22,8 @@ class Service
                 s.description,
                 s.price,
                 s.status,
-                s.categoryId
+                s.categoryId,
+                s.duration
               FROM {$wpdb->prefix}amelia_providers_to_services as ps
             LEFT JOIN {$wpdb->prefix}amelia_services as s
             ON s.id=ps.serviceId

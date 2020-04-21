@@ -8,20 +8,21 @@
             <div class="caption">I am looking for a</div>
             <div class="type-tabs d-flex">
                 <label for="radio-type-coach"
-                       class="single-tab coach <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'active' : ''; ?>"
+                       class="single-tab coach <?php echo (isset($_GET['type']) && $_GET['type'] === 'Life coach') ? 'active' : ''; ?>"
                        data-type="coach">Life Coach</label>
                 <label for="radio-type-therapist"
-                       class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'active' : ''; ?>"
+                       class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'Therapist') ? 'active' : ''; ?>"
                        data-type="therapist">Therapist</label>
                 <label for="radio-type-all"
                        class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
                        data-type="all">All</label>
-                <input type="radio" name="type" value="" class="hidden"
-                       id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
-                <input type="radio" name="type" value="therap" class="hidden"
-                       id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
-                <input type="radio" name="type" value="coach" class="hidden"
+
+                <input type="radio" name="type" value="Therapist" class="hidden"
+                       id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'Therapist') ? 'checked' : ''; ?>/>
+                <input type="radio" name="type" value="Life coach" class="hidden"
                        id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
+                <input type="radio" name="type" value="" class="hidden"
+                       id="radio-type-all" <?php echo (is_null($_GET['type'])) || ($_GET['type'] !== 'Therapist' && $_GET['type'] !== 'Life coach') ? 'checked' : ''; ?>/>
             </div>
         </div>
 
@@ -29,7 +30,7 @@
             <div class="caption">What are you suffering from?</div>
             <select class="question-select" name="therapy">
                 <option value="" data-display-text="All">All</option>
-                <?php foreach (\BAC\Service::getServiceNames('therap') as $serviceName) : ?>
+                <?php foreach (getServices('Therapist') as $serviceName) : ?>
                     <option
                             value="<?php echo $serviceName ?>"
                         <?php echo isset($_GET['therapy']) && $_GET['therapy'] === $serviceName ? 'selected' : '' ?>
@@ -42,7 +43,7 @@
             <div class="caption">Type of coaching</div>
             <select class="question-select" name="coaching">
                 <option value="" data-display-text="All">All</option>
-                <?php foreach (\BAC\Service::getServiceNames('coach') as $serviceName) : ?>
+                <?php foreach (getServices('Life coach') as $serviceName) : ?>
                     <option
                         value="<?php echo $serviceName ?>"
                         <?php echo isset($_GET['coaching']) && $_GET['coaching'] === $serviceName ? 'selected' : '' ?>
@@ -55,7 +56,7 @@
             <div class="caption">Choose type</div>
             <select class="question-select" name="common">
                 <option value="" data-display-text="All">All</option>
-                <?php foreach (\BAC\Service::getServiceNames() as $serviceName) : ?>
+                <?php foreach (getServices() as $serviceName) : ?>
                     <option
                             value="<?php echo $serviceName ?>"
                         <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
@@ -66,7 +67,7 @@
 
         <div class="language-filter flex-column align-left">
             <div class="caption">Select language</div>
-            <select class="question-select" name="language">
+            <select class="question-select" name="languages" multiple>
                 <option value="" data-display-text="All">All</option>
                 <option value="English">English</option>
                 <option value="French">French</option>

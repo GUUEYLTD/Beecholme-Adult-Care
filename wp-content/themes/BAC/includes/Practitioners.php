@@ -42,6 +42,21 @@ class Practitioners
         "));
     }
 
+    public static function getById($id)
+    {
+        global $wpdb;
+
+        return end($wpdb->get_results("
+            SELECT 
+                *
+            FROM 
+                {$wpdb->prefix}amelia_users
+            WHERE
+                id='{$id}' AND
+                type='provider'
+        "));
+    }
+
     /**
      * Get all practitioners from Amelia table
      *
@@ -60,6 +75,10 @@ class Practitioners
                 status='visible' AND 
                 type='provider'
         ");
+
+        $results = array_filter($results, function ($user){
+            return get_field('enable_search', "user_{$user->externalId}");
+        });
 
         if ( ! empty($args)) {
             $results = $this->filterUsers($results, $args);
@@ -176,43 +195,30 @@ class Practitioners
      */
     private function filterUsers(array $results, array $args)
     {
-        if (isset($args['type']) && in_array($args['type'], array('therap', 'coach'))) {
-            $results = array_filter($results, function ($user) use ($args) {
-                return self::belongsToCategory($user->id, $args['type']);
-            });
+        $filterAcfArgs = ['type', 'specializations', 'languages'];
+
+        switch ($args['type']) {
+            case 'Therapist' :
+                $args['specializations'] = $args['therapy'];
+                break;
+            case 'Life coach' :
+                $args['specializations'] = $args['coaching'];
+                break;
+            default:
+                $args['specializations'] = $args['common'];
+                break;
         }
+        unset($args['therapy']);
+        unset($args['coaching']);
+        unset($args['common']);
 
-        if (isset($args['therapy']) && in_array($args['therapy'], Service::getServiceNames('therap'))) {
-            $results = array_filter($results, function ($user) use ($args) {
-                return self::offersService($user->id, $args['therapy']);
-            });
-        }
+        foreach ($filterAcfArgs as $arg) {
 
-        if (isset($args['coaching']) && in_array($args['coaching'], Service::getServiceNames('coach'))) {
-            $results = array_filter($results, function ($user) use ($args) {
-                return self::offersService($user->id, $args['coaching']);
-            });
-        }
-
-        if (isset($args['language']) && $args['language']) {
-            $results = array_filter($results, function ($user) use ($args) {
-                $queriedLanguages = (array)$args['language'];
-                $usersLanguages   = get_field('languages', 'user_' . $user->externalId);
-
-                if(!$usersLanguages)
-                    return false;
-
-                $flattenedUserLanguages = array();
-                foreach ($usersLanguages as $language)
-                    $flattenedUserLanguages[] = $language['language'];
-
-                foreach ($queriedLanguages as $language) {
-                    if(in_array($language, $flattenedUserLanguages))
-                    return true;
-                }
-
-                return false;
-            });
+            if(isset($args) && $args[$arg]) {
+                $results = array_filter($results, function ($user) use ($args, $arg) {
+                    return hasFieldMatch($arg, $args[$arg], $user->externalId);
+                });
+            }
         }
 
         return $results;

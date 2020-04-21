@@ -24,7 +24,7 @@
         <div class="specialty">Therapist</div>
         <div class="actions d-flex align-items-center">
           <div class="price">
-            <span>&#163;150</span> / session
+            <span>$150</span> / session
           </div>
           <div class="button-wrapper">
             <button>Book a session</button>
@@ -80,7 +80,7 @@
       </div>
       <div class="single-detail d-flex">
         <div class="text caption">Price</div>
-        <div class="text info">&#163;150</div>
+        <div class="text info">$150</div>
       </div>
       <div class="single-detail d-flex">
         <div class="text caption">Approach</div>

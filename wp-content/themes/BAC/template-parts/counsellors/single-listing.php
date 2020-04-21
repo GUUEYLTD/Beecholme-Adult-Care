@@ -6,38 +6,34 @@
                         alt=""></div>
             <div class="info d-flex">
                 <div class="name"><?= "{$listingUser->firstName} {$listingUser->lastName}" ?></div>
-                <div class="type"><?= $listingUser->category->name ?></div>
+                <div class="type"><?= implode(", ", getACFLoopValues('type', $listingUser->wp_user->ID)) ?></div>
             </div>
         </div>
     </a>
     <div class="specialty">
-        <?php
-        $serviceNames = [];
-        foreach ($listingUser->services as $service) {
-            $serviceNames[] = $service->name;
-        }
-        ?>
-        <?= implode(", ", $serviceNames) ?>
+        <?= implode(", ", getACFLoopValues('specializations', $listingUser->wp_user->ID)) ?>
     </div>
     <div class="details">
-        <div class="rating d-flex justify-content-center">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/rating-grey-star.png" alt="">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/rating-grey-star.png" alt="">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/rating-grey-star.png" alt="">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/rating-grey-star.png" alt="">
-            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/rating-grey-star.png" alt="">
-        </div>
+<!--        <div class="rating d-flex justify-content-center">-->
+<!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
+<!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
+<!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
+<!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
+<!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
+<!--        </div>-->
         <div class="price-wrapper d-flex justify-content-between align-items-center">
-            <div class="price"><span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->id) ?></span> / session</div>
+            <div class="price"><span>$<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->id) ?></span> / session</div>
             <div class="languages d-flex">
                 <?php
-                if (have_rows('languages', "user_{$listingUser->wp_user->id}")) :
-                    $count = 0;
-                    while (have_rows('languages', "user_{$listingUser->wp_user->id}") && $count < 2) : the_row(); ?>
-                        <img src="<?php echo get_stylesheet_directory_uri() . '/images/counsellor-lang-' . sanitize_title(get_sub_field('language')) . '.png'; ?>" alt="">
-                    <?php $count++;
-                    endwhile; ?>
-                <?php endif; ?>
+                $count = 0;
+                    foreach (getACFLoopValues('languages', $listingUser->wp_user->ID) as $language) : ?>
+                        <img src="<?php echo get_stylesheet_directory_uri() . '/images/counsellor-lang-' . sanitize_title($language) . '.png'; ?>" alt="">
+                    <?php
+                        if($count > 0)
+                            break;
+
+                        $count++;
+                    endforeach; ?>
 
             </div>
         </div>
