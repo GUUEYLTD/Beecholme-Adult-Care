@@ -7,7 +7,7 @@
     <?php
         $userId = $_GET['user'];
         $service = \BAC\Service::getAllByPractitionerId($userId);
-        $shortcode = '[ameliabooking]';
+        $shortcode = '[ameliabooking employee='.$userId.' service=' . $service[0]->id . ']';
     ?>
     <?php echo do_shortcode($shortcode); ?>
   </div>
