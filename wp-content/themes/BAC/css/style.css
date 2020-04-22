@@ -4195,3 +4195,22 @@ a.policy-link {
 .booking-form .am-confirm-booking-data .am-custom-fields .el-col.el-col-24.el-col-sm-24:first-child {
     display: block;
 }
+
+.booking-form #amelia-step-booking0 {
+    margin: 0;
+}
+
+@media screen and (max-width: 1200px) {
+    .booking-page {
+        flex-flow: column;
+        align-items: center;
+    }
+
+    .booking-page .booking-form {
+        margin-bottom: 60px;
+    }
+
+    .booking-page .about-info {
+        margin-bottom: 60px;
+    }
+}

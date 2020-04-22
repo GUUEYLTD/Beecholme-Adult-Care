@@ -971,3 +971,11 @@
 .profile .details .single-detail:nth-child(5) .caption {
 	margin-bottom: 8px;
 }
+
+@media screen and (max-width: 540px) {
+	.booking-page .booking-form,
+	.booking-page .about-info {
+		max-width: 500px;
+		width: 100%;
+	}
+}
