@@ -342,7 +342,7 @@ jQuery(document).ready(function($){
 
     if($(this).parents('.language-filter').length) {
       $(this).toggleClass('selected');
-      var text = 'All';
+      var text = '';
 
       if($(this).data('display-text') == 'All') {
         if($(this).hasClass('selected')) {
