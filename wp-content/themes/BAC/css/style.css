@@ -4200,6 +4200,10 @@ a.policy-link {
     margin: 0;
 }
 
+.booking-page .about-info {
+    margin-bottom: 60px;
+}
+
 @media screen and (max-width: 1200px) {
     .booking-page {
         flex-flow: column;
@@ -4207,10 +4211,6 @@ a.policy-link {
     }
 
     .booking-page .booking-form {
-        margin-bottom: 60px;
-    }
-
-    .booking-page .about-info {
         margin-bottom: 60px;
     }
 }

@@ -35,7 +35,7 @@
   <div class="info mb-5">
     Once your session has been accepted
     you will receive a confirmation email with all
-    the detailed information and a link to Hangouts
+    the detailed information and a link to Zoom
     to join your meeting.
   </div>
 
