@@ -337,12 +337,47 @@ jQuery(document).ready(function($){
     event.stopPropagation();
   });
   // Option click
+
   $(document).on('click', '.dropdown .option', function(event) {
-    $(this).closest('.list').find('.selected').removeClass('selected');
-    $(this).addClass('selected');
-    var text = $(this).data('display-text') || $(this).text();
-    $(this).closest('.dropdown').find('.current').text(text);
-    $(this).closest('.dropdown').prev('select').val($(this).data('value')).trigger('change');
+
+    if($(this).parents('.language-filter').length) {
+      $(this).toggleClass('selected');
+      var text = 'All';
+
+      if($(this).data('display-text') == 'All') {
+        if($(this).hasClass('selected')) {
+          $(this).closest('.list').find('.option').addClass('selected');
+        } else {
+          $(this).closest('.list').find('.option').removeClass('selected');
+        }
+      }
+
+      var i = 0;
+      console.log(text);
+      $(this).closest('.list').find('.selected').each(function(){
+        i++;
+        if(!text) {
+          text = $(this).data('value');
+        } else {
+          text += ', ' + $(this).data('value');
+        }
+
+        if(i > 3) {
+          text = i + ' languages';
+        }
+      });
+
+      $(this).closest('.dropdown').find('.current').text(text);
+      $(this).closest('.dropdown').prev('select').val($(this).data('value')).trigger('change');
+
+    } else {
+      $(this).closest('.list').find('.selected').removeClass('selected');
+      $(this).addClass('selected');
+      var text = $(this).data('display-text') || $(this).text();
+      $(this).closest('.dropdown').find('.current').text(text);
+      $(this).closest('.dropdown').prev('select').val($(this).data('value')).trigger('change');
+    }
+
   });
 
   // Keyboard events
