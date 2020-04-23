@@ -215,6 +215,11 @@ function hasFieldMatch($field, $value, $user_id)
 
 function getACFLoopValues($field, $user_id)
 {
+    if($field === 'specializations') {
+        return array_merge(array_flatten(get_field('specializations_therapist', "user_{$user_id}")),
+            array_flatten(get_field('specializations_coach', "user_{$user_id}")));
+    }
+
     return array_flatten(get_field($field, "user_{$user_id}"));
 }
 
@@ -238,19 +243,20 @@ function getRandomAmeliaWPUser(){
     return 0;
 }
 
-function getServices($type = '') {
+function getServices($type = '')
+{
     $ameliaEmployeesWPUserId = getRandomAmeliaWPUser();
-    $services = get_field_object('specializations', "user_{$ameliaEmployeesWPUserId}")['choices'];
 
-    if($type === 'Therapist') {
-        return array_slice($services, 0, 9);
+    if ($type === 'Therapist') {
+        return get_field_object('specializations_therapist', "user_$ameliaEmployeesWPUserId")['choices'];
     }
 
-    if($type === 'Life coach') {
-        return array_slice($services, 9, 9);
+    if ($type === 'Life coach') {
+        return get_field_object('specializations_coach', "user_$ameliaEmployeesWPUserId")['choices'];
     }
 
-    return $services;
+    return array_merge(get_field_object('specializations_therapist', "user_$ameliaEmployeesWPUserId")['choices'],
+        get_field_object('specializations_coach', "user_$ameliaEmployeesWPUserId")['choices']);
 }
 
 function mailtrap($phpmailer) {
