@@ -88,6 +88,3 @@
 
     </form>
 </div>
-<div>
-    <?php print_r(getServices()); ?>
-</div>
