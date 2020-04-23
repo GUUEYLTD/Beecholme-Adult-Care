@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="question-filter therapist-question-filter flex-column align-left">
+        <div class="question-filter therapist-question-filter flex-column align-left <?php echo (isset($_GET['type']) && $_GET['type'] === 'Therapist') ? 'active' : ''; ?>">
             <div class="caption">What are you suffering from?</div>
             <select class="question-select" name="therapy">
                 <option value="" data-display-text="All">All</option>
@@ -39,7 +39,7 @@
             </select>
         </div>
 
-        <div class="question-filter coach-question-filter flex-column align-left">
+        <div class="question-filter coach-question-filter flex-column align-left <?php echo (isset($_GET['type']) && $_GET['type'] === 'Life coach') ? 'active' : ''; ?>">
             <div class="caption">Type of coaching</div>
             <select class="question-select" name="coaching">
                 <option value="" data-display-text="All">All</option>
@@ -52,7 +52,7 @@
             </select>
         </div>
 
-        <div class="question-filter empty-filter flex-column align-left">
+        <div class="question-filter empty-filter flex-column align-left <?php echo (isset($_GET['type']) && $_GET['type'] !== 'Life coach' && $_GET['type'] !== 'Therapist') ? 'active' : ''; ?>">
             <div class="caption">Choose type</div>
             <select class="question-select" name="common">
                 <option value="" data-display-text="All">All</option>
