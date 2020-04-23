@@ -238,19 +238,20 @@ function getRandomAmeliaWPUser(){
     return 0;
 }
 
-function getServices($type = '') {
+function getServices($type = '')
+{
     $ameliaEmployeesWPUserId = getRandomAmeliaWPUser();
-    $services = get_field_object('specializations', "user_{$ameliaEmployeesWPUserId}")['choices'];
 
-    if($type === 'Therapist') {
-        return array_slice($services, 0, 9);
+    if ($type === 'Therapist') {
+        return get_field_object('specializations_therapist', "user_$ameliaEmployeesWPUserId")['choices'];
     }
 
-    if($type === 'Life coach') {
-        return array_slice($services, 9, 9);
+    if ($type === 'Life coach') {
+        return get_field_object('specializations_coach', "user_$ameliaEmployeesWPUserId")['choices'];
     }
 
-    return $services;
+    return array_merge(get_field_object('specializations_therapist', "user_$ameliaEmployeesWPUserId")['choices'],
+        get_field_object('specializations_coach', "user_$ameliaEmployeesWPUserId")['choices']);
 }
 
 function mailtrap($phpmailer) {
