@@ -62,7 +62,7 @@
 				</select>
 			</div>
 
-			<div class="homepage-filter question-filter empty-filter flex-column align-left">
+			<div class="homepage-filter question-filter empty-filter flex-column align-left active">
 				<div class="caption">Choose type</div>
 				<select class="question-select" name="common">
 					<option value="" data-display-text="All">All</option>

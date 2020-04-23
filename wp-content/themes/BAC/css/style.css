@@ -3473,10 +3473,6 @@ a.policy-link {
     display: none;
 }
 
-.question-filter.empty-filter {
-    display: flex;
-}
-
 .question-filter.active {
     display: flex;
 }
