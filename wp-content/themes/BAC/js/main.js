@@ -425,6 +425,8 @@ jQuery(document).ready(function($){
     create_custom_dropdowns();
   });
 
+  $('.multiple-select').select2();
+
   $('.our-counsellors .order-filter').on('click', function(){
     if($(this).hasClass('ascending')) {
       $(this).removeClass('ascending').addClass('descending');

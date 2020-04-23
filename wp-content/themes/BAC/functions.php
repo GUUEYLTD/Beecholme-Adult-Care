@@ -12,6 +12,7 @@ function style_and_scripts() {
     wp_enqueue_style( 'owl-carousel-theme', get_template_directory_uri() . '/css/owl.theme.default.min.css');
     wp_enqueue_style( 'jquery-ui', get_template_directory_uri() . '/css/jquery-ui.min.css');
     wp_enqueue_style( 'main-styles', get_template_directory_uri() . '/css/style.css');
+    wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css');
 }
 
 add_action( 'wp_enqueue_scripts', 'style_and_scripts' );
@@ -33,6 +34,10 @@ function adding_scripts() {
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
     }
+
+    wp_register_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js', array('jquery'),
+        '4.0.3', true);
+    wp_enqueue_script('select2');
 }
 
 add_action( 'wp_enqueue_scripts', 'adding_scripts' );
@@ -209,6 +214,13 @@ add_action('user_register', function ($user_id) {
 function hasFieldMatch($field, $value, $user_id)
 {
     $values = getACFLoopValues($field, $user_id);
+
+    if($field === 'languages') {
+        foreach ($value as $language) {
+            if(in_array($language, $values))
+                return true;
+        }
+    }
 
     return in_array($value, $values);
 }
