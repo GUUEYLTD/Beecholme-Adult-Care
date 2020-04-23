@@ -17,12 +17,12 @@
   </div>
 
   <div class="block2">
-    <div class="content d-flex">
-      <div class="text left-text">
+    <div class="content">
+      <div class="text">
         <h4><?php the_field('b2_lh'); ?></h4>
         <div><?php the_field('b2_lt'); ?></div>
       </div>
-      <div class="text right-text">
+      <div class="text">
         <h4><?php the_field('b2_rh'); ?></h4>
         <div><?php the_field('b2_rt'); ?></div>
       </div>
