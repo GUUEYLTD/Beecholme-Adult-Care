@@ -52,7 +52,7 @@
             </select>
         </div>
 
-        <div class="question-filter empty-filter flex-column align-left <?php echo (!isset($_GET['type'])) ? 'active' : ''; ?>">
+        <div class="question-filter empty-filter flex-column align-left <?php echo ($_GET['type'] !== 'Life coach' && $_GET['type'] !== 'Therapist') ? 'active' : ''; ?>">
             <div class="caption">Choose type</div>
             <select class="question-select" name="common">
                 <option value="" data-display-text="All">All</option>
