@@ -260,7 +260,8 @@ jQuery(document).ready(function($){
     $('.single-tab').removeClass('active');
     $(this).addClass('active');
     $('.question-filter').removeClass('active');
-    $('.question-filter .option').prop('checked', 'false');
+    $('.question-filter .option').removeClass('selected');
+    $('.question-filter .current').html('All');
 
 
     if($(this).hasClass('all')) {
