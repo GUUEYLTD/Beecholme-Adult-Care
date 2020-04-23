@@ -259,18 +259,20 @@ jQuery(document).ready(function($){
   $('.single-tab').on('click', function(){
     $('.single-tab').removeClass('active');
     $(this).addClass('active');
-    $('.question-filter').css('display','none');
+    $('.question-filter').removeClass('active');
+    $('.question-filter .option').prop('checked', 'false');
+
 
     if($(this).hasClass('all')) {
-      $('.empty-filter').css('display','flex');
+      $('.empty-filter').addClass('active');
     }
 
     if($(this).hasClass('therapist')) {
-      $('.therapist-question-filter').css('display','flex');
+      $('.therapist-question-filter').addClass('active');
     }
 
     if($(this).hasClass('coach')) {
-      $('.coach-question-filter').css('display','flex');
+      $('.coach-question-filter').addClass('active');
     }
   });
 
