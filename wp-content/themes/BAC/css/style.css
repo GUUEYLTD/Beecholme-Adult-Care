@@ -3606,11 +3606,15 @@ a.policy-link {
     box-shadow: 0 1px 0 rgba(0,0,0,0.0075);
 }
 
+.select2-selection--multiple input[placeholder] {
+    height: 30px;
+}
+
 .select2-selection--multiple input[placeholder]::-webkit-input-placeholder {
     color: #333;
     font-size: 16px;
     line-height: 40px;
-    padding-left: 16px;
+    padding-left: 13px;
 }
 
 .dropdown:after {
