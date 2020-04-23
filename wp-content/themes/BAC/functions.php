@@ -242,6 +242,8 @@ function getServices($type = '') {
     $ameliaEmployeesWPUserId = getRandomAmeliaWPUser();
     $services = get_field_object('specializations', "user_{$ameliaEmployeesWPUserId}")['choices'];
 
+var_dump($services);
+
     if($type === 'Therapist') {
         return array_slice($services, 0, 9);
     }
