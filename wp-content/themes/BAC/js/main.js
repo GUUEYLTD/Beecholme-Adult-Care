@@ -262,6 +262,7 @@ jQuery(document).ready(function($){
     $('.question-filter').removeClass('active');
     $('.question-filter .option').removeClass('selected');
     $('.question-filter .current').html('All');
+    $('.question-select option').selected = false;
 
 
     if($(this).hasClass('all')) {
