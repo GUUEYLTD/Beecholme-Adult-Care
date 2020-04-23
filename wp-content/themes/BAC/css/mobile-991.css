@@ -449,6 +449,12 @@
 
 .about-bac .information .text {
 	padding: 0;
+	max-width: none;
+}
+
+.about-bac .information .top-text {
+	max-width: 90%;
+	width: auto;
 }
 
 .about-bac .text-bar {
@@ -496,7 +502,11 @@
 }
 
 .landing .block2 .content .text {
-	max-width: 90%;
+	padding: 0 25px;
+}
+
+.landing .block2 .content .text h4 {
+	text-align: center;
 }
 
 .landing .block2 .content .left-text {

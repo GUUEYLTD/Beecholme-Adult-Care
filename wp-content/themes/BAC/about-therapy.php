@@ -4,6 +4,7 @@
 
 <div class="about-bac">
   <div class="information d-flex">
+    <div class="top-text text text-bar"><?php the_field(about_top_text); ?></div>
     <div class="text-bar left-text">
       <div class="heading"><?php the_field('about_left_h'); ?></div>
       <div class="text"><?php the_field('about_left_t'); ?></div>
