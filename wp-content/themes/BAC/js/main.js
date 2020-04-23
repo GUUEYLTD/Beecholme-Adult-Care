@@ -363,7 +363,7 @@ jQuery(document).ready(function($){
         }
 
         if(i > 3) {
-          text = i + ' languages';
+          text = i + ' items picked';
         }
       });
 

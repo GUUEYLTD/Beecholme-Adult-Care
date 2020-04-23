@@ -14,7 +14,7 @@
                        class="single-tab therapist <?php echo (isset($_GET['type']) && $_GET['type'] === 'Therapist') ? 'active' : ''; ?>"
                        data-type="therapist">Therapist</label>
                 <label for="radio-type-all"
-                       class="single-tab all <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'active' : ''; ?>"
+                       class="single-tab all <?php echo (is_null($_GET['type'])) || ($_GET['type'] !== 'Therapist' && $_GET['type'] !== 'Life coach') ? 'active' : ''; ?>"
                        data-type="all">All</label>
 
                 <input type="radio" name="type" value="Therapist" class="hidden"
@@ -64,11 +64,12 @@
                 <?php endforeach; ?>
             </select>
         </div>
-
+        <?php echo $_GET['languages']; ?>
         <div class="language-filter flex-column align-left">
             <div class="caption">Select language</div>
             <select class="question-select" name="languages" multiple>
                 <option value="" data-display-text="All">All</option>
+
                 <option value="English">English</option>
                 <option value="French">French</option>
                 <option value="German">German</option>
