@@ -215,6 +215,11 @@ function hasFieldMatch($field, $value, $user_id)
 
 function getACFLoopValues($field, $user_id)
 {
+    if($field === 'specializations') {
+        return array_merge(array_flatten(get_field('specializations_therapist', "user_{$user_id}")),
+            array_flatten(get_field('specializations_coach', "user_{$user_id}")));
+    }
+
     return array_flatten(get_field($field, "user_{$user_id}"));
 }
 
