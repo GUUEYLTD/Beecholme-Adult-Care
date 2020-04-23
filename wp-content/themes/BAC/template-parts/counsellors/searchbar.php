@@ -7,7 +7,7 @@
         'Italian',
         'Portuguese',
         'Russian',
-        'Chineese',
+        'Chinese',
         'Japanese'
     );
 ?>
