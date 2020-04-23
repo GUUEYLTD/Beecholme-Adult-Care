@@ -1,3 +1,17 @@
+<?php
+    $languages = array(
+        'English',
+        'French',
+        'German',
+        'Spanish',
+        'Italian',
+        'Portuguese',
+        'Russian',
+        'Chineese',
+        'Japanese'
+    );
+?>
+
 <div class="filter-bar-wrapper">
     <div class="mobile-filter-bar-button justify-content-center align-items-center">
         <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-filters.png" alt="">
@@ -64,23 +78,16 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <?php echo $_GET['languages']; ?>
         <div class="language-filter flex-column align-left">
             <div class="caption">Select language</div>
-            <select class="question-select" name="languages" multiple>
-                <option value="" data-display-text="All">All</option>
-
-                <option value="English">English</option>
-                <option value="French">French</option>
-                <option value="German">German</option>
-                <option value="Spanish">Spanish</option>
-                <option value="Italian">Italian</option>
-                <option value="Portuguese">Portuguese</option>
-                <option value="Russian">Russian</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Japanese">Japanese</option>
+            <select class="multiple-select" name="languages[]" multiple style="width:246px; display: none">
+                <?php foreach ($languages as $language) { ?>
+                    <option value="<?= $language ?>" <?php echo (isset($_GET['languages']) && in_array($language,
+                            $_GET['languages'])) ? 'selected' : '' ?>><?= $language ?></option>
+                <?php } ?>
             </select>
         </div>
+
 
         <div class="search-button">
             <button>Search</button>
