@@ -19,7 +19,7 @@
         <div class="type"><?= implode(", ", getACFLoopValues('type', $user->ID)) ?></div>
       </div>
       <div class="user-price d-flex flex-column">
-        <div class="price">$<?php echo \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
+        <div class="price">&#163;<?php echo \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
         <div class="price-caption">session</div>
       </div>
     </div>
