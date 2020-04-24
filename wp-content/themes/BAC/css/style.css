@@ -4244,6 +4244,21 @@ a.policy-link {
     display: block;
 }
 
+.booking-form .am-customf-fields .el-checkbox-group .el-checkbox__label {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+}
+
+.booking-form .am-custom-fields .privacy-button {
+    color: #5AB9AC;
+}
+
+.booking-form .amelia-app-booking .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #333;
+}
+
 .booking-form #amelia-step-booking0 {
     margin: 0;
 }

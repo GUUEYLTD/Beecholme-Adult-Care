@@ -459,4 +459,8 @@ jQuery(document).ready(function($){
     e.preventDefault();
   });
 
+  let timerId = setInterval(() => {
+    $('.booking-form .am-custom-fields .el-checkbox-group .el-checkbox__label').html('I accept the <a href="/privacy-policy" class="privacy-button">terms & conditions</a>');
+  }, 200);
+
 });
