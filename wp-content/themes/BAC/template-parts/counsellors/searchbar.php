@@ -34,7 +34,7 @@
                 <input type="radio" name="type" value="Therapist" class="hidden"
                        id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'Therapist') ? 'checked' : ''; ?>/>
                 <input type="radio" name="type" value="Life coach" class="hidden"
-                       id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'coach') ? 'checked' : ''; ?>/>
+                       id="radio-type-coach" <?php echo (isset($_GET['type']) && $_GET['type'] === 'Life coach') ? 'checked' : ''; ?>/>
                 <input type="radio" name="type" value="" class="hidden"
                        id="radio-type-all" <?php echo (is_null($_GET['type'])) || ($_GET['type'] !== 'Therapist' && $_GET['type'] !== 'Life coach') ? 'checked' : ''; ?>/>
             </div>
