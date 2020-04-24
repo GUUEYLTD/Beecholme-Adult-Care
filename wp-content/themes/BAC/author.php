@@ -4,11 +4,13 @@
 $user = get_user_by('slug', get_query_var('author_name'));
 $user->amelia_employee = \BAC\Practitioners::getByEmail($user->user_email);
 
+var_dump($_SERVER['HTTP_REFERER']);
+
 $userServices = \BAC\Service::getAllByPractitionerId($user->amelia_employee->id);
 get_header(); ?>
 
     <div class="profile mid-container">
-        <a class="back-button d-flex align-items-center" href="/our-counsellors">
+        <a class="back-button d-flex align-items-center" href="<?php echo $_SERVER['HTTP_REFERER']; ?>">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-left.png" alt="">
             back to list
         </a>
