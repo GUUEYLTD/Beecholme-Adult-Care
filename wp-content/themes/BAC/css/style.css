@@ -3979,6 +3979,8 @@ a.policy-link {
 
 .profile .avatar img {
     border-radius: 50%;
+    max-width: 176px;
+    max-height: 176px;
 }
 
 .profile .rating {
@@ -4259,4 +4261,8 @@ a.policy-link {
     .booking-page .booking-form {
         margin-bottom: 60px;
     }
+}
+
+.payment-dialog-footer .paypal-button {
+  opacity: .5;
 }

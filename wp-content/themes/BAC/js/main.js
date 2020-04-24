@@ -455,4 +455,8 @@ jQuery(document).ready(function($){
     $('.counsellors-list').html(result);
   }
 
+  $('.payment-dialog-footer .paypal-button').on('click',function(e){
+    e.preventDefault();
+  });
+
 });
