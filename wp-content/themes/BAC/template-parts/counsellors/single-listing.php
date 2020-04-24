@@ -22,7 +22,7 @@
 <!--            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
 <!--        </div>-->
         <div class="price-wrapper d-flex justify-content-between align-items-center">
-            <div class="price"><span>$<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->id) ?></span> / session</div>
+            <div class="price"><span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->id) ?></span> / session</div>
             <div class="languages d-flex">
                 <?php
                 $count = 0;

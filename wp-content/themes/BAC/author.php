@@ -31,7 +31,7 @@ get_header(); ?>
                         <div class="specialty"><?= implode(", ", getACFLoopValues('type', $user->ID)) ?></div>
                         <div class="actions d-flex align-items-center">
                             <div class="price">
-                                <span>$<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
+                                <span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
                             </div>
                             <div class="button-wrapper">
                                 <a href="/booking/?user=<?= $user->amelia_employee->id ?>">
@@ -104,7 +104,7 @@ get_header(); ?>
                     </div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Price</div>
-                        <div class="text info">$<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
+                        <div class="text info">&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id); ?></div>
                     </div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Approach</div>

@@ -32,7 +32,7 @@
 					<input type="radio" name="type" value="Therapist" class="hidden"
 								 id="radio-type-therapist" <?php echo (isset($_GET['type']) && $_GET['type'] === 'therap') ? 'checked' : ''; ?>/>
 					<input type="radio" name="type" value="" class="hidden"
-								 id="radio-type-all" value="" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
+								 id="radio-type-all" <?php echo (isset($_GET['type']) && $_GET['type'] === '') ? 'checked' : ''; ?>/>
 				</div>
 			</div>
 
