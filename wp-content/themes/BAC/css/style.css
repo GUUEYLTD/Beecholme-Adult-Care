@@ -4117,6 +4117,7 @@ a.policy-link {
 
 .booking-page .booking-form {
     width: 500px;
+    margin-bottom: 60px;
 }
 
 .booking-page .about-info {
@@ -4280,4 +4281,22 @@ a.policy-link {
 
 .payment-dialog-footer .paypal-button {
   opacity: .5;
+}
+
+.empty-results-heading {
+    width: 100%;
+    text-align: center;
+    margin: 90px 0 30px;
+    font-family: 'InterBold', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+}
+
+.empty-results-text {
+    font-family: 'InterReg', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    max-width: 440px;
+    margin: 0 auto 90px;
+    text-align: center;
 }

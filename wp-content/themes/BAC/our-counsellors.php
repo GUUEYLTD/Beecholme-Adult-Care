@@ -3,10 +3,12 @@
     $practitioners = new \BAC\Practitioners();
     $counsellors   = apply_filters('bac_listed_counsellors', $practitioners->all($_GET));
 
-    add_action('bac_list_counsellors', array('\BAC\Practitioners', 'listCatalogue'), 10, 1);
-    add_filter('bac_total_results', function ($total) use ($counsellors){
-        return count($counsellors);
-    });
+    if(!empty($counsellors)) {
+      add_action('bac_list_counsellors', array('\BAC\Practitioners', 'listCatalogue'), 10, 1);
+      add_filter('bac_total_results', function ($total) use ($counsellors){
+      return count($counsellors);
+      });
+    }
 ?>
 
 <div class="our-counsellors">
@@ -16,7 +18,15 @@
     <?php get_template_part('template-parts/counsellors/sorting'); ?>
 
     <div class="counsellors-list d-flex">
-        <?php do_action('bac_list_counsellors', $counsellors); ?>
+        <?php
+        if(!empty($counsellors)) {
+          do_action('bac_list_counsellors', $counsellors);
+        } else {
+          echo '<h3 class="empty-results-heading">WE ARE SORRY!</h3><div class="empty-results-text">
+We couldn’t find any match. Please, try another search. Need assistance? Write us at <a href="mailto:online@beecholmeadultcare.co.uk">online@beecholmeadultcare.co.uk</a></div>';
+        }
+        ?>
+
     </div>
 
 <!--    <div class="pagination d-flex justify-content-center">-->
