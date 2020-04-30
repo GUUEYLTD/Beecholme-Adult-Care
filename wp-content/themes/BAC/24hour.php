@@ -108,7 +108,7 @@
 </div>
 
 <div class="twentyfour-hour-booking">
-	<a class="cta-button" href="/make-a-referral">Make a referral <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="arrow right"></a>
+	<a class="cta-button" href="/staff">Get to know BAC staff <img src="<?php echo get_template_directory_uri(); ?>/images/arrow-right.svg" alt="arrow right"></a>
 </div>
 
 <div class="twentyfour-table twentyfour-community">
