@@ -460,7 +460,7 @@ jQuery(document).ready(function($){
   });
 
   let timerId = setInterval(() => {
-    $('.booking-form .am-custom-fields .el-checkbox-group .el-checkbox__label').html('I have read and agreed with BAC <a href="/privacy-policy" class="privacy-button">terms & conditions</a>');
+    $('.booking-form .am-custom-fields .el-checkbox-group .el-checkbox__label').html('I have read and agreed with BAC <a href="/terms-and-conditions/" class="privacy-button">terms & conditions</a>');
   }, 200);
 
 });
