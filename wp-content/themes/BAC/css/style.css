@@ -4229,8 +4229,16 @@ a.policy-link {
     display: none;
 }
 
-.booking-form .am-confirmation-booking-cost {
-    display: none;
+.booking-form .am-confirmation-booking-cost:before {
+    content: 'Use your Welcome Coupon Code "WELCOMESESSION" and book your free initial consultation to get to know your counsellor and discuss your needs.';
+    max-width: 100%;
+    margin: 0px 10px 20px;
+    font-weight: 300;
+    padding: 0;
+    font-size: 14px;
+    color: #354052;
+    line-height: 1;
+    display: block;
 }
 
 .booking-form #amelia-step-booking0-calendar {
