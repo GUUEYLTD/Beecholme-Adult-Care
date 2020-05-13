@@ -136,7 +136,7 @@
       </div>
       <div class="button-wrapper">
         <div class="action-button">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScYEKnq_4eo1ABqfmYMvus3BXyswC44vqT4agy9M-I8zlbDgg/viewform?vc=0&c=0&w=1" target="_blank"><?php the_field('b1_b'); ?></a>
+          <a href="https://docs.google.com/forms/d/1sOmNyshzGEA9zAXmfA_G_O3xA6Vo4yl17h3-2fqbZtY/edit?pli=1" target="_blank"><?php the_field('b1_b'); ?></a>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@
     <h3>For More Information<br>please contact us</h3>
     <div class="link d-flex justify-content-center align-items-center">
       <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon_mail.png" alt="">
-      <a href="mailto:online@beecholmeadultcare.co.uk">online@beecholmeadultcare.co.uk</a>
+      <a href="mailto:info@beecholmeadultcare.co.uk">info@beecholmeadultcare.co.uk</a>
     </div>
   </div>
 
