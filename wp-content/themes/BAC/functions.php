@@ -126,11 +126,11 @@ function booking_notif() {
     }
 }
 
-add_action('wp_footer', 'add_cookies_banner');
-function add_cookies_banner() {
-    if(is_null($_COOKIE['cookies-accepted']) && !is_page(397))
-        get_template_part('cookies');
-}
+//add_action('wp_footer', 'add_cookies_banner');
+//function add_cookies_banner() {
+//    if(is_null($_COOKIE['cookies-accepted']) && !is_page(397))
+//        get_template_part('cookies');
+//}
 
 add_action('wp_enqueue_scripts', 'enqueue_cookies_scripts');
 function enqueue_cookies_scripts() {
