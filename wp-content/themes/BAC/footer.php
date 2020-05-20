@@ -33,11 +33,7 @@
         <div class="footer-bottom d-flex justify-content-between">
             <div class="copyrights align-self-center">
                 <span>Copyright 2020. All Rights Reserved.</span>
-                <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Privacy Policy</a>
-                <a href="<?php echo get_the_permalink(397); ?>" class="policy-link">Cookie Policy</a>
-                <a href="/msas/" class="policy-link">Modern Slavery Act Statement</a>
-                <a href="/disclaimer/" class="policy-link">Disclaimer</a>
-                <a href="/terms-and-conditions/" class="policy-link">Terms And Conditions</a>
+                <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Our Policies</a>
             </div>
             <div class="footer-social">
                 <a href="https://www.facebook.com/BeecholmeAdultCare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/social-fb.svg" alt="fb"></a>
