@@ -4308,3 +4308,29 @@ a.policy-link {
     margin: 0 auto 90px;
     text-align: center;
 }
+
+/** POLICY **/
+
+.policy-page .sidebar {
+    width: 25%;
+}
+
+.policy-page .policy-content {
+    width: 75%;
+}
+
+a.policy-link-sidebar {
+    text-align: left;
+    margin: 0 0 20px;
+    color: #737C8A;
+    font-size: 16px;
+}
+
+a.policy-link-sidebar.active-sidebar-link {
+    color: black;
+}
+
+a.policy-link-sidebar:hover {
+    text-decoration: none;
+    color: black;
+}

@@ -281,3 +281,19 @@ function mailtrap($phpmailer) {
 }
 
 add_action('phpmailer_init', 'mailtrap');
+
+/** Policy shortcode */
+
+function policyActiveLink($attributes) {
+    if (!isset($attributes['link_name'], $attributes['current_page_title'])) {
+        return null;
+    }
+
+    if ($attributes['link_name'] == $attributes['current_page_title']) {
+        return 'active-sidebar-link';
+    }
+
+    return null;
+}
+
+add_shortcode('policy_active_link', 'policyActiveLink');
