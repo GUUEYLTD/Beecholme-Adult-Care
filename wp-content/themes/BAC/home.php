@@ -14,6 +14,13 @@ get_header();
                     <?php while (have_posts()) : the_post();
                         get_template_part( 'template-parts/post/content' );
                     endwhile; ?>
+					
+					<div class="posts-pagination">
+                        <?php the_posts_pagination(array(
+                            'prev_text' => '<',
+                            'next_text' => '>',
+                        )) ?>
+                    </div>
                 </div>
                 <?php get_sidebar(); ?>
             </div>

@@ -1,0 +1,27 @@
+/** Employee styles **/
+.employee-admin .form-table:first-of-type,
+.employee-admin h2:first-of-type,
+.employee-admin h2:nth-of-type(5),
+.employee-admin .form-table:nth-of-type(5),
+.employee-admin .form-table tr[data-name="enable_search"],
+.employee-admin .am-edit .el-row:nth-of-type(6),
+.employee-admin .am-employees-filter
+{
+    display: none;
+}
+
+.employee-admin .user-url-wrap,
+.employee-admin .user-facebook-wrap,
+.employee-admin .user-instagram-wrap,
+.employee-admin .user-linkedin-wrap,
+.employee-admin .user-myspace-wrap,
+.employee-admin .user-pinterest-wrap,
+.employee-admin .user-soundcloud-wrap,
+.employee-admin .user-tumblr-wrap,
+.employee-admin .user-twitter-wrap,
+.employee-admin .user-youtube-wrap,
+.employee-admin .user-wikipedia-wrap,
+.employee-admin .user-profile-picture
+{
+    display: none;
+}

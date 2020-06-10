@@ -36,9 +36,12 @@ class ZoomService
      * @param array|null $data
      * @param string     $method
      *
+     * TODO HOT FIX FOR ZOOM USERS LIMIT, SHOULD BE IMPLEMENTED OUTSIDE OF PLUGIN
+     * @param array|null $getParameters
+     *
      * @return mixed
      */
-    public function execute($requestUrl, $data, $method)
+    public function execute($requestUrl, $data, $method, $getParameters = null)
     {
         $zoomSettings = $this->settingsService->getCategorySettings('zoom');
 
@@ -47,7 +50,14 @@ class ZoomService
             'exp' => time() + 3600
         ];
 
-        $ch = curl_init($requestUrl);
+        /* TODO HOT FIX FOR ZOOM USERS LIMIT, SHOULD BE IMPLEMENTED OUTSIDE OF PLUGIN */
+        $query = '';
+        if ($getParameters) {
+            $query = '?'.http_build_query($getParameters);
+        }
+
+        $ch = curl_init($requestUrl.$query);
+        /* END */
 
         curl_setopt(
             $ch,
@@ -79,7 +89,8 @@ class ZoomService
      */
     public function getUsers()
     {
-        return $this->execute('https://api.zoom.us/v2/users', null, 'GET');
+        /* TODO HOT FIX FOR ZOOM USERS LIMIT, SHOULD BE IMPLEMENTED OUTSIDE OF PLUGIN */
+        return $this->execute('https://api.zoom.us/v2/users', null, 'GET', ['page_size' => 300]);
     }
 
     /**

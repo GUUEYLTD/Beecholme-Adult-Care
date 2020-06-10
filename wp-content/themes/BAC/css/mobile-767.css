@@ -979,3 +979,26 @@
 		width: 100%;
 	}
 }
+
+.policy-page {
+	flex-wrap: wrap-reverse;
+}
+
+.sidebar-links {
+	align-items: center;
+	border-radius: 15px;
+	padding-top: 40px;
+}
+
+.policy-page .sidebar {
+	width: 100%;
+}
+
+.policy-page .policy-content {
+	width: 100%;
+}
+
+.mobile-block {
+	display: block;
+	width: 100%;
+}

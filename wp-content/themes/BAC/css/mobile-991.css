@@ -398,10 +398,11 @@
 }
 
 .footer-controls {
-	order: 1;
-	display: flex;
-	flex-flow: row;
-	margin-bottom: 20px;
+	/*order: 1;*/
+	/*display: flex;*/
+	/*flex-flow: row;*/
+	/*margin-bottom: 20px;*/
+	width: 100%;
 }
 
 .footer-controls .buttons a:nth-child(3),
@@ -420,6 +421,49 @@
 .footer-info {
 	order: 2;
 }
+
+.footer-info {
+	flex-direction: column !important;
+}
+
+.footer-info .footer-contact {
+	margin-left: 0;
+	width: 100%;
+	text-align: center;
+}
+
+.footer-info .footer-contact .trustpilot {
+	text-align: center;
+	margin: 15px 0 20px;
+}
+
+.footer-info .footer-contact .trustpilot iframe {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.footer-menu {
+	width: 100%;
+	text-align: center;
+}
+
+.footer-menu .sub-menu {
+	display: block;
+	left: 0px !important;
+	width: 30% !important;
+	background: white;
+	border-radius: 8px;
+}
+
+.footer-menu .sub-menu li{
+	padding: 10px;
+}
+
+.footer-menu .sub-menu li a{
+	color: black !important;
+}
+
+
 
  /*homepage*/
 

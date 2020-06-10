@@ -1,0 +1,4 @@
+[24-May-2020 07:21:44 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function _deprecated_file() in /home/hr3t0a94/public_html/wp-includes/rss.php:19
+Stack trace:
+#0 {main}
+  thrown in /home/hr3t0a94/public_html/wp-includes/rss.php on line 19
