@@ -2,8 +2,8 @@
  get_header();
 ?>
 <div class="coming-soon">
-  <p>Our website is under construction.<br>
-    We'll be here soon with our new awesome site, subscribe to be notified.</p>
+  <p>Something new is on its way.<br>
+   Stay tuned!</p>
 
   <div class="button">
     <a href="<?php echo home_url(); ?>">Go To Homepage</a>

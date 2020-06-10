@@ -1,13 +1,6 @@
 <?php /*Template Name: Policy*/
 get_header();
 ?>
-    <style>
-        .page-title {
-            width: 70%;
-            margin-left: auto;
-            text-align: left;
-        }
-    </style>
     <div class="policy-page d-flex container">
         <div class="sidebar">
             <div class="sidebar-links d-flex flex-column">

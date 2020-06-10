@@ -260,6 +260,11 @@ img {
     padding: 15px;
 }
 
+.header-controls {
+	align-items: center;
+    padding-top: 12px;
+}
+
 .header-controls a, .footer-controls a {
     font-family: InterBold;
     font-size: 16px;
@@ -2120,11 +2125,34 @@ img {
 /*FOOTER*/
 
 footer {
-  background-color: #1A1D20;
+  background-color: #333333;
 }
 
 .footer-top {
   padding: 64px 0 48px;
+}
+
+.footer-info {
+    width: 100%;
+}
+
+/*.footer-info>div{*/
+/*    width: 33.3333333333%;*/
+/*}*/
+
+.card-container {
+    width: 350px;
+}
+
+.card-container .card {
+    height: 260px;
+    margin-bottom: 40px;
+}
+
+.card-container .card .google-map {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
 }
 
 .footer-info h4 {
@@ -2136,7 +2164,12 @@ footer {
 }
 
 .footer-contact {
-  margin-right: 75px;
+    margin-left: 35px;
+    /*height: 260px;*/
+}
+
+.footer-contact .trustpilot {
+    margin-top: 55px;
 }
 
 .footer-contact p {
@@ -2154,7 +2187,9 @@ footer {
 }
 
 .footer-menu {
-  position: relative;
+    position: relative;
+    margin-left: auto;
+    width: 340px;
 }
 
 #menu-menu1-2 li .sub-menu {
@@ -2203,7 +2238,7 @@ footer {
     left: 160px;
     position: absolute;
     top: 0px;
-    width: 250px;
+    width: auto;
 }
 
 .footer-controls {
@@ -2215,7 +2250,7 @@ footer {
 }
 
 .footer-controls .buttons {
-    max-width: 344px;
+    /*max-width: 344px;*/
 }
 
 .footer-controls .trustpilot {
@@ -4333,4 +4368,154 @@ a.policy-link-sidebar.active-sidebar-link {
 a.policy-link-sidebar:hover {
     text-decoration: none;
     color: black;
+}
+
+.footer-menu .menu-menu1-container {
+    height: 260px;
+}
+
+.mobile-block {
+    display: none;
+}
+
+.recaptcha-bac {
+	margin: 5px 0 25px 0;
+	display: flex;
+	justify-content:center;
+}
+
+/** Review and trust seal **/
+.google-review {
+    margin-bottom: 7px;
+    margin-left: -65px;
+    z-index: 1;
+}
+
+.sectigo, .sectigo:hover {
+    width: 104px;
+    margin-right: 30px;
+}
+
+@media screen and (max-width: 1070px) {
+    .footer-controls .buttons a{
+        width: 100% !important;
+    }
+}
+
+/** Blog feed main page **/
+
+.blog-section .post:nth-of-type(1) {
+    margin-left: 0 !important;
+}
+
+.blog-section .post:nth-of-type(3) {
+    margin-right: 0 !important;
+}
+
+.blog-section .post {
+    width: 33.333333333333%;
+    margin: 0 15px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #FBFBFB;
+}
+
+.blog-section .posts {
+    margin-bottom: 50px;
+}
+
+.blog-section .explore-more {
+    margin-bottom: 100px;
+}
+
+.blog-section .explore-more a {
+    display: block;
+    width: 200px;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    background: #5AB9AC;
+    padding: 15px 25px;
+    border-radius: 3px;
+	font-family: InterBold, sans-serif;
+}
+
+.blog-section .explore-more a:hover {
+    text-decoration: none;
+}
+
+.blog-section .post .image {
+    height: 180px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.blog-section .post .image img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.blog-section .post .content {
+    margin: 0 30px 30px 30px;
+}
+
+.blog-section .post .title {
+    font-family: InterBold, sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow:hidden !important;
+}
+
+.blog-section .post .description {
+    display: block; /* Fallback for non-webkit */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow:hidden !important;
+    margin-bottom: 25px;
+}
+
+.blog-section>.title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    font-family: InterBold, sans-serif;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.blog-section .post .date .icon {
+   margin-right: 12px;
+}
+
+.blog-section .post .date span {
+    font-size: 16px;
+    color: #C4C4C4;
+}
+
+.blog-section .post .read-more {
+    font-size: 16px;
+    color: #5AB9AC;
+}
+
+@media screen and (max-width: 992px) {
+    .blog-section .post {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 40px;
+    }
+
+    .blog-section .posts {
+        flex-wrap: wrap;
+    }
+
+    .blog-section .post .image {
+        height: 300px;
+    }
 }

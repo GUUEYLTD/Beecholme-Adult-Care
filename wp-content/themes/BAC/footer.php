@@ -1,42 +1,71 @@
 <footer>
     <div class="footer-container inner-container">
         <div class="footer-top d-flex justify-content-between">
-            <div class="footer-info d-flex">
+            <div class="footer-info justify-content-between d-flex">
+                <div class="card-container footer-controls">
+                    <div class="card">
+                        <div class="google-map">
+                            <div class="google-map-overlay"></div>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2488.388272210313!2d-0.15435908423344974!3d51.41429387961996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760668a774df57%3A0xc25249c9ed825206!2sBeecholme+Adult+Care!5e0!3m2!1sru!2sua!4v1518099027832" width="1920" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="buttons d-flex flex-wrap justify-content-between">
+                        <?php $link = get_field('councelor_button', 'option'); ?>
+                        <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
+                        <?php $link = get_field('make_a_refferal_button', 'option'); ?>
+                        <a href="<?php echo $link['url']; ?>" class="referral-button"><?php echo $link['title']; ?></a>
+                        <div class="mobile-block">
+                            <?php $link = get_field('therapists_button', 'option'); ?>
+                            <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
+                            <?php $link = get_field('coaches_button', 'option'); ?>
+                            <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
+                        </div>
+                    </div>
+                </div>
                 <div class="footer-contact">
                     <h4>Contact us</h4>
-                    <p>Beecholme Adult Care</p>
-                    <p>2 Beecholme Avenue</p>
-                    <p>Mitcham</p>
-                    <p>Surrey CR4 2HT</p>
-                    <p><a href="tel:020 8648 6681">020 8648 6681</a></p>
-                    <p>United Kingdom</p>
-                                       <p><a href="mailto:info@beecholmeadultcare.co.uk">info@beecholmeadultcare.co.uk</a></p>
+                    <?php
+                    if (have_rows('contact_us', 'option')):
+                        while (have_rows('contact_us', 'option')) : the_row(); ?>
+                            <p><?php the_sub_field('paragraph', 'option'); ?></p>
+                        <?php endwhile;
+                    endif;
+                    ?>
+                    <?php $link = get_field('phone', 'option'); ?>
+                    <p><a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a></p>
+                    <?php $link = get_field('email', 'option'); ?>
+                                       <p><a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a></p>
                 </div>
                 <div class="footer-menu">
                     <h4>Links</h4>
                     <?php wp_nav_menu( array( 'theme_location' => 'header-menu' ) ); ?>
-                </div>
-            </div>
-            <div class="footer-controls d-flex justify-content-between">
-                <div class="buttons d-flex flex-wrap justify-content-between">
-                    <a href="/counsellors_application/">For Counsellors</a>
-                    <a href="/make-a-referral" class="referral-button">Make a Referral</a>
-                    <a href="/our-counsellors/?type=Therapist&therapy=&coaching=&common=">Therapists</a>
-                    <a href="/our-counsellors?type=Life+coach&therapy=&coaching=&common=">Life Coaches</a>
-                </div>
-                <div class="trustpilot">
-                    <div class="trustpilot-widget" data-locale="en-GB" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="5e68a17b7935f90001f6f836" data-style-height="58px" data-style-width="340px" data-theme="dark">
-                        <a href="https://uk.trustpilot.com/review/beecholmeadultcare.co.uk" target="_blank" rel="noopener">Trustpilot</a>
+                    <div class="footer-controls">
+                        <div class="buttons d-flex flex-wrap justify-content-between">
+                            <?php $link = get_field('therapists_button', 'option'); ?>
+                            <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
+                            <?php $link = get_field('coaches_button', 'option'); ?>
+                            <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom d-flex justify-content-between">
+        <div class="footer-bottom d-flex justify-content-between align-items-center">
             <div class="copyrights align-self-center">
                 <span>Copyright 2020. All Rights Reserved.</span>
-                <a href="<?php echo get_the_permalink(391); ?>" class="policy-link">Our Policies</a>
+                <?php $link = get_field('policies', 'option'); ?>
+                <a href="<?php echo $link['url']; ?>" class="policy-link"><?php echo $link['title']; ?></a>
             </div>
-            <div class="footer-social">
+            <div class="footer-social d-flex align-items-center">
+                <div class="sectigo">
+                    <script type="text/javascript"> //<![CDATA[
+                        var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.trust-provider.com/" : "http://www.trustlogo.com/");
+                        document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+                        //]]></script>
+                    <script language="JavaScript" type="text/javascript">
+                        TrustLogo("https://sectigo.com/images/seals/sectigo_trust_seal_sm_2x.png", "SECOV", "none");
+                    </script>
+                </div>
                 <a href="https://www.facebook.com/BeecholmeAdultCare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/social-fb.svg" alt="fb"></a>
                 <a href="https://twitter.com/BeecholmeAC" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/social-twitter.svg" alt="twitter"></a>
                 <a href="https://www.instagram.com/bac_beecholmeadultcare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/social-insta.svg" alt="instagram"></a>

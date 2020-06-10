@@ -71,7 +71,7 @@ function booking_mail(){
     $send_to_user = wp_mail($email,'BAC Event Booking',$mes_user,$headers);
 
     $mes = "Activity: ".$activity."\n\nName: ".$fname." " .$lname."\n\nEmail: ".$email."\n\nPhone: ".$phone."\n\nDate: ".$date."\n\nTime: ".$time;
-    $send_to_admin = wp_mail ('info@beecholmeadultcare.co.uk','BAC Event Booking',$mes,$headers);
+    $send_to_admin = wp_mail ('online@beecholmeadultcare.co.uk','BAC Event Booking',$mes,$headers);
 
     $n_date = date('Y-m-d', strtotime($date));
 
@@ -286,3 +286,86 @@ function policyActiveLink($attributes) {
 }
 
 add_shortcode('policy_active_link', 'policyActiveLink');
+
+if( function_exists('acf_add_options_page') ) {
+
+    acf_add_options_page([
+        'page_title' 	=> 'Theme Footer Settings',
+        'menu_title'	=> 'Footer',
+        'menu_slug' 	=> 'theme-general-settings',
+        'capability'	=> 'edit_posts',
+        'redirect'		=> false
+    ]);
+
+}
+
+add_filter('admin_body_class', 'setAdminClassToEmployeeUser');
+
+function setAdminClassToEmployeeUser($classes) {
+    $currentUser = wp_get_current_user();
+
+    if (!$currentUser) {
+        return $classes;
+    }
+
+    if (in_array('wpamelia-provider', $currentUser->roles)) {
+        $classes .= ' employee-admin';
+    }
+
+    return $classes;
+}
+
+function adminStyles() {
+    wp_enqueue_style('admin-styles', get_template_directory_uri().'/css/admin.css');
+}
+add_action('admin_enqueue_scripts', 'adminStyles');
+
+/** Posts shortcode */
+
+add_shortcode('declare_recent_posts', 'declareRecentPosts');
+
+function declareRecentPosts($attributes)
+{
+    $postsNumber = 3;
+    if (!isset($attributes['posts_number'])) {
+        $postsNumber = $attributes['posts_number'];
+    }
+
+    global $recentPosts;
+
+    $recentPosts = get_posts(
+        array(
+            'numberposts'      => $postsNumber,
+            'orderby'          => 'date',
+            'order'            => 'DESC',
+            'post_type'        => 'post',
+            'suppress_filters' => true,
+        )
+    );
+}
+
+/** Allow employees to upload image */
+
+add_action('admin_init', 'allowEmployeeDownloads');
+function allowEmployeeDownloads()
+{
+    $employee = get_role('wpamelia-provider');
+    if ($employee !== null) {
+        $employee->add_cap('upload_files');
+    }
+}
+
+add_filter('ajax_query_attachments_args', 'wpbShowCurrentUserAttachments');
+
+function wpbShowCurrentUserAttachments($query)
+{
+    $userId = get_current_user_id();
+    if ($userId && !current_user_can('activate_plugins') && !current_user_can(
+            'edit_others_posts
+'
+        )) {
+        $query['author'] = $userId;
+    }
+
+    return $query;
+}

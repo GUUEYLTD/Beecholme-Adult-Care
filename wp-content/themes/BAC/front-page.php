@@ -1,6 +1,10 @@
 <?php /*Template Name: home*/
  get_header();
- $cur_page = get_the_ID(); ?>
+ $cur_page = get_the_ID(); 
+
+ do_shortcode("[declare_recent_posts posts_number=3]");
+ global $recentPosts;
+?>
 
 <div class="home-top-banner d-flex align-items-center justify-content-center" style="background-image: url(<?php the_field('hero_image', $cur_page); ?>)">
 	<div class="dark-bg"></div>
@@ -111,7 +115,7 @@
 			</a>		
 		<?php } ?>
 		<?php if(get_field('serv_h3')) { ?>
-			<a href="/online-life-coaching/" class="single-service-container d-flex align-items-center justify-content-center">
+			<a href="/life-coaching-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
 				<div class="single-service">
 					<h3><?php the_field('serv_h3'); ?></h3>
 					<p><?php the_field('serv_t3'); ?></p>
@@ -119,7 +123,7 @@
 			</a>		
 		<?php } ?>
 		<?php if(get_field('serv_h4')) { ?>
-			<a href="/online-therapy/" class="single-service-container d-flex align-items-center justify-content-center">
+			<a href="/therapist-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
 				<div class="single-service">
 					<h3><?php the_field('serv_h4'); ?></h3>
 					<p><?php the_field('serv_t4'); ?></p>
@@ -361,7 +365,7 @@
    <div class="text">
     <h2><?php the_field('home_lc_heading'); ?></h2>
     <?php the_field('home_lc_text'); ?>
-    <div class="link"><a href="/online-life-coaching/">Read More</a></div>
+    <div class="link"><a href="/life-coaching-surrey/">Read More</a></div>
    </div>
    <div class="perks d-flex flex-column">
     <div class="single-perk d-flex align-items-center">
@@ -393,7 +397,7 @@
    <div class="text">
     <h2><?php the_field('home_therapy_heading'); ?></h2>
     <?php the_field('home_therapy_text'); ?>
-    <div class="link"><a href="/online-therapy/">Read More</a></div>
+    <div class="link"><a href="/therapist-surrey/">Read More</a></div>
    </div>
    <div class="perks d-flex flex-column">
     <div class="single-perk d-flex align-items-center">
@@ -418,6 +422,54 @@
     </div>
    </div>
   </div>
+</div>
+
+<div class="blog-section d-flex flex-column container">
+    <h2 class="title">
+        Blog Posts
+    </h2>
+    <div class="posts d-flex flex-row">
+        <?php foreach ($recentPosts as $post) { ?>
+            <div class="post d-flex flex-column">
+                <div class="image">
+                    <img src="<?= wp_get_attachment_url( get_post_thumbnail_id($post->ID)) ?>" alt="">
+                </div>
+                <div class="content">
+                    <div class="title"><?= $post->post_title ?></div>
+                    <div class="description"><?= wp_filter_nohtml_kses($post->post_content) ?></div>
+                    <div class="other d-flex flex-row justify-content-between">
+                        <div class="date d-flex flex-row align-items-center">
+                            <div class="icon">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0)">
+                                        <path d="M5.83121 8.82716C5.83121 8.62673 5.66864 8.46436 5.46805 8.46436H4.20074C4.00037 8.46436 3.83777 8.62673 3.83777 8.82716V10.0943C3.83777 10.295 4.00037 10.4574 4.20074 10.4574H5.46805C5.66864 10.4574 5.83121 10.295 5.83121 10.0943V8.82716Z" fill="#C4C4C4"/>
+                                        <path d="M8.99674 8.82716C8.99674 8.62673 8.83414 8.46436 8.63393 8.46436H7.36645C7.16609 8.46436 7.00348 8.62673 7.00348 8.82716V10.0943C7.00348 10.295 7.16609 10.4574 7.36645 10.4574H8.63393C8.83414 10.4574 8.99674 10.295 8.99674 10.0943V8.82716Z" fill="#C4C4C4"/>
+                                        <path d="M12.1651 8.82716C12.1651 8.62673 12.0025 8.46436 11.8021 8.46436H10.5348C10.3342 8.46436 10.1716 8.62673 10.1716 8.82716V10.0943C10.1716 10.295 10.3342 10.4574 10.5348 10.4574H11.8021C12.0025 10.4574 12.1651 10.295 12.1651 10.0943V8.82716Z" fill="#C4C4C4"/>
+                                        <path d="M5.83121 11.9946C5.83121 11.7938 5.66864 11.6316 5.46805 11.6316H4.20074C4.00037 11.6316 3.83777 11.7938 3.83777 11.9946V13.2615C3.83777 13.4621 4.00037 13.6245 4.20074 13.6245H5.46805C5.66864 13.6245 5.83121 13.462 5.83121 13.2615V11.9946Z" fill="#C4C4C4"/>
+                                        <path d="M8.99674 11.9946C8.99674 11.7938 8.83414 11.6316 8.63393 11.6316H7.36645C7.16609 11.6316 7.00348 11.7938 7.00348 11.9946V13.2615C7.00348 13.4621 7.16609 13.6245 7.36645 13.6245H8.63393C8.83414 13.6245 8.99674 13.462 8.99674 13.2615V11.9946Z" fill="#C4C4C4"/>
+                                        <path d="M12.1651 11.9946C12.1651 11.7938 12.0025 11.6316 11.8023 11.6316H10.5348C10.3342 11.6316 10.1716 11.7938 10.1716 11.9946V13.2615C10.1716 13.4621 10.3342 13.6245 10.5348 13.6245H11.8023C12.0025 13.6245 12.1651 13.462 12.1651 13.2615V11.9946Z" fill="#C4C4C4"/>
+                                        <path d="M14.4309 1.78161V3.71707C14.4309 4.59189 13.7212 5.29685 12.8465 5.29685H11.847C10.9723 5.29685 10.2532 4.59189 10.2532 3.71707V1.77466H5.74839V3.71707C5.74839 4.59189 5.02934 5.29685 4.15473 5.29685H3.15507C2.28042 5.29685 1.57078 4.59189 1.57078 3.71707V1.78161C0.806327 1.80465 0.178162 2.43721 0.178162 3.2147V14.5575C0.178162 15.3496 0.820191 16.0001 1.6123 16.0001H14.3893C15.1802 16.0001 15.8235 15.3482 15.8235 14.5575V3.2147C15.8235 2.43721 15.1953 1.80465 14.4309 1.78161ZM13.9667 13.8511C13.9667 14.1934 13.6891 14.4712 13.3466 14.4712H2.62766C2.28521 14.4712 2.00766 14.1934 2.00766 13.8511V7.99218C2.00766 7.64973 2.28518 7.37201 2.62766 7.37201H13.3466C13.6891 7.37201 13.9666 7.64973 13.9666 7.99218L13.9667 13.8511Z" fill="#C4C4C4"/>
+                                        <path d="M3.15189 4.25917H4.1405C4.44057 4.25917 4.68387 4.01622 4.68387 3.71615V0.543208C4.68387 0.243105 4.44057 0 4.1405 0H3.15189C2.85179 0 2.60852 0.243105 2.60852 0.543208V3.71615C2.60852 4.01622 2.85179 4.25917 3.15189 4.25917Z" fill="#C4C4C4"/>
+                                        <path d="M11.8345 4.25917H12.8231C13.123 4.25917 13.3663 4.01622 13.3663 3.71615V0.543208C13.3663 0.243105 13.123 0 12.8231 0H11.8345C11.5344 0 11.2911 0.243105 11.2911 0.543208V3.71615C11.2911 4.01622 11.5344 4.25917 11.8345 4.25917Z" fill="#C4C4C4"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0">
+                                            <rect width="16" height="16" fill="white"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <span><?= date('M j, Y', strtotime($post->post_date)) ?></span>
+                        </div>
+                        <a href="<?= $post->guid ?>" target="_blank" class="read-more">Read more</a>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+    <div class="explore-more d-flex justify-content-center">
+        <a href="/blog/" target="_blank">Explore more posts</a>
+    </div>
 </div>
 
 
