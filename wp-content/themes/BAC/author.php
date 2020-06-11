@@ -123,6 +123,7 @@ get_header(); ?>
                     <?php
                     if(have_rows('certifications', "user_{$user->ID}")) : while(have_rows('certifications', "user_{$user->ID}")) : the_row(); ?>
                         <div class="single-item d-flex flex-column">
+                            <?php if(!get_sub_field('hide')) : ?>
                             <div class="name text"><?php the_sub_field('title'); ?></div>
                             <div class="info d-flex justify-content-between">
                                 <div class="date"><?php the_sub_field('date'); ?></div>
@@ -130,6 +131,7 @@ get_header(); ?>
                                     <div class="link"><a href="<?php the_sub_field('link'); ?>" target="_blank">View</a></div>
                                 <?php endif; ?>
                             </div>
+                            <?php endif;?>
                         </div>
                     <?php endwhile;
                     endif;
