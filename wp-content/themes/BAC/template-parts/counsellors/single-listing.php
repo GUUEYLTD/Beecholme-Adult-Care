@@ -26,8 +26,11 @@
             <div class="languages d-flex">
                 <?php
                 $count = 0;
+//                echo "<pre>";
+//                var_dump(getACFLoopValues('languages', $listingUser->wp_user->ID));
+//                echo "</pre>";
                     foreach (getACFLoopValues('languages', $listingUser->wp_user->ID) as $language) : ?>
-                        <img src="<?php echo get_stylesheet_directory_uri() . '/images/counsellor-lang-' . sanitize_title($language) . '.png'; ?>" alt="">
+                        <img src="<?php echo get_stylesheet_directory_uri() . '/images/flags/' . sanitize_title($language) . '.png'; ?>" alt="">
                     <?php
                         if($count > 0)
                             break;
