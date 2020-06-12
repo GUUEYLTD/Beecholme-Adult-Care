@@ -15,3 +15,6 @@ wp-content/plugins/hello.php
 .idea
 wp-config.php
 .htaccess
+
+# ignore uploads
+wp-content/uploads/
