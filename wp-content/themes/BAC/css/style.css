@@ -549,13 +549,21 @@ img {
 
 .banner-content h1 {
     font-size: 42px;
-    margin: 0 0 40px;
+    margin: 0 0 25px;
 }
 
 .banner-content .second-heading {
     font-size: 18px;
     line-height: 24px;
-    margin: 0 0 50px;
+    margin: 0 0 30px;
+}
+
+.heading .cta-button {
+    padding: 15px 42px;
+}
+
+.heading-button-wrapper {
+    display:flex
 }
 
 .banner-content .wpcf7-not-valid-tip {
@@ -1334,6 +1342,11 @@ img {
 .text-block-800 {
     max-width: 800px;
     margin: 70px auto 80px;
+}
+
+.text-block-800-consellors{
+    margin: 0 auto 40px;
+    text-align:center;
 }
 
 .text-block-800 p,
@@ -2765,6 +2778,14 @@ a.policy-link {
     text-align: center;
 }
 
+.coming-soon h2{
+    margin: 90px auto 0;
+    max-width: 350px;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+}
+
 .coming-soon .button {
     margin-top: 62px;
 }
@@ -2773,7 +2794,6 @@ a.policy-link {
     background: #5AB9AC;
     border-radius: 3px;
     padding: 14px 55px;
-
     font-family: 'InterBold';
     font-size: 16px;
     color: #fff;
@@ -2783,6 +2803,10 @@ a.policy-link {
 .coming-soon a:hover {
     text-decoration: none;
     background: #5da299;
+}
+
+.button-free-session a{
+    padding: 14px 20px;
 }
 
 /*About BAC coaching and therapy page*/
@@ -2948,6 +2972,27 @@ a.policy-link {
     line-height: 24px;
     color: #333;
     margin: 0 0 24px;
+}
+
+.about-bac .about-therapy-free-welcome-session {
+    margin-top: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+.about-bac .about-therapy-free-welcome-session-haeding {
+    font-family: 'InterReg', sans-serif;
+    font-size: 24px;
+    line-height: 28px;
+    color: #333;
+    max-width: 320px;
+    margin: auto;
+    margin-bottom: 40px;
+    padding: 0 10px;
+}
+
+.about-bac .about-therapy-free-welcome-session .cta-button {
+    padding: 14px 15px
 }
 
 .about-bac .block3 {

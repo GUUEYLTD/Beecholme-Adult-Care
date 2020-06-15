@@ -12,6 +12,9 @@
     <div class="heading">
       <h1><?php the_field('hero_heading', $cur_page); ?></h1>
       <h2 class="second-heading"><?php the_field('hero_subheading', $cur_page); ?></h2>
+      <div class="heading-button-wrapper">
+          <a class="cta-button" href="/our-counsellors/" target="_blank">Book Your Free Welcome Session</a>
+      </div>
     </div>
 		<div class="home-form-wrapper">
 		<div class="tabs d-flex justify-content-center">

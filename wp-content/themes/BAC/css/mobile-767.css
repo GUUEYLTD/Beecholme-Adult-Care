@@ -369,6 +369,10 @@
 	padding: 14px 60px;
 }
 
+.about-bac .about-therapy-free-welcome-session .cta-button {
+	padding: 14px 7px
+}
+
 @media screen and (max-width: 500px) {
 	.principles h4 {
 		font-size: 20px;
@@ -1001,4 +1005,26 @@
 .mobile-block {
 	display: block;
 	width: 100%;
+}
+
+/*coming soon page*/
+
+.button-free-session a {
+	padding: 14px 12px;
+}
+
+.page-894 .page-title {
+	padding: 20px 0
+}
+
+.coming-soon h2 {
+	margin: 50px auto 0
+}
+
+.coming-soon .button {
+	margin-top: 50px;
+}
+
+.coming-soon {
+	padding: 0 0 100px;
 }

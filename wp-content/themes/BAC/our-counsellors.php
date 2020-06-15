@@ -11,6 +11,12 @@
     }
 ?>
 
+<div class="text-block-800 text-block-800-consellors">
+    <?php
+        the_content();
+    ?>
+</div>
+
 <div class="our-counsellors">
   <div class="content">
     <?php get_template_part('template-parts/counsellors/searchbar'); ?>

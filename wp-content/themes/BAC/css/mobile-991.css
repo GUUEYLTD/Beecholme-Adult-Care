@@ -42,6 +42,15 @@
 	text-align: center;
 }
 
+.heading-button-wrapper{
+	justify-content: center;
+	margin-bottom:30px
+}
+
+.heading .cta-button {
+	padding: 15px 20px;
+}
+
 #wpcf7-f18-o1 input, #wpcf7-f18-o1 select {
 	width: 96%;
 }
@@ -163,6 +172,10 @@
 .text-block-800 {
 	padding: 0 25px;
 	margin: 40px auto 40px;
+}
+
+.text-block-800-consellors{
+	margin: 0 auto 40px;
 }
 
 .recovery-booking .cta-button {

@@ -8,6 +8,12 @@
   <div class="button">
     <a href="<?php echo home_url(); ?>">Go To Homepage</a>
   </div>
+
+  <h2>We are happy to offer a free welcome session</h2>
+  <div class="button button-free-session">
+      <a href="/our-counsellors/" target="_blank">Book Your Free Welcome Session Now</a>
+  </div>
+
 </div>
 
 <?php get_footer(); ?>

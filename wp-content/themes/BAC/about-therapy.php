@@ -32,7 +32,18 @@
       <div class="text right-text"><?php the_field('about_diagram_right'); ?></div>
     </div>
   </div>
-
+    <?php if(get_field('free_welcome_session_heading') || get_field('free_welcome_session_button_text')) : ?>
+    <div class="about-therapy-free-welcome-session">
+        <?php if(get_field('free_welcome_session_heading')) : ?>
+            <div class="about-therapy-free-welcome-session-haeding">
+                <?php the_field('free_welcome_session_heading'); ?>
+            </div>
+        <?php endif; ?>
+        <?php if(get_field('free_welcome_session_button_text')) : ?>
+            <a class="cta-button" href="/our-counsellors/" target="_blank"><?php the_field('free_welcome_session_button_text'); ?></a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
   <div class="choice">
     <div class="choice-wrapper">
       <h2><?php the_field('about_choice_h'); ?></h2>
