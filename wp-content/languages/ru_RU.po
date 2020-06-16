@@ -3428,8 +3428,8 @@ msgstr "Имя пользователя: %s"
 
 #. translators: Password change notification email subject. %s: Site title
 #: wp-includes/pluggable.php:1914
-msgid "[%s] Your username and password info"
-msgstr "[%s] Ваше имя пользователя и пароль"
+msgid "[%s] Welcome to BAC Online Platform!"
+msgstr "[%s] Добро пожаловать на BAC Online Platform!"
 
 #: wp-includes/plugin.php:810
 msgid "Only a static class method or function can be used in an uninstall hook."

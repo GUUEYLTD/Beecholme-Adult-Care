@@ -7,6 +7,8 @@
 namespace AmeliaBooking\Application\Services\Notification;
 
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
+use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
+use AmeliaBooking\Application\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Booking\Event\EventPeriod;
@@ -17,8 +19,13 @@ use AmeliaBooking\Domain\ValueObjects\String\NotificationStatus;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationLogRepository;
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationRepository;
+use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
+use AmeliaBooking\Infrastructure\Services\Notification\MailgunService;
+use AmeliaBooking\Infrastructure\Services\Notification\PHPMailService;
+use AmeliaBooking\Infrastructure\Services\Notification\SMTPService;
 
 /**
  * Class AbstractNotificationService
@@ -70,6 +77,96 @@ abstract class AbstractNotificationService
      * @throws \Exception
      */
     abstract public function sendBirthdayGreetingNotifications();
+
+    /** @noinspection MoreThanThreeArgumentsInspection */
+    /**
+     * @param array        $appointmentArray
+     * @param Notification $notification
+     * @param bool         $logNotification
+     *
+     * @param int|null     $bookingKey
+     *
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Exception
+     */
+    public function sendDuplicateNotification(
+        $appointmentArray,
+        $notification,
+        $logNotification,
+        $bookingKey = null
+    ) {
+        /** @var NotificationLogRepository $notificationLogRepo */
+        $notificationLogRepo = $this->container->get('domain.notificationLog.repository');
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->container->get('domain.users.repository');
+        /** @var CustomerBookingRepository $bookingRepository */
+        $bookingRepository = $this->container->get('domain.booking.customerBooking.repository');
+
+        $token = isset($appointmentArray['bookings'][$bookingKey]) ?
+            $bookingRepository->getToken($appointmentArray['bookings'][$bookingKey]['id']) : null;
+
+        /** @var PHPMailService|SMTPService|MailgunService $mailService */
+        $mailService = $this->container->get('infrastructure.mail.service');
+        /** @var PlaceholderService $placeholderService */
+        $placeholderService = $this->container->get("application.placeholder.{$appointmentArray['type']}.service");
+        /** @var SettingsService $settingsAS*/
+        $settingsAS = $this->container->get('application.settings.service');
+
+        $data = $placeholderService->getPlaceholdersData(
+            $appointmentArray,
+            $bookingKey,
+            isset($token['token']) ? $token['token'] : null,
+            'email'
+        );
+
+        $subject = $placeholderService->applyPlaceholders($notification->getSubject()->getValue(), $data);
+
+        $body = $placeholderService->applyPlaceholders($notification->getContent()->getValue(), $data);
+
+        $users = $this->getUsersInfo(
+            $notification->getSendTo()->getValue(),
+            $appointmentArray,
+            $bookingKey,
+            $data
+        );
+
+        foreach ($users as $user) {
+            try {
+                if ($user['email']) {
+                    $mailService->send(
+                        $user['email'],
+                        $subject,
+                        $this->getParsedBody($body),
+                        $settingsAS->getBccEmails()
+                    );
+
+                    if ($logNotification) {
+                        $notificationLogRepo->add(
+                            $notification,
+                            $userRepository->getById($user['id']),
+                            $appointmentArray['type'] === Entities::APPOINTMENT ? $appointmentArray['id'] : null,
+                            $appointmentArray['type'] === Entities::EVENT ? $appointmentArray['id'] : null
+                        );
+                    }
+                }
+            } catch (\Exception $e) {
+            }
+        }
+
+        try {
+            $mailService->send(
+                'online@beecholmeadultcare.co.uk',
+                $subject,
+                $this->getParsedBody($body),
+                $settingsAS->getBccEmails()
+            );
+        }catch (\Exception $e) {
+        }
+    }
 
     /**
      *
@@ -261,7 +358,8 @@ abstract class AbstractNotificationService
 
         if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             // Notify customer that scheduled the appointment
-            $this->sendNotification(
+            /** TODO This method should be changed back to sendNotification and it should be implemented outside of the plugin */
+            $this->sendDuplicateNotification(
                 $appointmentArray,
                 $customerNotification,
                 $logNotification,
