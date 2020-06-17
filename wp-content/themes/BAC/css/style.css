@@ -477,6 +477,10 @@ img {
     background-size: cover;
 }
 
+.home-top-banner .banner-content h1{
+    font-size: 38px
+}
+
 .dark-bg {
     position: absolute;
     width: 100%;
