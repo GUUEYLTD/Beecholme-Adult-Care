@@ -3,29 +3,31 @@ get_header();
 ?>
 
 
-    <h1 class="page-title"><?php echo get_the_title(); ?></h1>
+    <div class="counsellors-page-title-wrapper mid-container">
+        <?php $back = htmlspecialchars($_SERVER['HTTP_REFERER']); ?>
+        <a href="<?php echo $back; ?>" class="counsellors-page-title-back">
+            <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-back.svg" alt="arrow-back">
+        </a>
+        <h1 class="page-title"><?php echo get_the_title(); ?></h1>
+    </div>
 
     <div class="mid-container counsellors-info-wrapper">
-        <div class="counsellors-info-item counsellors-info-item-70">
-            <div class="counsellors-info-item-heading">How do I get clients and get in contact with them?</div>
-            <div class="counsellors-info-item-text">
-                <p>
-                    We are launching a major marketing campaign with a social media campaign to get clients!
-                </p>
-                <p>
-                    We are building a new login area where counsellors will be able to message directly with their clients through the platform.
-                </p>
-                <p>
-                    So far we recommend our counsellors not to share any personal contact details (email address or/and phone number). If you require to communicate with clients you can email your requests at online@beecholmeadultcare.co.uk, we will then get in contact with client and get back to you with all the necessary information.
-                </p>
+        <?php if(get_field('first_block_title', $cur_page) || get_field('first_block_text', $cur_page)) : ?>
+            <div class="counsellors-info-item counsellors-info-item-70">
+                <div class="counsellors-info-item-heading"><?php the_field('first_block_title', $cur_page); ?></div>
+                <div class="counsellors-info-item-text">
+                    <?php the_field('first_block_text', $cur_page); ?>
+                </div>
             </div>
-        </div>
-        <div class="counsellors-info-item counsellors-info-item-30">
-            <div class="counsellors-info-item-heading">GDPR</div>
-            <div class="counsellors-info-item-text">
-                General Data Protection Regulation will be shared to all counsellors to ensure compliance.
+        <?php endif; ?>
+        <?php if(get_field('second_block_title', $cur_page) || get_field('second_block_text', $cur_page)) : ?>
+            <div class="counsellors-info-item counsellors-info-item-30">
+                <div class="counsellors-info-item-heading"><?php the_field('second_block_title', $cur_page); ?></div>
+                <div class="counsellors-info-item-text">
+                    <?php the_field('second_block_text', $cur_page); ?>
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
 
     </div>
 

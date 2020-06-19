@@ -12,59 +12,67 @@ get_header();
     </div>
 
     <div class="mid-container counsellors-info-wrapper">
+        <?php if(get_field('first_block_title', $cur_page) || get_field('first_block_text', $cur_page)) : ?>
         <div class="counsellors-info-item counsellors-info-item-50">
-            <div class="counsellors-info-item-heading">How do I register?</div>
+            <div class="counsellors-info-item-heading"><?php the_field('first_block_title', $cur_page); ?></div>
             <div class="counsellors-info-item-text">
-                Please register using this link and completing the registration form.
+                <?php the_field('first_block_text', $cur_page); ?>
             </div>
         </div>
+        <?php endif; ?>
+        <?php if(get_field('second_block_title', $cur_page) || get_field('second_block_text', $cur_page)) : ?>
         <div class="counsellors-info-item counsellors-info-item-50">
-            <div class="counsellors-info-item-heading">Terms & Conditions</div>
+            <div class="counsellors-info-item-heading"><?php the_field('second_block_title', $cur_page); ?></div>
             <div class="counsellors-info-item-text">
-                Before starting to work on out platform all counsellors will receive by email our Terms & Conditions to be read and agreed to.
+                <?php the_field('second_block_text', $cur_page); ?>
             </div>
         </div>
+        <?php endif; ?>
+        <?php if(get_field('third_block_title', $cur_page) || get_field('third_block_text', $cur_page)) : ?>
         <div class="counsellors-info-item counsellors-info-item-50">
-            <div class="counsellors-info-item-heading">DBS Check</div>
+            <div class="counsellors-info-item-heading"><?php the_field('third_block_title', $cur_page); ?></div>
             <div class="counsellors-info-item-text">
-                If you have a DBS check please provide it to be added to your profile information.
+                <?php the_field('third_block_text', $cur_page); ?>
             </div>
         </div>
+        <?php endif; ?>
+        <?php if(get_field('fourth_block_title', $cur_page) || get_field('fourth_block_text', $cur_page)) : ?>
         <div class="counsellors-info-item counsellors-info-item-50">
-            <div class="counsellors-info-item-heading">Contract</div>
+            <div class="counsellors-info-item-heading"><?php the_field('fourth_block_title', $cur_page); ?></div>
             <div class="counsellors-info-item-text">
-                BAC will provide a Contract along with a Code of Ethics to all Counsellors before they start using our platform.
+                <?php the_field('fourth_block_text', $cur_page); ?>
             </div>
         </div>
-
+        <?php endif; ?>
     </div>
 
     <div class="counsellors-info-full-background">
         <h2>Qualifications</h2>
         <div class="mid-container counsellors-info-wrapper">
+            <?php if(get_field('qualifications_first_block_title', $cur_page) || get_field('qualifications_first_block_text', $cur_page)) : ?>
             <div class="counsellors-info-item counsellors-info-item-100">
-                <div class="counsellors-info-item-heading">What qualifications do I need to be a Life Coach?</div>
+                <div class="counsellors-info-item-heading"><?php the_field('qualifications_first_block_title', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
-                    <p>
-                        We accept all certifications in Coaching. Potential clients might look upon you more favorably if you have an industry specific qualification - such as the Life Coaching Diploma or Level 3 with Official Certification.
-                    </p>
-                    <p>
-                        Certifications that are accredited by industry associations like the International Coach Federation can also be more attractive to clients when choosing a Coach.
-                    </p>
+                    <?php the_field('qualifications_first_block_text', $cur_page); ?>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if(get_field('qualifications_second_block_title', $cur_page) || get_field('qualifications_second_block_text', $cur_page)) : ?>
             <div class="counsellors-info-item counsellors-info-item-100">
-                <div class="counsellors-info-item-heading">What qualifications do I need to be a Therapist?</div>
+                <div class="counsellors-info-item-heading"> <?php the_field('qualifications_second_block_title', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
-                    All therapists will be recognized if they have a bachelor's degree. All therapists need to be licensed to provide counselling.
+                    <?php the_field('qualifications_second_block_text', $cur_page); ?>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if(get_field('qualifications_third_block_title', $cur_page) || get_field('qualifications_third_block_text', $cur_page)) : ?>
             <div class="counsellors-info-item counsellors-info-item-100">
-                <div class="counsellors-info-item-heading">What qualifications do I need to be on the platform?</div>
+                <div class="counsellors-info-item-heading"> <?php the_field('qualifications_third_block_text', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
-                    We accept all levels of experience. It is important that you define your experience in the section «Biographical Info».
+                    <?php the_field('qualifications_third_block_title', $cur_page); ?>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 
