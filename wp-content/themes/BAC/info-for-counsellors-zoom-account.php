@@ -12,7 +12,7 @@ get_header();
 
     <div class="mid-container counsellors-info-wrapper">
         <?php if(get_field('first_block_title', $cur_page) || get_field('first_block_text', $cur_page)) : ?>
-            <div class="counsellors-info-item counsellors-info-item-50">
+            <div class="counsellors-info-item counsellors-info-item-100">
                 <div class="counsellors-info-item-heading"><?php the_field('first_block_title', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
                     <?php the_field('first_block_text', $cur_page); ?>
@@ -36,7 +36,7 @@ get_header();
             </div>
         <?php endif; ?>
         <?php if(get_field('fourth_block_title', $cur_page) || get_field('fourth_block_text', $cur_page)) : ?>
-            <div class="counsellors-info-item counsellors-info-item-50">
+            <div class="counsellors-info-item counsellors-info-item-100">
                 <div class="counsellors-info-item-heading"><?php the_field('fourth_block_title', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
                     <?php the_field('fourth_block_text', $cur_page); ?>
