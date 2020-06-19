@@ -697,3 +697,56 @@
 	justify-content: center;
 	margin-top: 24px;
 }
+
+/* Info For Counsellors pages */
+.counsellors-page-title-back{
+	top:45px
+}
+@media screen and (max-width:768px) {
+	.counsellors-info-item-text, .counsellors-info-item-text p {
+		font-size: 16px;
+	}
+	.counsellors_info_image {
+		margin-top: 0;
+	}
+	.counsellors-info-item-heading {
+		font-weight: 500;
+		font-size: 22px;
+	}
+	.counsellors-info-item{
+		padding:25px
+	}
+	.counsellors-info-item-50 ,.counsellors-info-item-33{
+		width:calc(50% - 10px);
+	}
+	.counsellors-info-item-70, .counsellors-info-item-30{
+		width:100%
+	}
+	.page-template-info-for-counsellors .counsellors-info-wrapper{
+		margin-bottom: 30px
+	}
+
+	.page-template-info-for-counsellors-registration h2 {
+		font-size: 26px;
+		margin-bottom: 30px
+	}
+	.counsellors-info-full-background{
+		padding-top: 40px
+	}
+}
+@media screen and (max-width:500px) {
+	.page-template-info-for-counsellors .mid-container{
+		display: flex;
+	}
+	.counsellors-info-item-50 ,.counsellors-info-item-33{
+		width:100%;
+	}
+	.counsellors-info-item{
+		margin-bottom: 20px
+	}
+	.page-template-info-for-counsellors .counsellors_info_image{
+		height:200px;
+		padding: 0 10px
+	}
+}
+/* END Info For Counsellors pages */

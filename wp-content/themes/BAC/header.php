@@ -28,7 +28,7 @@
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
-<body class="page-<?php echo $cur_page; ?>">
+<body <?php body_class();?> class="page-<?php echo $cur_page; ?>">
 
     <!-- Load Facebook SDK for JavaScript -->
     <div id="fb-root"></div>
@@ -86,7 +86,7 @@
 			</div>
 		</div>
 	</header>
-	<?php if(is_front_page() || is_home() ||  is_singular('post') || is_archive()) {} else { ?>
+	<?php if(is_front_page() || is_home() ||  is_singular('post') || is_archive() || is_page_template(array('info-for-counsellors.php', 'info-for-counsellors-registration.php', 'info-for-counsellors-clients.php', 'info-for-counsellors-payments.php', 'info-for-counsellors-cancellation.php'))) {} else { ?>
         <h1 class="page-title"><?php echo get_the_title(); ?></h1>
 		<?php if(get_field('hero_image', $cur_page)) { ?>
 		<div class="mid-container hero-image d-flex justify-content-center">

@@ -4569,3 +4569,97 @@ a.policy-link-sidebar:hover {
         height: 300px;
     }
 }
+
+/* Info For Counsellors pages */
+
+.page-template-info-for-counsellors .mid-container{
+    padding: 0
+}
+.page-template-info-for-counsellors .counsellors-info-wrapper{
+    margin-bottom:90px
+}
+.page-template-info-for-counsellors-registration h2{
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 40px
+}
+
+.counsellors-page-title-wrapper{
+    position: relative;
+}
+.counsellors-page-title-back{
+    position: absolute;
+    top:90px;
+}
+.counsellors-info-full-background{
+    padding-top: 100px;
+    background: #F4F4F5;
+}
+.counsellors_info_image{
+    border-radius: 6px;
+    margin-top:80px
+}
+.counsellors_info_image img{
+    width:100%;
+    object-fit: cover;
+    border-radius: 6px
+}
+.counsellors-info-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.counsellors-info-item{
+    background: #FFFFFF;
+    border: 1px solid #F4F4F5;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    padding: 40px;
+    margin-bottom: 30px
+}
+.counsellors-info-item-heading{
+    font-family: 'InterBold', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    display:flex;
+    justify-content: space-between;
+}
+.counsellors-info-item-text{
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 16px;
+    color: #656D78;
+}
+.counsellors-info-item-text p{
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 16px
+}
+.counsellors-info-item-100{
+    width:100%
+}
+.counsellors-info-item-70{
+    width:calc(70% - 15px);
+}
+.counsellors-info-item-50{
+    width:calc(50% - 15px);
+}
+.counsellors-info-item-33{
+    width:calc(33% - 15px)
+}
+.counsellors-info-item-30{
+    width:calc(30% - 15px);
+}
+
+@media screen and (max-width:1200px) {
+    .page-template-info-for-counsellors .counsellors-info-wrapper{
+        padding: 0 10px;
+    }
+}
+/* END Info For Counsellors pages */
