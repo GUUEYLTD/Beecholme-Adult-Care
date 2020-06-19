@@ -4636,11 +4636,37 @@ a.policy-link-sidebar:hover {
     margin-top: 16px;
     color: #656D78;
 }
+.counsellors-info-item-text a, .counsellors-info-item-text a:hover{
+    text-decoration: none;
+    color: #5AB9AC;
+    font-weight:bold
+}
 .counsellors-info-item-text p{
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 16px
 }
+/*profile page*/
+.counsellors-info-item-profile{
+    display:flex
+}
+.profile-pictures-left{
+    width:60%;
+}
+.profile-pictures-right{
+     width:40%;
+ }
+
+.counsellors-info-item-heading-text{
+    margin-right: 5%;
+    width: 55%;
+}
+.counsellors-info-item-video{
+    width: 420px;
+    height: 236px;
+    /*background: url("../images/profile-video.png");*/
+}
+/*end profile page*/
 .counsellors-info-item-100{
     width:100%
 }
