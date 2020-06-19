@@ -40,7 +40,7 @@ get_header();
         <div class="counsellors-info-item counsellors-info-item-50">
             <div class="counsellors-info-item-heading">
                 <div class="counsellors-info-item-heading-text"><?php the_field('third_block_title', $cur_page); ?></div>
-                <a href="#" class="counsellors-info-item-heading-link">
+                <a href="<?php the_field('third_block_link', $cur_page); ?>" class="counsellors-info-item-heading-link">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-next.svg" alt="arrow-next">
                 </a>
             </div>
@@ -53,7 +53,7 @@ get_header();
         <div class="counsellors-info-item counsellors-info-item-50">
             <div class="counsellors-info-item-heading">
                 <div class="counsellors-info-item-heading-text"><?php the_field('fourth_block_title', $cur_page); ?></div>
-                <a href="#" class="counsellors-info-item-heading-link">
+                <a href="<?php the_field('fourth_block_link', $cur_page); ?>" class="counsellors-info-item-heading-link">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-next.svg" alt="arrow-next">
                 </a>
             </div>
@@ -66,7 +66,7 @@ get_header();
         <div class="counsellors-info-item counsellors-info-item-33">
             <div class="counsellors-info-item-heading">
                 <div class="counsellors-info-item-heading-text"><?php the_field('fifth_block_title', $cur_page); ?></div>
-                <a href="#" class="counsellors-info-item-heading-link">
+                <a href="<?php the_field('fifth_block_link', $cur_page); ?>" class="counsellors-info-item-heading-link">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-next.svg" alt="arrow-next">
                 </a>
             </div>
@@ -79,7 +79,7 @@ get_header();
         <div class="counsellors-info-item counsellors-info-item-33">
             <div class="counsellors-info-item-heading">
                 <div class="counsellors-info-item-heading-text"><?php the_field('sixth_block_title', $cur_page); ?></div>
-                <a href="#" class="counsellors-info-item-heading-link">
+                <a href="<?php the_field('sixth_block_link', $cur_page); ?>" class="counsellors-info-item-heading-link">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-next.svg" alt="arrow-next">
                 </a>
             </div>
@@ -92,7 +92,7 @@ get_header();
         <div class="counsellors-info-item counsellors-info-item-33">
             <div class="counsellors-info-item-heading">
                 <div class="counsellors-info-item-heading-text"><?php the_field('seventh_block_title', $cur_page); ?></div>
-                <a href="#" class="counsellors-info-item-heading-link">
+                <a href="<?php the_field('seventh_block_link', $cur_page); ?>" class="counsellors-info-item-heading-link">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/counsellor-arrow-next.svg" alt="arrow-next">
                 </a>
             </div>

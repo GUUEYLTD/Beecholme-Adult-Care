@@ -67,9 +67,9 @@ get_header();
             <?php endif; ?>
             <?php if(get_field('qualifications_third_block_title', $cur_page) || get_field('qualifications_third_block_text', $cur_page)) : ?>
             <div class="counsellors-info-item counsellors-info-item-100">
-                <div class="counsellors-info-item-heading"> <?php the_field('qualifications_third_block_text', $cur_page); ?></div>
+                <div class="counsellors-info-item-heading"> <?php the_field('qualifications_third_block_title', $cur_page); ?></div>
                 <div class="counsellors-info-item-text">
-                    <?php the_field('qualifications_third_block_title', $cur_page); ?>
+                    <?php the_field('qualifications_third_block_text', $cur_page); ?>
                 </div>
             </div>
             <?php endif; ?>
