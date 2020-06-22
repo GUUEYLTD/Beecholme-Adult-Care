@@ -123,35 +123,35 @@ get_header();
                         <?php endif; ?>
                     </div>
                     <div class="profile-pictures-slide profile-pictures-slide-3">
-                        <?php if(get_field('profile_picture_first_title', $cur_page)) : ?>
+                        <?php if(get_field('profile_picture_seventh_title', $cur_page)) : ?>
                             <div class="profile-picture-item">
                                 <div class="profile-picture-item-number">7</div>
                                 <div class="profile-picture-item-content">
-                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_first_title', $cur_page); ?></div>
+                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_seventh_title', $cur_page); ?></div>
                                     <div class="profile-picture-item-text">
-                                        <?php the_field('profile_picture_first_text', $cur_page); ?>
+                                        <?php the_field('profile_picture_seventh_text', $cur_page); ?>
                                     </div>
                                 </div>
                             </div>
                         <?php endif; ?>
-                        <?php if(get_field('profile_picture_second_title', $cur_page)) : ?>
+                        <?php if(get_field('profile_picture_eighth_title', $cur_page)) : ?>
                             <div class="profile-picture-item">
                                 <div class="profile-picture-item-number">8</div>
                                 <div class="profile-picture-item-content">
-                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_second_title', $cur_page); ?></div>
+                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_eighth_title', $cur_page); ?></div>
                                     <div class="profile-picture-item-text">
-                                        <?php the_field('profile_picture_second_text', $cur_page); ?>
+                                        <?php the_field('profile_picture_eighth_text', $cur_page); ?>
                                     </div>
                                 </div>
                             </div>
                         <?php endif; ?>
-                        <?php if(get_field('profile_picture_third_title', $cur_page)) : ?>
+                        <?php if(get_field('profile_picture_ninth_title', $cur_page)) : ?>
                             <div class="profile-picture-item">
                                 <div class="profile-picture-item-number">9</div>
                                 <div class="profile-picture-item-content">
-                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_third_title', $cur_page); ?></div>
+                                    <div class="profile-picture-item-heading"><?php the_field('profile_picture_ninth_title', $cur_page); ?></div>
                                     <div class="profile-picture-item-text">
-                                        <?php the_field('profile_picture_third_text', $cur_page); ?>
+                                        <?php the_field('profile_picture_ninth_text', $cur_page); ?>
                                     </div>
                                 </div>
                             </div>
