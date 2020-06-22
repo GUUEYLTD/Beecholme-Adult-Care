@@ -208,6 +208,8 @@ get_header();
 
         function goto(direction){
             var current = parseInt(slide_strip.attr('data-current'), 10);
+            if( current == 1 && direction == 'next'){current++}
+            if( current == 3 && direction == 'prev'){current--}
             var visibleSlide = '.profile-pictures-slide-'+current;
             console.log(visibleSlide);
 
