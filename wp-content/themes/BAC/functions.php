@@ -369,3 +369,18 @@ function wpbShowCurrentUserAttachments($query)
 
     return $query;
 }
+
+function hide_media_by_other($query) {
+    global $pagenow;
+
+    if( 'upload.php' != $pagenow || !$query->is_admin ){
+        return $query;
+    }
+
+    if( !current_user_can( 'manage_options' ) ) {
+        global $user_ID;
+        $query->set('author', $user_ID );
+    }
+    return $query;
+}
+add_filter('pre_get_posts', 'hide_media_by_other');
