@@ -975,12 +975,37 @@
 .profile .details .single-detail:nth-child(5) .caption {
 	margin-bottom: 8px;
 }
+.profile-pictures-left, .profile-pictures-right, .counsellors-info-item-heading-text{
+	width:100%
+}
+.profile-pictures-wrapper, .counsellors-info-item-profile{
+	flex-direction: column;
+}
+.profile-picture-item-heading{
+	font-size: 19px;
+}
+.profile-picture-item-text
+	font-size:16px
 
+}
+.counsellors-info-item-video{
+	width:100%
+}
+.profile-picture-item-number{
+	margin-right:20px
+}
+.slide-buttons {
+	margin-top: 30px;
+	margin-bottom:20px
+}
 @media screen and (max-width: 540px) {
 	.booking-page .booking-form,
 	.booking-page .about-info {
 		max-width: 500px;
 		width: 100%;
+	}
+	.counsellors-info-item-video{
+		width:100%
 	}
 }
 
