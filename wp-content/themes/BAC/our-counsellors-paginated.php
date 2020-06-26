@@ -23,7 +23,7 @@ get_header();
             jQuery(function($){
 
                 var type = $( "input[type=radio][name=type]:checked" ).val() ;
-                var specialization = $( ".question-filter.active .dropdown.question-select .current"  ).text() ;
+                var specialization = $( ".question-filter.active select.question-select"  ).val();
                 var languages = $( ".languages-select" ).val() ;
                 var sortBy = $( ".sort-bar .sort .sort-filter .question-select .current" ).html();
                 var sortOrder = $( ".sort-bar .sort .order-filter" ).hasClass("ascending") ? 'ASC' :  'DESC';
