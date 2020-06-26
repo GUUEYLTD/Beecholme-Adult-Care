@@ -13,6 +13,8 @@
         </div>
     </div>
     <div class="results-amount">
+        <span class="results-now">0</span>
+        <span class="results-0">of</span>
         <span class="results-number"><?php echo apply_filters('bac_total_results', 0) ?></span> results
     </div>
 </div>

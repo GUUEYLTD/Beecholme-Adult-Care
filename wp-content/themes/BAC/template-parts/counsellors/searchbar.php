@@ -112,7 +112,7 @@
         </div>
         <div class="language-filter flex-column align-left">
             <div class="caption">Select language</div>
-            <select class="multiple-select" name="languages[]" multiple style="width:246px; display: none">
+            <select class="multiple-select languages-select" name="languages[]" multiple style="width:246px; display: none">
                 <?php foreach ($languages as $language) { ?>
                     <option value="<?= $language ?>" <?php echo (isset($_GET['languages']) && in_array($language,
                             $_GET['languages'])) ? 'selected' : '' ?>><?= $language ?></option>

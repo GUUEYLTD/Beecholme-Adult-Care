@@ -384,3 +384,115 @@ function hide_media_by_other($query) {
     return $query;
 }
 add_filter('pre_get_posts', 'hide_media_by_other');
+
+
+
+add_action( 'wp_ajax_filter_counsellors_paginated', 'filter_counsellors_paginated' );
+add_action( 'wp_ajax_nopriv_filter_counsellors_paginated', 'filter_counsellors_paginated' );
+
+
+add_action( 'wp_ajax_search_counsellors_total', 'search_counsellors_total' );
+add_action( 'wp_ajax_nopriv_search_counsellors_total', 'search_counsellors_total' );
+
+function search_counsellors_total(){
+    $languages = $_GET['language'];
+    $limit = (int)$_GET['limit'];
+    $type = $_GET['type'];
+    $specialization = $_GET['specialization'];
+
+    $userMetaJoins = 'LEFT JOIN wp_usermeta as wpum0 ON wpum0.user_id = au.externalId ';
+    $filters = 'WHERE au.status=\'visible\' AND au.type=\'provider\'  AND wpum0.meta_key=\'enable_search\' AND wpum0.meta_value=1 ';
+
+    $type = str_replace('life-', '', sanitize_title($type));
+    $metaCount = 0;
+    if($type) {
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key='type' AND wpum{$metaCount}.meta_value LIKE '%{$type}%'";
+    }
+
+    if($specialization !== 'All') {
+        $type = $type !== '' ? $type : (in_array($specialization, getServices('Life coach')) ? 'coach' : 'therapist');
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key='specializations_{$type}' AND wpum{$metaCount}.meta_value LIKE '%{$specialization}%'";
+    }
+
+    if ($languages) {
+        $languages = '\'' . implode('\',\'', $languages) . '\'';
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key LIKE '%_language%' AND wpum{$metaCount}.meta_value IN ($languages)";
+    }
+
+    $count_query = "SELECT COUNT(*) as count FROM  wp_amelia_users as au
+            LEFT JOIN wp_users as wpu ON wpu.ID = au.externalId
+            {$userMetaJoins}
+            LEFT JOIN wp_amelia_providers_to_services as wpapts ON wpapts.id = au.id
+            LEFT JOIN wp_amelia_services as wpas ON wpas.id = wpapts.serviceId
+            {$filters}";
+
+    global $wpdb;
+
+    $count_result = $wpdb->get_results($count_query);
+    $count_res = $count_result[0]->count;
+
+    wp_die($count_res);
+}
+
+
+function filter_counsellors_paginated(){
+    $languages = $_GET['language'];
+    $limit = (int)$_GET['limit'];
+    $type = $_GET['type'];
+    $specialization = $_GET['specialization'];
+    $sortBy = $_GET['sortBy'];
+    $sortOrder = $_GET['sortOrder'];
+
+    $userMetaJoins = 'LEFT JOIN wp_usermeta as wpum0 ON wpum0.user_id = au.externalId ';
+    $filters = 'WHERE au.status=\'visible\' AND au.type=\'provider\'  AND wpum0.meta_key=\'enable_search\' AND wpum0.meta_value=1 ';
+    $orders = '';
+
+    $type = str_replace('life-', '', sanitize_title($type));
+    $metaCount = 0;
+    if($type) {
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key='type' AND wpum{$metaCount}.meta_value LIKE '%{$type}%'";
+    }
+
+    if($specialization !== 'All') {
+        $type = $type !== '' ? $type : (in_array($specialization, getServices('Life coach')) ? 'coach' : 'therapist');
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key='specializations_{$type}' AND wpum{$metaCount}.meta_value LIKE '%{$specialization}%'";
+    }
+
+    if ($languages) {
+        $languages = '\'' . implode('\',\'', $languages) . '\'';
+        $metaCount++;
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
+        $filters .= "AND wpum{$metaCount}.meta_key LIKE '%_language%' AND wpum{$metaCount}.meta_value IN ($languages)";
+    }
+
+
+    $query = "SELECT *, au.id as 'ameliaId', au.pictureThumbPath FROM  wp_amelia_users as au
+            LEFT JOIN wp_users as wpu ON wpu.ID = au.externalId
+            {$userMetaJoins}
+            LEFT JOIN wp_amelia_providers_to_services as wpapts ON wpapts.id = au.id
+            LEFT JOIN wp_amelia_services as wpas ON wpas.id = wpapts.serviceId
+            {$filters}
+            LIMIT {$limit}";
+
+    global $wpdb;
+    //$wpdb->show_errors( true );
+
+    $results = $wpdb->get_results($query);
+
+    foreach ($results as $res){
+        set_query_var('listingUser', $res);
+        get_template_part('template-parts/counsellors/single', 'listingp');
+    }
+
+    wp_die();
+}
