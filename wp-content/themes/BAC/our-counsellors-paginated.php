@@ -47,9 +47,9 @@ get_header();
                             if( data ) {
                                 $('.counsellors-list').html(data);
                                 $('.results-amount .results-now').html(jQuery('.counsellors-list > .single-item').length);
-                                if(jQuery('.counsellors-list > .single-item').length < 12){
+                                if( jQuery('.counsellors-list > .single-item').length < 12 ){
                                     jQuery('#more_button').css('display', 'none');
-                                } else {
+                                }else {
                                     jQuery('#more_button').css('display', 'block');
                                 }
                             } else {
@@ -74,6 +74,13 @@ get_header();
                         success: function( data ) {
                             if( data ) {
                                 $('.results-amount .results-number').html(data);
+                              setTimeout( function(){
+                                  if ( jQuery('.counsellors-list > .single-item').length >= data ) {
+                                      jQuery('#more_button').css('display', 'none');
+                                  } else {
+                                      jQuery('#more_button').css('display', 'block');
+                                  }
+                              } , 1000);
                             }
                         }
                     });
@@ -82,19 +89,21 @@ get_header();
 
                 $('#more_button').click(function(){
                     var type = $( "input[type=radio][name=type]:checked" ).val() ;
-                    var specialization = $( ".question-filter.active .dropdown.question-select .current"  ).text() ;
+                    var specialization = $( ".question-filter.active select.question-select"  ).val();
                     var languages = $( ".languages-select" ).val() ;
                     var sortBy = $( ".sort-bar .sort .sort-filter .question-select .current" ).html();
                     var sortOrder = $( ".sort-bar .sort .order-filter" ).hasClass("ascending") ? 'ASC' :  'DESC';
                     limit = limit + 12;
                     ajaxQuery(type, specialization, languages, sortBy, sortOrder, limit);
+
                 });
 
                 $('.search-button button').on('click', function(e){
                     e.preventDefault();
+                    limit = 12;
                     jQuery('.counsellors-list > .single-item').remove();
                     var type = $( "input[type=radio][name=type]:checked" ).val() ;
-                    var specialization = $( ".question-filter.active .dropdown.question-select .current"  ).text() ;
+                    var specialization = $( ".question-filter.active select.question-select"  ).val();
                     var languages = $( ".languages-select" ).val() ;
                     var sortBy = $( ".sort-bar .sort .sort-filter .question-select .current" ).html();
                     var sortOrder = $( ".sort-bar .sort .order-filter" ).hasClass("ascending") ? 'ASC' :  'DESC';
