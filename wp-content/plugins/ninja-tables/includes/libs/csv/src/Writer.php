@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -143,7 +143,7 @@ class Writer extends AbstractCsv
      */
     protected function getFputcsvParameters(array $fields)
     {
-        $parameters = array($fields, $this->delimiter, $this->enclosure);
+        $parameters = [$fields, $this->delimiter, $this->enclosure];
         if (4 == $this->fputcsv_param_count) {
             $parameters[] = $this->escape;
         }

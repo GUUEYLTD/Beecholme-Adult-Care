@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -112,9 +112,9 @@ trait Controls
         $filter_row = function ($row) {
             return is_array($row) && count($row) > 1;
         };
-        $delimiters = array_unique(array_filter($delimiters, array($this, 'isValidCsvControls')));
+        $delimiters = array_unique(array_filter($delimiters, [$this, 'isValidCsvControls']));
         $csv = $this->getIterator();
-        $res = array();
+        $res = [];
         foreach ($delimiters as $delim) {
             $csv->setCsvControl($delim, $this->enclosure, $this->escape);
             $iterator = new CallbackFilterIterator(new LimitIterator($csv, 0, $nb_rows), $filter_row);
@@ -138,7 +138,7 @@ trait Controls
      */
     protected function validateInteger($int, $minValue, $errorMessage)
     {
-        if (false === ($int = filter_var($int, FILTER_VALIDATE_INT, array('options' => array('min_range' => $minValue))))) {
+        if (false === ($int = filter_var($int, FILTER_VALIDATE_INT, ['options' => ['min_range' => $minValue]]))) {
             throw new InvalidArgumentException($errorMessage);
         }
         return $int;

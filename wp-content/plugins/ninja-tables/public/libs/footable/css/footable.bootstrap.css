@@ -34,7 +34,7 @@ table.footable-details > tbody > tr > th:nth-child(1) {
 	width: 120px;
 }
 table.footable-details > tbody > tr > td:nth-child(2) {
-	word-break: break-all;
+	word-break: keep-all;
 }
 
 table.footable-details > thead > tr:first-child > th,

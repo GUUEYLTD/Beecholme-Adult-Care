@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -28,14 +28,14 @@ trait RowFilter
      *
      * @var callable[]
      */
-    protected $validators = array();
+    protected $validators = [];
 
     /**
      * Callables to format the row before insertion
      *
      * @var callable[]
      */
-    protected $formatters = array();
+    protected $formatters = [];
 
     /**
      * add a formatter to the collection
@@ -85,7 +85,7 @@ trait RowFilter
      */
     public function clearFormatters()
     {
-        $this->formatters = array();
+        $this->formatters = [];
 
         return $this;
     }
@@ -148,7 +148,7 @@ trait RowFilter
      */
     public function clearValidators()
     {
-        $this->validators = array();
+        $this->validators = [];
 
         return $this;
     }

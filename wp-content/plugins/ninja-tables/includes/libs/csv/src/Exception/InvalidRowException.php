@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -42,7 +42,7 @@ class InvalidRowException extends InvalidArgumentException
      * @param array  $data    invalid  data
      * @param string $message exception message
      */
-    public function __construct($name, array $data = array(), $message = '')
+    public function __construct($name, array $data = [], $message = '')
     {
         parent::__construct($message);
         $this->name = $name;

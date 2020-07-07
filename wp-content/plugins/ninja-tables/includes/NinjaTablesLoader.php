@@ -1,9 +1,9 @@
-<?php
+<?php namespace NinjaTables\Classes;
 
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://authlab.io
+ * @link       https://wpmanageninja.com
  * @since      1.0.0
  *
  * @package    Wp_table_data_press
