@@ -7,11 +7,15 @@ use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\User\CustomerRepository;
+use Exception;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetCustomersCommandHandler
@@ -24,11 +28,11 @@ class GetCustomersCommandHandler extends CommandHandler
      * @param GetCustomersCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws InvalidArgumentException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws ContainerException
+     * @throws Exception
      * @throws AccessDeniedException
      */
     public function handle(GetCustomersCommand $command)

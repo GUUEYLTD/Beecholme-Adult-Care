@@ -24,6 +24,7 @@ class CommandResult
     private $attachment = false;
     private $file = null;
     private $url;
+    private $dataInResponse = true;
 
     /**
      * @return string
@@ -119,5 +120,21 @@ class CommandResult
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasDataInResponse()
+    {
+        return $this->dataInResponse;
+    }
+
+    /**
+     * @param mixed $dataInResponse
+     */
+    public function setDataInResponse($dataInResponse)
+    {
+        $this->dataInResponse = $dataInResponse;
     }
 }

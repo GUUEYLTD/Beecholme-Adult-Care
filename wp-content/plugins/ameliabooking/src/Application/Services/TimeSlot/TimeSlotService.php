@@ -159,6 +159,7 @@ class TimeSlotService
             $settingsDomainService->getSetting('general', 'timeSlotLength') ?: $requiredTime,
             $startDateTime,
             $settingsDomainService->getSetting('general', 'serviceDurationAsSlot'),
+            $settingsDomainService->getSetting('general', 'bufferTimeInSlot'),
             true
         );
     }
@@ -240,7 +241,6 @@ class TimeSlotService
      *
      * @return \DateTime
      * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public function getMinimumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking, $minimumTime)
     {
@@ -250,9 +250,15 @@ class TimeSlotService
 
         $requiredBookingDateTime = DateTimeService::getCustomDateTimeObject($requiredBookingDateTimeString);
 
-        return ($minimumBookingDateTime > $requiredBookingDateTime ||
+        $minimumDateTime = ($minimumBookingDateTime > $requiredBookingDateTime ||
             $minimumBookingDateTime->format('Y-m-d') === $requiredBookingDateTime->format('Y-m-d')
         ) ? $minimumBookingDateTime : $requiredBookingDateTime->setTime(0, 0, 0);
+
+        if (!$isFrontEndBooking) {
+            $minimumDateTime->modify('-365 days');
+        }
+
+        return $minimumDateTime;
     }
 
     /**
@@ -262,7 +268,6 @@ class TimeSlotService
      *
      * @return \DateTime
      * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public function getMaximumDateTimeForBooking($requiredBookingDateTimeString, $isFrontEndBooking, $maximumTime)
     {

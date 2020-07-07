@@ -67,6 +67,7 @@ class EventPlaceholderService extends PlaceholderService
      * @param array  $event
      * @param int    $bookingKey
      * @param string $token
+     * @param string $type
      *
      * @return array
      *
@@ -76,11 +77,11 @@ class EventPlaceholderService extends PlaceholderService
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    public function getEntityPlaceholdersData($event, $bookingKey = null, $token = null)
+    public function getEntityPlaceholdersData($event, $bookingKey = null, $token = null, $type = null)
     {
         $data = [];
 
-        $data = array_merge($data, $this->getEventData($event, $bookingKey, $token));
+        $data = array_merge($data, $this->getEventData($event, $bookingKey, $token, $type));
 
         return $data;
     }
@@ -89,6 +90,7 @@ class EventPlaceholderService extends PlaceholderService
      * @param array  $event
      * @param int    $bookingKey
      * @param string $token
+     * @param string $type
      *
      * @return array
      *
@@ -98,7 +100,7 @@ class EventPlaceholderService extends PlaceholderService
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    private function getEventData($event, $bookingKey = null, $token = null)
+    private function getEventData($event, $bookingKey = null, $token = null, $type = null)
     {
         /** @var HelperService $helperService */
         $helperService = $this->container->get('application.helper.service');
@@ -111,7 +113,10 @@ class EventPlaceholderService extends PlaceholderService
 
         $dateTimes = [];
 
+        $locationName = '';
         $locationAddress = '';
+        $locationDescription = '';
+        $locationPhone = '';
 
         if ($event['locationId']) {
             /** @var LocationRepository $locationRepository */
@@ -119,9 +124,12 @@ class EventPlaceholderService extends PlaceholderService
 
             $location = $locationRepository->getById($event['locationId']);
 
-            $locationAddress = $location->getName()->getValue();
+            $locationName = $location->getName()->getValue();
+            $locationDescription = $location->getDescription()->getValue();
+            $locationAddress = $location->getAddress()->getValue();
+            $locationPhone = $location->getPhone()->getValue();
         } elseif ($event['customLocation']) {
-            $locationAddress = $event['customLocation'];
+            $locationName = $event['customLocation'];
         }
 
         $staff = [];
@@ -220,10 +228,10 @@ class EventPlaceholderService extends PlaceholderService
                 $startUrl = $event['periods'][$key]['zoomMeeting']['startUrl'];
                 $joinUrl = $event['periods'][$key]['zoomMeeting']['joinUrl'];
 
-                $eventZoomStartDateList[] = '<li><a href="' . $startUrl . '">' . $dateString . '</a></li>';
-                $eventZoomStartDateTimeList[] = '<li><a href="' . $startUrl . '">' . $dateTimeString . '</a></li>';
-                $eventZoomJoinDateList[] = '<li><a href="' . $joinUrl . '">' . $dateString . '</a></li>';
-                $eventZoomJoinDateTimeList[] = '<li><a href="' . $joinUrl . '">' . $dateTimeString . '</a></li>';
+                $eventZoomStartDateList[] =  $type === 'email' ? '<li><a href="' . $startUrl . '">' . $dateString . '</a></li>' : $dateString . ': ' . $startUrl;
+                $eventZoomStartDateTimeList[] = $type === 'email' ? '<li><a href="' . $startUrl . '">' . $dateTimeString . '</a></li>' : $dateTimeString . ': ' . $startUrl;
+                $eventZoomJoinDateList[] = $type === 'email' ? '<li><a href="' . $joinUrl . '">' . $dateString . '</a></li>' : $dateString . ': ' . $joinUrl;
+                $eventZoomJoinDateTimeList[] = $type === 'email' ? '<li><a href="' . $joinUrl . '">' . $dateTimeString . '</a></li>' : $dateTimeString . ': ' . $joinUrl;
             }
         }
 
@@ -242,7 +250,11 @@ class EventPlaceholderService extends PlaceholderService
             'event_price'              => $helperService->getFormattedPrice($event['price']),
             'event_description'        => $event['description'],
             'reservation_description'  => $event['description'],
-            'event_location'           => $locationAddress,
+            'event_location'           => $locationName,
+            'location_name'            => $locationName,
+            'location_address'         => $locationAddress,
+            'location_description'     => $locationDescription,
+            'location_phone'           => $locationPhone,
             'event_period_date'        => '<ul>' . implode('', $eventDateList) . '</ul>',
             'event_period_date_time'   => '<ul>' . implode('', $eventDateTimeList) . '</ul>',
             'zoom_host_url_date'      => count($eventZoomStartDateList) === 0 ?

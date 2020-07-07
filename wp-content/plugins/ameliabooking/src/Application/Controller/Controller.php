@@ -141,7 +141,12 @@ abstract class Controller
 
             /** @var Response $response */
             $response = $response->withHeader('Content-Type', 'application/json;charset=utf-8');
-            $response = $response->write(json_encode($responseBody));
+            $response = $response->write(
+                json_encode(
+                    $commandResult->hasDataInResponse() ?
+                        $responseBody : array_merge($responseBody, ['data' => []])
+                )
+            );
         }
 
         if (($file = $commandResult->getFile()) !== null) {

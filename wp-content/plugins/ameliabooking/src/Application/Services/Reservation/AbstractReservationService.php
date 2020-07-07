@@ -15,6 +15,7 @@ use AmeliaBooking\Domain\Common\Exceptions\CustomerBookedException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Extra;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
+use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBookingExtra;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
@@ -218,6 +219,17 @@ abstract class AbstractReservationService implements ReservationServiceInterface
                         $user->getId()->getValue() : $appointmentData['bookings'][0]['customer']['id'],
                     $validator->hasCouponValidation()
                 );
+
+                if (isset($appointmentData['recurring']) && $validator->hasCouponValidation()) {
+                    $allowedCouponLimit = $couponAS->getAllowedCouponLimit($coupon, $user);
+                    $requiredCouponCount = 1;
+
+                    foreach ($appointmentData['recurring'] as $key => $recurringData) {
+                        $requiredCouponCount++;
+
+                        $appointmentData['recurring'][$key]['useCoupon'] = $requiredCouponCount <= $allowedCouponLimit;
+                    }
+                }
             } catch (CouponUnknownException $e) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setMessage($e->getMessage());
@@ -296,18 +308,55 @@ abstract class AbstractReservationService implements ReservationServiceInterface
         $customFieldService->saveUploadedFiles(
             $reservation->getBooking()->getId()->getValue(),
             $reservation->getUploadedCustomFieldFilesInfo(),
-            ''
+            '',
+            $reservation->getRecurring() && $reservation->getRecurring()->length()
         );
+
+        $recurringReservations = [];
+
+        if ($bookingType->getValue() === Entities::APPOINTMENT) {
+            /** @var Reservation $recurringReservation */
+            foreach($reservation->getRecurring()->getItems() as $key => $recurringReservation) {
+                $customFieldService->saveUploadedFiles(
+                    $recurringReservation->getBooking()->getId()->getValue(),
+                    $reservation->getUploadedCustomFieldFilesInfo(),
+                    '',
+                    $key !== $reservation->getRecurring()->length() - 1
+                );
+
+                $recurringReservations[] = $this->getResultData($recurringReservation, $bookingType);
+            }
+        }
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully added booking');
-        $result->setData([
+        $result->setData(
+            array_merge(
+                $this->getResultData($reservation, $bookingType),
+                [
+                    'recurring' => $recurringReservations
+                ]
+            )
+        );
+    }
+
+    /**
+     * @param Reservation   $reservation
+     * @param BookingType   $bookingType
+     *
+     * @return array
+     */
+    public function getResultData($reservation, $bookingType)
+    {
+        return [
             'type'                     => $bookingType->getValue(),
             $bookingType->getValue()   => array_merge(
                 $reservation->getReservation()->toArray(),
-                ['bookings' => [
-                    $reservation->getBooking()->toArray()
-                ]]
+                [
+                    'bookings' => [
+                        $reservation->getBooking()->toArray()
+                    ]
+                ]
             ),
             Entities::BOOKING          => $reservation->getBooking()->toArray(),
             'utcTime'                  => $this->getBookingPeriods(
@@ -315,8 +364,8 @@ abstract class AbstractReservationService implements ReservationServiceInterface
                 $reservation->getBooking(),
                 $reservation->getBookable()
             ),
-            'appointmentStatusChanged' => $reservation->isStatusChanged()->getValue()
-        ]);
+            'appointmentStatusChanged' => $reservation->isStatusChanged()->getValue(),
+        ];
     }
 
     /**
@@ -381,14 +430,16 @@ abstract class AbstractReservationService implements ReservationServiceInterface
                 $paymentStatus = $paymentData['status'];
                 break;
             case (PaymentType::PAY_PAL):
-                $paymentStatus = PaymentStatus::PAID;
-                break;
             case (PaymentType::STRIPE):
                 $paymentStatus = PaymentStatus::PAID;
                 break;
         }
 
         $paymentAmount = $paymentData['gateway'] === PaymentType::ON_SITE ? 0 : $amount;
+
+        if (!$amount && $paymentData['gateway'] !== PaymentType::ON_SITE) {
+            $paymentData['gateway'] = PaymentType::ON_SITE;
+        }
 
         $payment = PaymentFactory::create([
             'customerBookingId' => $bookingId,
@@ -414,7 +465,6 @@ abstract class AbstractReservationService implements ReservationServiceInterface
      * @return boolean
      *
      * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
      * @throws BookingCancellationException
      */
     function inspectMinimumCancellationTime($bookingStart, $minimumCancelTime)
@@ -429,5 +479,74 @@ abstract class AbstractReservationService implements ReservationServiceInterface
         }
 
         return true;
+    }
+
+    /**
+     * @param int    $bookingId
+     * @param string $type
+     * @param array  $recurring
+     * @param bool   $appointmentStatusChanged
+     *
+     * @return CommandResult
+     *
+     * @throws InvalidArgumentException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws QueryExecutionException
+     */
+    public function getSuccessBookingResponse($bookingId, $type, $recurring, $appointmentStatusChanged)
+    {
+        $result = new CommandResult();
+
+        /** @var ReservationServiceInterface $reservationService */
+        $reservationService = $this->container->get('application.reservation.service')->get($type);
+
+        /** @var Appointment|Event $reservation */
+        $reservation = $reservationService->getReservationByBookingId($bookingId);
+
+        /** @var CustomerBooking $booking */
+        $booking = $reservation->getBookings()->getItem(
+            $bookingId
+        );
+
+        $booking->setChangedStatus(new BooleanValueObject(true));
+
+        $recurringReservations = [];
+
+        foreach ($recurring as $recurringData) {
+            /** @var Appointment|Event $recurringReservation */
+            $recurringReservation = $reservationService->getReservationByBookingId((int)$recurringData['id']);
+
+            /** @var CustomerBooking $recurringBooking */
+            $recurringBooking = $recurringReservation->getBookings()->getItem(
+                (int)$recurringData['id']
+            );
+
+            $recurringBooking->setChangedStatus(new BooleanValueObject(true));
+
+            $recurringReservations[] = [
+                'type'                                       => $recurringReservation->getType()->getValue(),
+                $recurringReservation->getType()->getValue() => $recurringReservation->toArray(),
+                Entities::BOOKING                            => $recurringBooking->toArray(),
+                'appointmentStatusChanged'                   => $recurringData['appointmentStatusChanged'],
+            ];
+        }
+
+        $result->setResult(CommandResult::RESULT_SUCCESS);
+        $result->setMessage('Successfully get booking');
+        $result->setData(array_merge(
+            [
+                'type'                              => $reservation->getType()->getValue(),
+                $reservation->getType()->getValue() => $reservation->toArray(),
+                Entities::BOOKING                   => $booking->toArray(),
+                'appointmentStatusChanged'          => $appointmentStatusChanged,
+            ],
+            [
+                'recurring' => $recurringReservations
+            ]
+        ));
+
+        $result->setDataInResponse(false);
+
+        return $result;
     }
 }

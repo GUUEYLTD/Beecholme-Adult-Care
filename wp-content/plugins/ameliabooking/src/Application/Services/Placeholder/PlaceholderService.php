@@ -11,6 +11,7 @@ use AmeliaBooking\Application\Services\Helper\HelperService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\CouponInvalidException;
 use AmeliaBooking\Domain\Common\Exceptions\CouponUnknownException;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Coupon\Coupon;
 use AmeliaBooking\Domain\Entity\CustomField\CustomField;
@@ -29,6 +30,8 @@ use AmeliaBooking\Infrastructure\Repository\CustomField\CustomFieldRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
 use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
+use Exception;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class PlaceholderService
@@ -73,7 +76,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
     /**
      * @return array
      *
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function getPlaceholdersDummyData()
     {
@@ -83,45 +86,45 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         $companySettings = $settingsService->getCategorySettings('company');
 
         return array_merge([
-            'company_address'        => $companySettings['address'],
-            'company_name'           => $companySettings['name'],
-            'company_phone'          => $companySettings['phone'],
-            'company_website'        => $companySettings['website'],
-            'customer_email'         => 'customer@domain.com',
-            'customer_first_name'    => 'John',
-            'customer_last_name'     => 'Doe',
-            'customer_full_name'     => 'John Doe',
-            'customer_phone'         => '193-951-2600',
-            'customer_note'          => 'Customer Note',
+            'company_address'     => $companySettings['address'],
+            'company_name'        => $companySettings['name'],
+            'company_phone'       => $companySettings['phone'],
+            'company_website'     => $companySettings['website'],
+            'customer_email'      => 'customer@domain.com',
+            'customer_first_name' => 'John',
+            'customer_last_name'  => 'Doe',
+            'customer_full_name'  => 'John Doe',
+            'customer_phone'      => '193-951-2600',
+            'customer_note'       => 'Customer Note',
         ], $this->getEntityPlaceholdersDummyData());
     }
 
     /** @noinspection MoreThanThreeArgumentsInspection */
     /**
-     * @param array  $appointment
-     * @param int    $bookingKey
-     * @param string $token
-     * @param string $type
+     * @param array        $appointment
+     * @param int          $bookingKey
+     * @param string       $token
+     * @param string       $type
      * @param AbstractUser $customer
      *
      * @return array
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Slim\Exception\ContainerValueNotFoundException
      * @throws NotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws ContainerException
+     * @throws Exception
      */
     public function getPlaceholdersData($appointment, $bookingKey = null, $token = null, $type = null, $customer = null)
     {
-        $data = $this->getEntityPlaceholdersData($appointment, $bookingKey, $token);
+        $data = $this->getEntityPlaceholdersData($appointment, $bookingKey, $token, $type);
 
-        $data = array_merge($data, $this->getBookingData($appointment, $bookingKey, $token));
+        $data = array_merge($data, $this->getBookingData($appointment, $type, $bookingKey, $token));
         $data = array_merge($data, $this->getCompanyData());
         $data = array_merge($data, $this->getCustomersData($appointment, $type, $bookingKey, $customer));
         $data = array_merge($data, $this->getCustomFieldsData($appointment, $bookingKey));
-        $data = array_merge($data, $this->getCouponsData($appointment, $bookingKey));
+        $data = array_merge($data, $this->getCouponsData($appointment, $type, $bookingKey));
 
         return $data;
     }
@@ -129,7 +132,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
     /**
      * @return array
      *
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function getCompanyData()
     {
@@ -147,19 +150,22 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
     }
 
     /**
-     * @param        $appointment
+     * @param array  $appointment
+     * @param string $type
      * @param null   $bookingKey
      * @param null   $token
      *
      * @return array
      *
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws ContainerException
      */
-    private function getBookingData($appointment, $bookingKey = null, $token = null)
+    protected function getBookingData($appointment, $type, $bookingKey = null, $token = null)
     {
         /** @var HelperService $helperService */
         $helperService = $this->container->get('application.helper.service');
+
+        /** @var string $break */
+        $break = $type === 'email' ? '<br>' : PHP_EOL;
 
         $numberOfPersons = null;
 
@@ -216,11 +222,11 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
                     $couponsUsed[] =
                         BackendStrings::getCommonStrings()['customer'] . ': ' .
-                        $customerData['firstName'] . ' ' . $customerData['lastName'] . '<br>' .
+                        $customerData['firstName'] . ' ' . $customerData['lastName'] . $break .
                         BackendStrings::getFinanceStrings()['code'] . ': ' .
-                        $customerBooking['coupon']['code'] . '<br>' .
+                        $customerBooking['coupon']['code'] . $break .
                         ($discountValue ? BackendStrings::getPaymentStrings()['discount_amount'] . ': ' .
-                            $helperService->getFormattedPrice($discountValue) . '<br>' : '') .
+                            $helperService->getFormattedPrice($discountValue) . $break : '') .
                         ($deductionValue ? BackendStrings::getPaymentStrings()['deduction'] . ': ' .
                             $helperService->getFormattedPrice($deductionValue) : '');
                 }
@@ -237,7 +243,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                 }
             }
 
-            $numberOfPersons = implode('<br/>', $numberOfPersons);
+            $numberOfPersons = implode($break, $numberOfPersons);
         } else {
             $isAggregatedPrice = isset($appointment['bookings'][$bookingKey]['aggregatedPrice']) &&
                 $appointment['bookings'][$bookingKey]['aggregatedPrice'];
@@ -273,16 +279,16 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                 ($token ? '&token=' . $token : '') . "&type={$appointment['type']}" : '',
             "{$appointment['type']}_price"      => $helperService->getFormattedPrice($appointmentPrice),
             'number_of_persons'                 => $numberOfPersons,
-            'coupon_used'                       => $couponsUsed ? implode('<br>', $couponsUsed) : ''
+            'coupon_used'                       => $couponsUsed ? implode($break, $couponsUsed) : ''
         ];
     }
 
     /** @noinspection MoreThanThreeArgumentsInspection */
     /**
-     * @param array        $appointment
-     * @param string       $type
-     * @param null         $bookingKey
-     * @param Customer     $customerEntity
+     * @param array    $appointment
+     * @param string   $type
+     * @param null     $bookingKey
+     * @param Customer $customerEntity
      *
      * @return array
      *
@@ -291,7 +297,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      * @throws \Slim\Exception\ContainerValueNotFoundException
      * @throws NotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     private function getCustomersData($appointment, $type, $bookingKey = null, $customerEntity = null)
     {
@@ -304,19 +310,19 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             $customerInformationData = [];
 
             $hasApprovedOrPendingStatus = in_array(
-                BookingStatus::APPROVED,
-                array_column($appointment['bookings'], 'status'),
-                true
-            ) ||
-            in_array(
-                BookingStatus::PENDING,
-                array_column($appointment['bookings'], 'status'),
-                true
-            );
+                    BookingStatus::APPROVED,
+                    array_column($appointment['bookings'], 'status'),
+                    true
+                ) ||
+                in_array(
+                    BookingStatus::PENDING,
+                    array_column($appointment['bookings'], 'status'),
+                    true
+                );
 
             $bookedCustomerFullName = '';
-            $bookedCustomerEmail    = '';
-            $bookedCustomerPhone    = '';
+            $bookedCustomerEmail = '';
+            $bookedCustomerPhone = '';
 
             foreach ((array)$appointment['bookings'] as $customerBooking) {
                 /** @var AbstractUser $customer */
@@ -340,8 +346,8 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
                 if ($customerBooking['isChangedStatus']) {
                     $bookedCustomerFullName = $customer->getFullName();
-                    $bookedCustomerEmail    = $customer->getEmail() ? $customer->getEmail()->getValue() : '';
-                    $bookedCustomerPhone    = $customer->getPhone() ? $customer->getPhone()->getValue() : '';
+                    $bookedCustomerEmail = $customer->getEmail() ? $customer->getEmail()->getValue() : '';
+                    $bookedCustomerPhone = $customer->getPhone() ? $customer->getPhone()->getValue() : '';
                 }
             }
 
@@ -360,7 +366,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             $bookedCustomer .= $bookedCustomerEmail ? '<p>' . BackendStrings::getNotificationsStrings()['ph_customer_email'] . ': ' . $bookedCustomerEmail . '</p>' : '';
 
             return [
-                'booked_customer' => substr($bookedCustomer, 3, strlen($bookedCustomer) - 7),
+                'booked_customer'     => substr($bookedCustomer, 3, strlen($bookedCustomer) - 7),
                 'customer_email'      => implode(', ', array_map(function ($customer) {
                     /** @var Customer $customer */
                     return $customer->getEmail()->getValue();
@@ -375,7 +381,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                     return $info['firstName'] . ' ' . $info['lastName'];
                 }, $customerInformationData)),
                 'customer_phone'      => substr($phones, 0, -2),
-                'customer_note'      => implode(', ', array_map(function ($customer) {
+                'customer_note'       => implode(', ', array_map(function ($customer) {
                     /** @var Customer $customer */
                     return $customer->getNote() ? $customer->getNote()->getValue() : '';
                 }, $customers))
@@ -384,7 +390,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
         // If data is for customer
         /** @var Customer $customer */
-        $customer = $customerEntity ?? $userRepository->getById($appointment['bookings'][$bookingKey]['customerId']);
+        $customer = $customerEntity ? $customerEntity : $userRepository->getById($appointment['bookings'][$bookingKey]['customerId']);
 
         $info = json_decode($appointment['bookings'][$bookingKey]['info']);
 
@@ -398,13 +404,13 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         $helperService = $this->container->get('application.helper.service');
 
         return [
-            'customer_email'       => $customer->getEmail() ? $customer->getEmail()->getValue() : '',
-            'customer_first_name'  => $info ? $info->firstName : $customer->getFirstName()->getValue(),
-            'customer_last_name'   => $info ? $info->lastName : $customer->getLastName()->getValue(),
-            'customer_full_name'   => $info ? $info->firstName . ' ' . $info->lastName : $customer->getFullName(),
-            'customer_phone'       => $phone,
-            'customer_note'        => $customer->getNote() ? $customer->getNote()->getValue() : '',
-            'customer_panel_url'   => $helperService->getCustomerCabinetUrl(
+            'customer_email'      => $customer->getEmail() ? $customer->getEmail()->getValue() : '',
+            'customer_first_name' => $info ? $info->firstName : $customer->getFirstName()->getValue(),
+            'customer_last_name'  => $info ? $info->lastName : $customer->getLastName()->getValue(),
+            'customer_full_name'  => $info ? $info->firstName . ' ' . $info->lastName : $customer->getFullName(),
+            'customer_phone'      => $phone,
+            'customer_note'       => $customer->getNote() ? $customer->getNote()->getValue() : '',
+            'customer_panel_url'  => $helperService->getCustomerCabinetUrl(
                 $customer->getEmail()->getValue(),
                 $type,
                 !empty($appointment['bookingStart']) ? explode(' ', $appointment['bookingStart'])[0] : null,
@@ -419,7 +425,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      *
      * @return array
      * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      * @throws QueryExecutionException
      */
     private function getCustomFieldsData($appointment, $bookingKey = null)
@@ -488,20 +494,21 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
     }
 
     /**
-     * @param array $appointment
-     * @param null  $bookingKey
+     * @param array  $appointment
+     * @param string $type
+     * @param null   $bookingKey
      *
      * @return array
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      * @throws QueryExecutionException
+     * @throws InvalidArgumentException
      */
-    private function getCouponsData($appointment, $bookingKey = null)
+    private function getCouponsData($appointment, $type, $bookingKey = null)
     {
         $couponsData = [];
+
+        /** @var string $break */
+        $break = $type === 'email' ? '<br>' : PHP_EOL;
 
         if ($bookingKey !== null) {
             /** @var HelperService $helperService */
@@ -599,10 +606,10 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                     if ($sendCoupon && $couponAS->inspectCoupon($coupon, $entityId, $type, $customerId, true)) {
                         $couponsData["coupon_{$coupon->getId()->getValue()}"] =
                             FrontendStrings::getCommonStrings()['coupon_send_text'] .
-                            $coupon->getCode()->getValue() . '<br>' .
+                            $coupon->getCode()->getValue() . $break .
                             ($coupon->getDeduction() && $coupon->getDeduction()->getValue() ?
                                 BackendStrings::getFinanceStrings()['deduction'] . ' ' .
-                                $helperService->getFormattedPrice($coupon->getDeduction()->getValue()) . '<br>'
+                                $helperService->getFormattedPrice($coupon->getDeduction()->getValue()) . $break
                                 : ''
                             ) .
                             ($coupon->getDiscount() && $coupon->getDiscount()->getValue() ?

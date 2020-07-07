@@ -25,7 +25,17 @@ class GetEntitiesController extends Controller
     protected function instantiateCommand(Request $request, $args)
     {
         $command = new GetEntitiesCommand($args);
-        $command->setField('params', (array)$request->getQueryParams());
+
+        $params = (array)$request->getQueryParams();
+
+        if (isset($params['source'])) {
+            $command->setPage($params['source']);
+            unset($params['source']);
+        }
+
+        $command->setToken($request);
+
+        $command->setField('params', $params);
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
 

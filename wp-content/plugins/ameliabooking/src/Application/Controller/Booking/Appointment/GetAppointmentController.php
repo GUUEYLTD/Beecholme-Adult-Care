@@ -4,6 +4,7 @@ namespace AmeliaBooking\Application\Controller\Booking\Appointment;
 
 use AmeliaBooking\Application\Commands\Booking\Appointment\GetAppointmentCommand;
 use AmeliaBooking\Application\Controller\Controller;
+use RuntimeException;
 use Slim\Http\Request;
 
 /**
@@ -20,11 +21,22 @@ class GetAppointmentController extends Controller
      * @param         $args
      *
      * @return mixed
-     * @throws \RuntimeException
+     *
+     * @throws RuntimeException
      */
     protected function instantiateCommand(Request $request, $args)
     {
         $command = new GetAppointmentCommand($args);
+
+        $params = (array)$request->getQueryParams();
+
+        if (isset($params['source'])) {
+            $command->setPage($params['source']);
+            unset($params['source']);
+        }
+
+        $command->setToken($request);
+
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
 

@@ -54,6 +54,9 @@ class ServicesTable extends AbstractDatabaseTable
                    `show` TINYINT(1) DEFAULT 1,
                    `aggregatedPrice` TINYINT(1) DEFAULT 1,
                    `settings` text({$description}) NULL DEFAULT NULL,
+                   `recurringCycle` ENUM('disabled', 'all', 'daily', 'weekly', 'monthly') DEFAULT 'disabled',
+                   `recurringSub` ENUM('disabled' ,'past', 'future', 'both') DEFAULT 'future',
+                   `recurringPayment` int(3) DEFAULT 0,
                     PRIMARY KEY (`id`),
                     FOREIGN KEY (`categoryId`) REFERENCES {$categoryTable}(id) ON DELETE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";

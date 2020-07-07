@@ -8,12 +8,15 @@ use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Coupon\Coupon;
 use AmeliaBooking\Domain\Entity\Entities;
+use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
+use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventRepository;
 use AmeliaBooking\Infrastructure\Repository\Coupon\CouponEventRepository;
 use AmeliaBooking\Infrastructure\Repository\Coupon\CouponRepository;
 use AmeliaBooking\Infrastructure\Repository\Coupon\CouponServiceRepository;
@@ -209,6 +212,7 @@ class CouponApplicationService
      * @throws CouponUnknownException
      * @throws CouponInvalidException
      * @throws QueryExecutionException
+     * @throws InvalidArgumentException
      */
     public function inspectCoupon($coupon, $entityId, $entityType, $userId, $inspectCoupon)
     {
@@ -233,20 +237,75 @@ class CouponApplicationService
             throw new CouponInvalidException(FrontendStrings::getCommonStrings()['coupon_invalid']);
         }
 
-        if ($userId && $coupon->getCustomerLimit()->getValue() > 0) {
-            /** @var AppointmentRepository $appointmentRepo */
-            $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
-
-            $customerAppointments = $appointmentRepo->getFiltered([
-                'customerId'      => $userId,
-                'bookingCouponId' => $coupon->getId()->getValue()
-            ]);
-
-            if ($customerAppointments->length() >= $coupon->getCustomerLimit()->getValue()) {
-                throw new CouponInvalidException(FrontendStrings::getCommonStrings()['coupon_invalid']);
-            }
+        if ($userId && $coupon->getCustomerLimit()->getValue() > 0 &&
+            $this->getCustomerCouponUsedCount($coupon->getId()->getValue(), $userId) >=
+            $coupon->getCustomerLimit()->getValue()
+        ) {
+            throw new CouponInvalidException(FrontendStrings::getCommonStrings()['coupon_invalid']);
         }
 
         return true;
+    }
+
+    /**
+     * @param int $couponId
+     * @param int $userId
+     *
+     * @return int
+     *
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws QueryExecutionException
+     * @throws InvalidArgumentException
+     */
+    public function getCustomerCouponUsedCount($couponId, $userId)
+    {
+        /** @var AppointmentRepository $appointmentRepo */
+        $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
+
+        $customerAppointmentReservations = $appointmentRepo->getFiltered([
+            'customerId'      => $userId,
+            'status'          => BookingStatus::APPROVED,
+            'bookingStatus'   => BookingStatus::APPROVED,
+            'bookingCouponId' => $couponId
+        ]);
+
+        /** @var EventRepository $eventRepository */
+        $eventRepository = $this->container->get('domain.booking.event.repository');
+
+        $customerEventReservations = $eventRepository->getFiltered([
+            'customerId'      => $userId,
+            'bookingStatus'   => BookingStatus::APPROVED,
+            'bookingCouponId' => $couponId
+        ]);
+
+        return $customerAppointmentReservations->length() + $customerEventReservations->length();
+    }
+
+    /**
+     * @param Coupon       $coupon
+     * @param AbstractUser $user
+     *
+     * @return int
+     *
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws QueryExecutionException
+     * @throws InvalidArgumentException
+     */
+    public function getAllowedCouponLimit($coupon, $user)
+    {
+        if ($coupon->getCustomerLimit()->getValue()) {
+            $maxLimit = $coupon->getCustomerLimit()->getValue();
+
+            $used = $user && $user->getId() ?
+                $this->getCustomerCouponUsedCount($coupon->getId()->getValue(), $user->getId()->getValue()) : 0;
+        } else {
+            $maxLimit = $coupon->getLimit()->getValue();
+
+            $used = $coupon->getUsed()->getValue();
+        }
+
+        return $maxLimit - $used;
     }
 }

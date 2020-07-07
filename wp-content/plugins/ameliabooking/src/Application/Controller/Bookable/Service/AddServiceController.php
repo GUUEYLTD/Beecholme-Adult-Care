@@ -44,6 +44,9 @@ class AddServiceController extends Controller
         'show',
         'aggregatedPrice',
         'settings',
+        'recurringCycle',
+        'recurringSub',
+        'recurringPayment',
         'timeBefore'
     ];
 

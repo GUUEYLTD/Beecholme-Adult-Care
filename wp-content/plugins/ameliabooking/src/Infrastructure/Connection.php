@@ -40,6 +40,9 @@ abstract class Connection
     /** @var string $socket */
     protected $socket;
 
+    /** @var string $socketPath */
+    protected $socketPath;
+
     /**
      * Connection constructor.
      *
@@ -89,7 +92,18 @@ abstract class Connection
 
         $this->host = $data[0];
 
-        if (isset($data[1]) && (int)$data[1]) {
+        if (isset($data[1]) && is_numeric($data[1]) && (int)$data[1]) {
+            $this->port = $data[1];
+        } elseif (isset($data[1]) && strpos($data[1], '/') !== false) {
+            $position = strpos($data[1], '/');
+
+            if ($position === 0) {
+                $this->socketPath = $data[1];
+            } else {
+                $this->port = substr($data[1], 0, $position);
+                $this->socketPath = substr($data[1], $position);
+            }
+        } elseif (isset($data[1]) && (int)$data[1]) {
             $this->port = $data[1];
         }
     }

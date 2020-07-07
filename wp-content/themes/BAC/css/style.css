@@ -4326,6 +4326,14 @@ a.policy-link {
     display: block;
 }
 
+.booking-form .save-five:before {
+    content: 'SAVE 5';
+}
+
+.booking-form .save-ten:before {
+    content: 'SAVE 10';
+}
+
 .booking-form #amelia-step-booking0-calendar {
     text-align: center;
 }

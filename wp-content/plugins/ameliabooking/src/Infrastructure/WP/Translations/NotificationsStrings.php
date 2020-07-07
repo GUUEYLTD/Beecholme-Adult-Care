@@ -998,10 +998,32 @@ Thank you,
             'timeBefore' => 'NULL',
             'timeAfter'  => 'NULL',
             'sendTo'     => 'customer',
-            'subject'    => 'Customer Panel Access Link',
+            'subject'    => 'Customer Panel Access',
             'content'    =>
                 'Dear <strong>%customer_full_name%</strong>,<br><br>You can access your profile on this <b><a href="%customer_panel_url%">link</a></b>.<br>We wish you all the best.
                     <br><br>Thank you for choosing our company,<br><strong>%company_name%</strong>'
+        ];
+    }
+
+    /**
+     * Employee Panel Access Notification
+     *
+     * @return array
+     */
+    public static function getEmployeePanelAccessNotification()
+    {
+        return [
+            'name'       => 'provider_panel_access',
+            'entity'     => 'appointment',
+            'type'       => 'email',
+            'time'       => 'NULL',
+            'timeBefore' => 'NULL',
+            'timeAfter'  => 'NULL',
+            'sendTo'     => 'provider',
+            'subject'    => 'Employee Panel Access',
+            'content'    =>
+                'Dear <strong>%employee_full_name%</strong>,<br><br>You can access your profile and track your bookings on this <b><a href="%employee_panel_url%">link</a></b>.<br><br>Your login credentials:<br>Email: <b>%employee_email%</b><br>Password: <b>%employee_password%</b>
+                    <br><br>Best regards,<br><strong>%company_name%</strong>'
         ];
     }
 }

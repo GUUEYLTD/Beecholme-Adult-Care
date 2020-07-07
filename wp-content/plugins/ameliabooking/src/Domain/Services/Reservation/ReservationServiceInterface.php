@@ -175,13 +175,14 @@ interface ReservationServiceInterface
      * @param CustomerBooking  $booking
      * @param AbstractBookable $bookable
      * @param AbstractBooking  $reservation
+     * @param array            $recurringData
      * @param string           $paymentGateway
      *
      * @return array
      *
      * @throws InvalidArgumentException
      */
-    public function getInfo($bookable, $booking, $reservation, $paymentGateway);
+    public function getInfo($bookable, $booking, $reservation, $recurringData, $paymentGateway);
 
     /**
      * @param int $id

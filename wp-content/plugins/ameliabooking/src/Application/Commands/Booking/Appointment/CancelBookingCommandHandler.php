@@ -6,6 +6,7 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\BookingCancellationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
@@ -18,6 +19,7 @@ use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class CancelBookingCommandHandler
@@ -30,18 +32,12 @@ class CancelBookingCommandHandler extends CommandHandler
      * @param CancelBookingCommand $command
      *
      * @return CommandResult
-     * @throws \UnexpectedValueException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Firebase\JWT\SignatureInvalidException
-     * @throws \Firebase\JWT\ExpiredException
-     * @throws \Firebase\JWT\BeforeValidException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws QueryExecutionException
-     * @throws InvalidArgumentException
+     *
      * @throws AccessDeniedException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
      * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function handle(CancelBookingCommand $command)
     {
@@ -53,12 +49,17 @@ class CancelBookingCommandHandler extends CommandHandler
         $reservationService = $this->container->get('application.reservation.service')->get($type);
         /** @var CustomerApplicationService $customerAS */
         $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
         /** @var CustomerBookingRepository $bookingRepository */
         $bookingRepository = $this->container->get('domain.booking.customerBooking.repository');
 
         try {
             /** @var AbstractUser $user */
-            $user = $customerAS->authorization($command->getPage() === 'cabinet' ? $command->getToken() : null);
+            $user = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
         } catch (AuthorizationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setData([

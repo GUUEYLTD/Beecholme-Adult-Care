@@ -46,6 +46,13 @@ class UpdateAppointmentController extends Controller
         $command = new UpdateAppointmentCommand($args);
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
+        $command->setToken($request);
+
+        $params = (array)$request->getQueryParams();
+
+        if (isset($params['source'])) {
+            $command->setPage($params['source']);
+        }
 
         return $command;
     }

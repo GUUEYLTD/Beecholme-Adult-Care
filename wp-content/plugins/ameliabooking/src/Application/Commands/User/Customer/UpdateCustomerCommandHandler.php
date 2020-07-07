@@ -2,19 +2,22 @@
 
 namespace AmeliaBooking\Application\Commands\User\Customer;
 
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Commands\CommandHandler;
+use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
-use AmeliaBooking\Application\Commands\CommandResult;
-use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\Password;
+use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class UpdateCustomerCommandHandler
@@ -27,27 +30,22 @@ class UpdateCustomerCommandHandler extends CommandHandler
      * @param UpdateCustomerCommand $command
      *
      * @return CommandResult
-     * @throws \UnexpectedValueException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Firebase\JWT\SignatureInvalidException
-     * @throws \Firebase\JWT\ExpiredException
-     * @throws \Firebase\JWT\BeforeValidException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     *
+     * @throws ContainerException
      * @throws InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Application\Common\Exceptions\AccessDeniedException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws AccessDeniedException
      */
     public function handle(UpdateCustomerCommand $command)
     {
+        /** @var CommandResult $result */
         $result = new CommandResult();
 
         $this->checkMandatoryFields($command);
 
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
 
         /** @var Customer $oldUser */
         $oldUser = null;
@@ -58,7 +56,7 @@ class UpdateCustomerCommandHandler extends CommandHandler
         $userRepository->beginTransaction();
 
         if (!$this->getContainer()->getPermissionsService()->currentUserCanWrite(Entities::CUSTOMERS)) {
-            $oldUser = $customerAS->getAuthenticatedUser($command->getToken(), false);
+            $oldUser = $userAS->getAuthenticatedUser($command->getToken(), false, 'customer');
 
             if ($oldUser === null) {
                 $result->setResult(CommandResult::RESULT_ERROR);
@@ -82,7 +80,9 @@ class UpdateCustomerCommandHandler extends CommandHandler
         /** @var SettingsService $settingsService */
         $settingsService = $this->container->get('domain.settings.service');
 
-        if ($command->getField('email') === '' && !$settingsService->getSetting('roles', 'allowCustomerDeleteProfile')) {
+        if ($command->getField('email') === '' &&
+            !$settingsService->getSetting('roles', 'allowCustomerDeleteProfile')
+        ) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Could not update user.');
 
@@ -105,11 +105,7 @@ class UpdateCustomerCommandHandler extends CommandHandler
         ) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Email already exist.');
-            $result->setData(
-                [
-                'existing_email' => true
-                ]
-            );
+            $result->setData(['existing_email' => true]);
 
             return $result;
         }
@@ -146,11 +142,12 @@ class UpdateCustomerCommandHandler extends CommandHandler
 
         $userRepository->commit();
 
-        $result = $customerAS->getAuthenticatedUserResponse(
+        $result = $userAS->getAuthenticatedUserResponse(
             $newUser,
             $oldUser->getEmail()->getValue() !== $newUser->getEmail()->getValue(),
             true,
-            $oldUser->getLoginType()
+            $oldUser->getLoginType(),
+            'customer'
         );
 
         $result->setMessage('Successfully updated user');

@@ -28,7 +28,8 @@ class AddBookingController extends Controller
         'providerId',
         'locationId',
         'couponCode',
-        'payment'
+        'payment',
+        'recurring',
     ];
 
     /**

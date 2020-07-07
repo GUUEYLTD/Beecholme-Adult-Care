@@ -11,17 +11,25 @@ class CreateWPUser
 {
     /**
      * @param string      $email
+     * @param string      $firstName
+     * @param string      $lastName
      * @param string|null $role
      *
      * @return mixed
      */
-    public function create($email, $role = null)
+    public function create($email, $firstName, $lastName, $role = null)
     {
         if (username_exists($email) || email_exists($email)) {
             return null;
         }
 
         $userId = wp_create_user($email, wp_generate_password(), $email);
+
+        wp_update_user([
+            'ID'         => $userId,
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
+        ]);
 
         if ($userId instanceof WP_Error) {
             return null;

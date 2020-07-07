@@ -20,6 +20,11 @@ class QueryExecutionException extends \Exception
      */
     public function __construct($message = 'Query Execution Error', $code = 0, Exception $previous = null)
     {
+        if (!is_int($code)) {
+            $message .= $previous ? ' ' . $previous->getMessage() : '';
+            $code = 0;
+        }
+
         parent::__construct($message, $code, $previous);
     }
 }

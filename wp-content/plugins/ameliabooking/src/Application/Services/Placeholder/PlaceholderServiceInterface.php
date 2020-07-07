@@ -28,6 +28,7 @@ interface PlaceholderServiceInterface
      * @param array  $appointment
      * @param int    $bookingKey
      * @param string $token
+     * @param string $type
      *
      * @return array
      *
@@ -37,5 +38,5 @@ interface PlaceholderServiceInterface
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    public function getEntityPlaceholdersData($appointment, $bookingKey = null, $token = null);
+    public function getEntityPlaceholdersData($appointment, $bookingKey = null, $token = null, $type = null);
 }

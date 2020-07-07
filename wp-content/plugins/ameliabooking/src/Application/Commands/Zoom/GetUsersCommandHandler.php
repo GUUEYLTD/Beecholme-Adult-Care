@@ -5,10 +5,15 @@ namespace AmeliaBooking\Application\Commands\Zoom;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
+use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Services\Zoom\ZoomService;
 use Interop\Container\Exception\ContainerException;
+use mageekguy\atoum\asserters\boolean;
 
 /**
  * Class GetUsersCommandHandler
@@ -21,13 +26,26 @@ class GetUsersCommandHandler extends CommandHandler
      * @param GetUsersCommand $command
      *
      * @return CommandResult
-     * @throws ContainerException
      * @throws AccessDeniedException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
      */
     public function handle(GetUsersCommand $command)
     {
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
+
+        /** @var boolean $isCabinetPage */
+        $isCabinetPage = $command->getPage() === 'cabinet';
+
         if (!$this->getContainer()->getPermissionsService()->currentUserCanRead(Entities::EMPLOYEES)) {
-            throw new AccessDeniedException('You are not allowed to read users.');
+            /** @var AbstractUser $user */
+            $user = $userAS->getAuthenticatedUser($command->getToken(), false, 'provider');
+
+            if (!$isCabinetPage || ($user === null || $user->getType() !== AbstractUser::USER_ROLE_PROVIDER)) {
+                throw new AccessDeniedException('You are not allowed to read users.');
+            }
         }
 
         $result = new CommandResult();
@@ -54,7 +72,9 @@ class GetUsersCommandHandler extends CommandHandler
 
         $zoomResult = $zoomService->getUsers();
 
-        if (isset($zoomResult['code']) && $zoomResult['code'] === 124) {
+        if ((isset($zoomResult['code']) && $zoomResult['code'] === 124) ||
+            ($zoomResult['users'] === null && isset($zoomResult['message']))
+        ) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage($zoomResult['message']);
 

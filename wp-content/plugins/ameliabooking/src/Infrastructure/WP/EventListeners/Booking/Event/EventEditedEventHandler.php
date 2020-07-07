@@ -7,7 +7,6 @@
 namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Event;
 
 use AmeliaBooking\Application\Commands\CommandResult;
-use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
@@ -69,8 +68,6 @@ class EventEditedEventHandler
         $webHookService = $container->get('application.webHook.service');
         /** @var ZoomApplicationService $zoomService */
         $zoomService = $container->get('application.zoom.service');
-        /** @var BookingApplicationService $bookingApplicationService */
-        $bookingApplicationService = $container->get('application.booking.booking.service');
 
         $eventsData = $commandResult->getData()[Entities::EVENTS];
 
@@ -158,7 +155,7 @@ class EventEditedEventHandler
             }
         }
 
-        if ($commandResult->getData()['zoomUserAdded']) {
+        if ($commandResult->getData()['zoomUserAdded'] || $commandResult->getData()['newInfo']) {
             if (!$rescheduledEvents->length()) {
                 /** @var Event $event */
                 foreach ($clonedEvents->getItems() as $event) {

@@ -283,7 +283,8 @@ class TimeSlotService
                     $intervals[$dateString]['available'][$intervalDateTime->format('H:i')] =
                         [
                             'locationId' => $app->getLocationId() ? $app->getLocationId()->getValue() : $providerLocationId,
-                            'places'     => $app->getService()->getMaxCapacity()->getValue() - $persons
+                            'places'     => $app->getService()->getMaxCapacity()->getValue() - $persons,
+                            'seconds'    => $this->getSeconds($intervalDateTime->format('H:i:s'))
                         ];
                 }
             }
@@ -682,6 +683,7 @@ class TimeSlotService
      * @param int       $slotLength
      * @param \DateTime $startDateTime
      * @param bool      $serviceDurationAsSlot
+     * @param bool      $bufferTimeInSlot
      * @param bool      $isFrontEndBooking
      *
      * @return array
@@ -693,11 +695,22 @@ class TimeSlotService
         $slotLength,
         $startDateTime,
         $serviceDurationAsSlot,
+        $bufferTimeInSlot,
         $isFrontEndBooking
     ) {
         $result = [];
 
+        if ($serviceDurationAsSlot && !$bufferTimeInSlot) {
+            $requiredTime = $requiredTime -
+                $service->getTimeBefore()->getValue() -
+                $service->getTimeAfter()->getValue();
+        }
+
         $currentDateTime = DateTimeService::getNowDateTimeObject();
+
+        $currentDateString = $currentDateTime->format('Y-m-d');
+        $currentTimeStringInSeconds = $this->getSeconds($currentDateTime->format('H:i:s'));
+
         $currentTimeInSeconds = $this->getSeconds($currentDateTime->format('H:i:s'));
         $currentDateFormatted = $currentDateTime->format('Y-m-d');
         $startTimeInSeconds = $this->getSeconds($startDateTime->format('H:i:s'));
@@ -724,9 +737,9 @@ class TimeSlotService
                     for ($i = 0; $i < $numberOfSlots; $i++) {
                         $timeSlot = $customerTimeStart + $i * $bookingLength;
 
-                        if ($startDateFormatted !== $dateKey ||
+                        if (($startDateFormatted !== $dateKey && ($serviceDurationAsSlot && !$bufferTimeInSlot ? $timeSlot < $timePeriod[1] - $requiredTime : true)) ||
                             ($startDateFormatted === $dateKey && $startTimeInSeconds < $timeSlot) ||
-                            ($startDateFormatted === $currentDateFormatted && $startTimeInSeconds < $timeSlot && $currentTimeInSeconds < $timeSlot)
+                            ($startDateFormatted === $currentDateFormatted && $startDateFormatted === $dateKey && $startTimeInSeconds < $timeSlot && $currentTimeInSeconds < $timeSlot)
                         ) {
                             $time = sprintf('%02d', floor($timeSlot / 3600)) . ':'
                                 . sprintf('%02d', floor(($timeSlot / 60) % 60));
@@ -737,6 +750,10 @@ class TimeSlotService
                 }
 
                 foreach ((array)$provider['slots'] as $appointmentTime => $appointmentData) {
+                    if ($currentDateString === $dateKey && ($currentTimeStringInSeconds > $appointmentData['seconds'] || $startTimeInSeconds > $appointmentData['seconds'])) {
+                       continue;
+                    }
+
                     $result[$dateKey][$appointmentTime][] = [$providerKey, $appointmentData['locationId'], $appointmentData['places']];
                 }
             }

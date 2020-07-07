@@ -12,6 +12,7 @@
 @color-orange: #FFA700;
 @color-blue: #1A84EE;
 @color-black: #000000;
+@color-red: #FF0000;
 
 //customizable
 @color-text-prime: #354052;
@@ -79,10 +80,12 @@
 
 //padding and margin
 @h1-padding: 28px 0 28px 0;
+@padding-extra-big: 56px;
 @padding-big: 24px;
 @padding-medium: 16px;
 @padding-small: 8px;
 
+@margin-extra-big: 56px;
 @margin-big: 24px;
 @margin-medium: 16px;
 @margin-small: 8px;
@@ -116,6 +119,7 @@
 @more-then-small: ~"only screen and ( min-width:" @bp-small-min ~")";
 
 @from-small-to-medium: ~"only screen and (min-width:" @bp-small-min ~") and (max-width:" @bp-medium-max ~")";
+@from-small-to-large: ~"only screen and (min-width:" @bp-small-min ~") and (max-width:" @bp-large-max ~")";
 @from-medium-to-large: ~"only screen and (min-width:" @bp-medium-min ~") and (max-width:" @bp-large-max ~")";
 @from-medium-to-xlarge: ~"only screen and (min-width:" @bp-medium-min ~") and (max-width:" @bp-xlarge-max ~")";
 @from-large-to-xlarge: ~"only screen and (min-width:" @bp-large-min ~") and (max-width:" @bp-xlarge-max ~")";

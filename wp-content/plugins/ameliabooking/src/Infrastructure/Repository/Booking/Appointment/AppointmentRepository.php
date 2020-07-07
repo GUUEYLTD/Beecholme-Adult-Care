@@ -109,6 +109,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.locationId AS appointment_locationId,
                     a.googleCalendarEventId AS appointment_google_calendar_event_id,
                     a.zoomMeeting AS appointment_zoom_meeting,
+                    a.parentId AS appointment_parentId,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -265,6 +266,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
             ':serviceId'          => $data['serviceId'],
             ':providerId'         => $data['providerId'],
             ':locationId'         => $data['locationId'],
+            ':parentId'           => $data['parentId'],
         ];
 
         try {
@@ -278,7 +280,8 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 `status`,
                 `locationId`,
                 `serviceId`,
-                `providerId`
+                `providerId`,
+                `parentId`
                 )
                 VALUES (
                 :bookingStart,
@@ -288,7 +291,8 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 :status,
                 :locationId,
                 :serviceId,
-                :providerId
+                :providerId,
+                :parentId
                 )"
             );
 
@@ -637,6 +641,11 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[':bookingCouponId'] = $criteria['bookingCouponId'];
             }
 
+            if (isset($criteria['parentId'])) {
+                $where[] = 'a.parentId = :parentId';
+                $params[':parentId'] = $criteria['parentId'];
+            }
+
             $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
             $statement = $this->connection->prepare(
@@ -652,6 +661,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.locationId AS appointment_locationId,
                     a.googleCalendarEventId AS appointment_google_calendar_event_id,
                     a.zoomMeeting AS appointment_zoom_meeting,
+                    a.parentId AS appointment_parentId,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,

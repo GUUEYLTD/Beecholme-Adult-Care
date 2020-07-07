@@ -10,6 +10,7 @@ use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
 use AmeliaBooking\Application\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Booking\Event\EventPeriod;
 use AmeliaBooking\Domain\Entity\Entities;
@@ -22,6 +23,8 @@ use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationLogRepository;
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationRepository;
+use Exception;
+use Interop\Container\Exception\ContainerException;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\Services\Notification\MailgunService;
 use AmeliaBooking\Infrastructure\Services\Notification\PHPMailService;
@@ -71,10 +74,10 @@ abstract class AbstractNotificationService
     /**
      * @throws NotFoundException
      * @throws QueryExecutionException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws ContainerException
      * @throws \PHPMailer\PHPMailer\Exception
-     * @throws \Exception
+     * @throws Exception
      */
     abstract public function sendBirthdayGreetingNotifications();
 
@@ -176,7 +179,7 @@ abstract class AbstractNotificationService
      * @return mixed
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function getByNameAndType($name, $type)
     {
@@ -194,7 +197,7 @@ abstract class AbstractNotificationService
      *
      * @throws \Slim\Exception\ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function sendAppointmentStatusNotifications($appointmentArray, $forcedStatusChange, $logNotification)
     {
@@ -232,7 +235,12 @@ abstract class AbstractNotificationService
 
                 // Notify each customer from customer bookings
                 foreach (array_keys($appointmentArray['bookings']) as $bookingKey) {
-                    if (!$appointmentArray['bookings'][$bookingKey]['isChangedStatus']) {
+                    if (!$appointmentArray['bookings'][$bookingKey]['isChangedStatus'] ||
+                        (
+                            isset($appointmentArray['bookings'][$bookingKey]['skipNotification']) &&
+                            $appointmentArray['bookings'][$bookingKey]['skipNotification']
+                        )
+                    ) {
                         continue;
                     }
 
@@ -255,7 +263,7 @@ abstract class AbstractNotificationService
      * @param bool  $forcedStatusChange
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function sendAppointmentEditedNotifications($appointmentArray, $bookingsArray, $forcedStatusChange)
     {
@@ -306,7 +314,7 @@ abstract class AbstractNotificationService
      * @param $appointmentArray
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function sendAppointmentRescheduleNotifications($appointmentArray)
     {
@@ -348,13 +356,14 @@ abstract class AbstractNotificationService
      * @param bool  $logNotification
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function sendBookingAddedNotifications($appointmentArray, $bookingArray, $logNotification)
     {
         /** @var Notification $customerNotification */
-        $customerNotification =
-            $this->getByNameAndType("customer_{$appointmentArray['type']}_{$bookingArray['status']}", $this->type);
+        $customerNotification = $this->getByNameAndType(
+            "customer_{$appointmentArray['type']}_{$appointmentArray['status']}", $this->type
+        );
 
         if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             // Notify customer that scheduled the appointment
@@ -388,7 +397,7 @@ abstract class AbstractNotificationService
      * @param $bookingArray
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function sendCustomerBookingNotification($appointmentArray, $bookingArray)
     {
@@ -424,9 +433,9 @@ abstract class AbstractNotificationService
      *
      * @return void
      * @throws QueryExecutionException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws ContainerException
+     * @throws Exception
      */
     public function sendNextDayReminderNotifications($entityType)
     {
@@ -490,8 +499,8 @@ abstract class AbstractNotificationService
      * @param string $entityType
      *
      * @throws QueryExecutionException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws ContainerException
      */
     public function sendFollowUpNotifications($entityType)
     {

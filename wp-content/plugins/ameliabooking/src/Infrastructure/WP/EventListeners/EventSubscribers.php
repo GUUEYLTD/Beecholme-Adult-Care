@@ -26,9 +26,11 @@ class EventSubscribers
      */
     public static function subscribe($eventBus, $container)
     {
-        $userListener = new UserEventsListener();
+        $userListener = new UserEventsListener($container);
         $eventBus->addListener('user.added', $userListener);
         $eventBus->addListener('user.deleted', $userListener);
+        $eventBus->addListener('provider.updated', $userListener);
+        $eventBus->addListener('provider.added', $userListener);
 
         $appointmentListener = new AppointmentEventsListener($container);
         $eventBus->addListener('AppointmentAdded', $appointmentListener);

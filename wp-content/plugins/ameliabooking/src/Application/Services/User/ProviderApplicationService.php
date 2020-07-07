@@ -4,17 +4,22 @@ namespace AmeliaBooking\Application\Services\User;
 
 use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Location\Location;
+use AmeliaBooking\Domain\Entity\Schedule\DayOff;
 use AmeliaBooking\Domain\Entity\Schedule\Period;
 use AmeliaBooking\Domain\Entity\Schedule\PeriodService;
 use AmeliaBooking\Domain\Entity\Schedule\SpecialDay;
 use AmeliaBooking\Domain\Entity\Schedule\SpecialDayPeriod;
 use AmeliaBooking\Domain\Entity\Schedule\SpecialDayPeriodService;
+use AmeliaBooking\Domain\Entity\Schedule\TimeOut;
+use AmeliaBooking\Domain\Entity\Schedule\WeekDay;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Factory\Location\ProviderLocationFactory;
@@ -22,15 +27,10 @@ use AmeliaBooking\Domain\Factory\User\UserFactory;
 use AmeliaBooking\Domain\Repository\User\UserRepositoryInterface;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\TimeSlot\TimeSlotService;
-use AmeliaBooking\Domain\ValueObjects\String\Status;
-use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
-use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
-use AmeliaBooking\Domain\Entity\User\Provider;
-use AmeliaBooking\Domain\Entity\Schedule\TimeOut;
-use AmeliaBooking\Domain\Entity\Schedule\WeekDay;
-use AmeliaBooking\Domain\Entity\Schedule\DayOff;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Infrastructure\Common\Container;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ProviderServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
@@ -47,6 +47,8 @@ use AmeliaBooking\Infrastructure\Repository\Schedule\TimeOutRepository;
 use AmeliaBooking\Infrastructure\Repository\Schedule\WeekDayRepository;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class ProviderApplicationService
@@ -74,10 +76,10 @@ class ProviderApplicationService
      * @param Provider $user
      *
      * @return boolean
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function add($user)
     {
@@ -235,10 +237,10 @@ class ProviderApplicationService
      * @param Provider $newUser
      *
      * @return boolean
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function update($oldUser, $newUser)
     {
@@ -268,10 +270,10 @@ class ProviderApplicationService
      * @param Provider $newUser
      *
      * @return boolean
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function updateProviderWorkDays($oldUser, $newUser)
     {
@@ -446,10 +448,10 @@ class ProviderApplicationService
      * @param Provider $newUser
      *
      * @return boolean
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function updateProviderSpecialDays($oldUser, $newUser)
     {
@@ -586,9 +588,9 @@ class ProviderApplicationService
      * @param bool  $companyDayOff
      *
      * @return array
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function manageProvidersActivity($providers, $companyDayOff)
     {
@@ -663,7 +665,7 @@ class ProviderApplicationService
      * @param AbstractUser $currentUser
      *
      * @return array
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function removeAllExceptUser($providers, $currentUser)
     {
@@ -693,7 +695,7 @@ class ProviderApplicationService
      * @param Collection $appointments
      *
      * @throws InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function addAppointmentsToAppointmentList($providers, $appointments)
     {
@@ -727,7 +729,7 @@ class ProviderApplicationService
      * @param Provider $newUser
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function updateProviderGoogleCalendar($newUser)
     {
@@ -748,7 +750,7 @@ class ProviderApplicationService
      *
      * @return boolean
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     private function updateProviderLocations($oldUser, $newUser)
     {
@@ -783,7 +785,7 @@ class ProviderApplicationService
      *
      * @return boolean
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     private function updateProviderServices($newUser)
     {
@@ -833,7 +835,7 @@ class ProviderApplicationService
      * @return boolean
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     private function updateProviderDaysOff($oldUser, $newUser)
     {
@@ -877,10 +879,12 @@ class ProviderApplicationService
      *
      * @param Collection $periodList
      * @param Collection $timeOutList
+     *
      * @return array
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
-    public function getProviderScheduleIntervals($periodList, $timeOutList) {
+    public function getProviderScheduleIntervals($periodList, $timeOutList)
+    {
         /** @var TimeSlotService $timeSlotService */
         $timeSlotService = $this->container->get('domain.timeSlot.service');
 
@@ -931,7 +935,7 @@ class ProviderApplicationService
 
             foreach ($periodIntervals as $interval) {
                 $availableIntervals[] = [
-                    'time' => [
+                    'time'     => [
                         $interval[0],
                         $interval[1]
                     ],
@@ -949,9 +953,9 @@ class ProviderApplicationService
      * @param int $providerId
      *
      * @return Provider
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerValueNotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      * @throws InvalidArgumentException
      */
     public function getProviderWithServicesAndSchedule($providerId)
@@ -964,7 +968,6 @@ class ProviderApplicationService
 
         $services = $serviceRepository->getAllArrayIndexedById();
 
-        /** @var Collection $providers */
         $providers = $providerRepository->getByCriteriaWithSchedule(['providers' => [$providerId]]);
 
         $providerServicesData = $providerRepository->getProvidersServices();
@@ -1145,9 +1148,9 @@ class ProviderApplicationService
      * @return boolean
      *
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function delete($provider)
     {
@@ -1216,8 +1219,8 @@ class ProviderApplicationService
      *
      * @return Collection
      *
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerValueNotFoundException
+     * @throws ContainerException
      * @throws QueryExecutionException
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      */
@@ -1229,7 +1232,13 @@ class ProviderApplicationService
         /** @var Collection $customers */
         $customers = $userRepository->getAllWithAllowedBooking();
 
-        if (!$this->container->getPermissionsService()->currentUserCanReadOthers(Entities::CUSTOMERS)) {
+        // user_can added here, because currentUser is null in logged.in.user service for cabinet
+        if (!$this->container->getPermissionsService()->currentUserCanReadOthers(Entities::CUSTOMERS) &&
+            !(
+                $currentUser !== null && $currentUser->getExternalId() !== null &&
+                user_can($currentUser->getExternalId()->getValue(), 'amelia_read_others_customers')
+            )
+        ) {
             /** @var AppointmentRepository $appointmentRepository */
             $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
 
@@ -1254,7 +1263,20 @@ class ProviderApplicationService
                 }
             }
 
-            return $customersWithoutBooking;
+            $customersWithoutBookingArray = $customersWithoutBooking->getItems();
+
+            usort(
+                $customersWithoutBookingArray,
+                function ($a, $b) {
+                    return strcmp(
+                        $a->getFirstName()->getValue() . ' ' . $a->getLastName()->getValue(),
+                        $b->getFirstName()->getValue() . ' ' . $b->getLastName()->getValue()
+                    );
+                }
+            );
+
+
+            return new Collection($customersWithoutBookingArray);
         }
 
         return $customers;

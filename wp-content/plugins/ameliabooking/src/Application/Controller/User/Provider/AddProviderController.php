@@ -40,7 +40,9 @@ class AddProviderController extends Controller
         'dayOffList',
         'externalId',
         'pictureFullPath',
-        'pictureThumbPath'
+        'pictureThumbPath',
+        'password',
+        'sendEmployeePanelAccessEmail',
     ];
 
     /**

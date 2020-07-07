@@ -196,6 +196,7 @@ class GetSearchCommandHandler extends CommandHandler
                 $timeSlotLength,
                 $startDateTime,
                 $settingsDS->getSetting('general', 'serviceDurationAsSlot'),
+                $settingsDS->getSetting('general', 'bufferTimeInSlot'),
                 true
             );
 

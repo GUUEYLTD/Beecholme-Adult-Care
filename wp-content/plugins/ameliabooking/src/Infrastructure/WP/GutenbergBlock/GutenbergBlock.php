@@ -8,7 +8,9 @@ namespace AmeliaBooking\Infrastructure\WP\GutenbergBlock;
 
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\User\Provider;
+use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
@@ -16,8 +18,6 @@ use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventTagsRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
-use AmeliaBooking\Domain\Collection\Collection;
-use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use Exception;
 use Interop\Container\Exception\ContainerException;
 
@@ -42,7 +42,7 @@ class GutenbergBlock
             ) {
                 if (self::isGutenbergActive()) {
                     $class = get_called_class();
-                    add_action('init', function () use ($class) {
+                    add_action('enqueue_block_editor_assets', function () use ($class) {
                         $class::registerBlockType();
                     });
                 }
@@ -84,7 +84,7 @@ class GutenbergBlock
         }
 
         // Fix for conflict with Avada - Fusion builder and gutenberg blocks
-        if ( class_exists( 'FusionBuilder' ) && !(isset( $_GET['gutenberg-editor']))){
+        if (class_exists('FusionBuilder') && !(isset($_GET['gutenberg-editor']))) {
             return false;
         }
 
@@ -94,12 +94,12 @@ class GutenbergBlock
         }
 
         // Fix for conflict with WP Bakery Page Builder
-        if ( class_exists( 'Vc_Manager' ) && (isset( $_GET['classic-editor']))){
+        if (class_exists('Vc_Manager') && (isset($_GET['classic-editor']))) {
             return false;
         }
 
         // Fix for conflict with WooCommerce product page
-        if (isset($_GET['post_type']) && $_GET['post_type'] === 'product' && class_exists( 'WooCommerce' )){
+        if (isset($_GET['post_type']) && $_GET['post_type'] === 'product' && class_exists('WooCommerce')) {
             return false;
         }
 
@@ -150,7 +150,7 @@ class GutenbergBlock
      */
     public function getAllEntitiesForGutenbergBlocks()
     {
-        try{
+        try {
             self::setContainer(require AMELIA_PATH . '/src/Infrastructure/ContainerConfig/container.php');
 
             /** @var LocationRepository $locationRepository */
@@ -225,7 +225,7 @@ class GutenbergBlock
             /** @var EventTagsRepository $eventTagsRepository */
             $eventTagsRepository = self::$container->get('domain.booking.event.tag.repository');
 
-            /** @var Collection $tags **/
+            /** @var Collection $tags * */
             $tags = $eventTagsRepository->getAllDistinctByCriteria(
                 [
                     'eventIds' => array_column($finalData['events'], 'id')
@@ -234,10 +234,10 @@ class GutenbergBlock
 
             $finalData['tags'] = $tags->toArray();
 
-            return ['data'=> $finalData];
+            return ['data' => $finalData];
 
         } catch (Exception $exception) {
-            return ['data'=> [
+            return ['data' => [
                 'categories'   => [],
                 'servicesList' => [],
                 'locations'    => [],
@@ -246,7 +246,7 @@ class GutenbergBlock
                 'tags'         => []
             ]];
         } catch (ContainerException $e) {
-            return ['data'=> [
+            return ['data' => [
                 'categories'   => [],
                 'servicesList' => [],
                 'locations'    => [],
@@ -260,12 +260,13 @@ class GutenbergBlock
     /**
      * Get only Categories, Services, Employees and Locations for Gutenberg blocks
      */
-    public static function getOnlyCatSerLocEmp ($resultData){
+    public static function getOnlyCatSerLocEmp($resultData)
+    {
         $data = [];
         $data['categories'] = [];
         $data['servicesList'] = [];
-        if ($resultData['categories'] !== []){
-            for ( $i = 0; $i < count($resultData['categories']); $i++) {
+        if ($resultData['categories'] !== []) {
+            for ($i = 0; $i < count($resultData['categories']); $i++) {
                 $data['categories'][] = [
                     'id'   => $resultData['categories'][$i]['id'],
                     'name' => $resultData['categories'][$i]['name']
@@ -279,7 +280,7 @@ class GutenbergBlock
                         }
 
                         $data['servicesList'][] = [
-                            'id' => $resultData['categories'][$i]['serviceList'][$j]['id'],
+                            'id'   => $resultData['categories'][$i]['serviceList'][$j]['id'],
                             'name' => $resultData['categories'][$i]['serviceList'][$j]['name']
                         ];
                     }
@@ -294,7 +295,7 @@ class GutenbergBlock
         }
 
         if ($resultData['locations'] !== []) {
-            for ( $i = 0; $i < count($resultData['locations']); $i++) {
+            for ($i = 0; $i < count($resultData['locations']); $i++) {
                 $data['locations'][] = [
                     'id'   => $resultData['locations'][$i]['id'],
                     'name' => $resultData['locations'][$i]['name']
@@ -305,7 +306,7 @@ class GutenbergBlock
         }
 
         if ($resultData['employees'] !== []) {
-            for ( $i = 0; $i < count($resultData['employees']); $i++) {
+            for ($i = 0; $i < count($resultData['employees']); $i++) {
                 $data['employees'][] = [
                     'id'        => $resultData['employees'][$i]['id'],
                     'firstName' => $resultData['employees'][$i]['firstName'],

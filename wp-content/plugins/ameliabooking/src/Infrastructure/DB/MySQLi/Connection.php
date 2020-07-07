@@ -54,7 +54,12 @@ class Connection extends \AmeliaBooking\Infrastructure\Connection
 
         $this->result = new Result();
         $this->query = new Query();
-        $this->mysqli = new mysqli($this->host, $this->username, $this->password, $this->database, $this->port);
+
+        if (property_exists($this, 'socketPath') && $this->socketPath) {
+            $this->mysqli = new mysqli($this->host, $this->username, $this->password, $this->database, $this->port, $this->socketPath);
+        } else {
+            $this->mysqli = new mysqli($this->host, $this->username, $this->password, $this->database, $this->port);
+        }
 
         $this->mysqli->set_charset($this->charset);
 

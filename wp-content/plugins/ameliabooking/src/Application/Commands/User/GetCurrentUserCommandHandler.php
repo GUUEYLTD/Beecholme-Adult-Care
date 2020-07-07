@@ -2,11 +2,16 @@
 
 namespace AmeliaBooking\Application\Commands\User;
 
+use AmeliaBooking\Application\Services\User\UserApplicationService;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use Exception;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetCurrentUserCommandHandler
@@ -21,9 +26,10 @@ class GetCurrentUserCommandHandler extends CommandHandler
      * @return CommandResult
      * @throws \Slim\Exception\ContainerException
      * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws InvalidArgumentException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
+     * @throws Exception
      */
     public function handle(GetCurrentUserCommand $command)
     {
@@ -33,8 +39,23 @@ class GetCurrentUserCommandHandler extends CommandHandler
 
         $userData = null;
 
-        /** @var AbstractUser $user */
-        $user = $this->getContainer()->get('logged.in.user');
+        if ($command->getToken()) {
+            /** @var UserApplicationService $userAS */
+            $userAS = $this->getContainer()->get('application.user.service');
+
+            try {
+                /** @var AbstractUser $user */
+                $user = $userAS->authorization(
+                    $command->getToken(),
+                    $command->getCabinetType() ? $command->getCabinetType() : 'customer'
+                );
+            } catch (AuthorizationException $e) {
+                $user = null;
+            }
+        } else {
+            /** @var AbstractUser $user */
+            $user = $this->getContainer()->get('logged.in.user');
+        }
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully retrieved current user');

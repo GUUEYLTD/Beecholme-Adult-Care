@@ -84,6 +84,8 @@ class DeleteAppointmentCommandHandler extends CommandHandler
             $customerBooking->setStatus(new BookingStatus(BookingStatus::REJECTED));
         }
 
+        $appointmentApplicationService->manageDeletionParentRecurringAppointment($appointment->getId()->getValue());
+
         $appointmentRepository->commit();
 
         $customFieldService->deleteUploadedFilesForDeletedBookings(

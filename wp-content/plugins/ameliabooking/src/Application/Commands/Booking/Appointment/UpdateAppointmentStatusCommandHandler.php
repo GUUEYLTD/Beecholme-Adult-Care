@@ -7,7 +7,7 @@ use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
@@ -19,6 +19,7 @@ use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepos
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
 use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class UpdateAppointmentStatusCommandHandler
@@ -38,14 +39,11 @@ class UpdateAppointmentStatusCommandHandler extends CommandHandler
      * @param UpdateAppointmentStatusCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws QueryExecutionException
-     * @throws InvalidArgumentException
+     *
      * @throws AccessDeniedException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function handle(UpdateAppointmentStatusCommand $command)
     {
@@ -63,8 +61,8 @@ class UpdateAppointmentStatusCommandHandler extends CommandHandler
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
         /** @var BookingApplicationService $bookingAS */
         $bookingAS = $this->container->get('application.booking.booking.service');
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
         /** @var AppointmentApplicationService $appointmentAS */
         $appointmentAS = $this->container->get('application.booking.appointment.service');
 
@@ -80,7 +78,7 @@ class UpdateAppointmentStatusCommandHandler extends CommandHandler
             /** @var AbstractUser $user */
             $user = $this->container->get('logged.in.user');
 
-            if (!$appointmentAS->canBeBooked($appointment, $customerAS->isCustomer($user))) {
+            if (!$appointmentAS->canBeBooked($appointment, $userAS->isCustomer($user))) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setMessage(FrontendStrings::getCommonStrings()['time_slot_unavailable']);
                 $result->setData([

@@ -4,15 +4,21 @@ namespace AmeliaBooking\Application\Commands\Entities;
 
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
+use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\Entity\User\Provider;
+use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
+use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
@@ -24,9 +30,8 @@ use AmeliaBooking\Infrastructure\Repository\CustomField\CustomFieldRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
-use AmeliaBooking\Domain\Collection\Collection;
-use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Infrastructure\WP\Integrations\WooCommerce\WooCommerceService;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class GetEntitiesCommandHandler
@@ -39,16 +44,26 @@ class GetEntitiesCommandHandler extends CommandHandler
      * @param GetEntitiesCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws AccessDeniedException
+     * @throws ContainerException
      * @throws InvalidArgumentException
+     * @throws NotFoundException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      */
     public function handle(GetEntitiesCommand $command)
     {
-        /** @var AbstractUser $currentUser */
-        $currentUser = $this->container->get('logged.in.user');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
+
+        try {
+            /** @var AbstractUser $currentUser */
+            $currentUser = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
+        } catch (AuthorizationException $e) {
+            $currentUser =  null;
+        }
 
         $params = $command->getField('params');
 
@@ -69,7 +84,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             /** @var EventRepository $eventRepository */
             $eventRepository = $this->container->get('domain.booking.event.repository');
 
-            /** @var Collection $events **/
             $events = $eventRepository->getFiltered(['dates' => [DateTimeService::getNowDateTime()]]);
 
             $resultData['events'] = $events->toArray();
@@ -80,7 +94,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             /** @var EventTagsRepository $eventTagsRepository */
             $eventTagsRepository = $this->container->get('domain.booking.event.tag.repository');
 
-            /** @var Collection $eventsTags **/
             $eventsTags = $eventTagsRepository->getAllDistinctByCriteria(
                 $events->length() ? ['eventIds' => array_column($events->toArray(), 'id')] : []
             );
@@ -167,7 +180,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             $providerAS = $this->container->get('application.user.provider.service');
 
             if (array_key_exists('page', $params) && $params['page'] === Entities::CALENDAR) {
-                /** @var Collection $providers */
                 $providers = $providerRepository->getByCriteriaWithSchedule([]);
 
                 $providerServicesData = $providerRepository->getProvidersServices();
@@ -227,18 +239,23 @@ class GetEntitiesCommandHandler extends CommandHandler
                         $employee['email'],
                         $employee['externalId'],
                         $employee['phone'],
-                        $employee['note'],
-                        $employee['weekDayList'],
-                        $employee['specialDayList'],
-                        $employee['dayOffList']
+                        $employee['note']
                     );
+
+                    if (isset($params['page']) && $params['page'] !== Entities::CALENDAR) {
+                        unset(
+                            $employee['weekDayList'],
+                            $employee['specialDayList'],
+                            $employee['dayOffList']
+                        );
+                    }
                 }
             }
         }
 
-        if ($currentUser !== null && in_array(Entities::APPOINTMENTS, $params['types'], true)) {
+        if (in_array(Entities::APPOINTMENTS, $params['types'], true)) {
             $userParams = [
-                'dates' => ['', '']
+                'dates' => [null, null]
             ];
 
             if (!$this->getContainer()->getPermissionsService()->currentUserCanReadOthers(Entities::APPOINTMENTS)) {
@@ -253,7 +270,6 @@ class GetEntitiesCommandHandler extends CommandHandler
             /** @var AppointmentRepository $appointmentRepo */
             $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
 
-            /** @var Collection $appointments */
             $appointments = $appointmentRepo->getFiltered($userParams);
 
             $resultData[Entities::APPOINTMENTS] = [

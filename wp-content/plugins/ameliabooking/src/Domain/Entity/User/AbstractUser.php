@@ -2,16 +2,16 @@
 
 namespace AmeliaBooking\Domain\Entity\User;
 
+use AmeliaBooking\Domain\ValueObjects\DateTime\Birthday;
 use AmeliaBooking\Domain\ValueObjects\Json;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\Picture;
 use AmeliaBooking\Domain\ValueObjects\String\Description;
+use AmeliaBooking\Domain\ValueObjects\String\Email;
+use AmeliaBooking\Domain\ValueObjects\String\Name;
 use AmeliaBooking\Domain\ValueObjects\String\Password;
 use AmeliaBooking\Domain\ValueObjects\String\Phone;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
-use AmeliaBooking\Domain\ValueObjects\String\Email;
-use AmeliaBooking\Domain\ValueObjects\String\Name;
-use AmeliaBooking\Domain\ValueObjects\DateTime\Birthday;
-use AmeliaBooking\Domain\ValueObjects\Picture;
-use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 
 /**
  * Class AbstractUser
@@ -288,7 +288,7 @@ abstract class AbstractUser
     /**
      * @param Password $password
      */
-    public function setPassword(Password $password)
+    public function setPassword($password)
     {
         $this->password = $password;
     }
@@ -342,7 +342,8 @@ abstract class AbstractUser
             'zoomUserId'       => null !== $this->getZoomUserId() ? $this->getZoomUserId()->getValue() : null,
             'externalId'       => null !== $this->getExternalId() ? $this->getExternalId()->getValue() : null,
             'pictureFullPath'  => null !== $this->getPicture() ? $this->getPicture()->getFullPath() : null,
-            'pictureThumbPath' => null !== $this->getPicture() ? $this->getPicture()->getThumbPath() : null
+            'pictureThumbPath' => null !== $this->getPicture() ? $this->getPicture()->getThumbPath() : null,
+//            'password'         => null !== $this->getPassword() ? $this->getPassword()->getValue() : null
         ];
     }
 }

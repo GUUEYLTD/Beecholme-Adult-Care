@@ -1,7 +1,6 @@
 @import "_variables";
 
 .amelia-app-booking, .am-modal.am-in-body {
-
   *:focus:not(.is-focus):not(:active) {
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -12,13 +11,14 @@
     left: 1px;
     overflow: hidden;
     white-space: nowrap;
+
     .el-select__tags-text {
       max-width: 80px;
       overflow: hidden;
       display: inline-flex;
     }
+
     .el-select__input {
-      height: 32px;
       border: none;
       background: transparent;
     }
@@ -53,6 +53,7 @@
     border-color: @color-divider-gray;
   }
 
+  // TODO - Move from overrides
   .payment-dialog-footer {
     display: flex;
     align-items: center;
@@ -76,6 +77,7 @@
     }
   }
 
+  // TODO - Move from overrides
   .calendar-link {
     a:hover, a:visited, a:link, a:active {
       text-decoration: none;
@@ -88,6 +90,7 @@
     }
   }
 
+  // TODO - Move from overrides
   .redirect-link {
     a {
       text-decoration: none;
@@ -99,12 +102,12 @@
   .el-form-item__content {
     line-height: 1;
   }
-
 }
 
 .el-popper {
   max-width: 97%;
   font-family: @font;
+
   .el-select-dropdown__item {
     white-space: normal;
     min-height: 40px;
@@ -113,10 +116,53 @@
   }
 }
 
+.el-select-dropdown__empty {
+  padding: 10px;
+}
+
+.el-select-dropdown {
+  .el-select-dropdown__item {
+    background-color: transparent;
+    color: @color-text-second;
+
+    &.hover {
+      background-color: transparent;
+    }
+
+    &:hover {
+      background-color: @color-highlight;
+    }
+
+    &.selected {
+      background-color: transparent;
+      color: inherit;
+
+      &.hover {
+        background-color: transparent;
+      }
+
+      &:hover {
+        background-color: @color-highlight;
+      }
+    }
+
+    &.is-disabled {
+      color: @color-gray;
+    }
+
+    @media @less-then-medium {
+      &.am-drop-child {
+        padding: 0 12px;
+      }
+    }
+  }
+}
+
 .el-button {
   margin: 0 @margin-small @margin-small;
   letter-spacing: 0;
   outline: none;
+
   &:hover, &:focus {
     outline: none;
   }
@@ -131,7 +177,48 @@
 
 .el-message-box {
   font-family: @font;
-  .el-message-box__title {
+}
 
+.el-message--success {
+  z-index: 999999 !important;
+}
+
+.el-message--error {
+  z-index: 999999 !important;
+}
+
+.el-tooltip__popper {
+  text-align: center;
+}
+
+.el-notification {
+  h2 {
+    &:before {
+      display: none;
+    }
   }
+}
+
+.el-dialog {
+  border-radius: 4px;
+}
+
+.el-input__prefix, .el-input__suffix {
+  color: #C0C4CC !important;
+}
+
+.el-dialog__headerbtn {
+  background-color: @color-white !important;
+}
+
+.el-dialog__wrapper {
+  z-index: 1000001 !important;
+}
+
+.el-select-dropdown, .el-picker-panel, .el-tooltip__popper {
+  z-index: 1100000 !important;
+}
+
+.v-modal {
+  z-index: 1000000 !important;
 }

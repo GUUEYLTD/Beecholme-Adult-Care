@@ -26,6 +26,7 @@ use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
+use AmeliaBooking\Domain\ValueObjects\String\PaymentType;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
@@ -63,6 +64,69 @@ class AppointmentReservationService extends AbstractReservationService
      * @throws \Interop\Container\Exception\ContainerException
      */
     public function book($appointmentData, $inspectTimeSlot, $save)
+    {
+        /** @var Reservation $reservation */
+        $reservation = $this->bookSingle($appointmentData, $inspectTimeSlot, $save);
+
+        /** @var Service $bookable */
+        $bookable = $reservation->getBookable();
+
+        /** @var Collection $recurringReservations */
+        $recurringReservations = new Collection();
+
+        if (isset($appointmentData['recurring'])) {
+            foreach ($appointmentData['recurring'] as $index => $recurringData) {
+                $recurringAppointmentData = array_merge(
+                    $appointmentData,
+                    [
+                        'providerId'   => $recurringData['providerId'],
+                        'locationId'   => $recurringData['locationId'],
+                        'bookingStart' => $recurringData['bookingStart'],
+                        'parentId'     => $reservation->getReservation()->getId() ?
+                            $reservation->getReservation()->getId()->getValue() : null,
+                        'recurring'    => []
+                    ]
+                );
+
+                if (empty($recurringData['useCoupon'])) {
+                    $recurringAppointmentData['couponCode'] = null;
+                    $recurringAppointmentData['bookings'][0]['coupon'] = null;
+                    $recurringAppointmentData['bookings'][0]['couponId'] = null;
+                }
+
+                if ($index >= $bookable->getRecurringPayment()->getValue()) {
+                    $recurringAppointmentData['payment']['gateway'] = PaymentType::ON_SITE;
+                }
+
+                /** @var Reservation $recurringReservation */
+                $recurringReservation = $this->bookSingle($recurringAppointmentData, $inspectTimeSlot, $save);
+
+                $recurringReservations->addItem($recurringReservation);
+            }
+        }
+
+        $reservation->setRecurring($recurringReservations);
+
+        return $reservation;
+    }
+
+    /**
+     * @param array $appointmentData
+     * @param bool  $inspectTimeSlot
+     * @param bool  $save
+     *
+     * @return Reservation
+     *
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\BookingUnavailableException
+     * @throws \AmeliaBooking\Domain\Common\Exceptions\CustomerBookedException
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws \Exception
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function bookSingle($appointmentData, $inspectTimeSlot, $save)
     {
         /** @var AppointmentApplicationService $appointmentAS */
         $appointmentAS = $this->container->get('application.booking.appointment.service');
@@ -106,9 +170,18 @@ class AppointmentReservationService extends AbstractReservationService
                 $appointment->setLocationId(new Id($appointmentData['locationId']));
             }
 
+            /** @var CustomerBooking $booking */
             $booking = CustomerBookingFactory::create($appointmentData['bookings'][0]);
             $booking->setAppointmentId($appointment->getId());
             $booking->setPrice($appointment->getService()->getPrice());
+
+            /** @var CustomerBookingExtra $bookingExtra */
+            foreach ($booking->getExtras()->getItems() as $bookingExtra) {
+                /** @var Extra $selectedExtra */
+                $selectedExtra = $service->getExtras()->getItem($bookingExtra->getExtraId()->getValue());
+
+                $bookingExtra->setPrice($selectedExtra->getPrice());
+            }
         } else {
             /** @var Appointment $appointment */
             $appointment = $appointmentAS->build($appointmentData, $service);
@@ -358,13 +431,14 @@ class AppointmentReservationService extends AbstractReservationService
      * @param Service          $bookable
      * @param CustomerBooking  $booking
      * @param Appointment      $reservation
+     * @param array            $recurringData
      * @param string           $paymentGateway
      *
      * @return array
      *
      * @throws InvalidArgumentException
      */
-    public function getInfo($bookable, $booking, $reservation, $paymentGateway)
+    public function getInfo($bookable, $booking, $reservation, $recurringData, $paymentGateway)
     {
         $info = [
             'type'               => Entities::APPOINTMENT,
@@ -406,7 +480,8 @@ class AppointmentReservationService extends AbstractReservationService
             ],
             'payment'            => [
                 'gateway' => $paymentGateway
-            ]
+            ],
+            'recurring'          => $recurringData
         ];
 
         foreach ($booking->getExtras()->keys() as $extraKey) {
@@ -470,5 +545,32 @@ class AppointmentReservationService extends AbstractReservationService
     public function isBookable($reservation, $bookable, $dateTime)
     {
         return true;
+    }
+
+    /**
+     * @param Reservation  $reservation
+     *
+     * @return float
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getReservationPaymentAmount($reservation)
+    {
+        /** @var Service $bookable */
+        $bookable = $reservation->getBookable();
+
+        $paymentAmount = $this->getPaymentAmount($reservation->getBooking(), $bookable);
+
+        /** @var Reservation $recurringReservation */
+        foreach ($reservation->getRecurring()->getItems() as $index => $recurringReservation) {
+            /** @var Service $recurringBookable */
+            $recurringBookable = $recurringReservation->getBookable();
+
+            if ($index < $recurringBookable->getRecurringPayment()->getValue()) {
+                $paymentAmount += $this->getPaymentAmount($recurringReservation->getBooking(), $recurringBookable);
+            }
+        }
+
+        return $paymentAmount;
     }
 }

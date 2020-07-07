@@ -2,10 +2,11 @@
 
 namespace AmeliaBooking\Application\Commands\Booking\Appointment;
 
-use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
+use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
@@ -17,6 +18,7 @@ use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class GetAppointmentsCommandHandler
@@ -29,18 +31,11 @@ class GetAppointmentsCommandHandler extends CommandHandler
      * @param GetAppointmentsCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Application\Common\Exceptions\AccessDeniedException
-     * @throws \UnexpectedValueException
-     * @throws \Firebase\JWT\SignatureInvalidException
-     * @throws \Firebase\JWT\ExpiredException
-     * @throws \Firebase\JWT\BeforeValidException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     *
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws AccessDeniedException
+     * @throws ContainerException
      */
     public function handle(GetAppointmentsCommand $command)
     {
@@ -50,8 +45,8 @@ class GetAppointmentsCommandHandler extends CommandHandler
         $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
         /** @var SettingsService $settingsDS */
         $settingsDS = $this->container->get('domain.settings.service');
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
         /** @var BookingApplicationService $bookingAS */
         $bookingAS = $this->container->get('application.booking.booking.service');
 
@@ -61,7 +56,7 @@ class GetAppointmentsCommandHandler extends CommandHandler
 
         try {
             /** @var AbstractUser $user */
-            $user = $customerAS->authorization($isCabinetPage ? $command->getToken() : null);
+            $user = $userAS->authorization($isCabinetPage ? $command->getToken() : null, $command->getCabinetType());
         } catch (AuthorizationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setData([
@@ -88,7 +83,9 @@ class GetAppointmentsCommandHandler extends CommandHandler
             /** @var CustomerBooking $booking */
             foreach ($appointment->getBookings()->getItems() as $booking) {
                 // fix for wrongly saved JSON
-                if ($booking->getCustomFields() && json_decode($booking->getCustomFields()->getValue(), true) === null) {
+                if ($booking->getCustomFields() &&
+                    json_decode($booking->getCustomFields()->getValue(), true) === null
+                ) {
                     $booking->setCustomFields(null);
                 }
             }
@@ -112,7 +109,7 @@ class GetAppointmentsCommandHandler extends CommandHandler
             $providerId = $appointment->getProviderId()->getValue();
 
             // skip appointments/bookings for other customers if user is customer, and remember that time/date values
-            if ($isCabinetPage || $customerAS->isCustomer($user)) {
+            if ($userAS->isCustomer($user)) {
                 /** @var CustomerBooking $booking */
                 foreach ($appointment->getBookings()->getItems() as $bookingKey => $booking) {
                     if (!$user->getId() || $booking->getCustomerId()->getValue() !== $user->getId()->getValue()) {
@@ -143,8 +140,8 @@ class GetAppointmentsCommandHandler extends CommandHandler
                     $occupiedTimes[$appointment->getBookingStart()->getValue()->format('Y-m-d')][] =
                         [
                             'employeeId' => $providerId,
-                            'startTime' => $occupiedTimeStart,
-                            'endTime' => $occupiedTimeEnd,
+                            'startTime'  => $occupiedTimeStart,
+                            'endTime'    => $occupiedTimeEnd,
                         ];
 
                     continue;
@@ -152,7 +149,10 @@ class GetAppointmentsCommandHandler extends CommandHandler
             }
 
             // skip appointments for other providers if user is provider
-            if (!$readOthers && $user->getType() === Entities::PROVIDER && $user->getId()->getValue() !== $providerId) {
+            if ((!$readOthers || $isCabinetPage) &&
+                $user->getType() === Entities::PROVIDER &&
+                $user->getId()->getValue() !== $providerId
+            ) {
                 continue;
             }
 
@@ -184,7 +184,7 @@ class GetAppointmentsCommandHandler extends CommandHandler
         $result->setMessage('Successfully retrieved appointments');
         $result->setData([
             Entities::APPOINTMENTS => $groupedAppointments,
-            'occupied' => $occupiedTimes
+            'occupied'             => $occupiedTimes
         ]);
 
         return $result;

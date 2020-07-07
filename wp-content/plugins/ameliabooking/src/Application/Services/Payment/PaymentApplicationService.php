@@ -113,7 +113,6 @@ class PaymentApplicationService
      *
      * @return boolean
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      * @throws \InvalidArgumentException
      * @throws \Slim\Exception\ContainerException
      * @throws \Slim\Exception\ContainerValueNotFoundException
@@ -125,7 +124,7 @@ class PaymentApplicationService
         /** @var ReservationServiceInterface $reservationService */
         $reservationService = $this->container->get('application.reservation.service')->get($bookingType->getValue());
 
-        $paymentAmount = $reservationService->getPaymentAmount($reservation->getBooking(), $reservation->getBookable());
+        $paymentAmount = $reservationService->getReservationPaymentAmount($reservation);
 
         if (!$paymentAmount && ($paymentData['gateway'] === 'stripe' || $paymentData['gateway'] === 'payPal')) {
             $result->setResult(CommandResult::RESULT_ERROR);

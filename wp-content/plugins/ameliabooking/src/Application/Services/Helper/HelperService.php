@@ -102,7 +102,6 @@ class HelperService
      */
     public function getGeneratedJWT($email, $secret, $expireTimeStamp, $loginType)
     {
-        /** @var DateTime $now */
         $now = new DateTime();
 
         $data = [

@@ -89,7 +89,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.show AS service_show,
                 s.aggregatedPrice AS service_aggregatedPrice,
                 s.settings AS service_settings,
-
+                s.recurringCycle AS service_recurringCycle,
+                s.recurringSub AS service_recurringSub,
+                s.recurringPayment AS service_recurringPayment,
+                
                 e.id AS extra_id,
                 e.name AS extra_name,
                 e.price AS extra_price,
@@ -144,6 +147,9 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
             ':pictureThumbPath' => $data['pictureThumbPath'],
             ':position'         => $data['position'],
             ':settings'         => $data['settings'],
+            ':recurringCycle'   => $data['recurringCycle'],
+            ':recurringSub'     => $data['recurringSub'],
+            ':recurringPayment' => $data['recurringPayment'],
         ];
 
         try {
@@ -168,7 +174,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 `pictureFullPath`,
                 `pictureThumbPath`,
                 `position`,
-                `settings`
+                `settings`,
+                `recurringCycle`,
+                `recurringSub`,
+                `recurringPayment`
                 ) VALUES (
                 :name,
                 :description,
@@ -187,7 +196,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 :pictureFullPath,
                 :pictureThumbPath,
                 :position,
-                :settings
+                :settings,
+                :recurringCycle,
+                :recurringSub,
+                :recurringPayment
                 )"
             );
 
@@ -233,6 +245,9 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
             ':pictureThumbPath' => $data['pictureThumbPath'],
             ':position'         => $data['position'],
             ':settings'         => $data['settings'],
+            ':recurringCycle'   => $data['recurringCycle'],
+            ':recurringSub'     => $data['recurringSub'],
+            ':recurringPayment' => $data['recurringPayment'],
             ':id'               => $serviceId
         ];
 
@@ -258,7 +273,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 `pictureFullPath`   = :pictureFullPath,
                 `pictureThumbPath`  = :pictureThumbPath,
                 `position`          = :position,
-                `settings`          = :settings
+                `settings`          = :settings,
+                `recurringCycle`    = :recurringCycle,
+                `recurringSub`      = :recurringSub,
+                `recurringPayment`  = :recurringPayment
                 WHERE
                 id = :id"
             );
@@ -303,7 +321,8 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.pictureThumbPath AS service_picture_thumb,
                 s.aggregatedPrice AS service_aggregatedPrice,
                 s.settings AS service_settings,
-
+                s.recurringPayment AS service_recurringPayment,
+                
                 e.id AS extra_id,
                 e.name AS extra_name,
                 e.price AS extra_price,

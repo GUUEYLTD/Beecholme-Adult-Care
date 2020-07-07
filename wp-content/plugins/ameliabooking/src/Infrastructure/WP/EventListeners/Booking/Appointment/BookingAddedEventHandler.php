@@ -12,12 +12,12 @@ use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
-use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
-use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
+use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
+use AmeliaBooking\Domain\Factory\Booking\Event\EventFactory;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
-use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
 use AmeliaBooking\Application\Services\Zoom\ZoomApplicationService;
@@ -65,20 +65,17 @@ class BookingAddedEventHandler
 
         $booking = $commandResult->getData()[Entities::BOOKING];
         $appointmentStatusChanged = $commandResult->getData()['appointmentStatusChanged'];
-
-        /** @var ReservationServiceInterface $reservationService */
-        $reservationService = $container->get('application.reservation.service')->get($type);
+        $recurringData = $commandResult->getData()['recurring'];
 
         /** @var Appointment|Event $reservationObject */
-        $reservationObject = $reservationService->getReservationById(
-            (int)$commandResult->getData()[$type]['id']
-        );
+        $reservationObject = null;
 
-        /** @var CustomerBooking $bookingObject */
-        foreach ($reservationObject->getBookings()->getItems() as $bookingObject) {
-            if ($bookingObject->getId()->getValue() === $booking['id']) {
-                $bookingObject->setChangedStatus(new BooleanValueObject(true));
-            }
+        if ($type === Entities::APPOINTMENT) {
+            $reservationObject = AppointmentFactory::create($commandResult->getData()[$type]);
+        }
+
+        if ($type === Entities::EVENT) {
+            $reservationObject = EventFactory::create($commandResult->getData()[$type]);
         }
 
         $reservation = $reservationObject->toArray();
@@ -94,9 +91,11 @@ class BookingAddedEventHandler
                 }
             }
 
-            try {
-                $googleCalendarService->handleEvent($reservationObject, self::BOOKING_ADDED);
-            } catch (Exception $e) {
+            if ($googleCalendarService) {
+                try {
+                    $googleCalendarService->handleEvent($reservationObject, self::BOOKING_ADDED);
+                } catch (Exception $e) {
+                }
             }
 
             if ($reservationObject->getGoogleCalendarEventId() !== null) {
@@ -106,13 +105,56 @@ class BookingAddedEventHandler
 
         if ($type === Entities::EVENT) {
             if ($zoomService) {
-                $zoomService->handleEventMeeting($reservationObject, $reservationObject->getPeriods(), self::BOOKING_ADDED);
+                $zoomService->handleEventMeeting(
+                    $reservationObject,
+                    $reservationObject->getPeriods(),
+                    self::BOOKING_ADDED
+                );
 
                 $reservation['periods'] = $reservationObject->getPeriods()->toArray();
             }
         }
 
+        foreach ($recurringData as $key => $recurringReservationData) {
+            /** @var Appointment $recurringReservationObject */
+            $recurringReservationObject = AppointmentFactory::create($recurringReservationData[$type]);
+
+            $bookingApplicationService->setReservationEntities($recurringReservationObject);
+
+            if ($zoomService) {
+                $zoomService->handleAppointmentMeeting($recurringReservationObject, self::BOOKING_ADDED);
+
+                if ($recurringReservationObject->getZoomMeeting()) {
+                    $recurringData[$key][$type]['zoomMeeting'] =
+                        $recurringReservationObject->getZoomMeeting()->toArray();
+                }
+            }
+
+            if ($googleCalendarService) {
+                try {
+                    $googleCalendarService->handleEvent($recurringReservationObject, self::BOOKING_ADDED);
+                } catch (Exception $e) {
+                }
+
+                if ($recurringReservationObject->getGoogleCalendarEventId() !== null) {
+                    $recurringData[$key][$type]['googleCalendarEventId'] =
+                        $recurringReservationObject->getGoogleCalendarEventId()->getValue();
+                }
+            }
+        }
+
+        $reservation['recurring'] = $recurringData;
+
         if ($appointmentStatusChanged === true) {
+            foreach ($reservation['bookings'] as $bookingKey => $bookingArray) {
+                if ($bookingArray['id'] !== $booking['id'] &&
+                    $bookingArray['status'] === BookingStatus::APPROVED &&
+                    $reservation['status'] === BookingStatus::APPROVED
+                ) {
+                    $reservation['bookings'][$bookingKey]['isChangedStatus'] = true;
+                }
+            }
+
             $emailNotificationService->sendAppointmentStatusNotifications($reservation, true, true);
 
             if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
@@ -128,6 +170,45 @@ class BookingAddedEventHandler
             }
         }
 
+        foreach ($recurringData as $key => $recurringReservationData) {
+            if ($recurringReservationData['appointmentStatusChanged'] === true) {
+                foreach ($recurringData[$key][$type]['bookings'] as $bookingKey => $recurringReservationBooking) {
+                    if ($recurringReservationBooking['customerId'] === $booking['customerId']) {
+                        $recurringData[$key][$type]['bookings'][$bookingKey]['skipNotification'] = true;
+                    }
+
+                    if ($recurringReservationBooking['id'] !== $booking['id'] &&
+                        $recurringReservationBooking['status'] === BookingStatus::APPROVED &&
+                        $recurringData[$key][$type]['status'] === BookingStatus::APPROVED
+                    ) {
+                        $recurringData[$key][$type]['bookings'][$bookingKey]['isChangedStatus'] = true;
+                    }
+                }
+
+                $emailNotificationService->sendAppointmentStatusNotifications(
+                    $recurringData[$key][$type],
+                    true,
+                    true
+                );
+
+                if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
+                    $smsNotificationService->sendAppointmentStatusNotifications(
+                        $recurringData[$key][$type],
+                        true,
+                        true
+                    );
+                }
+            }
+        }
+
         $webHookService->process(self::BOOKING_ADDED, $reservation, [$booking]);
+
+        foreach ($recurringData as $key => $recurringReservationData) {
+            $webHookService->process(
+                self::BOOKING_ADDED,
+                $recurringReservationData[$type],
+                [$recurringReservationData['booking']]
+            );
+        }
     }
 }

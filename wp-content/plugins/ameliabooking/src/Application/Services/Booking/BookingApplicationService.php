@@ -188,6 +188,18 @@ class BookingApplicationService
             $data['bookingStart'] = DateTimeService::getCustomDateTimeFromUtc(
                 $data['bookingStart']
             );
+
+            if (isset($data['recurring'])) {
+                foreach ($data['recurring'] as $key => $recurringData) {
+                    if (isset($data['recurring'][$key]['locationId']) && $data['recurring'][$key]['locationId'] === '') {
+                        $data['recurring'][$key]['locationId'] = null;
+                    }
+
+                    $data['recurring'][$key]['bookingStart'] = DateTimeService::getCustomDateTimeFromUtc(
+                        $recurringData['bookingStart']
+                    );
+                }
+            }
         }
 
         return $data;
