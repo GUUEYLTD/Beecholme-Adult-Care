@@ -1,10 +1,9 @@
 === Advanced Cron Manager - debug & control ===
 Contributors: bracketspace, Kubitomakita
-Donate link: https://www.paypal.me/underDEV/
 Tags: cron, wp cron, cron jobs, manager, cron manager, crontrol
 Requires at least: 3.6
-Tested up to: 4.8
-Stable tag: 2.3.1
+Tested up to: 5.3
+Stable tag: 2.3.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,11 +37,12 @@ Plugin use AJAX request so you'll need enabled Javascript in order to use it.
 > PRO version includes
 >
 > * Cron Logger - log cron's execution times easily
+> * Events rescheduling - change event next execution date to control server load
 > * Error catcher - catch cron task's fatal errors and get them displayed in the log
 > * Performance stats - see how much time and memory particular event took
 > * Debug tool - log any useful informations from Cron callback
 >
-> [Buy now](https://www.wpart.co/downloads/advanced-cron-manager-pro/ "Advanced Cron Manager PRO")
+> [Buy now](https://bracketspace.com/downloads/advanced-cron-manager-pro/ "Advanced Cron Manager PRO")
 
 **Informations about WP Cron**
 
@@ -89,6 +89,43 @@ Yes, but WP-Cron Control is quite old and it's tactics is not needed anymore. Ad
 6. Server Scheduler section
 
 == Changelog ==
+
+= 2.3.10 =
+* [Fixed] A "Trying to get property 'hash' of non-object" warning fix when executed event doesn't exist anymore
+* [Added] Action for adding own event row actions
+
+= 2.3.9 =
+* [Fixed] "non-numeric value encountered" error with event arguments
+* [Fixed] Fatal error when even argument was an object. Now, class name is displayed
+* [Changed] Now when event is executed manually, DOING_CRON constant is defined
+
+= 2.3.8 =
+* [Fixed] Events table width
+* [Changed] ACF PRO download link
+
+= 2.3.7 =
+* [Fixed] WordPress <4.7 compatibility
+
+= 2.3.6 =
+* [Fixed] PHP 7.2 compatibility
+
+= 2.3.5 =
+* [Fixed] Fatal error when event argument was an object
+* [Fixed] Notices
+* [Fixed] Arguments list in the events table
+* [Changed] Composer libraries updated
+* [Changed] Node packages updated
+* [Added] Plugin action link on Plugins table
+
+= 2.3.4
+* [Fixed] wp-hooks script handle, causing the page to not load plugin's JavaScript
+
+= 2.3.3
+* [Changed] JavaScript hooks library which was conflicting with Gutenberg
+
+= 2.3.2 =
+* [Fixed] i18n of Apply button
+* [Added] Scheduled and Uncheduled actions for events
 
 = 2.3.1 =
 * [Fixed] Array to string conversion error fix for event arguments

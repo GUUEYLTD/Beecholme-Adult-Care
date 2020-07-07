@@ -47,6 +47,7 @@ if ( $event->paused ) {
 						<a href="#" data-nonce="<?php echo $event->nonce( 'pause' ); ?>" data-event="<?php echo esc_attr( $event->hash ); ?>" class="pause-event"><?php esc_html_e( 'Pause', 'advanced-cron-manager' ); ?></a> |
 					<?php endif ?>
 				</span>
+				<?php do_action( 'advanced-cron-manager/screen/event/row/actions', $event, $this ); ?>
 				<span class="trash">
 					<?php if ( $event->protected ): ?>
 						<?php esc_html_e( 'Protected', 'advanced-cron-manager' ); ?>
@@ -59,7 +60,15 @@ if ( $event->paused ) {
 		<div class="column schedule"><?php echo esc_html( $schedules->get_schedule( $event->schedule )->label ); ?></div>
 		<div class="column arguments">
 			<?php foreach ( $event->args as $arg ): ?>
-				<span><?php echo esc_html( is_array( $arg ) ? __( 'Array', 'advanced-cron-manager' ) : $arg ); ?></span>
+				<span>
+					<?php if ( is_array( $arg ) ) : ?>
+						<?php esc_html_e( 'Array', 'advanced-cron-manager' ); ?>
+					<?php elseif ( is_object( $arg ) ) : ?>
+						<?php echo esc_html( get_class( $arg ) ); ?>
+					<?php else : ?>
+						<?php echo esc_html( $arg ); ?>
+					<?php endif ?>
+				</span>
 			<?php endforeach ?>
 		</div>
 		<div class="column next-execution">
