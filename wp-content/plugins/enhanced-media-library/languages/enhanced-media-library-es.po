@@ -1,32 +1,26 @@
-#, fuzzy
+# Translation of Enhanced Media Library (Free & PRO) in Spanish (Spain)
+# This file is distributed under the same license as the Enhanced Media Library (Free & PRO) package.
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: Enhanced Media Library\n"
+"Project-Id-Version: Enhanced Media Library (Free & PRO)\n"
 "POT-Creation-Date: 2018-09-11 00:08+0300\n"
-"PO-Revision-Date: 2016-04-14 21:02+0300\n"
-"Last-Translator: wpUXsolutions <wpUXsolutions@gmail.com>\n"
-"Language-Team: wpUXsolutions <wpUXsolutions@gmail.com>\n"
+"PO-Revision-Date: 2018-09-11 00:11+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 2.1.1\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-WPHeader: enhanced-media-library.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: core/mime-types.php:30
 msgid "MIME Types settings restored."
-msgstr ""
+msgstr "Ajustes de tipos MIME restaurados."
 
 #: core/mime-types.php:39
 msgid "MIME Types settings saved."
-msgstr ""
+msgstr "Ajustes de tipos MIME guardados."
 
 #: core/mime-types.php:117
 #, php-format
@@ -41,33 +35,33 @@ msgstr[1] ""
 #: core/options-pages.php:1694 core/options-pages.php:1952
 #: core/options-pages.php:2265 core/options-pages.php:2465
 msgid "Media Settings"
-msgstr ""
+msgstr "Ajustes de medios"
 
 #: core/options-pages.php:106 core/options-pages.php:107
 #: core/options-pages.php:363 core/options-pages.php:1019
 msgid "Media Library"
-msgstr ""
+msgstr "Biblioteca de medios"
 
 #: core/options-pages.php:115 core/options-pages.php:116
 #: core/options-pages.php:364 core/options-pages.php:1033
 #: core/options-pages.php:1742 core/options-pages.php:1973
 msgid "Media Taxonomies"
-msgstr ""
+msgstr "Taxonomías de medios"
 
 #: core/options-pages.php:124 core/options-pages.php:125
 #: core/options-pages.php:365 core/options-pages.php:1047
 msgid "MIME Types"
-msgstr ""
+msgstr "Tipos MIME"
 
 #. Plugin Name of the plugin/theme
 #: core/options-pages.php:166 core/options-pages.php:167
 #: core/options-pages.php:194 core/options-pages.php:195
 msgid "Enhanced Media Library"
-msgstr ""
+msgstr "Enhanced Media Library"
 
 #: core/options-pages.php:362
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: core/options-pages.php:388 core/options-pages.php:395
 #: core/options-pages.php:732 core/options-pages.php:740
@@ -76,142 +70,146 @@ msgstr ""
 #: core/options-pages.php:1947 core/options-pages.php:2252
 #: core/options-pages.php:2259
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
+msgstr "No tiene los suficientes permisos para acceder esta página."
 
 #: core/options-pages.php:410
 msgid "Image sizes"
-msgstr ""
+msgstr "Tamaños de imagen"
 
 #: core/options-pages.php:411
 msgid ""
 "The sizes listed below determine the maximum dimensions in pixels to use "
 "when adding an image to the Media Library."
 msgstr ""
+"Los tamaños de la lista siguiente determinan las dimensiones máximas en "
+"píxeles que se usarán al añadir una imagen a la biblioteca de medios."
 
 #: core/options-pages.php:415
 msgid "Thumbnail size"
-msgstr ""
+msgstr "Tamaño de miniatura"
 
 #: core/options-pages.php:417
 msgid "Width"
-msgstr ""
+msgstr "Ancho"
 
 #: core/options-pages.php:419
 msgid "Height"
-msgstr ""
+msgstr "Alto"
 
 #: core/options-pages.php:422
 msgid ""
 "Crop thumbnail to exact dimensions (normally thumbnails are proportional)"
 msgstr ""
+"Recorta la miniatura a las dimensiones exactas (normalmente las miniaturas "
+"son proporcionales)"
 
 #: core/options-pages.php:427 core/options-pages.php:428
 msgid "Medium size"
-msgstr ""
+msgstr "Tamaño medio"
 
 #: core/options-pages.php:429 core/options-pages.php:440
 msgid "Max Width"
-msgstr ""
+msgstr "Ancho máximo"
 
 #: core/options-pages.php:432 core/options-pages.php:443
 msgid "Max Height"
-msgstr ""
+msgstr "Tamaño máximo"
 
 #: core/options-pages.php:438 core/options-pages.php:439
 msgid "Large size"
-msgstr ""
+msgstr "Tamaño grande"
 
 #: core/options-pages.php:456
 msgid "Embeds"
-msgstr ""
+msgstr "Incrustados"
 
 #: core/options-pages.php:463
 msgid "Uploading Files"
-msgstr ""
+msgstr "Subiendo archivos"
 
 #: core/options-pages.php:470
 msgid "Store uploads in this folder"
-msgstr ""
+msgstr "Almacena los archivos subidos en esta carpeta"
 
 #: core/options-pages.php:474
 #, php-format
 msgid "Default is %s"
-msgstr ""
+msgstr "Por defecto es %s"
 
 #: core/options-pages.php:480
 msgid "Full URL path to files"
-msgstr ""
+msgstr "URL completa a los archivos"
 
 #: core/options-pages.php:482
 msgid "Configuring this is optional. By default, it should be blank."
-msgstr ""
+msgstr "Configurar esto es opcional. Por defecto debería estar en blanco."
 
 #: core/options-pages.php:490
 msgid "Organize my uploads into month- and year-based folders"
-msgstr ""
+msgstr "Organiza mis archivos subidos en carpetas basadas en mes y año"
 
 #: core/options-pages.php:560 core/options-pages.php:1997
 #: core/options-pages.php:2012 core/options-pages.php:2075
 #: core/options-pages.php:2147
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: core/options-pages.php:561
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: core/options-pages.php:562 core/options-pages.php:2013
 #: core/options-pages.php:2076
 msgid "View"
-msgstr ""
+msgstr "Ver"
 
 #: core/options-pages.php:563 core/options-pages.php:2014
 #: core/options-pages.php:2077
 msgid "Update"
-msgstr ""
+msgstr "Actualizar"
 
 #: core/options-pages.php:564 core/options-pages.php:2015
 #: core/options-pages.php:2078
 msgid "Add New"
-msgstr ""
+msgstr "Añadir nueva"
 
 #: core/options-pages.php:565 core/options-pages.php:2016
 #: core/options-pages.php:2079
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #: core/options-pages.php:566
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: core/options-pages.php:567 core/options-pages.php:2017
 #: core/options-pages.php:2080
 msgid "Parent"
-msgstr ""
+msgstr "Superior"
 
 #: core/options-pages.php:568 core/options-pages.php:862
 #: core/options-pages.php:1084 core/options-pages.php:2011
 #: core/options-pages.php:2074 core/taxonomies.php:381
 #: enhanced-media-library.php:561
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: core/options-pages.php:569 core/options-pages.php:2018
 #: core/options-pages.php:2081
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: core/options-pages.php:571 core/options-pages.php:2062
 msgid "New Taxonomy"
-msgstr ""
+msgstr "Nueva taxonomía"
 
 #: core/options-pages.php:573
 msgid "Remove Taxonomy"
-msgstr ""
+msgstr "Borrar taxonomía"
 
 #: core/options-pages.php:574
 msgid "Taxonomy will be removed."
-msgstr ""
+msgstr "Se borrará la taxonomía."
 
 #: core/options-pages.php:575
 msgid ""
@@ -219,30 +217,33 @@ msgid ""
 "create a taxonomy with the same name in the future, its terms (categories) "
 "will be available again."
 msgstr ""
+"Los términos de taxonomías (categorías) permanecerán intactos en la base de "
+"datos. Si creas una taxonomía con el mismo nombre en un futuro sus términos "
+"(categorías) estarán de nuevo disponibles."
 
 #: core/options-pages.php:576
 msgid "Media items will remain intact."
-msgstr ""
+msgstr "Los medios permanecerán intactos."
 
 #: core/options-pages.php:577
 msgid "Are you still sure?"
-msgstr ""
+msgstr "¿De verdad estás seguro?"
 
 #: core/options-pages.php:578
 msgid "Yes, remove taxonomy"
-msgstr ""
+msgstr "Sí, borra la taxonomía"
 
 #: core/options-pages.php:580
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicar"
 
 #: core/options-pages.php:581
 msgid "Taxonomy with the same name already exists. Please chose other one."
-msgstr ""
+msgstr "Ya existe una taxonomía con el mismo nombre. Por favor, elige otro."
 
 #: core/options-pages.php:583
 msgid "Empty Fields"
-msgstr ""
+msgstr "Campos vacíos"
 
 #: core/options-pages.php:584
 msgid "Wrong Taxonomy Name"
@@ -255,6 +256,8 @@ msgstr ""
 #: core/options-pages.php:587
 msgid "Please choose Singular and Plural names for all new taxomonies."
 msgstr ""
+"Por favor, elige nombres en singular y plural para todas las nuevas "
+"taxonomías."
 
 #: core/options-pages.php:588
 msgid "Please choose Singular name for all new taxomonies."
@@ -284,36 +287,37 @@ msgstr ""
 
 #: core/options-pages.php:595 core/options-pages.php:644
 msgid "Ok"
-msgstr ""
+msgstr "Vale"
 
 #: core/options-pages.php:596 core/options-pages.php:601
 #: core/options-pages.php:645 core/options-pages.php:690
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: core/options-pages.php:598
 msgid "Synchronize Now"
-msgstr ""
+msgstr "Sincronizar ahora"
 
 #: core/options-pages.php:599 core/options-pages.php:687
 msgid "This operation cannot be canceled! Are you still sure?"
-msgstr ""
+msgstr "¡Esta operación no puede cancelarse! ¿Estás de verdad seguro?"
 
 #: core/options-pages.php:600
 msgid "Synchronize"
-msgstr ""
+msgstr "Sincronizar"
 
 #: core/options-pages.php:602
 msgid "Synchronizing..."
-msgstr ""
+msgstr "Sincronizando…"
 
 #: core/options-pages.php:639 core/options-pages.php:2388
 msgid "Restore WordPress default MIME Types"
-msgstr ""
+msgstr "Restaura los tipos MIME por defecto de WordPress"
 
 #: core/options-pages.php:640
 msgid "Warning! All your custom MIME Types will be deleted by this operation."
 msgstr ""
+"¡Aviso! Todos tus tipos MIME personalizados se borrarán con esta operación."
 
 #: core/options-pages.php:641
 msgid "Restore Defaults"
@@ -329,30 +333,32 @@ msgstr ""
 
 #: core/options-pages.php:648
 msgid "Please fill into all fields."
-msgstr ""
+msgstr "Por favor, rellena todos los campos."
 
 #: core/options-pages.php:649
 msgid "Duplicate extensions or MIME types. Please choose other one."
-msgstr ""
+msgstr "Extensiones o tipos MIME duplicados. Por favor, elige otro."
 
 #: core/options-pages.php:685 core/options-pages.php:853
 #: core/options-pages.php:1063
 msgid "Complete Cleanup"
-msgstr ""
+msgstr "Borrado completo"
 
 #: core/options-pages.php:686
 msgid ""
 "You are about to <strong style=\"text-transform:uppercase\">delete all "
 "plugin data</strong> from the database including backups."
 msgstr ""
+"Estás a punto de <strong style=\"text-transform:uppercase\">borrar todos los "
+"datos del plugin</strong> de la base de datos, incluidas las copias."
 
 #: core/options-pages.php:688
 msgid "Yes, delete all data"
-msgstr ""
+msgstr "Sí, borra todos los datos"
 
 #: core/options-pages.php:689
 msgid "Cleaning..."
-msgstr ""
+msgstr "Borrando…"
 
 #: core/options-pages.php:693 core/options-pages.php:996
 msgid "Unify Media Settings over Network"
@@ -377,7 +383,7 @@ msgstr ""
 
 #: core/options-pages.php:756
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: core/options-pages.php:761
 msgid "Plugin settings to export:"
@@ -405,11 +411,11 @@ msgstr ""
 
 #: core/options-pages.php:773
 msgid "Export Plugin Settings"
-msgstr ""
+msgstr "Ajustes de exportación del plugin"
 
 #: core/options-pages.php:783
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: core/options-pages.php:788
 msgid "Plugin settings to import:"
@@ -428,27 +434,34 @@ msgid ""
 "to restore current data from an automatic backup in case you are not "
 "satisfied with the result of the import."
 msgstr ""
+"Todos los ajustes del plugin se sobreescribirán en la importación. Tendrás "
+"la opción de restaurar los datos actuales desde una copia automática si no "
+"estás satisfecho con el resultado de la importación."
 
 #: core/options-pages.php:801
 msgid "Import Plugin Settings"
-msgstr ""
+msgstr "Importar ajustes del plugin"
 
 #: core/options-pages.php:813
 msgid "Restore"
-msgstr ""
+msgstr "Restaurar"
 
 #: core/options-pages.php:819
 msgid "No backup available at the moment."
-msgstr ""
+msgstr "No hay ninguna copia disponible en este momento."
 
 #: core/options-pages.php:821
 msgid "Backup will be created automatically before any import operation."
 msgstr ""
+"Se creará una copia automáticamente antes de cualquier operación de "
+"importación. "
 
 #: core/options-pages.php:825
 msgid ""
 "The backup has been automatically created before the latest import operation."
 msgstr ""
+"La copia se ha creado automáticamente antes de la última operación de "
+"importación."
 
 #: core/options-pages.php:828
 msgid "Plugin settings to restore:"
@@ -456,15 +469,15 @@ msgstr ""
 
 #: core/options-pages.php:837
 msgid "Restore Settings from the Backup"
-msgstr ""
+msgstr "Restaura ajustes desde la copia"
 
 #: core/options-pages.php:860 core/options-pages.php:1082
 msgid "What will be deleted:"
-msgstr ""
+msgstr "Lo que se borrará:"
 
 #: core/options-pages.php:865
 msgid "All plugin options"
-msgstr ""
+msgstr "Todas los ajustes del plugin"
 
 #: core/options-pages.php:866 core/options-pages.php:1089
 msgid "All plugin backups stored in the database"
@@ -472,15 +485,15 @@ msgstr ""
 
 #: core/options-pages.php:870 core/options-pages.php:1093
 msgid "What will remain intact:"
-msgstr ""
+msgstr "Lo que permanecerá intacto:"
 
 #: core/options-pages.php:871 core/options-pages.php:1094
 msgid "All media items"
-msgstr ""
+msgstr "Todos los medios"
 
 #: core/options-pages.php:872 core/options-pages.php:1095
 msgid "All taxonomies not listed above"
-msgstr ""
+msgstr "Todas las taxonomías que no están en la lista anterior"
 
 #: core/options-pages.php:875 core/options-pages.php:1098
 msgid ""
@@ -496,7 +509,7 @@ msgstr ""
 
 #: core/options-pages.php:882
 msgid "Delete All Data & Deactivate"
-msgstr ""
+msgstr "Borrar todos los datos y desactivar"
 
 #: core/options-pages.php:945
 msgid "Network Settings"
@@ -550,7 +563,7 @@ msgstr ""
 #: core/options-pages.php:2177 core/options-pages.php:2215
 #: core/options-pages.php:2386 enhanced-media-library.php:570
 msgid "Save Changes"
-msgstr ""
+msgstr "Guardar cambios"
 
 #: core/options-pages.php:1012 core/options-pages.php:1015
 msgid "Media Library Settings"
@@ -597,11 +610,11 @@ msgstr ""
 
 #: core/options-pages.php:1356
 msgid "Plugin settings imported."
-msgstr ""
+msgstr "Ajustes del plugin importados."
 
 #: core/options-pages.php:1409
 msgid "Plugin settings restored from the backup."
-msgstr ""
+msgstr "Ajustes del plugin restaurados desde la copia."
 
 #: core/options-pages.php:1714
 msgid "Filters"
@@ -609,15 +622,15 @@ msgstr ""
 
 #: core/options-pages.php:1723 core/options-pages.php:1726
 msgid "Force filters"
-msgstr ""
+msgstr "Forzar filtros"
 
 #: core/options-pages.php:1727
 msgid "Show media filters for ANY Media Popup"
-msgstr ""
+msgstr "Mostrar los filtros de medios en cualquier medio emergente"
 
 #: core/options-pages.php:1728
 msgid "Try this if filters are not shown for third-party plugins or themes."
-msgstr ""
+msgstr "Prueba esto si otros plugins o temas no muestran los filtros."
 
 #: core/options-pages.php:1734 core/options-pages.php:1737
 msgid "Filters to show"
@@ -667,7 +680,7 @@ msgstr ""
 
 #: core/options-pages.php:1789
 msgid "Order media items by"
-msgstr ""
+msgstr "Ordenar los medios por"
 
 #: core/options-pages.php:1792
 msgid "Date"
@@ -684,7 +697,7 @@ msgstr ""
 
 #: core/options-pages.php:1796 core/options-pages.php:1808
 msgid "For media library and media popups"
-msgstr ""
+msgstr "Para la biblioteca de medios y medios emergentes"
 
 #: core/options-pages.php:1797
 msgid ""
@@ -693,7 +706,7 @@ msgstr ""
 
 #: core/options-pages.php:1802
 msgid "Sort order"
-msgstr ""
+msgstr "Tipo de orden"
 
 #: core/options-pages.php:1805
 msgid "Ascending"
@@ -743,29 +756,31 @@ msgstr ""
 
 #: core/options-pages.php:1868
 msgid "Media Shortcodes"
-msgstr ""
+msgstr "Códigos cortos de medios"
 
 #: core/options-pages.php:1877 core/options-pages.php:1880
 msgid "Enhanced media shortcodes"
-msgstr ""
+msgstr "Códigos cortos de Enhanced Media"
 
 #: core/options-pages.php:1881
 msgid ""
 "Enhance WordPress media shortcodes to make them understand media taxonomies, "
 "upload date, and media items number limit"
 msgstr ""
+"Mejora los códigos de medios de WordPress para hacerlos compatibles con "
+"taxonomías de medios, fecha de actualización y límite de número de medios."
 
 #: core/options-pages.php:1882
 msgid "Gallery example:"
-msgstr ""
+msgstr "Ejemplo de galería:"
 
 #: core/options-pages.php:1883
 msgid "Audio playlist example:"
-msgstr ""
+msgstr "Ejemplo de lista de audio:"
 
 #: core/options-pages.php:1884
 msgid "Video playlist example:"
-msgstr ""
+msgstr "Ejemplo de lista de vídeo:"
 
 #: core/options-pages.php:1888
 msgid "Warning"
@@ -785,56 +800,59 @@ msgid ""
 "option activated. If you find an issue please inform plugin authors at %s or "
 "%s."
 msgstr ""
+"Por favor, comprueba que funcione tu galería en la web y el escritorio nada "
+"más activar esta opción. Si encuentras algún problema informa a los autores "
+"del plugin en %s o %s."
 
 #: core/options-pages.php:1977 core/options-pages.php:2124
 msgid "Assign following taxonomies to Media Library:"
-msgstr ""
+msgstr "Asigna las siguientes taxonomías a la biblioteca de medios:"
 
 #: core/options-pages.php:1996 core/options-pages.php:2062
 #: core/options-pages.php:2146
 msgid "Assign Taxonomy"
-msgstr ""
+msgstr "Asignar taxonomía"
 
 #: core/options-pages.php:1997 core/options-pages.php:2147
 msgid "Edit Taxonomy"
-msgstr ""
+msgstr "Editar taxonomía"
 
 #: core/options-pages.php:2001 core/options-pages.php:2064
 msgid "Delete Taxonomy"
-msgstr ""
+msgstr "Borrar taxonomía"
 
 #: core/options-pages.php:2006 core/options-pages.php:2069
 msgid "Labels"
-msgstr ""
+msgstr "Etiquetas"
 
 #: core/options-pages.php:2008 core/options-pages.php:2071
 msgid "Singular"
-msgstr ""
+msgstr "Singular"
 
 #: core/options-pages.php:2009 core/options-pages.php:2072
 msgid "Plural"
-msgstr ""
+msgstr "Plural"
 
 #: core/options-pages.php:2010 core/options-pages.php:2073
 msgid "Menu Name"
-msgstr ""
+msgstr "Nombre del menú"
 
 #: core/options-pages.php:2023 core/options-pages.php:2046
 #: core/options-pages.php:2086 core/options-pages.php:2150
 msgid "Settings"
-msgstr ""
+msgstr "Configurar"
 
 #: core/options-pages.php:2025 core/options-pages.php:2088
 msgid "Taxonomy Name"
-msgstr ""
+msgstr "Nombre de taxomonía"
 
 #: core/options-pages.php:2026 core/options-pages.php:2089
 msgid "Hierarchical"
-msgstr ""
+msgstr "Jerárquico"
 
 #: core/options-pages.php:2027 core/options-pages.php:2090
 msgid "Column for List View"
-msgstr ""
+msgstr "Vista de lista en columnas"
 
 #: core/options-pages.php:2028 core/options-pages.php:2048
 #: core/options-pages.php:2091 core/options-pages.php:2152
@@ -844,152 +862,156 @@ msgstr ""
 #: core/options-pages.php:2029 core/options-pages.php:2049
 #: core/options-pages.php:2092 core/options-pages.php:2153
 msgid "Filter for Grid View / Media Popup"
-msgstr ""
+msgstr "Filtrar por Vista rejilla / Medios emergentes"
 
 #: core/options-pages.php:2030 core/options-pages.php:2050
 #: core/options-pages.php:2093 core/options-pages.php:2154
 msgid "Edit in Media Popup"
-msgstr ""
+msgstr "Editar en medio emergente"
 
 #: core/options-pages.php:2031 core/options-pages.php:2094
 msgid "Show in Nav Menu"
-msgstr ""
+msgstr "Mostrar en el menú de navegación"
 
 #: core/options-pages.php:2032 core/options-pages.php:2095
 msgid "Remember Terms Order (sort)"
-msgstr ""
+msgstr "Recordar orden de términos (colocación)"
 
 #: core/options-pages.php:2033 core/options-pages.php:2096
 msgid "Show in REST"
-msgstr ""
+msgstr "Mostrar en REST"
 
 #: core/options-pages.php:2034 core/options-pages.php:2097
 msgid "Rewrite Slug"
-msgstr ""
+msgstr "Reescribir el slug"
 
 #: core/options-pages.php:2035 core/options-pages.php:2098
 msgid "Slug with Front"
-msgstr ""
+msgstr "Slug en portada"
 
 #: core/options-pages.php:2110
 msgid "Add New Taxonomy"
-msgstr ""
+msgstr "Añadir nueva taxonomía"
 
 #: core/options-pages.php:2120
 msgid "Non-Media Taxonomies"
-msgstr ""
+msgstr "Taxonomías que no son de medios"
 
 #: core/options-pages.php:2183
 msgid "Options"
-msgstr ""
+msgstr "Opciones"
 
 #: core/options-pages.php:2193 core/options-pages.php:2196
 msgid "Taxonomy archive pages"
-msgstr ""
+msgstr "Páginas de archivo de taxonomías"
 
 #: core/options-pages.php:2197
 msgid "Turn on media taxonomy archive pages on the front-end"
-msgstr ""
+msgstr "Activa las páginas de archivo de taxonomías de medios en portada"
 
 #: core/options-pages.php:2198
 msgid ""
 "Re-save your permalink settings after this option change to make it work."
 msgstr ""
+"Vuelve a guardar tus ajustes de enlaces permanentes después de cambiar este "
+"ajuste para que funcione."
 
 #: core/options-pages.php:2204 core/options-pages.php:2207
 msgid "Assign all like hierarchical"
-msgstr ""
+msgstr "Asigna todo jerárquicamente"
 
 #: core/options-pages.php:2208
 msgid ""
 "Show non-hierarchical taxonomies like hierarchical in Grid View / Media Popup"
 msgstr ""
+"Mostrar taxonomías no jerárquicas como jerárquicas en Vista rejilla / Medios "
+"emergentes"
 
 #: core/options-pages.php:2271
 msgid "Add New MIME Type"
-msgstr ""
+msgstr "Añadir nuevo tipo MIME"
 
 #: core/options-pages.php:2291 core/options-pages.php:2345
 msgid "Extension"
-msgstr ""
+msgstr "Extensión"
 
 #: core/options-pages.php:2292 core/options-pages.php:2346
 msgid "MIME Type"
-msgstr ""
+msgstr "Tipo MIME"
 
 #: core/options-pages.php:2293 core/options-pages.php:2347
 msgid "Singular Label"
-msgstr ""
+msgstr "Etiqueta singular"
 
 #: core/options-pages.php:2294 core/options-pages.php:2348
 msgid "Plural Label"
-msgstr ""
+msgstr "Etiqueta plural"
 
 #: core/options-pages.php:2295 core/options-pages.php:2324
 #: core/options-pages.php:2337 core/options-pages.php:2349
 msgid "Add Filter"
-msgstr ""
+msgstr "Añadir filtro"
 
 #: core/options-pages.php:2296 core/options-pages.php:2325
 #: core/options-pages.php:2338 core/options-pages.php:2350
 msgid "Allow Upload"
-msgstr ""
+msgstr "Permitir subida"
 
 #: core/options-pages.php:2326 core/options-pages.php:2339
 msgid "Delete MIME Type"
-msgstr ""
+msgstr "Borrar tipo MIME"
 
 #: core/options-pages.php:2415
 msgid "Changelog"
-msgstr ""
+msgstr "Registro de cambios"
 
 #: core/options-pages.php:2416
 msgid "What's new in"
-msgstr ""
+msgstr "Qué hay de nuevo en"
 
 #: core/options-pages.php:2416
 msgid "version"
-msgstr ""
+msgstr "versión"
 
 #: core/options-pages.php:2419
 msgid "More features under the hood"
-msgstr ""
+msgstr "Más características bajo el capó"
 
 #: core/options-pages.php:2421
 msgid "Support"
-msgstr ""
+msgstr "Soporte"
 
 #: core/options-pages.php:2422
 msgid "Feel free to ask for help on"
-msgstr ""
+msgstr "No temas pedir ayuda sobre"
 
 #: core/options-pages.php:2422
 msgid "Support is free for both versions of the plugin."
-msgstr ""
+msgstr "El soporte es gratuito para todas las versiones del plugin."
 
 #: core/options-pages.php:2424
 msgid "Plugin rating"
-msgstr ""
+msgstr "Valoración del plugin"
 
 #: core/options-pages.php:2425
 msgid "Please"
-msgstr ""
+msgstr "Por favor"
 
 #: core/options-pages.php:2425
 msgid "vote for the plugin"
-msgstr ""
+msgstr "vota al plugin"
 
 #: core/options-pages.php:2425
 msgid "Thanks!"
-msgstr ""
+msgstr "¡Gracias!"
 
 #: core/options-pages.php:2427
 msgid "Other plugins you may find useful"
-msgstr ""
+msgstr "Otros plugins que pueden serte útiles"
 
 #: core/options-pages.php:2469
 msgid "Utility"
-msgstr ""
+msgstr "Utilidad"
 
 #: core/options-pages.php:2494
 msgid "Rate us:"
@@ -1017,11 +1039,11 @@ msgstr ""
 
 #: core/taxonomies.php:101
 msgid "Media Taxonomies settings saved."
-msgstr ""
+msgstr "Ajustes de taxonomías de medios guardados."
 
 #: core/taxonomies.php:174
 msgid "Media Library settings saved."
-msgstr ""
+msgstr "Ajustes de biblioteca multimedia guardados."
 
 #: core/taxonomies.php:353
 msgid "Filter by author"
@@ -1034,11 +1056,11 @@ msgstr ""
 #: core/taxonomies.php:374 core/taxonomies.php:380
 #: enhanced-media-library.php:560
 msgid "Filter by"
-msgstr ""
+msgstr "Filtrar por"
 
 #: core/taxonomies.php:382 enhanced-media-library.php:562
 msgid "Not in a"
-msgstr ""
+msgstr "No está en"
 
 #: core/taxonomies.php:721
 msgid "Add some"
@@ -1123,11 +1145,11 @@ msgstr ""
 
 #: enhanced-media-library.php:358 enhanced-media-library.php:559
 msgid "All Uncategorized"
-msgstr ""
+msgstr "Sin categoría"
 
 #: enhanced-media-library.php:359 enhanced-media-library.php:563
 msgid "Reset All Filters"
-msgstr ""
+msgstr "Limpiar todos los filtros"
 
 #: enhanced-media-library.php:391
 msgid "Less Details"
@@ -1151,66 +1173,68 @@ msgstr ""
 
 #: enhanced-media-library.php:601
 msgid "Uploaded to post #"
-msgstr ""
+msgstr "Subido a la entrada #"
 
 #: enhanced-media-library.php:602
 msgid "Based On"
-msgstr ""
+msgstr "Basado en"
 
 #: enhanced-media-library.php:671 enhanced-media-library.php:673
 msgid "Media Categories"
-msgstr ""
+msgstr "Categorías de medios"
 
 #: enhanced-media-library.php:672
 msgid "Media Category"
-msgstr ""
+msgstr "Categoría de medios"
 
 #: enhanced-media-library.php:674
 msgid "All Media Categories"
-msgstr ""
+msgstr "Todas las categorías de medios"
 
 #: enhanced-media-library.php:675
 msgid "Edit Media Category"
-msgstr ""
+msgstr "Editar categoría de medios"
 
 #: enhanced-media-library.php:676
 msgid "View Media Category"
-msgstr ""
+msgstr "Ver categoría de medios"
 
 #: enhanced-media-library.php:677
 msgid "Update Media Category"
-msgstr ""
+msgstr "Actualizar categoría de medios"
 
 #: enhanced-media-library.php:678
 msgid "Add New Media Category"
-msgstr ""
+msgstr "Añadir nueva categoría de medios"
 
 #: enhanced-media-library.php:679
 msgid "New Media Category Name"
-msgstr ""
+msgstr "Nuevo nombre de categoría de medios"
 
 #: enhanced-media-library.php:680
 msgid "Parent Media Category"
-msgstr ""
+msgstr "Categoría de medios superior"
 
 #: enhanced-media-library.php:681
 msgid "Parent Media Category:"
-msgstr ""
+msgstr "Categoría de medios superior:"
 
 #: enhanced-media-library.php:682
 msgid "Search Media Categories"
-msgstr ""
+msgstr "Buscar categorías de medios"
 
 #. Plugin URI of the plugin/theme
 #. Author URI of the plugin/theme
 msgid "http://wpUXsolutions.com"
-msgstr ""
+msgstr "http://wpUXsolutions.com"
 
 #. Description of the plugin/theme
 msgid ""
 "This plugin will be handy for those who need to manage a lot of media files."
 msgstr ""
+"Este plugin es muy práctico para quien necesite gestionar muchos archivos "
+"multimedia."
 
 #. Author of the plugin/theme
 msgid "wpUXsolutions"
-msgstr ""
+msgstr "wpUXsolutions"
