@@ -2,9 +2,9 @@
 Contributors: Fullworks
 Tags: email, spam, envelope sender, phpmail, phpmailer
 Requires at least: 4.8.1
-Tested up to: 5.2.1
+Tested up to: 5.3
 Requires PHP: 5.6
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,9 @@ Once activated you can opt-in or skip providing usage information, and you will 
 No. Well not for free. I recommend one of the active Facebook groups on WordPress to get community support.
 
 == Changelog ==
+= 1.1.3 =
+* Move support off menu to settings
+
 = 1.1.2 =
 * Minor Fix
 
