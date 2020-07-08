@@ -25,7 +25,7 @@
 	</script>
 	<script async src='https://www.google-analytics.com/analytics.js'></script>
 	<!-- End Google Analytics -->
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body <?php body_class();?> class="page-<?php echo $cur_page; ?>">
