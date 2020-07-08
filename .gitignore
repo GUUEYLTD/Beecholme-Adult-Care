@@ -19,3 +19,4 @@ wp-config.php
 # ignore uploads
 wp-content/uploads/
 wp-content/cache/
+

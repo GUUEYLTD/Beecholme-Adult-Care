@@ -14,6 +14,7 @@ get_header(); ?>
                     <?php while (have_posts()) : the_post();
                         get_template_part( 'template-parts/post/content' );
                     endwhile; ?>
+					<?php echo do_shortcode('[instagram-feed]'); ?>
                 </div>
                 <?php get_sidebar(); ?>
             </div>
