@@ -231,9 +231,9 @@ jQuery(document).ready(function($) {
 });
 
 jQuery(document).on('mouseover', '#am-recurring-dates .dialog-footer ', function(e){
-  if ( jQuery('.am-recurring-flex-row-middle-align').length >= 10 ) {
+  if ( jQuery('.am-recurring-flex-row-middle-align').length >= 9 ) {
       localStorage['save'] = "save-ten";
-  } else if ( jQuery('.am-recurring-flex-row-middle-align').length >= 5 ) {
+  } else if ( jQuery('.am-recurring-flex-row-middle-align').length >= 4 ) {
     localStorage['save'] = "save-five";
   } else {
     localStorage['save'] = "";

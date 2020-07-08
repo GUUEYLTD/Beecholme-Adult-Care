@@ -4327,11 +4327,11 @@ a.policy-link {
 }
 
 .booking-form .save-five:before {
-    content: 'SAVE 5';
+    content: 'Book 5 sessions and use Code "SAVE5" to 5% off';
 }
 
 .booking-form .save-ten:before {
-    content: 'SAVE 10';
+    content: 'Book 10 sessions and use Code "SAVE10" to 10% off';
 }
 
 .booking-form #amelia-step-booking0-calendar {
