@@ -21,6 +21,7 @@ get_header();
                             'next_text' => '>',
                         )) ?>
                     </div>
+					<?php echo do_shortcode('[instagram-feed]'); ?>
                 </div>
                 <?php get_sidebar(); ?>
             </div>
