@@ -498,6 +498,8 @@ function filter_counsellors_paginated(){
 }
 
 add_filter('wpseo_sitemap_exclude_author', function ($users){
+
+    $users = get_users();
     $users = array_filter($users, function ($user){
         return in_array('wpamelia-provider', $user->roles) && get_field('enable_search', 'user_' . $user->ID);
     });
