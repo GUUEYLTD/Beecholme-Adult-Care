@@ -13,7 +13,6 @@ use AmeliaBooking\Domain\Factory\User\UserFactory;
 use AmeliaBooking\Domain\Repository\User\UserRepositoryInterface;
 use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\String\Password;
-use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\AbstractRepository;
 use AmeliaBooking\Infrastructure\WP\InstallActions\DB\Booking\CustomerBookingsTable;
@@ -120,7 +119,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             ':externalId'       => $data['externalId'] ?: null,
             ':firstName'        => $data['firstName'],
             ':lastName'         => $data['lastName'],
-            ':email'            => $data['email'],
+            ':email'            => isset($data['email']) ? $data['email'] : null,
             ':note'             => isset($data['note']) ? $data['note'] : null,
             ':phone'            => isset($data['phone']) ? $data['phone'] : null,
             ':gender'           => isset($data['gender']) ? $data['gender'] : null,
@@ -128,6 +127,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
             ':pictureFullPath'  => $data['pictureFullPath'],
             ':pictureThumbPath' => $data['pictureThumbPath'],
             ':zoomUserId'       => isset($data['zoomUserId']) ? $data['zoomUserId'] : null,
+            ':password'         => isset($data['password']) ? $data['password'] : null,
             ':id'               => $id,
         ];
 
@@ -145,7 +145,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
                 `birthday` = STR_TO_DATE(:birthday, '%Y-%m-%d'),
                 `zoomUserId` = :zoomUserId,
                 `pictureFullPath` = :pictureFullPath,
-                `pictureThumbPath` = :pictureThumbPath
+                `pictureThumbPath` = :pictureThumbPath,
+                `password` = IFNULL(:password, `password`)
                 WHERE 
                 id = :id"
             );

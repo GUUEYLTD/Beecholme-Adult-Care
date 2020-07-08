@@ -16,11 +16,13 @@ use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Duration;
 use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\WholeNumber;
 use AmeliaBooking\Domain\ValueObjects\Picture;
 use AmeliaBooking\Domain\ValueObjects\PositiveDuration;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
+use AmeliaBooking\Domain\ValueObjects\String\Cycle;
 use AmeliaBooking\Domain\ValueObjects\String\EntityType;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Domain\ValueObjects\Priority;
@@ -100,6 +102,18 @@ class ServiceFactory
 
         if (!empty($data['settings'])) {
             $service->setSettings(new Json($data['settings']));
+        }
+
+        if (!empty($data['recurringCycle'])) {
+            $service->setRecurringCycle(new Cycle($data['recurringCycle']));
+        }
+
+        if (!empty($data['recurringSub'])) {
+            $service->setRecurringSub(new Name($data['recurringSub']));
+        }
+
+        if (isset($data['recurringPayment'])) {
+            $service->setRecurringPayment(new WholeNumber ($data['recurringPayment']));
         }
 
         $gallery = new Collection();
@@ -185,6 +199,12 @@ class ServiceFactory
                 $row['service_aggregatedPrice'] : 0;
             $services[$serviceId]['settings'] = isset($row['service_settings']) ?
                 $row['service_settings'] : null;
+            $services[$serviceId]['recurringCycle'] = isset($row['service_recurringCycle']) ?
+                $row['service_recurringCycle'] : null;
+            $services[$serviceId]['recurringSub'] = isset($row['service_recurringSub']) ?
+                $row['service_recurringSub'] : null;
+            $services[$serviceId]['recurringPayment'] = isset($row['service_recurringPayment']) ?
+                $row['service_recurringPayment'] : null;
 
             if ($extraId) {
                 $services[$serviceId]['extras'][$extraId]['id'] = $row['extra_id'];

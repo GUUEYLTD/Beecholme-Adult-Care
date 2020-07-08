@@ -48,6 +48,10 @@ class AppointmentFactory
             $appointment->setId(new Id($data['id']));
         }
 
+        if (isset($data['parentId'])) {
+            $appointment->setParentId(new Id($data['parentId']));
+        }
+
         if (isset($data['locationId'])) {
             $appointment->setLocationId(new Id($data['locationId']));
         }
@@ -122,6 +126,8 @@ class AppointmentFactory
 
                 $appointments[$appointmentId] = [
                     'id'                    => $appointmentId,
+                    'parentId'              => isset($row['appointment_parentId']) ?
+                        $row['appointment_parentId'] : null,
                     'bookingStart'          => DateTimeService::getCustomDateTimeFromUtc(
                         $row['appointment_bookingStart']
                     ),

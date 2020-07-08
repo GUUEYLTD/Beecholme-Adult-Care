@@ -1,4 +1,4 @@
-( function ( $ ) {
+( function( $ ) {
 
 	var rl_folder_id = 0,
 		rl_ps = null,
@@ -8,134 +8,215 @@
 		disable_redirect = false,
 		attachments_browser = null,
 		last_priority = 2,
-		event_data = {};
+		event_data = {},
+		allow_modal_media_tag_saving = false;
 
-	// add new media folder filter
-	wp.media.view.AttachmentFilters.RLFolders = wp.media.view.AttachmentFilters.extend( {
-		id: 'media-attachment-rl-folders-filters',
-		className: 'attachment-filters attachment-rl-folders-filter',
-		change: function() {
-			wp.media.view.AttachmentFilters.prototype.change.apply( this, arguments );
+	function initFolders() {
+		var RLWPMediaViewMediaFramePost = wp.media.view.MediaFrame.Post;
 
-			if ( grid_frame !== null )
-				grid_frame.controller.states.get( 'library' ).get( 'library' ).observe( wp.Uploader.queue );
-		},
-		createFilters: function() {
-			var filters = {},
-				term_id = 0,
-				terms = $( $.parseHTML( rlFoldersArgs.terms ) ).find( 'option' );
+		// extend media frame
+		wp.media.view.MediaFrame.Post = RLWPMediaViewMediaFramePost.extend( {
+			initialize: function() {
+				// calling the initalize method from the current frame before adding new functionality
+				RLWPMediaViewMediaFramePost.prototype.initialize.apply( this, arguments );
 
-			// root
-			filters[0] = {
-				text: rlFoldersArgs.root,
-				priority: 1,
-				props: {
-					[rlFoldersArgs.taxonomy]: 0,
-					'force_update': 0,
-					'include_children': false
+				// events
+				this.on( 'content:render', this.contentRender, this );
+			},
+			contentRender: function( view ) {
+				// valid view?
+				if ( view !== null ) {
+					// get all selects
+					var selects = view.toolbar.secondary.$el.find( 'select.attachment-filters' );
+
+					// fix it only for more then 2 selects (default wp)
+					if ( selects.length > 2 ) {
+						// calculate new width
+						var number = parseInt( 100 / selects.length ) - 2;
+
+						$( selects ).each( function( i, el ) {
+							$( el ).css( 'width', 'calc(' + number + '% - 12px)' );
+						} );
+					}
 				}
-			};
+			}
+		} );
 
-			// media folder
-			if ( rlFoldersArgs.terms !== '' && terms.length > 0 ) {
-				$( $.parseHTML( rlFoldersArgs.terms ) ).find('option').each( function( i, option ) {
-					term_id = parseInt( $(option).val() );
-					term_id = ( term_id === 0 ? 'all' : term_id );
-					last_priority = i + 2;
+		// add new media folder filter
+		var RLWPMediaViewAttachmentFilters = wp.media.view.AttachmentFilters.extend( {
+			id: 'media-attachment-rl-folders-filters',
+			className: 'attachment-filters attachment-rl-folders-filter',
+			change: function() {
+				wp.media.view.AttachmentFilters.prototype.change.apply( this, arguments );
 
-					filters[term_id] = {
-						text: $( option ).text(),
-						priority: last_priority,
-						props: {
-							[rlFoldersArgs.taxonomy]: term_id,
-							'force_update': 0,
-							'include_children': false
-						}
-					};
-				} );
-			// all files
-			} else {
-				filters['all'] = {
-					text: rlFoldersArgs.all_terms,
+				if ( grid_frame !== null )
+					grid_frame.controller.states.get( 'library' ).get( 'library' ).observe( wp.Uploader.queue );
+			},
+			createFilters: function() {
+				var filters = {},
+					term_id = 0,
+					terms = $( $.parseHTML( rlFoldersArgs.terms ) ).find( 'option' );
+
+				// root
+				var root = {
+					text: rlFoldersArgs.root,
 					priority: 1,
 					props: {
-						[rlFoldersArgs.taxonomy]: 'all',
+						[rlFoldersArgs.taxonomy]: 0,
 						'force_update': 0,
-						'include_children': true
+						'include_children': false
 					}
 				};
+
+				// media folder
+				if ( rlFoldersArgs.terms !== '' && terms.length > 0 ) {
+					filters[0] = root;
+
+					$( $.parseHTML( rlFoldersArgs.terms ) ).find( 'option' ).each( function( i, option ) {
+						term_id = parseInt( $( option ).val() );
+						term_id = ( term_id === 0 ? 'all' : term_id );
+						last_priority = i + 2;
+
+						filters[term_id] = {
+							text: $( option ).text(),
+							priority: last_priority,
+							props: {
+								[rlFoldersArgs.taxonomy]: term_id,
+								'force_update': 0,
+								'include_children': false
+							}
+						};
+					} );
+				// all files
+				} else {
+					filters['all'] = {
+						text: rlFoldersArgs.all_terms,
+						priority: 1,
+						props: {
+							[rlFoldersArgs.taxonomy]: 'all',
+							'force_update': 0,
+							'include_children': true
+						}
+					};
+
+					filters[0] = root;
+				}
+
+				this.filters = filters;
 			}
+		} );
 
-			this.filters = filters;
-		}
-	} );
+		var RLFoldersAttachmentsBrowser = wp.media.view.AttachmentsBrowser;
 
-	// extend AttachmentsBrowser 
-	var RLFoldersAttachmentsBrowser = {
-		initialize: wp.media.view.AttachmentsBrowser.prototype.initialize,
-		createToolbar: wp.media.view.AttachmentsBrowser.prototype.createToolbar
-	};
+		// extend AttachmentsBrowser
+		wp.media.view.AttachmentsBrowser = wp.media.view.AttachmentsBrowser.extend( {
+			createToolbar: function() {
+				// load the original toolbar
+				RLFoldersAttachmentsBrowser.prototype.createToolbar.call( this );
 
-	$.extend( wp.media.view.AttachmentsBrowser.prototype, {
-		initialize: function() {
-			RLFoldersAttachmentsBrowser.initialize.apply( this, arguments );
-		},
-		createToolbar: function() {
-			var filters = this.options.filters,
-				self = this;
+				attachments_browser = this;
 
-			attachments_browser = this;
+				// skip remote library
+				if ( this.model.get( 'id' ) !== 'rl-remote-library' ) {
+					this.toolbar.set( 'RLfoldersFilterLabel', new wp.media.view.Label( {
+						value: 'Filter by folder',
+						attributes: {
+							'for':  'media-attachment-rl-folders-filters'
+						},
+						priority: -75
+					} ).render() );
 
-			RLFoldersAttachmentsBrowser.createToolbar.apply( this, arguments );
-
-			if ( $.inArray( filters, ['uploaded', 'all'] ) !== -1 ) {
-				self.toolbar.set( 'rl-folders-filter', new wp.media.view.AttachmentFilters.RLFolders( {
-					controller: self.controller,
-					model: self.collection.props,
-					// just before the bulk button (-70)
-					priority: -71,
-					taxonomy: rlFoldersArgs.taxonomy
-				} ).render() );
+					this.toolbar.set( 'RLfoldersAttachmentFilters', new RLWPMediaViewAttachmentFilters( {
+						controller: this.controller,
+						model: this.collection.props,
+						priority: -75
+					} ).render() );
+				}
 			}
-		}
-	} );
+		} );
 
-	// extend AttachmentCompat 
-	var RLAttachmentCompat = {
-		save: wp.media.view.AttachmentCompat.prototype.save,
-		postSave: wp.media.view.AttachmentCompat.prototype.postSave
-	};
+		// extend AttachmentCompat 
+		var RLAttachmentCompat = {
+			save: wp.media.view.AttachmentCompat.prototype.save,
+			postSave: wp.media.view.AttachmentCompat.prototype.postSave
+		};
 
-	$.extend( wp.media.view.AttachmentCompat.prototype, {
-		save: function() {
-			RLAttachmentCompat.save.apply( this, arguments );
+		$.extend( wp.media.view.AttachmentCompat.prototype, {
+			save: function( event ) {
+				if ( ! allow_modal_media_tag_saving ) {
+					// RLAttachmentCompat.save.apply( this, arguments );
+					// this.$el.closest( '.attachment-details' ).removeClass( 'save-ready' ).addClass( 'save-waiting' );
 
-			// display spinner
-			this.$el.closest( '.attachment-details' ).removeClass( 'save-ready' ).addClass( 'save-waiting' );
-		},
-		postSave: function() {
-			RLAttachmentCompat.postSave.apply( this, arguments );
+					return;
+				}
 
-			// hide spinner
-			this.$el.closest( '.attachment-details' ).addClass( 'save-ready' ).removeClass( 'save-waiting' );
-		}
-	} );
+				var select = $( '.rl-media-tag-select2' ),
+					selected = select.select2( 'data' ),
+					tags = [],
+					data = {};
 
-	if ( typeof wp.Uploader !== 'undefined' ) {
-		// extend uploader to apply dynamic folder ID
-		$.extend( wp.Uploader.prototype, {
-			init: function() {
-				this.uploader.bind( 'BeforeUpload', function( file ) {
-					file.settings.multipart_params.rl_folders_upload_files_term_id = rl_folder_id;
+				for ( i = 0; i < selected.length; i++ ) {
+					tags.push( selected[i].id );
+				}
+
+				if ( event )
+					event.preventDefault();
+
+				// get serialized data
+				_.each( this.$el.serializeArray(), function( pair ) {
+					data[ pair.name ] = pair.value;
 				} );
+
+				// update rl media tag
+				data[select.attr( 'name' )] = tags.join( ',' );
+
+				this.controller.trigger( 'attachment:compat:waiting', ['waiting'] );
+				this.model.saveCompat( data ).always( _.bind( this.postSave, this ) );
+
+				// display spinner
+				this.$el.closest( '.attachment-details' ).removeClass( 'save-ready' ).addClass( 'save-waiting' );
+			},
+			postSave: function() {
+				RLAttachmentCompat.postSave.apply( this, arguments );
+
+				// hide spinner
+				this.$el.closest( '.attachment-details' ).addClass( 'save-ready' ).removeClass( 'save-waiting' );
 			}
 		} );
 	}
 
 	// are we ready?
-	$( document ).ready( function () {
+	$( document ).ready( function() {
+		// wpuploader
+		if ( typeof wp.Uploader !== 'undefined' ) {
+			// extend uploader to apply dynamic folder ID
+			$.extend( wp.Uploader.prototype, {
+				init: function() {
+					this.uploader.bind( 'BeforeUpload', function( file ) {
+						file.settings.multipart_params.rl_folders_upload_files_term_id = rl_folder_id;
+					} );
+				}
+			} );
+		// plupload
+		} else if ( typeof uploader !== 'undefined' ) {
+			uploader.bind( 'BeforeUpload', function( file ) {
+				uploader.settings.multipart_params.rl_folders_upload_files_term_id = rl_folder_id;
+			} );
+		}
+
+		// wp.media.view.Attachment exists?
+		if ( 'Attachment' in wp.media.view ) {
+			// handle attachments details
+			wp.media.view.Attachment.Details.prototype.on( 'ready', function( ) {
+				// initialize select2
+				setTimeout( initSelect2, 5 );
+			} );
+		}
+
 		// do nothing for wp_enqueue_media
 		if ( rlFoldersArgs.page === 'media' ) {
+			initFolders();
+
 			// folder change
 			$( document ).on( 'change', '#media-attachment-rl-folders-filters', function() {
 				$( '#rl_folders_upload_files' ).val( $( this ).val() );
@@ -157,9 +238,12 @@
 
 				// initialize draggable
 				draggable( 'list' );
+			// grid
 			} else {
 				// add tree
 				$( '#wp-media-grid .error' ).after( rlFoldersArgs.template );
+
+				initFolders();
 			}
 
 			// activate wholerow plugin if needed
@@ -310,7 +394,7 @@
 				$( '#rl-folders-enter-folder' ).keyup( function( e ) {
 					// enter button
 					if ( e.which === 13 ) {
-						save_node( false );
+						save_node( false, 0 );
 					// escape button
 					} else if ( e.which === 27 ) {
 						restore_node( false, false );
@@ -322,7 +406,7 @@
 
 			// save folder
 			$( document ).on( 'click', '.rl-folders-save-folder', function() {
-				save_node( false );
+				save_node( false, 0 );
 
 				return false;
 			} );
@@ -370,7 +454,7 @@
 								var parent = $( '#rl-folders-tree' ).jstree( 'get_parent', node_id );
 
 								// update upload select
-								update_upload_select( $( response.data ).find( 'option' ) );
+								update_upload_select( $( response.data ).find( 'option' ), '' );
 
 								// remove children?
 								if ( rlFoldersArgs.remove_children === '0' && ! $( '#rl-folders-tree' ).jstree( 'is_leaf', node_id ) ) {
@@ -456,7 +540,10 @@
 				$( '#rl_folders_upload_files' ).val( term_id === 'all' ? 0 : term_id );
 
 				// update term_id in uploader parameters
-				rl_folder_id = parseInt( term_id ) || 0;
+				rl_folder_id = parseInt( term_id );
+
+				if ( isNaN( rl_folder_id ) )
+					rl_folder_id = 0;
 
 				// enable/disable icons for folders
 				if ( term_id === 'all' )
@@ -567,9 +654,8 @@
 
 			// folder change
 			$( document ).on( 'change', '#media-attachment-rl-folders-filters', function() {
-				if ( active_mode === 'list' ) {
+				if ( active_mode === 'list' )
 					return;
-				}
 
 				var node_id = $( '#rl-folders-tree' ).jstree().get_selected().toString();
 
@@ -608,7 +694,7 @@
 					try {
 						if ( response.success ) {
 							// update upload select
-							update_upload_select( $( response.data ).find( 'option' ) );
+							update_upload_select( $( response.data ).find( 'option' ), '' );
 
 							// open parent node
 							$( '#rl-folders-tree' ).jstree( 'open_node', object.parent, '', $( '#rl-folders-tree' ).jstree().settings.core.animation );
@@ -643,9 +729,83 @@
 		// change uploading folder
 		$( document ).on( 'change', '#rl_folders_upload_files', function() {
 			// update term_id in uploader parameters
-			rl_folder_id = parseInt( $( this ).val() ) || 0;
+			rl_folder_id = parseInt( $( this ).val() );
+
+			if ( isNaN( rl_folder_id ) )
+				rl_folder_id = 0;
 		} );
+
+		if ( rlFoldersArgs.page !== 'media' ) {
+			// press modal compat attachment left, right or escape key
+			$( document ).on( 'keydown', function( e ) {
+				if ( ( 'INPUT' === e.target.nodeName || 'TEXTAREA' === e.target.nodeName ) && ! ( e.target.readOnly || e.target.disabled ) )
+					return;
+
+				// escape key
+				if ( e.keyCode === 27 )
+					$( '.media-modal-close' ).click();
+			} );
+		}
 	} );
+
+	// initialize select2 and it's events
+	function initSelect2() {
+		var select = $( '.rl-media-tag-select2' );
+
+		// skip initialization of select2
+		if ( select.length === 0 || select.hasClass( 'select2-hidden-accessible' ) )
+			return;
+
+		// init select2
+		select.select2( {
+			closeOnSelect: true,
+			multiple: true,
+			width: '100%',
+			minimumInputLength: 2,
+			dropdownCssClass: 'rl-media-tag-select2-dropdown',
+			ajax: {
+				delay: 250,
+				url: ajaxurl,
+				data: function( params ) {
+					return {
+						action: 'ajax-tag-search',
+						tax: 'rl_media_tag',
+						q: params.term
+					}
+				},
+				processResults: function( data ) {
+					var newdata = [];
+
+					// filter results
+					data = data.split( /[\r\n]+/ ).filter( Boolean );
+
+					// prepare select2 format
+					for ( i = 0; i < data.length; i++ ) {
+						newdata[i] = { id: data[i], text: data[i] };
+					}
+
+					return {
+						results: newdata
+					};
+				}
+			}
+		} );
+
+		// change select
+		select.on( 'change', function( e ) {
+			allow_modal_media_tag_saving = true;
+		} );
+
+		// select item
+		select.on( 'select2:select', function( e ) {
+			allow_modal_media_tag_saving = false;
+		} );
+
+		// unselect item
+		select.on( 'select2:unselect', function( e ) {
+			allow_modal_media_tag_saving = false;
+		} );
+	}
 
 	// update mode link (grid or list)
 	function update_mode_link( mode ) {
@@ -663,26 +823,24 @@
 
 		if ( mode === 'list' ) {
 			// 'all' on grid is 0 on list
-			if ( term === 'all' ) {
+			if ( term === 'all' )
 				term = 0;
 			// -1 on list is 0 on grid
-			} else if ( term === 0 ) {
+			else if ( term === 0 )
 				term = -1;
-			}
 		}
 
 		// no 'taxonomy=term_id' in query?
-		if ( string === '' ) {
+		if ( string === '' )
 			selector.prop( 'href', link + '&' + rlFoldersArgs.taxonomy + '=' + term );
 		// found pair so replace term_id with new one just in case it's invalid
-		} else {
+		else
 			selector.prop( 'href', link.replace( new RegExp( rlFoldersArgs.taxonomy + '=' + '(-?[0-9]+|all)', 'g' ), rlFoldersArgs.taxonomy + '=' + term ) );
-		}
 	}
 
 	// refresh perfect scrollbar
 	function refresh_scrollbars() {
-	setTimeout( function() {
+		setTimeout( function() {
 			rl_ps.update();
 		}, 200 );
 	}
@@ -697,9 +855,8 @@
 			var wholerow = $( 'div.jstree-wholerow.jstree-wholerow-clicked' );
 
 			// destroy only selected droppable node first if needed
-			if ( typeof wholerow.droppable( 'instance' ) !== 'undefined' ) {
+			if ( typeof wholerow.droppable( 'instance' ) !== 'undefined' )
 				wholerow.droppable( 'destroy' );
-			}
 
 			// droppable nodes selector, skip 'all files' and current folder
 			selector = $( '#rl-folders-tree .jstree-wholerow:not(:eq(0))' ).not( '#' + node_id + ' .jstree-wholerow-clicked' );
@@ -707,9 +864,8 @@
 			var anchor = $( '#' + node_id + '_anchor' );
 
 			// destroy only selected droppable node first if needed
-			if ( typeof anchor.droppable( 'instance' ) !== 'undefined' ) {
+			if ( typeof anchor.droppable( 'instance' ) !== 'undefined' )
 				anchor.droppable( 'destroy' );
-			}
 
 			// droppable nodes selector, skip 'all files' and current folder
 			selector = $( '#rl-folders-tree li a.jstree-anchor:not(:eq(0),#' + node_id + '_anchor)' );
@@ -725,16 +881,23 @@
 				drop: function( event, ui ) {
 					var node = $( event.target ).closest( 'li' ).find( 'a.jstree-anchor' ),
 						old_node = $( '#' + $( '#rl-folders-tree' ).jstree().get_selected().toString() + '_anchor' ),
-						old_term_id = parseInt( old_node.data( 'term_id' ) ) || -1,
 						attachments = [],
-						ids = $( '#the-list .check-column input[type="checkbox"]:checked' );
+						ids = $( '#the-list .check-column input[type="checkbox"]:checked' ),
+						old_term_id = parseInt( old_node.data( 'term_id' ) ),
+						new_term_id = parseInt( node.data( 'term_id' ) );
+
+					if ( isNaN( old_term_id ) )
+						old_term_id = -1;
+
+					if ( isNaN( new_term_id ) )
+						new_term_id = -1;
 
 					toggle_spinner( true );
 
 					// dropped single unchecked attachment?
-					if ( ids.length === 0 ) {
+					if ( ids.length === 0 )
 						attachments.push( ui.draggable.find( '.check-column input[type="checkbox"]' ).val() );
-					} else {
+					else {
 						ids.each( function( i, item ) {
 							attachments.push( parseInt( $( item ).val() ) );
 						} );
@@ -744,7 +907,7 @@
 						action: 'rl-folders-move-attachments',
 						attachment_ids: attachments,
 						old_term_id: old_term_id,
-						new_term_id: parseInt( node.data( 'term_id' ) ) || -1,
+						new_term_id: new_term_id,
 						nonce: rlFoldersArgs.nonce
 					} ).done( function( response ) {
 						try {
@@ -757,9 +920,8 @@
 											$( this ).remove();
 
 											// display 'no media' text
-											if ( $( '#the-list tr' ).length === 0 ) {
+											if ( $( '#the-list tr' ).length === 0 )
 												$( '#the-list' ).append( rlFoldersArgs.no_media_items );
-											}
 										} );
 									}
  
@@ -768,10 +930,9 @@
 								}
 
 								// update new node number
-								update_node_number( node, response.data );
+								update_node_number( node, response.data, true );
 							}
 						} catch( e ) {
-							
 						}
 
 						// hide spinner
@@ -799,17 +960,15 @@
 					toggle_spinner( true );
 
 					// single attachment
-					if ( $( '.media-frame' ).hasClass( 'mode-edit' ) ) {
+					if ( $( '.media-frame' ).hasClass( 'mode-edit' ) )
 						attachments.push( parseInt( ui.draggable.data( 'id' ) ) );
 					// selection of attachments
-					} else {
+					else {
 						$( 'ul.attachments > li.selected' ).each( function( i, item ) {
 							attachments.push( parseInt( $( item ).data( 'id' ) ) );
 						} );
 					}
-console.log( old_term_id );
-console.log( parseInt( node.data( 'term_id' ) ) );
-console.log( rlFoldersArgs.counters );
+
 					$.post( ajaxurl, {
 						action: 'rl-folders-move-attachments',
 						attachment_ids: attachments,
@@ -827,9 +986,8 @@ console.log( rlFoldersArgs.counters );
 											$( this ).remove();
 
 											// display 'no media' text
-											if ( $( 'ul.attachments li' ).length === 0 ) {
+											if ( $( 'ul.attachments li' ).length === 0 )
 												$( '.no-media' ).removeClass( 'hidden' );
-											}
 										} );
 									}
 
@@ -838,13 +996,12 @@ console.log( rlFoldersArgs.counters );
 								}
 
 								// update new node number
-								update_node_number( node, response.data );
+								update_node_number( node, response.data, true );
 
 								// deactivate select mode and activate edit mode
 								grid_frame.controller.deactivateMode( 'select' ).activateMode( 'edit' );
 							}
 						} catch( e ) {
-							
 						}
 
 						// hide spinner
@@ -904,9 +1061,8 @@ console.log( rlFoldersArgs.counters );
 					var attachments = $( '#the-list .check-column input[type="checkbox"]:checked' ).length;
 
 					// dragging unchecked single attachment?
-					if ( attachments === 0 ) {
+					if ( attachments === 0 )
 						attachments = 1;
-					}
 
 					return '<div class="rl-folders-dragged-item"><div class="dashicons dashicons-media-default"></div><span>' + attachments + '</span></div>';
 				},
@@ -922,7 +1078,7 @@ console.log( rlFoldersArgs.counters );
 	}
 
 	// update number of attachments of specified node
-	function update_node_number( node, data, add = true ) {
+	function update_node_number( node, data, add ) {
 		var html = node.html().split( /(?:<i(?:.+)?\/i>)(.+)\s\((\d+)\)/ );
 
 		// rename node
@@ -932,17 +1088,15 @@ console.log( rlFoldersArgs.counters );
 	// toggle spinner
 	function toggle_spinner( show ) {
 		if ( show ) {
-			if ( active_mode === 'list' ) {
+			if ( active_mode === 'list' )
 				$( '.filter-items .actions' ).find( '.spinner' ).addClass( 'is-active' );
-			} else {
+			else
 				$( '.media-toolbar-secondary' ).find( '.spinner' ).addClass( 'is-active' );
-			}
 		} else {
-			if ( active_mode === 'list' ) {
+			if ( active_mode === 'list' )
 				$( '.filter-items .actions' ).find( '.spinner' ).removeClass( 'is-active' );
-			} else {
+			else
 				$( '.media-toolbar-secondary' ).find( '.spinner' ).removeClass( 'is-active' );
-			}
 		}
 	}
 
@@ -976,18 +1130,16 @@ console.log( rlFoldersArgs.counters );
 			// delete node
 			$( '#rl-folders-tree' ).jstree( 'delete_node', node_id );
 
-			if ( active_mode === 'list' ) {
-				// disable redirect in select_node
+			// disable redirect in select_node
+			if ( active_mode === 'list' )
 				disable_redirect = true;
-			}
 
 			// select parent node
 			$( '#rl-folders-tree' ).jstree( 'select_node', parent );
 		} else {
 			// enable icons for non-empty nodes
-			if ( ! $( '#rl-folders-tree' ).jstree( 'is_leaf', node_id ) ) {
+			if ( ! $( '#rl-folders-tree' ).jstree( 'is_leaf', node_id ) )
 				$( '.rl-folders-expand-folder, .rl-folders-collapse-folder' ).removeClass( 'disabled-link' );
-			}
 
 			// restore folder
 			$( node_id + '_span' ).remove();
@@ -1007,12 +1159,18 @@ console.log( rlFoldersArgs.counters );
 	}
 
 	// save node with new name
-	function save_node( new_node, parent_id = 0 ) {
+	function save_node( new_node, parent_id ) {
 		var input = $( new_node ? '#rl-folders-enter-new-folder' : '#rl-folders-enter-folder' );
 			node_id = $( '#rl-folders-tree' ).jstree().get_selected().toString(),
 			name = $.trim( input.val() ),
-			nof = input.data( 'nof' ),
-			term_id = parseInt( input.data( 'term_id' ) );
+			nof = input.data( 'nof' );
+
+		if ( ! new_node ) {
+			var term_id = parseInt( input.data( 'term_id' ) );
+
+			if ( isNaN( term_id ) )
+				term_id = 0;
+		}
 
 		// empty or the same name?
 		if ( name === '' || name === input.attr( 'placeholder' ) ) {
@@ -1041,16 +1199,18 @@ console.log( rlFoldersArgs.counters );
 						// add new folder to dropdown
 						$( '#media-attachment-rl-folders-filters' ).append( '<option value="' + response.data.term_id + '">' + response.data.name + '</option>' );
 
-						// update filters
-						attachments_browser.toolbar.get( 'rl-folders-filter' ).filters[response.data.term_id] = {
-							text: response.data.name,
-							priority: last_priority + 1,
-							props: {
-								[rlFoldersArgs.taxonomy]: response.data.term_id,
-								'force_update': 0,
-								'include_children': false
-							}
-						};
+						if ( attachments_browser !== null ) {
+							// update filters
+							attachments_browser.toolbar.get( 'RLfoldersAttachmentFilters' ).filters[response.data.term_id] = {
+								text: response.data.name,
+								priority: last_priority + 1,
+								props: {
+									[rlFoldersArgs.taxonomy]: response.data.term_id,
+									'force_update': 0,
+									'include_children': false
+								}
+							};
+						}
 					} else {
 						// rename node
 						$( '#media-attachment-rl-folders-filters option[value="' + term_id + '"]' ).text( response.data.name );
@@ -1075,6 +1235,9 @@ console.log( rlFoldersArgs.counters );
 
 						// force to update view
 						$( '#media-attachment-rl-folders-filters' ).val( response.data.term_id ).change();
+
+						if ( active_mode === 'list' )
+							window.location.replace( response.data.url );
 					}
 
 					// update upload select
@@ -1097,7 +1260,7 @@ console.log( rlFoldersArgs.counters );
 	}
 
 	// update upload select
-	function update_upload_select( options, selected = '' ) {
+	function update_upload_select( options, selected ) {
 		$( '#rl_folders_upload_files' ).empty().append( options ).val( selected );
 	}
 

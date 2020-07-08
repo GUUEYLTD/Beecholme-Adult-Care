@@ -79,7 +79,7 @@ class PayPalPaymentCommandHandler extends CommandHandler
             return $result;
         }
 
-        $paymentAmount = $reservationService->getPaymentAmount($reservation->getBooking(), $reservation->getBookable());
+        $paymentAmount = $reservationService->getReservationPaymentAmount($reservation);
 
         if (!$paymentAmount) {
             $result->setResult(CommandResult::RESULT_ERROR);

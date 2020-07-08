@@ -493,4 +493,41 @@ class AppointmentApplicationService
             $isCustomer
         );
     }
+
+    /**
+     * @param int $appointmentId
+     *
+     * @return void
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws QueryExecutionException
+     * @throws \Exception
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function manageDeletionParentRecurringAppointment($appointmentId)
+    {
+        /** @var AppointmentRepository $appointmentRepository */
+        $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
+
+        /** @var Collection $recurringAppointments */
+        $recurringAppointments = $appointmentRepository->getFiltered(['parentId' => $appointmentId]);
+
+        $isFirstRecurringAppointment = true;
+
+        $newParentId = null;
+
+        /** @var Appointment $recurringAppointment */
+        foreach ($recurringAppointments->getItems() as $key => $recurringAppointment) {
+            if ($isFirstRecurringAppointment) {
+                $newParentId = $recurringAppointment->getId()->getValue();
+            }
+
+            $appointmentRepository->updateFieldById(
+                $recurringAppointment->getId()->getValue(),
+                $isFirstRecurringAppointment ? null : $newParentId,
+                'parentId'
+            );
+
+            $isFirstRecurringAppointment = false;
+        }
+    }
 }

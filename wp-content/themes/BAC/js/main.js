@@ -230,6 +230,21 @@ jQuery(document).ready(function($) {
   });
 });
 
+jQuery(document).on('mouseover', '#am-recurring-dates .dialog-footer ', function(e){
+  if ( jQuery('.am-recurring-flex-row-middle-align').length >= 9 ) {
+      localStorage['save'] = "save-ten";
+  } else if ( jQuery('.am-recurring-flex-row-middle-align').length >= 4 ) {
+    localStorage['save'] = "save-five";
+  } else {
+    localStorage['save'] = "";
+  }
+});
+
+jQuery(document).on('click', '#am-recurring-dates', function(e){
+  console.log('LOCALSTORAGE : '+localStorage['save']);
+  jQuery('.booking-form .am-confirmation-booking-cost').addClass(localStorage['save']);
+});
+
 jQuery(document).ready(function($){
   // Home page banner tabs
   $('.banner-content .tab').on('click',function(){

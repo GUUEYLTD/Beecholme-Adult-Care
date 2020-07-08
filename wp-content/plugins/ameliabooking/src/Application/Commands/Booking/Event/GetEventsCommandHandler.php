@@ -2,11 +2,13 @@
 
 namespace AmeliaBooking\Application\Commands\Booking\Event;
 
-use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Booking\Event\EventPeriod;
@@ -16,7 +18,10 @@ use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventRepository;
+use DateTimeZone;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class GetEventsCommandHandler
@@ -29,18 +34,11 @@ class GetEventsCommandHandler extends CommandHandler
      * @param GetEventsCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Application\Common\Exceptions\AccessDeniedException
-     * @throws \UnexpectedValueException
-     * @throws \Firebase\JWT\SignatureInvalidException
-     * @throws \Firebase\JWT\ExpiredException
-     * @throws \Firebase\JWT\BeforeValidException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
+     *
+     * @throws ContainerException
+     * @throws AccessDeniedException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
      */
     public function handle(GetEventsCommand $command)
     {
@@ -52,8 +50,8 @@ class GetEventsCommandHandler extends CommandHandler
         $reservationService = $this->container->get('application.reservation.service')->get(Entities::EVENT);
         /** @var EventRepository $eventRepository */
         $eventRepository = $this->container->get('domain.booking.event.repository');
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
 
         $params = $command->getField('params');
 
@@ -66,7 +64,10 @@ class GetEventsCommandHandler extends CommandHandler
         if (!$isFrontEnd) {
             try {
                 /** @var AbstractUser $user */
-                $user = $customerAS->authorization($isCabinetPage ? $command->getToken() : null);
+                $user = $userAS->authorization(
+                    $isCabinetPage ? $command->getToken() : null,
+                    $command->getCabinetType()
+                );
             } catch (AuthorizationException $e) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setData([
@@ -76,7 +77,7 @@ class GetEventsCommandHandler extends CommandHandler
                 return $result;
             }
 
-            if ($customerAS->isAmeliaUser($user) && $customerAS->isCustomer($user)) {
+            if ($userAS->isAmeliaUser($user) && $userAS->isCustomer($user)) {
                 $params['customerId'] = $user->getId()->getValue();
             }
 
@@ -133,8 +134,8 @@ class GetEventsCommandHandler extends CommandHandler
             if (($isFrontEnd || $isCabinetPage) && $settingsDS->getSetting('general', 'showClientTimeZone')) {
                 /** @var EventPeriod $period */
                 foreach ($event->getPeriods()->getItems() as $period) {
-                    $period->getPeriodStart()->getValue()->setTimezone(new \DateTimeZone('UTC'));
-                    $period->getPeriodEnd()->getValue()->setTimezone(new \DateTimeZone('UTC'));
+                    $period->getPeriodStart()->getValue()->setTimezone(new DateTimeZone('UTC'));
+                    $period->getPeriodEnd()->getValue()->setTimezone(new DateTimeZone('UTC'));
                 }
             }
 
@@ -165,16 +166,19 @@ class GetEventsCommandHandler extends CommandHandler
                 $event->setBookings(new Collection());
             }
 
-            $ameliaUserId = $customerAS->isAmeliaUser($user) && $user->getId() ? $user->getId()->getValue() : null;
+            $ameliaUserId = $userAS->isAmeliaUser($user) && $user->getId() ? $user->getId()->getValue() : null;
 
-            /** @var CustomerBooking $booking */
-            foreach ($event->getBookings()->getItems() as $bookingKey => $booking) {
-                if ($booking->getCustomerId()->getValue() !== $ameliaUserId) {
-                    $event->getBookings()->deleteItem($bookingKey);
+            // Delete other bookings if user is customer
+            if ($userAS->isCustomer($user)) {
+                /** @var CustomerBooking $booking */
+                foreach ($event->getBookings()->getItems() as $bookingKey => $booking) {
+                    if ($booking->getCustomerId()->getValue() !== $ameliaUserId) {
+                        $event->getBookings()->deleteItem($bookingKey);
+                    }
                 }
             }
 
-            if (!$isFrontEnd && $customerAS->isCustomer($user) && $event->getBookings()->length() === 0) {
+            if (!$isFrontEnd && $userAS->isCustomer($user) && $event->getBookings()->length() === 0) {
                 continue;
             }
 
@@ -185,7 +189,7 @@ class GetEventsCommandHandler extends CommandHandler
         $result->setMessage('Successfully retrieved events');
         $result->setData([
             Entities::EVENTS => $eventsArray,
-            'count'     => (int)$eventRepository->getFilteredIdsCount($params)
+            'count'          => (int)$eventRepository->getFilteredIdsCount($params)
         ]);
 
         return $result;

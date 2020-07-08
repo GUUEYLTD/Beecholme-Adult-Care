@@ -127,7 +127,7 @@ class SettingsStorage implements SettingsStorageInterface
 
         $userType = 'customer';
 
-        if (in_array('administrator', $wpUser->roles, true)) {
+        if (in_array('administrator', $wpUser->roles, true) || is_super_admin($wpUser->ID)) {
             $userType = 'admin';
         } elseif (in_array('wpamelia-manager', $wpUser->roles, true)) {
             $userType = 'manager';
@@ -136,36 +136,36 @@ class SettingsStorage implements SettingsStorageInterface
         }
 
         return [
-            'capabilities'   => $capabilities,
+            'capabilities'           => $capabilities,
             'additionalCapabilities' => $additionalCapabilities,
-            'daysOff'        => $this->getCategorySettings('daysOff'),
-            'general'        => [
-                'itemsPerPage'                    => $this->getSetting('general', 'itemsPerPage'),
-                'phoneDefaultCountryCode'         => $phoneCountryCode === 'auto' ?
+            'daysOff'                => $this->getCategorySettings('daysOff'),
+            'general'                => [
+                'itemsPerPage'                           => $this->getSetting('general', 'itemsPerPage'),
+                'phoneDefaultCountryCode'                => $phoneCountryCode === 'auto' ?
                     $this->locationService->getCurrentLocationCountryIso() : $phoneCountryCode,
-                'timeSlotLength'                  => $this->getSetting('general', 'timeSlotLength'),
-                'serviceDurationAsSlot'           => $this->getSetting('general', 'serviceDurationAsSlot'),
-                'defaultAppointmentStatus'        => $this->getSetting('general', 'defaultAppointmentStatus'),
-                'gMapApiKey'                      => $this->getSetting('general', 'gMapApiKey'),
-                'addToCalendar'                   => $this->getSetting('general', 'addToCalendar'),
-                'requiredPhoneNumberField'        => $this->getSetting('general', 'requiredPhoneNumberField'),
-                'requiredEmailField'              => $this->getSetting('general', 'requiredEmailField'),
-                'numberOfDaysAvailableForBooking' => $this->getSetting('general', 'numberOfDaysAvailableForBooking'),
-                'minimumTimeRequirementPriorToBooking' =>
+                'timeSlotLength'                         => $this->getSetting('general', 'timeSlotLength'),
+                'serviceDurationAsSlot'                  => $this->getSetting('general', 'serviceDurationAsSlot'),
+                'defaultAppointmentStatus'               => $this->getSetting('general', 'defaultAppointmentStatus'),
+                'gMapApiKey'                             => $this->getSetting('general', 'gMapApiKey'),
+                'addToCalendar'                          => $this->getSetting('general', 'addToCalendar'),
+                'requiredPhoneNumberField'               => $this->getSetting('general', 'requiredPhoneNumberField'),
+                'requiredEmailField'                     => $this->getSetting('general', 'requiredEmailField'),
+                'numberOfDaysAvailableForBooking'        => $this->getSetting('general', 'numberOfDaysAvailableForBooking'),
+                'minimumTimeRequirementPriorToBooking'   =>
                     $this->getSetting('general', 'minimumTimeRequirementPriorToBooking'),
                 'minimumTimeRequirementPriorToCanceling' =>
                     $this->getSetting('general', 'minimumTimeRequirementPriorToCanceling'),
-                'showClientTimeZone'              => $this->getSetting('general', 'showClientTimeZone'),
-                'redirectUrlAfterAppointment'     => $this->getSetting('general', 'redirectUrlAfterAppointment'),
-                'customFieldsUploadsPath'         => $this->getSetting('general', 'customFieldsUploadsPath'),
-                'sortingServices'                 => $this->getSetting('general', 'sortingServices'),
+                'showClientTimeZone'                     => $this->getSetting('general', 'showClientTimeZone'),
+                'redirectUrlAfterAppointment'            => $this->getSetting('general', 'redirectUrlAfterAppointment'),
+                'customFieldsUploadsPath'                => $this->getSetting('general', 'customFieldsUploadsPath'),
+                'sortingServices'                        => $this->getSetting('general', 'sortingServices'),
             ],
-            'googleCalendar' =>
+            'googleCalendar'         =>
                 $this->getSetting('googleCalendar', 'clientID') && $this->getSetting('googleCalendar', 'clientSecret'),
-            'zoom'           => [
+            'zoom'                   => [
                 'enabled' => $this->getSetting('zoom', 'enabled') && $this->getSetting('zoom', 'apiKey') && $this->getSetting('zoom', 'apiSecret')
             ],
-            'notifications'  => [
+            'notifications'          => [
                 'senderName'       => $this->getSetting('notifications', 'senderName'),
                 'senderEmail'      => $this->getSetting('notifications', 'senderEmail'),
                 'notifyCustomers'  => $this->getSetting('notifications', 'notifyCustomers'),
@@ -174,45 +174,49 @@ class SettingsStorage implements SettingsStorageInterface
                 'smsSignedIn'      => $this->getSetting('notifications', 'smsSignedIn'),
                 'bccEmail'         => $this->getSetting('notifications', 'bccEmail'),
             ],
-            'payments'       => [
-                'currency'              => $this->getSetting('payments', 'currency'),
-                'priceSymbolPosition'   => $this->getSetting('payments', 'priceSymbolPosition'),
-                'priceNumberOfDecimals' => $this->getSetting('payments', 'priceNumberOfDecimals'),
-                'priceSeparator'        => $this->getSetting('payments', 'priceSeparator'),
-                'defaultPaymentMethod'  => $this->getSetting('payments', 'defaultPaymentMethod'),
-                'onSite'                => $this->getSetting('payments', 'onSite'),
-                'coupons'               => $this->getSetting('payments', 'coupons'),
-                'payPal'                => [
+            'payments'               => [
+                'currency'                   => $this->getSetting('payments', 'currency'),
+                'priceSymbolPosition'        => $this->getSetting('payments', 'priceSymbolPosition'),
+                'priceNumberOfDecimals'      => $this->getSetting('payments', 'priceNumberOfDecimals'),
+                'priceSeparator'             => $this->getSetting('payments', 'priceSeparator'),
+                'hideCurrencySymbolFrontend' => $this->getSetting('payments', 'hideCurrencySymbolFrontend'),
+                'defaultPaymentMethod'       => $this->getSetting('payments', 'defaultPaymentMethod'),
+                'onSite'                     => $this->getSetting('payments', 'onSite'),
+                'coupons'                    => $this->getSetting('payments', 'coupons'),
+                'payPal'                     => [
                     'enabled'         => $this->getSetting('payments', 'payPal')['enabled'],
                     'sandboxMode'     => $this->getSetting('payments', 'payPal')['sandboxMode'],
                     'testApiClientId' => $this->getSetting('payments', 'payPal')['testApiClientId'],
                     'liveApiClientId' => $this->getSetting('payments', 'payPal')['liveApiClientId'],
                 ],
-                'stripe'                => [
+                'stripe'                     => [
                     'enabled'            => $this->getSetting('payments', 'stripe')['enabled'],
                     'testMode'           => $this->getSetting('payments', 'stripe')['testMode'],
                     'livePublishableKey' => $this->getSetting('payments', 'stripe')['livePublishableKey'],
                     'testPublishableKey' => $this->getSetting('payments', 'stripe')['testPublishableKey']
 
                 ],
-                'wc'                    => [
+                'wc'                         => [
                     'enabled'      => $this->getSetting('payments', 'wc')['enabled'],
                     'productId'    => $this->getSetting('payments', 'wc')['productId'],
                     'page'         => $this->getSetting('payments', 'wc')['page'],
                     'onSiteIfFree' => $this->getSetting('payments', 'wc')['onSiteIfFree']
                 ]
             ],
-            'role'           => $userType,
-            'weekSchedule'   => $this->getCategorySettings('weekSchedule'),
-            'wordpress'      => [
+            'role'                   => $userType,
+            'weekSchedule'           => $this->getCategorySettings('weekSchedule'),
+            'wordpress'              => [
                 'dateFormat'  => $this->getSetting('wordpress', 'dateFormat'),
                 'timeFormat'  => $this->getSetting('wordpress', 'timeFormat'),
                 'startOfWeek' => (int)$this->getSetting('wordpress', 'startOfWeek')
             ],
-            'labels'         => [
+            'labels'                 => [
                 'enabled' => $this->getSetting('labels', 'enabled')
             ],
-            'roles'          => [
+            'activation'             => [
+                'showActivationSettings' => $this->getSetting('activation', 'showActivationSettings')
+            ],
+            'roles'                  => [
                 'allowConfigureSchedule'      => $this->getSetting('roles', 'allowConfigureSchedule'),
                 'allowConfigureDaysOff'       => $this->getSetting('roles', 'allowConfigureDaysOff'),
                 'allowConfigureSpecialDays'   => $this->getSetting('roles', 'allowConfigureSpecialDays'),
@@ -224,14 +228,19 @@ class SettingsStorage implements SettingsStorageInterface
                 'allowCustomerDeleteProfile'  => $this->getSetting('roles', 'allowCustomerDeleteProfile'),
                 'allowWriteEvents'            => $this->getSetting('roles', 'allowWriteEvents'),
                 'customerCabinet'             => [
-                    'enabled'         => $this->getSetting('roles', 'customerCabinet')['enabled'],
-                    'loginEnabled'    => $this->getSetting('roles', 'customerCabinet')['loginEnabled'],
-                    'tokenValidTime'  => $this->getSetting('roles', 'customerCabinet')['tokenValidTime'],
+                    'enabled'        => $this->getSetting('roles', 'customerCabinet')['enabled'],
+                    'loginEnabled'   => $this->getSetting('roles', 'customerCabinet')['loginEnabled'],
+                    'tokenValidTime' => $this->getSetting('roles', 'customerCabinet')['tokenValidTime'],
+                ],
+                'providerCabinet'             => [
+                    'enabled'         => $this->getSetting('roles', 'providerCabinet')['enabled'],
+                    'loginEnabled'    => $this->getSetting('roles', 'providerCabinet')['loginEnabled'],
+                    'tokenValidTime'  => $this->getSetting('roles', 'providerCabinet')['tokenValidTime'],
                 ],
             ],
-            'customization'  => $this->getCategorySettings('customization'),
-            'appointments'   => $this->getCategorySettings('appointments'),
-            'slotDateConstraints' => [
+            'customization'          => $this->getCategorySettings('customization'),
+            'appointments'           => $this->getCategorySettings('appointments'),
+            'slotDateConstraints'    => [
                 'minDate' => DateTimeService::getNowDateTimeObject()
                     ->modify("+{$this->getSetting('general', 'minimumTimeRequirementPriorToBooking')} seconds")
                     ->format('Y-m-d H:i:s'),

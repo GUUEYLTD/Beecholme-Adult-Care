@@ -6,6 +6,7 @@
 
 namespace AmeliaBooking\Domain\Entity\Booking;
 
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Bookable\AbstractBookable;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
@@ -36,6 +37,9 @@ class Reservation
 
     /** @var array */
     private $uploadedCustomFieldFilesInfo;
+
+    /** @var Collection  */
+    private $recurring;
 
     /**
      * @return Appointment|Event
@@ -83,6 +87,22 @@ class Reservation
     public function setBookable(AbstractBookable $bookable)
     {
         $this->bookable = $bookable;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getRecurring()
+    {
+        return $this->recurring;
+    }
+
+    /**
+     * @param Collection $recurring
+     */
+    public function setRecurring(Collection $recurring)
+    {
+        $this->recurring = $recurring;
     }
 
     /**

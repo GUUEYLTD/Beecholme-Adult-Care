@@ -150,6 +150,10 @@ class UserFactory
                     new Collection($appointmentList)
                 );
 
+                if (!empty($data['password'])) {
+                    $user->setPassword(new Password($data['password']));
+                }
+
                 if (!empty($data['locationId'])) {
                     $user->setLocationId(new Id($data['locationId']));
                 }

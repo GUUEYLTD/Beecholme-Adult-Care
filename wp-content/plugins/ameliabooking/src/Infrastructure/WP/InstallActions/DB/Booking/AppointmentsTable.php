@@ -28,6 +28,7 @@ class AppointmentsTable extends AbstractDatabaseTable
         $table = self::getTableName();
         $serviceTable = ServicesTable::getTableName();
         $usersTable = UsersTable::getTableName();
+        $appointmentsTable = AppointmentsTable::getTableName();
 
         $description = Description::MAX_LENGTH;
 
@@ -42,11 +43,14 @@ class AppointmentsTable extends AbstractDatabaseTable
                    `internalNotes` TEXT({$description}) NULL,
                    `googleCalendarEventId` VARCHAR(255) NULL,
                    `zoomMeeting` TEXT({$description}) NULL,
+                   `parentId` INT(11) NULL,
                     PRIMARY KEY (`id`),
                     CONSTRAINT FOREIGN KEY (`serviceId`) REFERENCES {$serviceTable}(`id`) 
                     ON DELETE CASCADE ON UPDATE CASCADE,
                     CONSTRAINT FOREIGN KEY (`providerId`) REFERENCES {$usersTable}(`id`)
-                    ON DELETE CASCADE ON UPDATE CASCADE
+                    ON DELETE CASCADE ON UPDATE CASCADE,
+                    CONSTRAINT FOREIGN KEY (`parentId`) REFERENCES {$appointmentsTable}(`id`)
+                    ON DELETE SET NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }
 
@@ -61,12 +65,10 @@ class AppointmentsTable extends AbstractDatabaseTable
 
         global $wpdb;
 
-        $x = ($wpdb->get_var("SHOW COLUMNS FROM `{$table}` LIKE 'locationId'") !== 'locationId') ?
+        return ($wpdb->get_var("SHOW COLUMNS FROM `{$table}` LIKE 'locationId'") !== 'locationId') ?
             [
                 "ALTER TABLE {$table} ADD COLUMN `locationId` INT(11) NULL,
                   ADD FOREIGN KEY (locationId) REFERENCES {$locationTable}(id) ON DELETE SET NULL ON UPDATE CASCADE",
             ] : [];
-
-        return $x;
     }
 }

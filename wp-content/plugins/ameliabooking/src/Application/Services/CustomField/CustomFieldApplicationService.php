@@ -132,6 +132,7 @@ class CustomFieldApplicationService
      * @param int    $bookingId
      * @param array  $uploadedCustomFieldFilesNames
      * @param string $folder
+     * @param string $copy
      *
      * @return array
      *
@@ -139,7 +140,7 @@ class CustomFieldApplicationService
      * @throws ForbiddenFileUploadException
      * @throws \Interop\Container\Exception\ContainerException
      */
-    public function saveUploadedFiles($bookingId, $uploadedCustomFieldFilesNames, $folder)
+    public function saveUploadedFiles($bookingId, $uploadedCustomFieldFilesNames, $folder, $copy)
     {
         $uploadPath = $this->getUploadsPath() . $folder;
 
@@ -164,7 +165,11 @@ class CustomFieldApplicationService
                 }
 
                 if (is_dir($uploadPath) && is_writable($uploadPath)) {
-                    rename($data['tmpName'], "{$uploadPath}/{$bookingId}_{$data['fileName']}");
+                    if ($copy) {
+                        copy($data['tmpName'], "{$uploadPath}/{$bookingId}_{$data['fileName']}");
+                    } else {
+                        rename($data['tmpName'], "{$uploadPath}/{$bookingId}_{$data['fileName']}");
+                    }
 
                     $uploadedCustomFieldFilesNames[$customFieldId]['value'][$index]['tmpName'] =
                         "{$uploadPath}/{$bookingId}_{$data['fileName']}";

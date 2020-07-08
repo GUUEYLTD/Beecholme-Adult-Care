@@ -2,17 +2,17 @@
 
 namespace AmeliaBooking\Application\Commands\User\Provider;
 
-use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
+use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
-use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
-use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 
 /**
@@ -95,7 +95,10 @@ class AddProviderCommandHandler extends CommandHandler
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully added new user.');
         $result->setData([
-            Entities::USER => $user->toArray()
+            Entities::USER                 => $user->toArray(),
+            'sendEmployeePanelAccessEmail' =>
+                $command->getField('password') && $command->getField('sendEmployeePanelAccessEmail'),
+            'password'                     => $command->getField('password')
         ]);
 
         $providerRepository->commit();

@@ -12,6 +12,7 @@ use AmeliaBooking\Application\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Notification\Notification;
 use AmeliaBooking\Domain\Entity\User\Customer;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\ValueObjects\String\NotificationStatus;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
@@ -21,6 +22,9 @@ use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\Services\Notification\MailgunService;
 use AmeliaBooking\Infrastructure\Services\Notification\PHPMailService;
 use AmeliaBooking\Infrastructure\Services\Notification\SMTPService;
+use InvalidArgumentException;
+use Slim\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class EmailNotificationService
@@ -38,7 +42,7 @@ class EmailNotificationService extends AbstractNotificationService
      * @param int|null     $bookingKey
      *
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
      * @throws \Interop\Container\Exception\ContainerException
@@ -64,7 +68,7 @@ class EmailNotificationService extends AbstractNotificationService
         $mailService = $this->container->get('infrastructure.mail.service');
         /** @var PlaceholderService $placeholderService */
         $placeholderService = $this->container->get("application.placeholder.{$appointmentArray['type']}.service");
-        /** @var SettingsService $settingsAS*/
+        /** @var SettingsService $settingsAS */
         $settingsAS = $this->container->get('application.settings.service');
 
         $data = $placeholderService->getPlaceholdersData(
@@ -110,7 +114,7 @@ class EmailNotificationService extends AbstractNotificationService
     }
 
     /**
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      * @throws \Interop\Container\Exception\ContainerException
@@ -135,7 +139,7 @@ class EmailNotificationService extends AbstractNotificationService
             /** @var PlaceholderService $placeholderService */
             $placeholderService = $this->container->get('application.placeholder.appointment.service');
 
-            /** @var SettingsService $settingsAS*/
+            /** @var SettingsService $settingsAS */
             $settingsAS = $this->container->get('application.settings.service');
 
             $customers = $notificationLogRepo->getBirthdayCustomers($this->type);
@@ -189,9 +193,9 @@ class EmailNotificationService extends AbstractNotificationService
      *
      * @return void
      *
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
+     * @throws ContainerValueNotFoundException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
      * @throws QueryExecutionException
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
@@ -212,15 +216,17 @@ class EmailNotificationService extends AbstractNotificationService
 
         if ($notification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             $data = [
-                'customer_email'       => $customer->getEmail()->getValue(),
-                'customer_first_name'  => $customer->getFirstName()->getValue(),
-                'customer_last_name'   => $customer->getLastName()->getValue(),
-                'customer_full_name'   =>
+                'customer_email'      => $customer->getEmail()->getValue(),
+                'customer_first_name' => $customer->getFirstName()->getValue(),
+                'customer_last_name'  => $customer->getLastName()->getValue(),
+                'customer_full_name'  =>
                     $customer->getFirstName()->getValue() . ' ' . $customer->getLastName()->getValue(),
-                'customer_phone'       => $customer->getPhone() ? $customer->getPhone()->getValue() : '',
-                'customer_panel_url'   => $helperService->getCustomerCabinetUrl(
+                'customer_phone'      => $customer->getPhone() ? $customer->getPhone()->getValue() : '',
+                'customer_panel_url'  => $helperService->getCustomerCabinetUrl(
                     $customer->getEmail()->getValue(),
-                    'email'
+                    'email',
+                    null,
+                    null
                 )
             ];
 
@@ -239,6 +245,62 @@ class EmailNotificationService extends AbstractNotificationService
 
             try {
                 $mailService->send($data['customer_email'], $subject, $this->getParsedBody($body), false);
+            } catch (\Exception $e) {
+            }
+        }
+    }
+
+    /**
+     * @param Provider $provider
+     *
+     * @return void
+     *
+     * @throws ContainerValueNotFoundException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws \Interop\Container\Exception\ContainerException
+     * @throws \Exception
+     */
+    public function sendEmployeePanelAccess($provider, $plainPassword)
+    {
+        /** @var Notification $notification */
+        $notification = $this->getByNameAndType('provider_panel_access', 'email');
+
+        /** @var PHPMailService|SMTPService|MailgunService $mailService */
+        $mailService = $this->container->get('infrastructure.mail.service');
+
+        /** @var PlaceholderService $placeholderService */
+        $placeholderService = $this->container->get('application.placeholder.appointment.service');
+
+        if ($notification->getStatus()->getValue() === NotificationStatus::ENABLED) {
+            $data = [
+                'employee_email'      => $provider['email'],
+                'employee_first_name' => $provider['firstName'],
+                'employee_last_name'  => $provider['lastName'],
+                'employee_full_name'  =>
+                    $provider['firstName'] . ' ' . $provider['lastName'],
+                'employee_phone'      => $provider['phone'],
+                'employee_password'   => $plainPassword,
+                'employee_panel_url'  => trim($this->container->get('domain.settings.service')
+                    ->getSetting('roles', 'providerCabinet')['pageUrl'])
+            ];
+
+            /** @noinspection AdditionOperationOnArraysInspection */
+            $data += $placeholderService->getCompanyData();
+
+            $subject = $placeholderService->applyPlaceholders(
+                $notification->getSubject()->getValue(),
+                $data
+            );
+
+            $body = $placeholderService->applyPlaceholders(
+                $notification->getContent()->getValue(),
+                $data
+            );
+
+            try {
+                $mailService->send($data['employee_email'], $subject, $this->getParsedBody($body), false);
             } catch (\Exception $e) {
             }
         }

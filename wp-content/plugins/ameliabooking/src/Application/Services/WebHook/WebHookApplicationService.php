@@ -89,6 +89,8 @@ class WebHookApplicationService
                 if ($webHook['action'] === $action && $webHook['type'] === $reservation['type']) {
                     $ch = curl_init($webHook['url']);
 
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([

@@ -4,20 +4,20 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 use AmeliaBooking\Application\Commands\Activation;
 use AmeliaBooking\Application\Commands\Bookable;
-use AmeliaBooking\Application\Commands\Stats;
-use AmeliaBooking\Application\Commands\User;
-use AmeliaBooking\Application\Commands\Location;
+use AmeliaBooking\Application\Commands\Booking;
 use AmeliaBooking\Application\Commands\Coupon;
+use AmeliaBooking\Application\Commands\CustomField;
+use AmeliaBooking\Application\Commands\Entities;
+use AmeliaBooking\Application\Commands\Google;
+use AmeliaBooking\Application\Commands\Location;
+use AmeliaBooking\Application\Commands\Notification;
 use AmeliaBooking\Application\Commands\Payment;
 use AmeliaBooking\Application\Commands\PaymentGateway;
-use AmeliaBooking\Application\Commands\Notification;
-use AmeliaBooking\Application\Commands\Booking;
-use AmeliaBooking\Application\Commands\Entities;
-use AmeliaBooking\Application\Commands\Settings;
 use AmeliaBooking\Application\Commands\Report;
 use AmeliaBooking\Application\Commands\Search;
-use AmeliaBooking\Application\Commands\Google;
-use AmeliaBooking\Application\Commands\CustomField;
+use AmeliaBooking\Application\Commands\Settings;
+use AmeliaBooking\Application\Commands\Stats;
+use AmeliaBooking\Application\Commands\User;
 use AmeliaBooking\Application\Commands\Zoom;
 
 // @codingStandardsIgnoreStart
@@ -141,13 +141,13 @@ $entries['command.bus'] = function ($c) {
             User\Customer\GetCustomerCommand::class                   => new User\Customer\GetCustomerCommandHandler($c),
             User\Customer\GetCustomersCommand::class                  => new User\Customer\GetCustomersCommandHandler($c),
             User\Customer\UpdateCustomerCommand::class                => new User\Customer\UpdateCustomerCommandHandler($c),
-            User\Customer\LoginCustomerCommand::class                 => new User\Customer\LoginCustomerCommandHandler($c),
             User\Customer\ReauthorizeCommand::class                   => new User\Customer\ReauthorizeCommandHandler($c),
             // User
             User\DeleteUserCommand::class                             => new User\DeleteUserCommandHandler($c),
             User\GetCurrentUserCommand::class                         => new User\GetCurrentUserCommandHandler($c),
             User\GetUserDeleteEffectCommand::class                    => new User\GetUserDeleteEffectCommandHandler($c),
             User\GetWPUsersCommand::class                             => new User\GetWPUsersCommandHandler($c),
+            User\LoginCabinetCommand::class                           => new User\LoginCabinetCommandHandler($c),
             // User/Provider
             User\Provider\AddProviderCommand::class                   => new User\Provider\AddProviderCommandHandler($c),
             User\Provider\GetProviderCommand::class                   => new User\Provider\GetProviderCommandHandler($c),
@@ -155,7 +155,7 @@ $entries['command.bus'] = function ($c) {
             User\Provider\UpdateProviderCommand::class                => new User\Provider\UpdateProviderCommandHandler($c),
             User\Provider\UpdateProviderStatusCommand::class          => new User\Provider\UpdateProviderStatusCommandHandler($c),
 
-            Zoom\GetUsersCommand::class                               => new Zoom\GetUsersCommandHandler($c),
+            Zoom\GetUsersCommand::class => new Zoom\GetUsersCommandHandler($c),
         ]
     );
 };

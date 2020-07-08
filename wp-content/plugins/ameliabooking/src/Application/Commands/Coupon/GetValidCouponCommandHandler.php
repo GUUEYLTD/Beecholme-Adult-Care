@@ -10,6 +10,7 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Services\Coupon\CouponApplicationService;
 use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\CouponInvalidException;
 use AmeliaBooking\Domain\Common\Exceptions\CouponUnknownException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
@@ -72,22 +73,24 @@ class GetValidCouponCommandHandler extends CommandHandler
                 true
             );
 
-            if ($coupon) {
-                $coupon = $coupon->toArray();
-                unset($coupon['serviceList']);
-            }
+            $coupon->setServiceList(new Collection());
+            $coupon->setEventList(new Collection());
         } catch (CouponUnknownException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage($e->getMessage());
             $result->setData([
                 'couponUnknown' => true
             ]);
+
+            return $result;
         } catch (CouponInvalidException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage($e->getMessage());
             $result->setData([
                 'couponInvalid' => true
             ]);
+
+            return $result;
         }
 
         if ($result->getResult() !== CommandResult::RESULT_ERROR) {
@@ -95,7 +98,8 @@ class GetValidCouponCommandHandler extends CommandHandler
             $result->setMessage('Successfully retrieved coupon.');
             $result->setData(
                 [
-                    Entities::COUPON => $coupon,
+                    Entities::COUPON => $coupon->toArray(),
+                    'limit'          => $couponAS->getAllowedCouponLimit($coupon, $user)
                 ]
             );
         }

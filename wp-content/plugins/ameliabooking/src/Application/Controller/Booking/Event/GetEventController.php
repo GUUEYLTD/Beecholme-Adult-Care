@@ -25,6 +25,16 @@ class GetEventController extends Controller
     protected function instantiateCommand(Request $request, $args)
     {
         $command = new GetEventCommand($args);
+
+        $params = (array)$request->getQueryParams();
+
+        if (isset($params['source'])) {
+            $command->setPage($params['source']);
+            unset($params['source']);
+        }
+
+        $command->setToken($request);
+
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
 

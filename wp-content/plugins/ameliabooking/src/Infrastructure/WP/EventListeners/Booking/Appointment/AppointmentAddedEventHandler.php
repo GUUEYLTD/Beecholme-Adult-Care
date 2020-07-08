@@ -12,9 +12,9 @@ use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
-use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
+use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
@@ -59,32 +59,78 @@ class AppointmentAddedEventHandler
         /** @var ZoomApplicationService $zoomService */
         $zoomService = $container->get('application.zoom.service');
 
+        $recurringData = $commandResult->getData()['recurring'];
+
         $appointment = $commandResult->getData()[Entities::APPOINTMENT];
 
-        /** @var Appointment|Event $reservationObject */
-        $reservationObject = AppointmentFactory::create($appointment);
+        /** @var Appointment $appointmentObject */
+        $appointmentObject = AppointmentFactory::create($appointment);
 
-        $bookingApplicationService->setReservationEntities($reservationObject);
+        $bookingApplicationService->setReservationEntities($appointmentObject);
 
-        if ($zoomService) {
-            $zoomService->handleAppointmentMeeting($reservationObject, self::APPOINTMENT_ADDED);
+        $pastAppointment =  $appointmentObject->getBookingStart()->getValue() < DateTimeService::getNowDateTimeObject();
 
-            if ($reservationObject->getZoomMeeting()) {
-                $appointment['zoomMeeting'] = $reservationObject->getZoomMeeting()->toArray();
+        if ($zoomService && !$pastAppointment) {
+            $zoomService->handleAppointmentMeeting($appointmentObject, self::APPOINTMENT_ADDED);
+
+            if ($appointmentObject->getZoomMeeting()) {
+                $appointment['zoomMeeting'] = $appointmentObject->getZoomMeeting()->toArray();
             }
         }
 
-        try {
-            $googleCalendarService->handleEvent($reservationObject, self::APPOINTMENT_ADDED);
-        } catch (\Exception $e) {
+        if ($googleCalendarService) {
+            try {
+                $googleCalendarService->handleEvent($appointmentObject, self::APPOINTMENT_ADDED);
+            } catch (\Exception $e) {
+            }
         }
 
-        $emailNotificationService->sendAppointmentStatusNotifications($appointment, false, true);
+        foreach ($recurringData as $key => $recurringReservationData) {
+            /** @var Appointment $recurringReservationObject */
+            $recurringReservationObject = AppointmentFactory::create($recurringReservationData[Entities::APPOINTMENT]);
 
-        if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
-            $smsNotificationService->sendAppointmentStatusNotifications($appointment, false, true);
+            $bookingApplicationService->setReservationEntities($recurringReservationObject);
+
+            if ($zoomService && !$pastAppointment) {
+                $zoomService->handleAppointmentMeeting($recurringReservationObject, self::BOOKING_ADDED);
+
+                if ($recurringReservationObject->getZoomMeeting()) {
+                    $recurringData[$key][Entities::APPOINTMENT]['zoomMeeting'] =
+                        $recurringReservationObject->getZoomMeeting()->toArray();
+                }
+            }
+
+            if ($googleCalendarService) {
+                try {
+                    $googleCalendarService->handleEvent($recurringReservationObject, self::BOOKING_ADDED);
+                } catch (\Exception $e) {
+                }
+
+                if ($recurringReservationObject->getGoogleCalendarEventId() !== null) {
+                    $recurringData[$key][Entities::APPOINTMENT]['googleCalendarEventId'] =
+                        $recurringReservationObject->getGoogleCalendarEventId()->getValue();
+                }
+            }
+        }
+
+        $appointment['recurring'] = $recurringData;
+
+        if (!$pastAppointment) {
+            $emailNotificationService->sendAppointmentStatusNotifications($appointment, false, true);
+
+            if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
+                $smsNotificationService->sendAppointmentStatusNotifications($appointment, false, true);
+            }
         }
 
         $webHookService->process(self::BOOKING_ADDED, $appointment, $appointment['bookings']);
+
+        foreach ($recurringData as $key => $recurringReservationData) {
+            $webHookService->process(
+                self::BOOKING_ADDED,
+                $recurringReservationData[Entities::APPOINTMENT],
+                $recurringReservationData[Entities::APPOINTMENT]['bookings']
+            );
+        }
     }
 }

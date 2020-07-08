@@ -6,12 +6,15 @@ use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetProviderCommandHandler
@@ -24,14 +27,15 @@ class GetProviderCommandHandler extends CommandHandler
      * @param GetProviderCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
      */
     public function handle(GetProviderCommand $command)
     {
+        /** @var int $providerId */
         $providerId = (int)$command->getField('id');
 
         /** @var AbstractUser $currentUser */

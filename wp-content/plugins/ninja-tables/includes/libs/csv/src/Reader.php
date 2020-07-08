@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -202,10 +202,10 @@ class Reader extends AbstractCsv
             return isset($row[$offset_index]);
         };
         $select_pairs = function ($row) use ($offset_index, $value_index) {
-            return array(
+            return [
                 $row[$offset_index],
                 isset($row[$value_index]) ? $row[$value_index] : null,
-            );
+            ];
         };
 
         $this->addFilter($filter_pairs);
@@ -286,7 +286,7 @@ class Reader extends AbstractCsv
      */
     protected function validateKeys(array $keys)
     {
-        if (empty($keys) || $keys !== array_unique(array_filter($keys, array($this, 'isValidKey')))) {
+        if (empty($keys) || $keys !== array_unique(array_filter($keys, [$this, 'isValidKey']))) {
             throw new InvalidArgumentException('Use a flat array with unique string values');
         }
 
@@ -316,10 +316,7 @@ class Reader extends AbstractCsv
      */
     protected function getRow($offset)
     {
-        $fileObj = $this->getIterator();
-        $iterator = new LimitIterator($fileObj, $offset, 1);
-        $iterator->rewind();
-        $row = $iterator->current();
+        $row = $this->seekRow($offset);
         if (empty($row)) {
             throw new InvalidArgumentException('the specified row does not exist or is empty');
         }
@@ -335,5 +332,31 @@ class Reader extends AbstractCsv
         }
 
         return $row;
+    }
+
+    /**
+     * Returns the row at a given offset
+     *
+     * @param int $offset
+     *
+     * @return mixed
+     */
+    protected function seekRow($offset)
+    {
+        $stream = $this->getIterator();
+        $stream->rewind();
+        //Workaround for SplFileObject::seek bug in PHP7.2+ see https://bugs.php.net/bug.php?id=75917
+        if (PHP_VERSION_ID > 70200 && !$stream instanceof StreamIterator) {
+            while ($offset !== $stream->key() && $stream->valid()) {
+                $stream->next();
+            }
+
+            return $stream->current();
+        }
+
+        $iterator = new LimitIterator($stream, $offset, 1);
+        $iterator->rewind();
+
+        return $iterator->current();
     }
 }

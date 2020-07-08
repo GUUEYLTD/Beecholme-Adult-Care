@@ -10,12 +10,12 @@ use AmeliaBooking\Application\Controller\User\Customer\ReauthorizeController;
 use AmeliaBooking\Application\Controller\User\Customer\GetCustomersController;
 use AmeliaBooking\Application\Controller\User\Customer\GetCustomerController;
 use AmeliaBooking\Application\Controller\User\Customer\AddCustomerController;
-use AmeliaBooking\Application\Controller\User\Customer\LoginCustomerController;
 use AmeliaBooking\Application\Controller\User\Customer\UpdateCustomerController;
 use AmeliaBooking\Application\Controller\User\DeleteUserController;
 use AmeliaBooking\Application\Controller\User\GetCurrentUserController;
 use AmeliaBooking\Application\Controller\User\GetUserDeleteEffectController;
 use AmeliaBooking\Application\Controller\User\GetWPUsersController;
+use AmeliaBooking\Application\Controller\User\LoginCabinetController;
 use AmeliaBooking\Application\Controller\User\Provider\UpdateProviderStatusController;
 use AmeliaBooking\Application\Controller\User\Provider\GetProviderController;
 use AmeliaBooking\Application\Controller\User\Provider\GetProvidersController;
@@ -37,6 +37,8 @@ class User
     {
         $app->get('/users/wp-users', GetWPUsersController::class);
 
+        $app->post('/users/authenticate', LoginCabinetController::class);
+
         // Customers
         $app->get('/users/customers/{id:[0-9]+}', GetCustomerController::class);
 
@@ -49,8 +51,6 @@ class User
         $app->post('/users/customers/delete/{id:[0-9]+}', DeleteUserController::class);
 
         $app->get('/users/customers/effect/{id:[0-9]+}', GetUserDeleteEffectController::class);
-
-        $app->post('/users/customers/authenticate', LoginCustomerController::class);
 
         $app->post('/users/customers/reauthorize', ReauthorizeController::class);
 

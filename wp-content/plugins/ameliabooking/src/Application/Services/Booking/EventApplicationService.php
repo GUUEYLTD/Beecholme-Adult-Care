@@ -312,6 +312,19 @@ class EventApplicationService
             }
         }
 
+        if ($newEvent->getDescription() &&
+            (
+                ($newEvent->getDescription() ? $newEvent->getDescription()->getValue() : null) !==
+                ($oldEvent->getDescription() ? $oldEvent->getDescription()->getValue() : null) ||
+                $newEvent->getName()->getValue() !== $oldEvent->getName()->getValue()
+            )
+        ) {
+            /** @var Event $event **/
+            foreach ($clonedEvents->getItems() as $event) {
+                $event->setDescription($newEvent->getDescription());
+            }
+        }
+
         return [
             'rescheduled' => $rescheduledEvents->toArray(),
             'added'       => $addedEvents->toArray(),
@@ -670,7 +683,8 @@ class EventApplicationService
         /** @var Collection $events */
         $events = $eventRepository->getProvidersEvents([
             'providers' => $providersIds,
-            'dates' => $dates
+            'dates'     => $dates,
+            'status'    => BookingStatus::APPROVED,
         ]);
 
         /** @var Event $event */

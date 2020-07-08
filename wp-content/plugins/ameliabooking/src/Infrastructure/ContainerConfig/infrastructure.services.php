@@ -5,11 +5,13 @@
  */
 
 use AmeliaBooking\Infrastructure\Common\Container;
+use AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService;
 use AmeliaBooking\Infrastructure\Services\Notification\MailerFactory;
 use AmeliaBooking\Infrastructure\Services\Notification\MailgunService;
 use AmeliaBooking\Infrastructure\Services\Notification\PHPMailService;
 use AmeliaBooking\Infrastructure\Services\Notification\SMTPService;
 use AmeliaBooking\Infrastructure\Services\Notification\WpMailService;
+use AmeliaBooking\Infrastructure\Services\Zoom\ZoomService;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
@@ -39,7 +41,6 @@ $entries['infrastructure.report.csv.service'] = function () {
  * @param Container $c
  *
  * @return AmeliaBooking\Infrastructure\Services\Payment\PayPalService
- * @throws \Interop\Container\Exception\ContainerException
  */
 $entries['infrastructure.payment.payPal.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Payment\PayPalService(
@@ -53,7 +54,6 @@ $entries['infrastructure.payment.payPal.service'] = function ($c) {
  * @param Container $c
  *
  * @return AmeliaBooking\Infrastructure\Services\Payment\StripeService
- * @throws \Interop\Container\Exception\ContainerException
  */
 $entries['infrastructure.payment.stripe.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Payment\StripeService(
@@ -67,7 +67,6 @@ $entries['infrastructure.payment.stripe.service'] = function ($c) {
  * @param Container $c
  *
  * @return AmeliaBooking\Infrastructure\Services\Payment\CurrencyService
- * @throws \Interop\Container\Exception\ContainerException
  */
 $entries['infrastructure.payment.currency.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Payment\CurrencyService(
@@ -78,13 +77,15 @@ $entries['infrastructure.payment.currency.service'] = function ($c) {
 /**
  * Less Parser Service
  *
+ * @param Container $c
+ *
  * @return AmeliaBooking\Infrastructure\Services\Frontend\LessParserService
  */
-$entries['infrastructure.frontend.lessParser.service'] = function () {
+$entries['infrastructure.frontend.lessParser.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Frontend\LessParserService(
         AMELIA_PATH . '/assets/less/frontend/amelia-booking.less',
-        'amelia-booking.css',
-        UPLOADS_PATH . '/amelia/css'
+        UPLOADS_PATH . '/amelia/css',
+        $c->get('domain.settings.service')
     );
 };
 
@@ -93,7 +94,7 @@ $entries['infrastructure.frontend.lessParser.service'] = function () {
  *
  * @param Container $c
  *
- * @return \AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService
+ * @return GoogleCalendarService
  */
 $entries['infrastructure.google.calendar.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Google\GoogleCalendarService($c);
@@ -104,7 +105,7 @@ $entries['infrastructure.google.calendar.service'] = function ($c) {
  *
  * @param Container $c
  *
- * @return \AmeliaBooking\Infrastructure\Services\Zoom\ZoomService
+ * @return ZoomService
  */
 $entries['infrastructure.zoom.service'] = function ($c) {
     return new AmeliaBooking\Infrastructure\Services\Zoom\ZoomService(

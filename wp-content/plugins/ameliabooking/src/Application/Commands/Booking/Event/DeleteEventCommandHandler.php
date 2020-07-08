@@ -55,13 +55,6 @@ class DeleteEventCommandHandler extends CommandHandler
         /** @var Event $event */
         $event = $eventRepository->getById($command->getArg('id'));
 
-        if (!$event instanceof Event) {
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not delete event');
-
-            return $result;
-        }
-
         $eventRepository->beginTransaction();
 
         try {
@@ -75,6 +68,9 @@ class DeleteEventCommandHandler extends CommandHandler
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully deleted event');
+        $result->setData([
+            Entities::EVENT => $event->toArray(),
+        ]);
 
         return $result;
     }

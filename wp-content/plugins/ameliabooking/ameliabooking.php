@@ -3,7 +3,7 @@
 Plugin Name: Amelia
 Plugin URI: https://wpamelia.com/
 Description: Amelia is a simple yet powerful automated booking specialist, working 24/7 to make sure your customers can make appointments and events even while you sleep!
-Version: 2.6
+Version: 2.8
 Author: TMS
 Author URI: https://tms-outsource.com/
 Text Domain: wpamelia
@@ -17,6 +17,7 @@ use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Routes\Routes;
 use AmeliaBooking\Infrastructure\WP\ButtonService\ButtonService;
 use AmeliaBooking\Infrastructure\WP\GutenbergBlock\AmeliaCustomerCabinetGutenbergBlock;
+use AmeliaBooking\Infrastructure\WP\GutenbergBlock\AmeliaEmployeeCabinetGutenbergBlock;
 use AmeliaBooking\Infrastructure\WP\GutenbergBlock\AmeliaEventsGutenbergBlock;
 use AmeliaBooking\Infrastructure\WP\GutenbergBlock\AmeliaSearchGutenbergBlock;
 use AmeliaBooking\Infrastructure\WP\GutenbergBlock\AmeliaBookingGutenbergBlock;
@@ -95,7 +96,7 @@ if (!defined('AMELIA_LOGIN_URL')) {
 
 // Const for Amelia version
 if (!defined('AMELIA_VERSION')) {
-    define('AMELIA_VERSION', '2.6');
+    define('AMELIA_VERSION', '2.8');
 }
 
 // Const for site URL
@@ -111,6 +112,13 @@ if (!defined('AMELIA_PLUGIN_SLUG')) {
 // Const for Amelia SMS API
 if (!defined('AMELIA_SMS_API_URL')) {
     define('AMELIA_SMS_API_URL', 'https://smsapi.wpamelia.com/');
+    define('AMELIA_SMS_VENDOR_ID', 36082);
+    define('AMELIA_SMS_PRODUCT_ID_10', 595657);
+    define('AMELIA_SMS_PRODUCT_ID_20', 595658);
+    define('AMELIA_SMS_PRODUCT_ID_50', 595659);
+    define('AMELIA_SMS_PRODUCT_ID_100', 595660);
+    define('AMELIA_SMS_PRODUCT_ID_200', 595661);
+    define('AMELIA_SMS_PRODUCT_ID_500', 595662);
 }
 
 if (!defined('AMELIA_STORE_API_URL')) {
@@ -171,7 +179,9 @@ class Plugin
         $settingsService = new SettingsService(new SettingsStorage());
 
         if (WooCommerceService::isEnabled()) {
-            add_filter('woocommerce_prevent_admin_access', '__return_false');
+            if ($settingsService->getCategorySettings('payments')['wc']['dashboard']) {
+                add_filter('woocommerce_prevent_admin_access', '__return_false');
+            }
 
             if ($settingsService->getCategorySettings('payments')['wc']['enabled']) {
                 try {
@@ -207,6 +217,7 @@ class Plugin
             AmeliaCatalogGutenbergBlock::init();
             AmeliaEventsGutenbergBlock::init();
             AmeliaCustomerCabinetGutenbergBlock::init();
+            AmeliaEmployeeCabinetGutenbergBlock::init();
 
             add_filter( 'block_categories', array('AmeliaBooking\Plugin', 'addAmeliaBlockCategory'), 10, 2);
             add_filter( 'learn-press/frontend-default-scripts', array('AmeliaBooking\Plugin','learnPressConflict') );
@@ -218,7 +229,8 @@ class Plugin
             add_shortcode('ameliasearch', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\SearchShortcodeService', 'shortcodeHandler'));
             add_shortcode('ameliacatalog', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\CatalogShortcodeService', 'shortcodeHandler'));
 	        add_shortcode('ameliaevents', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\EventsShortcodeService', 'shortcodeHandler'));
-            add_shortcode('ameliacustomerpanel', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\CabinetShortcodeService', 'shortcodeHandler'));
+            add_shortcode('ameliacustomerpanel', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\CabinetCustomerShortcodeService', 'shortcodeHandler'));
+            add_shortcode('ameliaemployeepanel', array('AmeliaBooking\Infrastructure\WP\ShortcodeService\CabinetEmployeeShortcodeService', 'shortcodeHandler'));
         }
     }
 

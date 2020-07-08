@@ -46,6 +46,9 @@ class UpdateServiceController extends Controller
         'applyGlobally',
         'aggregatedPrice',
         'settings',
+        'recurringCycle',
+        'recurringSub',
+        'recurringPayment',
         'position'
     ];
 

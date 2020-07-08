@@ -12,6 +12,8 @@ use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\WholeNumber;
+use AmeliaBooking\Domain\ValueObjects\String\Cycle;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Domain\ValueObjects\Priority;
 use AmeliaBooking\Domain\ValueObjects\String\Name;
@@ -64,6 +66,15 @@ class Service extends AbstractBookable
 
     /** @var  BooleanValueObject */
     protected $aggregatedPrice;
+
+    /** @var  Cycle */
+    protected $recurringCycle;
+
+    /** @var  Name */
+    protected $recurringSub;
+
+    /** @var  WholeNumber */
+    protected $recurringPayment;
 
     /**
      * Service constructor.
@@ -309,6 +320,54 @@ class Service extends AbstractBookable
     }
 
     /**
+     * @return Cycle
+     */
+    public function getRecurringCycle()
+    {
+        return $this->recurringCycle;
+    }
+
+    /**
+     * @param Cycle $recurringCycle
+     */
+    public function setRecurringCycle(Cycle $recurringCycle)
+    {
+        $this->recurringCycle = $recurringCycle;
+    }
+
+    /**
+     * @return Name
+     */
+    public function getRecurringSub()
+    {
+        return $this->recurringSub;
+    }
+
+    /**
+     * @param Name $recurringSub
+     */
+    public function setRecurringSub(Name $recurringSub)
+    {
+        $this->recurringSub = $recurringSub;
+    }
+
+    /**
+     * @return WholeNumber
+     */
+    public function getRecurringPayment()
+    {
+        return $this->recurringPayment;
+    }
+
+    /**
+     * @param WholeNumber $recurringPayment
+     */
+    public function setRecurringPayment(WholeNumber $recurringPayment)
+    {
+        $this->recurringPayment = $recurringPayment;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -316,19 +375,22 @@ class Service extends AbstractBookable
         return array_merge(
             parent::toArray(),
             [
-                'minCapacity'     => $this->getMinCapacity() ? $this->getMinCapacity()->getValue() : null,
-                'maxCapacity'     => $this->getMaxCapacity() ? $this->getMaxCapacity()->getValue() : null,
-                'duration'        => $this->getDuration() ? $this->getDuration()->getValue() : null,
-                'timeBefore'      => $this->getTimeBefore() ? $this->getTimeBefore()->getValue() : null,
-                'timeAfter'       => $this->getTimeAfter() ? $this->getTimeAfter()->getValue() : null,
-                'bringingAnyone'  => $this->getBringingAnyone() ? $this->getBringingAnyone()->getValue() : null,
-                'show'            => $this->getShow() ? $this->getShow()->getValue() : null,
-                'aggregatedPrice' => $this->getAggregatedPrice() ? $this->getAggregatedPrice()->getValue() : null,
-                'status'          => $this->getStatus()->getValue(),
-                'categoryId'      => $this->getCategoryId()->getValue(),
-                'category'        => $this->getCategory() ? $this->getCategory()->toArray() : null,
-                'priority'        => $this->getPriority() ? $this->getPriority()->getValue() : [],
-                'gallery'         => $this->getGallery() ? $this->getGallery()->toArray() : []
+                'minCapacity'      => $this->getMinCapacity() ? $this->getMinCapacity()->getValue() : null,
+                'maxCapacity'      => $this->getMaxCapacity() ? $this->getMaxCapacity()->getValue() : null,
+                'duration'         => $this->getDuration() ? $this->getDuration()->getValue() : null,
+                'timeBefore'       => $this->getTimeBefore() ? $this->getTimeBefore()->getValue() : null,
+                'timeAfter'        => $this->getTimeAfter() ? $this->getTimeAfter()->getValue() : null,
+                'bringingAnyone'   => $this->getBringingAnyone() ? $this->getBringingAnyone()->getValue() : null,
+                'show'             => $this->getShow() ? $this->getShow()->getValue() : null,
+                'aggregatedPrice'  => $this->getAggregatedPrice() ? $this->getAggregatedPrice()->getValue() : null,
+                'status'           => $this->getStatus()->getValue(),
+                'categoryId'       => $this->getCategoryId()->getValue(),
+                'category'         => $this->getCategory() ? $this->getCategory()->toArray() : null,
+                'priority'         => $this->getPriority() ? $this->getPriority()->getValue() : [],
+                'gallery'          => $this->getGallery() ? $this->getGallery()->toArray() : [],
+                'recurringCycle'   => $this->getRecurringCycle() ? $this->getRecurringCycle()->getValue() : null,
+                'recurringSub'     => $this->getRecurringSub() ? $this->getRecurringSub()->getValue() : null,
+                'recurringPayment' => $this->getRecurringPayment() ? $this->getRecurringPayment()->getValue() : null,
             ]
         );
     }

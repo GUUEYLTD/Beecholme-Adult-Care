@@ -5,6 +5,11 @@
 
 namespace AmeliaBooking\Infrastructure\WP\EventListeners\User;
 
+use AmeliaBooking\Infrastructure\Common\Container;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Infrastructure\WP\EventListeners\User\Provider\ProviderAddedEventHandler;
+use AmeliaBooking\Infrastructure\WP\EventListeners\User\Provider\ProviderUpdatedEventHandler;
+use Interop\Container\Exception\ContainerException;
 use League\Event\ListenerInterface;
 use League\Event\EventInterface;
 
@@ -15,6 +20,19 @@ use League\Event\EventInterface;
  */
 class UserEventsListener implements ListenerInterface
 {
+    /** @var Container */
+    private $container;
+
+    /**
+     * AppointmentEventsListener constructor.
+     *
+     * @param Container $container
+     */
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Check if provided argument is the listener
      *
@@ -32,6 +50,9 @@ class UserEventsListener implements ListenerInterface
      *
      * @param EventInterface $event
      * @param mixed          $param
+     *
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function handle(EventInterface $event, $param = null)
     {
@@ -39,6 +60,12 @@ class UserEventsListener implements ListenerInterface
         switch ($event->getName()) {
             case 'user.added':
                 UserAddedEventHandler::handle($param);
+                break;
+            case 'provider.updated':
+                ProviderUpdatedEventHandler::handle($param, $this->container);
+                break;
+            case 'provider.added':
+                ProviderAddedEventHandler::handle($param, $this->container);
                 break;
         }
     }

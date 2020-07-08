@@ -61,20 +61,56 @@ class SuccessfulBookingCommandHandler extends CommandHandler
 
         $booking->setChangedStatus(new BooleanValueObject(true));
 
+        $recurringReservations = [];
+
+        $recurring = isset($command->getFields()['recurring']) ? $command->getFields()['recurring'] : [];
+
+        foreach ($recurring as $recurringData) {
+            /** @var Appointment|Event $recurringReservation */
+            $recurringReservation = $reservationService->getReservationByBookingId((int)$recurringData['id']);
+
+            /** @var CustomerBooking $recurringBooking */
+            $recurringBooking = $recurringReservation->getBookings()->getItem(
+                (int)$recurringData['id']
+            );
+
+            $recurringBooking->setChangedStatus(new BooleanValueObject(true));
+
+            $recurringReservations[] = $this->getResultData(
+                $recurringReservation,
+                $recurringBooking,
+                $recurringData['appointmentStatusChanged']
+            );
+        }
+
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully get booking');
-        $result->setData([
-            'type'                     => $type,
-            $type                      => array_merge(
-                $reservation->toArray(),
-                ['bookings' => [
-                    $booking->toArray()
-                ]]
-            ),
-            Entities::BOOKING          => $booking->toArray(),
-            'appointmentStatusChanged' => $command->getFields()['appointmentStatusChanged']
-        ]);
+        $result->setData(array_merge(
+            $this->getResultData($reservation, $booking, $command->getFields()['appointmentStatusChanged']),
+            [
+                'recurring' => $recurringReservations
+            ]
+        ));
+
+        $result->setDataInResponse(false);
 
         return $result;
+    }
+
+    /**
+     * @param Appointment|Event $reservation
+     * @param CustomerBooking   $booking
+     * @param bool              $appointmentStatusChanged
+     *
+     * @return array
+     */
+    private function getResultData($reservation, $booking, $appointmentStatusChanged)
+    {
+        return [
+            'type'                              => $reservation->getType()->getValue(),
+            $reservation->getType()->getValue() => $reservation->toArray(),
+            Entities::BOOKING                   => $booking->toArray(),
+            'appointmentStatusChanged'          => $appointmentStatusChanged,
+        ];
     }
 }

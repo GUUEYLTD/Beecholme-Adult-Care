@@ -64,10 +64,12 @@ class WooCommercePaymentCommandHandler extends CommandHandler
         $validator->setCustomFieldsValidation(true);
         $validator->setTimeSlotValidation(true);
 
+        $appointmentData = $bookingAS->getAppointmentData($command->getFields());
+
         /** @var Reservation $reservation */
         $reservation = $reservationService->processBooking(
             $result,
-            $bookingAS->getAppointmentData($command->getFields()),
+            $appointmentData,
             $validator,
             false
         );
@@ -82,13 +84,38 @@ class WooCommercePaymentCommandHandler extends CommandHandler
         $uploadedCustomFieldFilesNames = $customFieldService->saveUploadedFiles(
             0,
             $reservation->getUploadedCustomFieldFilesInfo(),
-            '/tmp'
+            '/tmp',
+            false
         );
+
+        $recurringAppointmentsData = [];
+
+        if ($reservation->getRecurring()) {
+            /** @var Reservation $recurringReservation */
+            foreach ($reservation->getRecurring()->getItems() as $key => $recurringReservation) {
+                $recurringAppointmentData = [
+                    'providerId'   => $appointmentData['recurring'][$key]['providerId'],
+                    'locationId'   => $appointmentData['recurring'][$key]['locationId'],
+                    'bookingStart' => $appointmentData['recurring'][$key]['bookingStart'],
+                ];
+
+                $recurringAppointmentData['couponId'] = !$recurringReservation->getBooking()->getCoupon() ? null :
+                    $recurringReservation->getBooking()->getCoupon()->getId()->getValue();
+
+                $recurringAppointmentData['couponCode'] = !$recurringReservation->getBooking()->getCoupon() ? null :
+                    $recurringReservation->getBooking()->getCoupon()->getCode()->getValue();
+
+                $recurringAppointmentData['useCoupon'] = $recurringReservation->getBooking()->getCoupon() !== null;
+
+                $recurringAppointmentsData[] = $recurringAppointmentData;
+            }
+        }
 
         $appointmentData = $reservationService->getInfo(
             $reservation->getBookable(),
             $reservation->getBooking(),
             $reservation->getReservation(),
+            $recurringAppointmentsData,
             $command->getFields()['payment']['gateway']
         );
 

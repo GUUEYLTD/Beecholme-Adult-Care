@@ -69,6 +69,21 @@ class GetIcsCommandHandler extends CommandHandler
 
         $periods = $reservationService->getBookingPeriods($reservation, $booking, $bookable);
 
+        $recurring = $command->getField('params')['recurring'] ?: [];
+
+        foreach ($recurring as $recurringId) {
+            /** @var Appointment|Event $recurringReservation */
+            $recurringReservation = $reservationService->getReservationByBookingId((int)$recurringId);
+
+            /** @var CustomerBooking $recurringBooking */
+            $recurringBooking = $recurringReservation->getBookings()->getItem(
+                (int)$recurringId
+            );
+
+            $periods[] = $reservationService->getBookingPeriods($recurringReservation, $recurringBooking, $bookable)[0];
+
+        }
+
         $vCalendar = new Calendar(AMELIA_URL);
 
         foreach ($periods as $period) {

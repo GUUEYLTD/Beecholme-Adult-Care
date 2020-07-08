@@ -9,15 +9,19 @@ use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\CustomField\CustomFieldApplicationService;
-use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class UpdateAppointmentCommandHandler
@@ -42,22 +46,14 @@ class UpdateAppointmentCommandHandler extends CommandHandler
      * @param UpdateAppointmentCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws QueryExecutionException
-     * @throws InvalidArgumentException
      * @throws AccessDeniedException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \Exception
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws NotFoundException
+     * @throws ContainerException
      */
     public function handle(UpdateAppointmentCommand $command)
     {
-        if (!$this->getContainer()->getPermissionsService()->currentUserCanWrite(Entities::APPOINTMENTS)) {
-            throw new AccessDeniedException('You are not allowed to update appointment');
-        }
-
         $result = new CommandResult();
 
         $this->checkMandatoryFields($command);
@@ -72,8 +68,29 @@ class UpdateAppointmentCommandHandler extends CommandHandler
         $bookableAS = $this->container->get('application.bookable.service');
         /** @var CustomFieldApplicationService $customFieldService */
         $customFieldService = $this->container->get('application.customField.service');
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
+        /** @var SettingsService $settingsDS */
+        $settingsDS = $this->container->get('domain.settings.service');
+
+        try {
+            /** @var AbstractUser $user */
+            $user = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
+        } catch (AuthorizationException $e) {
+            $result->setResult(CommandResult::RESULT_ERROR);
+            $result->setData([
+                'reauthorize' => true
+            ]);
+
+            return $result;
+        }
+
+        if ($userAS->isProvider($user) && !$settingsDS->getSetting('roles', 'allowWriteAppointments')) {
+            throw new AccessDeniedException('You are not allowed to update appointment');
+        }
 
         /** @var Service $service */
         $service = $bookableAS->getAppointmentService(
@@ -97,7 +114,7 @@ class UpdateAppointmentCommandHandler extends CommandHandler
             /** @var AbstractUser $user */
             $user = $this->container->get('logged.in.user');
 
-            if (!$appointmentAS->canBeBooked($appointment, $customerAS->isCustomer($user))) {
+            if (!$appointmentAS->canBeBooked($appointment, $userAS->isCustomer($user))) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setMessage(FrontendStrings::getCommonStrings()['time_slot_unavailable']);
                 $result->setData([

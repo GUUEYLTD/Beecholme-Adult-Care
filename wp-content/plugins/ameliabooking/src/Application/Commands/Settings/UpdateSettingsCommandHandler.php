@@ -10,6 +10,10 @@ use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Services\Frontend\LessParserService;
 use AmeliaBooking\Infrastructure\WP\Integrations\WooCommerce\WooCommerceService;
+use Exception;
+use Interop\Container\Exception\ContainerException;
+use Less_Exception_Parser;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class UpdateSettingsCommandHandler
@@ -22,11 +26,11 @@ class UpdateSettingsCommandHandler extends CommandHandler
      * @param UpdateSettingsCommand $command
      *
      * @return CommandResult
-     * @throws \AmeliaBooking\Application\Common\Exceptions\AccessDeniedException
-     * @throws \Less_Exception_Parser
-     * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws AccessDeniedException
+     * @throws Less_Exception_Parser
+     * @throws ContainerValueNotFoundException
+     * @throws ContainerException
+     * @throws Exception
      */
     public function handle(UpdateSettingsCommand $command)
     {
@@ -45,6 +49,8 @@ class UpdateSettingsCommandHandler extends CommandHandler
         /** @var LessParserService $lessParserService */
         $lessParserService = $this->getContainer()->get('infrastructure.frontend.lessParser.service');
 
+        $settingsFields = $command->getFields();
+
         if ($command->getField('customization')) {
             $customizationData = $command->getField('customization');
 
@@ -57,9 +63,9 @@ class UpdateSettingsCommandHandler extends CommandHandler
                 'color-white'       => $customizationData['textColorOnBackground'],
                 'font'              => $customizationData['font']
             ]);
-        }
 
-        $settingsFields = $command->getFields();
+            $settingsFields['customization']['hash'] = $settingsService->getSetting('customization', 'hash');
+        }
 
         if (WooCommerceService::isEnabled() && $command->getField('payments')['wc']['enabled']) {
             $settingsFields['payments']['wc']['productId'] = WooCommerceService::getIdForExistingOrNewProduct(

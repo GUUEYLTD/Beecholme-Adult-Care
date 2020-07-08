@@ -2,6 +2,7 @@
 
 namespace AmeliaBooking\Infrastructure\Repository\User;
 
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Schedule\Period;
 use AmeliaBooking\Domain\Entity\Schedule\SpecialDay;
@@ -9,12 +10,11 @@ use AmeliaBooking\Domain\Entity\Schedule\WeekDay;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\User\ProviderFactory;
+use AmeliaBooking\Domain\Repository\User\ProviderRepositoryInterface;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
-use AmeliaBooking\Domain\Repository\User\ProviderRepositoryInterface;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Connection;
-use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Infrastructure\WP\InstallActions\DB\Bookable\ExtrasTable;
 use AmeliaBooking\Infrastructure\WP\InstallActions\DB\Booking\AppointmentsTable;
 use AmeliaBooking\Infrastructure\WP\InstallActions\DB\Coupon\CouponsTable;
@@ -256,7 +256,8 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
             $where = [];
 
             if (!empty($criteria['search'])) {
-                $params[':search1'] = $params[':search2'] = $params[':search3'] = "%{$criteria['search']}%";
+                $params[':search1'] = $params[':search2'] = $params[':search3'] = $params[':search4'] =
+                    "%{$criteria['search']}%";
 
                 $where[] = "u.id IN(
                     SELECT DISTINCT(user.id)
@@ -264,7 +265,8 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                         LEFT JOIN {$wpUserTable} wpUser ON user.externalId = wpUser.ID
                         WHERE (CONCAT(user.firstName, ' ', user.lastName) LIKE :search1
                             OR wpUser.display_name LIKE :search2
-                            OR user.note LIKE :search3)
+                            OR user.email LIKE :search3
+                            OR user.note LIKE :search4)
                     )";
             }
 
@@ -366,6 +368,9 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     s.aggregatedPrice AS service_aggregatedPrice,
                     s.pictureFullPath AS service_picture_full,
                     s.pictureThumbPath AS service_picture_thumb,
+                    s.recurringCycle AS service_recurringCycle,
+                    s.recurringSub AS service_recurringSub,
+                    s.recurringPayment AS service_recurringPayment,
                     s.settings AS service_settings
                 FROM {$this->table} u
                 LEFT JOIN {$this->providerLocationTable} lt ON lt.userId = u.id
@@ -463,6 +468,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
     /**
      *
      * @param array $criteria
+     *
      * @return Collection
      * @throws QueryExecutionException
      */
@@ -627,7 +633,8 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
             $where = [];
 
             if (!empty($criteria['search'])) {
-                $params[':search1'] = $params[':search2'] = $params[':search3'] = "%{$criteria['search']}%";
+                $params[':search1'] = $params[':search2'] = $params[':search3'] = $params[':search4'] =
+                    "%{$criteria['search']}%";
 
                 $where[] = "u.id IN(
                     SELECT DISTINCT(user.id)
@@ -635,7 +642,8 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                         LEFT JOIN {$wpUserTable} wpUser ON user.externalId = wpUser.ID
                         WHERE (CONCAT(user.firstName, ' ', user.lastName) LIKE :search1
                             OR wpUser.display_name LIKE :search2
-                            OR user.note LIKE :search3)
+                            OR user.email LIKE :search3
+                            OR user.note LIKE :search4)
                     )";
             }
 
@@ -974,6 +982,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     s.pictureFullPath AS service_picture_full,
                     s.pictureThumbPath AS service_picture_thumb,
                     s.aggregatedPrice AS service_aggregatedPrice,
+                    s.recurringPayment AS service_recurringPayment,
                     e.id AS extra_id,
                     e.name AS extra_name,
                     e.price AS extra_price,
@@ -1637,6 +1646,9 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                 'extras'           => [],
                 'coupons'          => [],
                 'settings'         => isset($row['service_settings']) ? $row['service_settings'] : null,
+                'recurringCycle'   => isset($row['service_recurringCycle']) ? $row['service_recurringCycle'] : null,
+                'recurringSub'     => isset($row['service_recurringSub']) ? $row['service_recurringSub'] : null,
+                'recurringPayment' => isset($row['service_recurringPayment']) ? $row['service_recurringPayment'] : null,
             ];
         }
 
@@ -1690,7 +1702,7 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
     public function deleteViewStats($userId)
     {
         $params = [
-            ':userId'  => $userId,
+            ':userId' => $userId,
         ];
 
         try {

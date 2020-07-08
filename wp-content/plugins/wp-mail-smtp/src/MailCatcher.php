@@ -35,7 +35,7 @@ class MailCatcher extends \PHPMailer {
 	 * @since 1.0.0
 	 * @since 1.4.0 Process "Do Not Send" option, but always allow test email.
 	 *
-	 * @throws \phpmailerException Throws when sending via PhpMailer fails for some reason.
+	 * @throws \phpmailerException When sending via PhpMailer fails for some reason.
 	 *
 	 * @return bool
 	 */
@@ -46,7 +46,7 @@ class MailCatcher extends \PHPMailer {
 
 		$is_emailing_blocked = false;
 
-		if ( $options->get( 'general', 'do_not_send' ) ) {
+		if ( wp_mail_smtp()->is_blocked() ) {
 			$is_emailing_blocked = true;
 		}
 
@@ -89,6 +89,15 @@ class MailCatcher extends \PHPMailer {
 			} catch ( \phpmailerException $e ) {
 				$this->mailHeader = '';
 				$this->setError( $e->getMessage() );
+
+				// Set the debug error, but not for default PHP mailer.
+				if ( $mail_mailer !== 'mail' ) {
+					Debug::set(
+						'Mailer: ' . esc_html( wp_mail_smtp()->get_providers()->get_options( $mail_mailer )->get_title() ) . PHP_EOL .
+						$e->getMessage()
+					);
+				}
+
 				if ( $this->exceptions ) {
 					throw $e;
 				}

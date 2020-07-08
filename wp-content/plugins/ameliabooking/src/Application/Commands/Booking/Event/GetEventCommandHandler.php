@@ -6,11 +6,17 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Event\EventRepository;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetEventCommandHandler
@@ -23,34 +29,48 @@ class GetEventCommandHandler extends CommandHandler
      * @param GetEventCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
      */
     public function handle(GetEventCommand $command)
     {
-        /** @var AbstractUser  $currentUser */
-        $currentUser = $this->getContainer()->get('logged.in.user');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
 
-        if ($currentUser === null ||
-            !$this->getContainer()->getPermissionsService()->currentUserCanRead(Entities::EVENTS)) {
+        $result = new CommandResult();
+
+        try {
+            /** @var AbstractUser $user */
+            $user = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
+        } catch (AuthorizationException $e) {
+            $result->setResult(CommandResult::RESULT_ERROR);
+            $result->setData([
+                'reauthorize' => true
+            ]);
+
+            return $result;
+        }
+
+        if ($user === null) {
             throw new AccessDeniedException('You are not allowed to read events');
         }
 
-        $result = new CommandResult();
 
         /** @var EventRepository $eventRepository */
         $eventRepository = $this->container->get('domain.booking.event.repository');
 
-        /** @var Event $event */
         $event = $eventRepository->getById((int)$command->getField('id'));
 
         /** @var CustomerApplicationService $customerAS */
         $customerAS = $this->container->get('application.user.customer.service');
 
-        $customerAS->removeBookingsForOtherCustomers($currentUser, new Collection([$event]));
+        $customerAS->removeBookingsForOtherCustomers($user, new Collection([$event]));
 
         if (!$event instanceof Event) {
             $result->setResult(CommandResult::RESULT_ERROR);

@@ -5,6 +5,7 @@ namespace AmeliaBooking\Infrastructure\Services\Google;
 use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\User\Provider;
@@ -15,6 +16,8 @@ use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\Email;
 use AmeliaBooking\Domain\ValueObjects\String\Token;
 use AmeliaBooking\Infrastructure\Common\Container;
+use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
 use AmeliaBooking\Infrastructure\Repository\User\CustomerRepository;
@@ -27,6 +30,7 @@ use AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment\Appointme
 use AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment\BookingAddedEventHandler;
 use AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment\BookingCanceledEventHandler;
 use AmeliaGoogle_Service_Calendar_Event;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class GoogleCalendarService
@@ -48,12 +52,14 @@ class GoogleCalendarService
     /** @var SettingsService */
     private $settings;
 
+    private static $providersGoogleEvents = [];
+
     /**
      * GoogleClientService constructor.
      *
      * @param Container $container
      *
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function __construct(Container $container)
     {
@@ -104,9 +110,9 @@ class GoogleCalendarService
      *
      * @return mixed
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function listCalendarList($provider)
     {
@@ -136,9 +142,9 @@ class GoogleCalendarService
      * @param Provider $provider
      *
      * @return null|string
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function getProviderGoogleCalendarId($provider)
     {
@@ -170,10 +176,10 @@ class GoogleCalendarService
      * @param Appointment $appointment
      * @param string      $commandSlug
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     public function handleEvent($appointment, $commandSlug)
     {
@@ -229,10 +235,11 @@ class GoogleCalendarService
      * @param Collection $providers
      *
      * @param int        $excludeAppointmentId
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
+     *
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
      * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function removeSlotsFromGoogleCalendar($providers, $excludeAppointmentId = null)
     {
@@ -242,17 +249,23 @@ class GoogleCalendarService
                 $provider = $providers->getItem($providerKey);
 
                 if ($provider->getGoogleCalendar()) {
-                    $this->authorizeProvider($provider);
+                    if (!array_key_exists($provider->getId()->getValue(), self::$providersGoogleEvents)) {
+                        $this->authorizeProvider($provider);
 
-                    $events = $this->service->events->listEvents(
-                        $provider->getGoogleCalendar()->getCalendarId()->getValue(),
-                        [
-                            'maxResults'   => $this->settings['maximumNumberOfEventsReturned'],
-                            'orderBy'      => 'startTime',
-                            'singleEvents' => true,
-                            'timeMin'      => DateTimeService::getCustomDateTimeRFC3339(DateTimeService::getNowDate())
-                        ]
-                    );
+                        $events = $this->service->events->listEvents(
+                            $provider->getGoogleCalendar()->getCalendarId()->getValue(),
+                            [
+                                'maxResults'   => $this->settings['maximumNumberOfEventsReturned'],
+                                'orderBy'      => 'startTime',
+                                'singleEvents' => true,
+                                'timeMin'      => DateTimeService::getCustomDateTimeRFC3339(DateTimeService::getNowDate())
+                            ]
+                        );
+
+                        self::$providersGoogleEvents[$provider->getId()->getValue()] = $events;
+                    } else {
+                        $events = self::$providersGoogleEvents[$provider->getId()->getValue()];
+                    }
 
                     /** @var AmeliaGoogle_Service_Calendar_Event $event */
                     foreach ($events->getItems() as $event) {
@@ -331,9 +344,9 @@ class GoogleCalendarService
      * @param Appointment $appointment
      * @param Provider    $provider
      *
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     private function insertEvent($appointment, $provider)
     {
@@ -359,9 +372,9 @@ class GoogleCalendarService
      * @param Appointment $appointment
      * @param Provider    $provider
      *
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     private function updateEvent($appointment, $provider)
     {
@@ -400,9 +413,9 @@ class GoogleCalendarService
      *
      * @return AmeliaGoogle_Service_Calendar_Event
      *
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      * @throws \Exception
      */
     private function createEvent($appointment, $provider)
@@ -424,18 +437,31 @@ class GoogleCalendarService
 
         $placeholderData = $placeholderService->getPlaceholdersData($appointment->toArray());
 
+        $start = clone $appointment->getBookingStart()->getValue();
+        $end = clone $appointment->getBookingEnd()->getValue();
+
+        if ($this->settings['includeBufferTimeGoogleCalendar'] === true) {
+            $timeBefore = $appointment->getService()->getTimeBefore() ?
+                $appointment->getService()->getTimeBefore()->getValue() : 0;
+            $timeAfter = $appointment->getService()->getTimeAfter() ?
+                $appointment->getService()->getTimeAfter()->getValue() : 0;
+            $start->modify('-' . $timeBefore . ' second');
+            $end->modify('+' . $timeAfter . ' second');
+        }
+
         $event = new AmeliaGoogle_Service_Calendar_Event([
+            'start'                   => [
+                'dateTime' => DateTimeService::getCustomDateTimeRFC3339($start->format('Y-m-d H:i:s')),
+            ],
+            'end'                     => [
+                'dateTime' => DateTimeService::getCustomDateTimeRFC3339($end->format('Y-m-d H:i:s')),
+            ],
             'guestsCanSeeOtherGuests' => $this->settings['showAttendees'],
             'attendees'               => $attendees,
             'description'             => $placeholderService->applyPlaceholders(
                 $this->settings['eventDescription'],
                 $placeholderData
             ),
-            'end'                     => [
-                'dateTime' => DateTimeService::getCustomDateTimeRFC3339(
-                    $appointment->getBookingEnd()->getValue()->format('Y-m-d H:i:s')
-                ),
-            ],
             'extendedProperties'      => [
                 'private' => [
                     'ameliaEvent'         => true,
@@ -444,11 +470,6 @@ class GoogleCalendarService
             ],
             'location'                => $location ? $location->getAddress()->getValue() : null,
             'locked'                  => true,
-            'start'                   => [
-                'dateTime' => DateTimeService::getCustomDateTimeRFC3339(
-                    $appointment->getBookingStart()->getValue()->format('Y-m-d H:i:s')
-                ),
-            ],
             'status'                  => 'tentative',
             'summary'                 => $placeholderService->applyPlaceholders(
                 $this->settings['eventTitle'],
@@ -466,9 +487,9 @@ class GoogleCalendarService
      *
      * @return array
      *
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     private function getAttendees($appointment)
     {
@@ -522,9 +543,9 @@ class GoogleCalendarService
      *
      * @return bool
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     private function authorizeProvider($provider)
     {
@@ -548,9 +569,9 @@ class GoogleCalendarService
      *
      * @param Provider $provider
      *
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
      */
     private function refreshToken($provider)
     {

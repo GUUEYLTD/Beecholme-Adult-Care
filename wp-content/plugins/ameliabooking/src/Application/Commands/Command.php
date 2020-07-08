@@ -11,12 +11,17 @@ use Slim\Http\Request;
  */
 abstract class Command
 {
-
     protected $args;
+
     protected $container;
+
     private $fields = [];
+
     private $token;
+
     private $page;
+
+    private $cabinetType;
 
     /**
      * Command constructor.
@@ -132,7 +137,8 @@ abstract class Command
      */
     public function setPage($page)
     {
-        $this->page = $page;
+        $this->page = explode('-', $page)[0];
+        $this->cabinetType = explode('-', $page)[1];
     }
 
     /**
@@ -143,5 +149,15 @@ abstract class Command
     public function getPage()
     {
         return $this->page;
+    }
+
+    /**
+     * Return cabinet type
+     *
+     * @return string|null
+     */
+    public function getCabinetType()
+    {
+        return $this->cabinetType;
     }
 }

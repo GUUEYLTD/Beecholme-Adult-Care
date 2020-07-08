@@ -4,7 +4,7 @@
 *
 * @license http://opensource.org/licenses/MIT
 * @link https://github.com/thephpleague/csv/
-* @version 8.2.2
+* @version 8.2.3
 * @package League.csv
 *
 * For the full copyright and license information, please view the LICENSE
@@ -31,14 +31,14 @@ trait QueryFilter
      *
      * @var callable[]
      */
-    protected $iterator_filters = array();
+    protected $iterator_filters = [];
 
     /**
      * Callables to sort the iterator
      *
      * @var callable[]
      */
-    protected $iterator_sort_by = array();
+    protected $iterator_sort_by = [];
 
     /**
      * iterator Offset
@@ -154,7 +154,7 @@ trait QueryFilter
     protected function getQueryIterator()
     {
         $normalizedCsv = function ($row) {
-            return is_array($row) && $row != array(null);
+            return is_array($row) && $row != [null];
         };
         array_unshift($this->iterator_filters, $normalizedCsv);
         $iterator = $this->getIterator();
@@ -245,7 +245,7 @@ trait QueryFilter
             return new CallbackFilterIterator($iterator, $callable);
         };
         $iterator = array_reduce($this->iterator_filters, $reducer, $iterator);
-        $this->iterator_filters = array();
+        $this->iterator_filters = [];
 
         return $iterator;
     }
@@ -274,7 +274,7 @@ trait QueryFilter
 
             return $res;
         });
-        $this->iterator_sort_by =array();
+        $this->iterator_sort_by = [];
 
         return $obj;
     }

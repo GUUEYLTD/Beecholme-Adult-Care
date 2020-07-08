@@ -6,13 +6,18 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
-use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
+use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\ValueObjects\Json;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetAppointmentCommandHandler
@@ -25,23 +30,33 @@ class GetAppointmentCommandHandler extends CommandHandler
      * @param GetAppointmentCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws ContainerException
+     * @throws InvalidArgumentException
      */
     public function handle(GetAppointmentCommand $command)
     {
-        /** @var AbstractUser  $currentUser */
-        $currentUser = $this->getContainer()->get('logged.in.user');
-
-        if ($currentUser === null ||
-            !$this->getContainer()->getPermissionsService()->currentUserCanRead(Entities::APPOINTMENTS)) {
-            throw new AccessDeniedException('You are not allowed to read appointments');
-        }
-
         $result = new CommandResult();
+
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
+
+        try {
+            /** @var AbstractUser $user */
+            $user = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
+        } catch (AuthorizationException $e) {
+            $result->setResult(CommandResult::RESULT_ERROR);
+            $result->setData([
+                'reauthorize' => true
+            ]);
+
+            return $result;
+        }
 
         /** @var AppointmentRepository $appointmentRepo */
         $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
@@ -51,7 +66,12 @@ class GetAppointmentCommandHandler extends CommandHandler
 
         $appointment = $appointmentRepo->getById((int)$command->getField('id'));
 
-        $customerAS->removeBookingsForOtherCustomers($currentUser, new Collection([$appointment]));
+        $recurringAppointments = $appointmentRepo->getFiltered([
+            'parentId' => $appointment->getParentId() ?
+                $appointment->getParentId()->getValue() : $appointment->getId()->getValue()
+        ]);
+
+        $customerAS->removeBookingsForOtherCustomers($user, new Collection([$appointment]));
 
         /** @var CustomerBooking $booking */
         foreach ($appointment->getBookings()->getItems() as $booking) {
@@ -76,17 +96,11 @@ class GetAppointmentCommandHandler extends CommandHandler
             }
         }
 
-        if (!$appointment instanceof Appointment) {
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not get appointment');
-
-            return $result;
-        }
-
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully retrieved appointment');
         $result->setData([
-            Entities::APPOINTMENT => $appointment->toArray()
+            Entities::APPOINTMENT => $appointment->toArray(),
+            'recurring'           => $recurringAppointments->toArray()
         ]);
 
         return $result;

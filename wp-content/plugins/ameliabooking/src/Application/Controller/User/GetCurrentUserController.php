@@ -28,6 +28,8 @@ class GetCurrentUserController extends Controller
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
 
+        $command->setToken($request);
+
         return $command;
     }
 }

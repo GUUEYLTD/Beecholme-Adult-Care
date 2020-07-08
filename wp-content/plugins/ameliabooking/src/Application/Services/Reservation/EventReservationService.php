@@ -260,13 +260,14 @@ class EventReservationService extends AbstractReservationService
      * @param Event            $bookable
      * @param CustomerBooking  $booking
      * @param Event            $reservation
+     * @param array            $recurringData
      * @param string           $paymentGateway
      *
      * @return array
      *
      * @throws InvalidArgumentException
      */
-    public function getInfo($bookable, $booking, $reservation, $paymentGateway)
+    public function getInfo($bookable, $booking, $reservation, $recurringData, $paymentGateway)
     {
         $dateTimeValues = [];
 
@@ -308,7 +309,8 @@ class EventReservationService extends AbstractReservationService
             ],
             'payment'            => [
                 'gateway' => $paymentGateway
-            ]
+            ],
+            'recurring'          => $recurringData
         ];
 
         foreach ($booking->getExtras()->keys() as $extraKey) {
@@ -396,5 +398,20 @@ class EventReservationService extends AbstractReservationService
             $dateTime < $bookingCloses &&
             $reservation->getMaxCapacity()->getValue() - $persons > 0 &&
             in_array($reservation->getStatus()->getValue(), [BookingStatus::APPROVED, BookingStatus::PENDING], true);
+    }
+
+    /**
+     * @param Reservation  $reservation
+     *
+     * @return float
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getReservationPaymentAmount($reservation)
+    {
+        /** @var Event $bookable */
+        $bookable = $reservation->getBookable();
+
+        return $this->getPaymentAmount($reservation->getBooking(), $bookable);
     }
 }

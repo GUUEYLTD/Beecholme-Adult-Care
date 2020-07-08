@@ -87,7 +87,7 @@
 
   .am-empty-state {
     text-align: center;
-    padding:@padding-big*4 @padding-medium;
+    padding: @padding-big*4 @padding-medium;
 
     h2 {
       font-size: @big-fs;
@@ -508,6 +508,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         width: 100%;
+
         span {
           vertical-align: middle;
         }
@@ -973,6 +974,7 @@
         color: @color-text-prime;
       }
     }
+
     @media @less-then-small {
       .am-align-right {
         text-align: left;
@@ -1073,19 +1075,24 @@
     border-left: 1px solid @color-light-gray;
     border-right: 1px solid @color-light-gray;
     border-bottom: 1px solid @color-light-gray;
+
     .el-row--flex {
       @media @less-then-small {
         display: grid;
       }
     }
+
     .el-row {
       margin-bottom: 0 !important;
       line-height: 40px;
     }
+
     .am-delete-element {
       margin-right: @margin-small;
     }
+
     .am-edit-element {
+      display: flex !important;
       padding-top: 0 !important;
       padding-bottom: 0 !important;
     }
@@ -1124,6 +1131,7 @@
           margin-left: @margin-small;
         }
       }
+
       &.hours {
         padding: @padding-small/2 0;
         border-top-left-radius: 3px;
@@ -1255,6 +1263,7 @@
 
 .el-tooltip__popper {
   text-align: center;
+
   span {
     display: inline-block;
     vertical-align: top;
@@ -1273,6 +1282,7 @@
       }
     }
   }
+
   .am-all-event-employees {
     text-align: left;
   }
@@ -1302,6 +1312,32 @@
 
 .am-days-off {
   margin-top: @margin-medium;
+
+  .am-dialog-table {
+    .el-date-editor.el-input {
+      width: 200px !important;
+      margin-left: 10px;
+      margin-bottom: 0;
+
+      input {
+        width: 200px;
+      }
+    }
+  }
+
+  &__legend {
+    margin-left: auto;
+    margin-right: 10px;
+    order: 2;
+
+    .am-legend-once {
+      margin-left: 10px;
+    }
+  }
+
+  &__legend {
+    display: flex;
+  }
 
   h4 {
     margin-bottom: 0;
@@ -1686,6 +1722,7 @@
 .amelia-booking {
   .v-calendar-column {
     overflow: visible;
+
     .el-form-item__content {
       height: 100%;
       //&:after {
@@ -1904,9 +1941,11 @@ i.am-tooltip-icon {
 .am-align-left {
   text-align: left;
 }
+
 .el-table .cell {
   display: flex;
   align-items: center;
+
   img, svg {
     margin-right: @margin-small;
   }

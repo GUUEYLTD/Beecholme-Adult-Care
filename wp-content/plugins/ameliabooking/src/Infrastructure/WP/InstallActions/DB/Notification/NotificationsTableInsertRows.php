@@ -67,6 +67,14 @@ class NotificationsTableInsertRows extends AbstractDatabaseTable
             $rows = array_merge($rows, [NotificationsStrings::getAccountRecoveryNotification()]);
         }
 
+        $addEmployeePanelAccess = !(int)$wpdb->get_row(
+            "SELECT COUNT(*) AS count FROM {$table} WHERE name = 'provider_panel_access'"
+        )->count;
+
+        if ($addEmployeePanelAccess) {
+            $rows = array_merge($rows, [NotificationsStrings::getEmployeePanelAccessNotification()]);
+        }
+
         $result = [];
         foreach ($rows as $row) {
             $result[] = "INSERT INTO {$table} 

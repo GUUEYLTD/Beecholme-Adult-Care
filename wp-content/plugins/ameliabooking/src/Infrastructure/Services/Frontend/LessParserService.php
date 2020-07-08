@@ -6,6 +6,9 @@
 
 namespace AmeliaBooking\Infrastructure\Services\Frontend;
 
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use Exception;
+use Less_Exception_Parser;
 use Less_Parser;
 
 /**
@@ -13,32 +16,35 @@ use Less_Parser;
  */
 class LessParserService
 {
+    /** @var string */
     private $inputCssScript;
 
+    /** @var string */
     private $outputPath;
 
-    private $outputCssScript;
+    /** @var SettingsService */
+    private $settingsService;
 
     /**
      * LessParserService constructor.
      *
-     * @param string $inputCssScript
-     * @param string $outputCssScript
-     * @param string $outputPath
+     * @param string          $inputCssScript
+     * @param string          $outputPath
+     * @param SettingsService $settingsService
      */
-    public function __construct($inputCssScript, $outputCssScript, $outputPath)
+    public function __construct($inputCssScript, $outputPath, $settingsService)
     {
         $this->inputCssScript = $inputCssScript;
-        $this->outputCssScript = $outputCssScript;
         $this->outputPath = $outputPath;
+        $this->settingsService = $settingsService;
     }
 
     /**
      * @param array $data
      *
      * @return void
-     * @throws \Exception
-     * @throws \Less_Exception_Parser
+     * @throws Exception
+     * @throws Less_Exception_Parser
      */
     public function compileAndSave($data)
     {
@@ -50,6 +56,31 @@ class LessParserService
 
         !is_dir($this->outputPath) && !mkdir($this->outputPath, 0755, true) && !is_dir($this->outputPath);
 
-        file_put_contents($this->outputPath . '/' . $this->outputCssScript, $parser->getCss());
+        $hash = !isset($data['hash']) ? $this->generateRandomString() : $data['hash'];
+
+        if (!isset($data['hash'])) {
+            $this->settingsService->setSetting('customization', 'hash', $hash);
+        }
+
+        file_put_contents($this->outputPath . '/amelia-booking.' . $hash . '.css', $parser->getCss());
+    }
+
+    /**
+     * @param int $length
+     *
+     * @return false|string
+     */
+    public function generateRandomString($length = 10)
+    {
+        return substr(
+            str_shuffle(
+                str_repeat(
+                    $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                    ceil($length / strlen($x))
+                )
+            ),
+            1,
+            $length
+        );
     }
 }

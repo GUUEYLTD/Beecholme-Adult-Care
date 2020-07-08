@@ -25,6 +25,9 @@ use AmeliaBooking\Domain\ValueObjects\String\Token;
 class Appointment extends AbstractBooking
 {
     /** @var Id */
+    private $parentId;
+
+    /** @var Id */
     private $serviceId;
 
     /** @var Service */
@@ -246,6 +249,22 @@ class Appointment extends AbstractBooking
     }
 
     /**
+     * @return Id
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * @param Id $parentId
+     */
+    public function setParentId(Id $parentId)
+    {
+        $this->parentId = $parentId;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -254,6 +273,7 @@ class Appointment extends AbstractBooking
             parent::toArray(),
             [
                 'serviceId'             => $this->getServiceId()->getValue(),
+                'parentId'              => $this->getParentId() ? $this->getParentId()->getValue() : null,
                 'providerId'            => $this->getProviderId()->getValue(),
                 'locationId'            => null !== $this->getLocationId() ? $this->getLocationId()->getValue() : null,
                 'provider'              => null !== $this->getProvider() ? $this->getProvider()->toArray() : null,

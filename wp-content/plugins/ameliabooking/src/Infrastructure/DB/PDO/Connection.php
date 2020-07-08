@@ -76,7 +76,9 @@ class Connection extends \AmeliaBooking\Infrastructure\Connection
 
         $this->socketHandler();
 
-        return $this->dns = "{$this->driver}:host={$this->host};port={$this->port}';dbname={$this->database}";
+        $socketPath = property_exists($this, 'socketPath') && $this->socketPath ? ";unix_socket=$this->socketPath" : '';
+
+        return $this->dns = "{$this->driver}:host={$this->host};port={$this->port}';dbname={$this->database}{$socketPath}";
     }
 
     /**

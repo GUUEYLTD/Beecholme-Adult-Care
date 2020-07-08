@@ -9,6 +9,7 @@ use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Booking\AppointmentApplicationService;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
 use AmeliaBooking\Application\Services\User\CustomerApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\BookingCancellationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
@@ -21,9 +22,11 @@ use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
+use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\FrontendStrings;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Class UpdateAppointmentTimeCommandHandler
@@ -43,19 +46,12 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
      * @param UpdateAppointmentTimeCommand $command
      *
      * @return CommandResult
-     * @throws \UnexpectedValueException
-     * @throws \Slim\Exception\ContainerException
-     * @throws \InvalidArgumentException
-     * @throws \Firebase\JWT\SignatureInvalidException
-     * @throws \Firebase\JWT\ExpiredException
-     * @throws \Firebase\JWT\BeforeValidException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     *
      * @throws AccessDeniedException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws NotFoundException
+     * @throws ContainerException
      */
     public function handle(UpdateAppointmentTimeCommand $command)
     {
@@ -63,8 +59,8 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
 
         $result = new CommandResult();
 
-        /** @var CustomerApplicationService $customerAS */
-        $customerAS = $this->container->get('application.user.customer.service');
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->container->get('application.user.service');
         /** @var SettingsService $settingsDS */
         $settingsDS = $this->container->get('domain.settings.service');
         /** @var AppointmentRepository $appointmentRepo */
@@ -80,7 +76,10 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
 
         try {
             /** @var AbstractUser $user */
-            $user = $customerAS->authorization($command->getPage() === 'cabinet' ? $command->getToken() : null);
+            $user = $userAS->authorization(
+                $command->getPage() === 'cabinet' ? $command->getToken() : null,
+                $command->getCabinetType()
+            );
         } catch (AuthorizationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setData([
@@ -90,7 +89,7 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
             return $result;
         }
 
-        if ($customerAS->isCustomer($user) && !$settingsDS->getSetting('roles', 'allowCustomerReschedule')) {
+        if ($userAS->isCustomer($user) && !$settingsDS->getSetting('roles', 'allowCustomerReschedule')) {
             throw new AccessDeniedException('You are not allowed to update appointment');
         }
 
@@ -105,10 +104,10 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
 
         /** @var CustomerBooking $booking */
         foreach ($appointment->getBookings()->getItems() as $booking) {
-            if ($customerAS->isAmeliaUser($user) &&
-                $customerAS->isCustomer($user) &&
+            if ($userAS->isAmeliaUser($user) &&
+                $userAS->isCustomer($user) &&
                 $bookingAS->isBookingApprovedOrPending($booking->getStatus()->getValue()) &&
-                ($service->getMinCapacity()->getValue() !== 1 || $service->getMaxCapacity()->getValue() !==1) &&
+                ($service->getMinCapacity()->getValue() !== 1 || $service->getMaxCapacity()->getValue() !== 1) &&
                 ($user->getId() && $booking->getCustomerId()->getValue() !== $user->getId()->getValue())
             ) {
                 throw new AccessDeniedException('You are not allowed to update appointment');
@@ -159,7 +158,7 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
             )
         );
 
-        if (!$appointmentAS->canBeBooked($appointment, $customerAS->isCustomer($user))) {
+        if (!$appointmentAS->canBeBooked($appointment, $userAS->isCustomer($user))) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage(FrontendStrings::getCommonStrings()['time_slot_unavailable']);
             $result->setData([

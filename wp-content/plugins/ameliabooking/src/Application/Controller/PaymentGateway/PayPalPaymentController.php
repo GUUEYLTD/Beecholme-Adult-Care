@@ -28,7 +28,8 @@ class PayPalPaymentController extends Controller
         'providerId',
         'locationId',
         'couponCode',
-        'payment'
+        'payment',
+        'recurring',
     ];
 
     /**

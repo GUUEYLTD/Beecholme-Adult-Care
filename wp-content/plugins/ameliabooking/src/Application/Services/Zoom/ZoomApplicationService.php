@@ -503,15 +503,17 @@ class ZoomApplicationService
 
         $placeholderData = $placeholderService->getPlaceholdersData($reservation->toArray());
 
+        $agenda = $placeholderService->applyPlaceholders(
+            $zoomSettings['meetingAgenda'],
+            $placeholderData
+        );
+
         $meetingData = [
             'topic'      => $placeholderService->applyPlaceholders(
                 $zoomSettings['meetingTitle'],
                 $placeholderData
             ),
-            'agenda'      => $placeholderService->applyPlaceholders(
-                $zoomSettings['meetingAgenda'],
-                $placeholderData
-            ),
+            'agenda'      => strlen($agenda) > 2000 ? substr($agenda, 0, 2000) : $agenda,
             'type'       => $type,
             'start_time' =>
                 $meetingStart->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z'),

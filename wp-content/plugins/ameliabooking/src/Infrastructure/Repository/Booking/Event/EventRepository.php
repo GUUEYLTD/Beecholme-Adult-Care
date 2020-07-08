@@ -385,6 +385,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             $tagJoin = "LEFT JOIN {$eventsTagsTable} et ON et.eventId = e.id";
         }
 
+        if (isset($criteria['bookingCouponId'])) {
+            $where[] = "cb.couponId = {$criteria['bookingCouponId']}";
+        }
+
         $paymentJoin = '';
         $paymentFields = '';
 
@@ -474,6 +478,15 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     cb.customFields AS booking_customFields,
                     cb.info AS booking_info,
                     cb.aggregatedPrice AS booking_aggregatedPrice,
+                    cb.couponId AS booking_couponId,
+       
+                    cu.id AS customer_id,
+                    cu.firstName AS customer_firstName,
+                    cu.lastName AS customer_lastName,
+                    cu.email AS customer_email,
+                    cu.note AS customer_note,
+                    cu.phone AS customer_phone,
+                    cu.gender AS customer_gender,
                     
                     {$couponFields}
                     
@@ -489,6 +502,7 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 INNER JOIN {$eventsPeriodsTable} ep ON ep.eventId = e.id
                 LEFT JOIN {$customerBookingsEventsPeriods} cbe ON cbe.eventPeriodId = ep.id
                 LEFT JOIN {$customerBookingsTable} cb ON cb.id = cbe.customerBookingId
+                LEFT JOIN {$usersTable} cu ON cu.id = cb.customerId
                 LEFT JOIN {$galleriesTable} g ON g.entityId = e.id AND g.entityType = 'event'
                 {$providerJoin}
                 {$couponJoin}
@@ -551,6 +565,12 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             }
 
             $where[] = 'epr.userId IN (' . implode(', ', $queryProviders) . ')';
+        }
+
+        if (!empty($criteria['status'])) {
+            $params[':status'] = $criteria['status'];
+
+            $where[] = 'e.status = :status';
         }
 
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
@@ -998,10 +1018,12 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.parentId AS event_parentId,
                     e.created AS event_created,
                     e.settings AS event_settings,
+                    e.zoomUserId AS event_zoomUserId,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
                     ep.periodEnd AS event_periodEnd,
+                    ep.zoomMeeting AS event_periodZoomMeeting,
                     
                     cb.id AS booking_id,
                     cb.appointmentId AS booking_appointmentId,

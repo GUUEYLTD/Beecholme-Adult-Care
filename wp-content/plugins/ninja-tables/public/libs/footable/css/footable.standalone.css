@@ -402,7 +402,7 @@
 	margin-left: -1px;
 	line-height: 1.42857143;
 	color: #337ab7;
-	text-decoration: none;
+	text-decoration: none !important;
 	background-color: #fff;
 	border: 1px solid #ddd;
 }
@@ -533,7 +533,7 @@ table.footable-details > tbody > tr > th:nth-child(1) {
 	width: 120px;
 }
 table.footable-details > tbody > tr > td:nth-child(2) {
-	word-break: break-all;
+	word-break: break-word;
 }
 
 table.footable-details > thead > tr:first-child > th,

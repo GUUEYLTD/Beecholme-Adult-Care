@@ -29,6 +29,7 @@ class AddAppointmentController extends Controller
         'providerId',
         'locationId',
         'payment',
+        'recurring',
     ];
 
     /**
@@ -45,6 +46,13 @@ class AddAppointmentController extends Controller
         $command = new AddAppointmentCommand($args);
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
+        $command->setToken($request);
+
+        $params = (array)$request->getQueryParams();
+
+        if (isset($params['source'])) {
+            $command->setPage($params['source']);
+        }
 
         return $command;
     }

@@ -28,7 +28,8 @@ class WooCommercePaymentController extends Controller
         'providerId',
         'locationId',
         'couponCode',
-        'payment'
+        'payment',
+        'recurring',
     ];
 
     /**

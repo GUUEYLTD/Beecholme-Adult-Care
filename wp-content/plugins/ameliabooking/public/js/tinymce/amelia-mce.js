@@ -28,6 +28,7 @@
             {value: 'catalog', text: 'Catalog'},
             {value: 'events', text: 'Events'},
             {value: 'customer_panel', text: 'Customer Panel'},
+            {value: 'employee_panel', text: 'Employee Panel'},
           ],
           value: view,
           onSelect: function () {
@@ -268,6 +269,7 @@
             break
 
           case ('customer_panel'):
+          case ('employee_panel'):
 
             viewBody.push({
               type: 'checkbox',
@@ -362,6 +364,7 @@
                 break
 
               case ('customer_panel'):
+              case ('employee_panel'):
                 if (e.data.am_cabinet_appointments) {
                   shortCodeString += ' appointments=1'
                 }
@@ -370,7 +373,7 @@
                   shortCodeString += ' events=1'
                 }
 
-                editor.insertContent('[ameliacustomerpanel' + shortCodeString + ']')
+                editor.insertContent(view === 'customer_panel' ? '[ameliacustomerpanel' + shortCodeString + ']' : '[ameliaemployeepanel' + shortCodeString + ']')
 
                 break
             }

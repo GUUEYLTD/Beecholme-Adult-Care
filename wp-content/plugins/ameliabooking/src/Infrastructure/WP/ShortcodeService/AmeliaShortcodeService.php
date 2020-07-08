@@ -61,10 +61,14 @@ class AmeliaShortcodeService
 
         wp_enqueue_style(
             'amelia_booking_styles',
-            UPLOADS_URL . '/amelia/css/amelia-booking.css',
+            UPLOADS_URL . '/amelia/css/amelia-booking.' .
+            $settingsService->getSetting('customization', 'hash') . '.css',
             [],
             AMELIA_VERSION
         );
+
+        // Underscore
+        wp_enqueue_script('undescore', includes_url('js') . '/underscore.min.js');
 
         // Strings Localization
         wp_localize_script(

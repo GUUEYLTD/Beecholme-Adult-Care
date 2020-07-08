@@ -27,7 +27,7 @@ trait ModelTrait {
 		} else {
 			$this->statements['selects'][] = $selects;
 		}
-		
+
 		return $this;
 	}
 
@@ -79,7 +79,7 @@ trait ModelTrait {
 	 * @param bool $isSearch
 	 * @usage ninjaDB()->orWhere('id', 1)
 	 * @usage ninjaDB()->orWhere('id', '>', 1)
-	 * 
+	 *
 	 * @return $this
 	 */
 	public function orWhere($key, $operator = '=', $value = null, $isSearch = false) {
@@ -111,7 +111,29 @@ trait ModelTrait {
         return $this->where($key, 'IN', $values);
     }
 
-	/**
+
+    /**
+     * @param string|array $key
+     * @usage ninjaDB()->whereNotNull('id')
+     * @return $this
+     */
+    public function whereNotNull($key) {
+        $this->whereHandler($key, 'IS NOT', 'NULL');
+        return $this;
+    }
+
+    /**
+     * @param string|array $key
+     * @usage ninjaDB()->whereNull('id')
+     * @return $this
+     */
+    public function whereNull($key) {
+        $this->whereHandler($key, 'IS', 'NULL');
+        return $this;
+    }
+
+
+    /**
 	 * @param $string
 	 * @param bool|array $columns
 	 * @usage ninjaDB()->search('search_string')
@@ -216,7 +238,7 @@ trait ModelTrait {
 				'FROM'
 			);
 		}
-		
+
 		$sqlArray = array(
 			$this->selected_table,
 			$wheres,
@@ -224,16 +246,16 @@ trait ModelTrait {
 			isset($this->statements['limit']) ? $this->statements['limit'] : '',
 			isset($this->statements['offset']) ? $this->statements['offset'] : '',
 		);
-		
+
 		$sqlArray = array_merge($typeArray, $sqlArray);
-		
+
 		return $this->concatSQLArray($sqlArray);
 	}
 
 	/**
 	 * @param string $type
 	 * @param bool | string $field
-	 * @description: Get prepared sql statement 
+	 * @description: Get prepared sql statement
 	 * @return bool|string
 	 */
 	public function getSqlStatement( $type = 'query', $field = false ) {
@@ -250,7 +272,7 @@ trait ModelTrait {
 			$statement = $this->prepare();
 			$this->setLastQueryInfo();
 			$this->statements = $oldStatements;
-		} 
+		}
 		else if ($type == 'max') {
 			$oldStatements = $this->statements;
 			$this->orderBy($field, 'DESC');
@@ -258,7 +280,7 @@ trait ModelTrait {
 			$statement = $this->prepare();
 			$this->setLastQueryInfo();
 			$this->statements = $oldStatements;
-		} 
+		}
 		elseif ($type == 'min') {
 			$oldStatements = $this->statements;
 			$this->orderBy($field, 'ASC');
@@ -266,7 +288,7 @@ trait ModelTrait {
 			$statement = $this->prepare();
 			$this->setLastQueryInfo();
 			$this->statements = $oldStatements;
-		} 
+		}
 		else if ($type == 'avg') {
 			$oldStatements = $this->statements;
 			unset($this->statements['order_by']);
@@ -323,7 +345,7 @@ trait ModelTrait {
 		$searchWheres = array();
 		foreach ($wheres as $statement) {
 			// find wheres in search
-			
+
 			if($statement['is_search']) {
 				$searchWheres[] = array(
 					'joiner' => $statement['joiner'],
@@ -339,6 +361,8 @@ trait ModelTrait {
                              .implode(', ', array_fill(0, count($values), '%s')).')';
 
                 $this->bindings = array_merge($this->bindings, $values);
+            } else if($statement['value'] == 'NULL') {
+                $criteria .= $statement['joiner'] . ' ' . $statement['key'] . ' ' . $statement['operator'] . ' ' . 'NULL';
             } else {
 				$valuePlaceholder = $this->getValuePlaceholder($statement['value']);
 				$criteria .= $statement['joiner'] . ' ' . $statement['key'] . ' ' . $statement['operator'] . ' '
@@ -363,7 +387,7 @@ trait ModelTrait {
 
 	/**
 	 * @param string | float | integer $value
-	 * @description: detect value type and return mysql binding placeholder 
+	 * @description: detect value type and return mysql binding placeholder
 	 * @return string
 	 */
 	public function getValuePlaceholder($value) {

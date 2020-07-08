@@ -15,11 +15,13 @@ use AmeliaBooking\Domain\Entity\Location\Location;
 use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ExtraRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
+use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
 use AmeliaBooking\Infrastructure\Repository\User\UserRepository;
 use AmeliaBooking\Infrastructure\WP\Translations\BackendStrings;
@@ -84,6 +86,7 @@ class AppointmentPlaceholderService extends PlaceholderService
      * @param array  $appointment
      * @param int    $bookingKey
      * @param string $token
+     * @param string $type
      *
      * @return array
      *
@@ -94,27 +97,29 @@ class AppointmentPlaceholderService extends PlaceholderService
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    public function getEntityPlaceholdersData($appointment, $bookingKey = null, $token = null)
+    public function getEntityPlaceholdersData($appointment, $bookingKey = null, $token = null, $type = null)
     {
         $data = [];
 
-        $data = array_merge($data, $this->getAppointmentData($appointment, $bookingKey));
-        $data = array_merge($data, $this->getServiceData($appointment));
+        $data = array_merge($data, $this->getAppointmentData($appointment, $bookingKey, $type));
+        $data = array_merge($data, $this->getServiceData($appointment, $bookingKey));
         $data = array_merge($data, $this->getEmployeeData($appointment));
+        $data = array_merge($data, $this->getRecurringAppointmentsData($appointment, $bookingKey, $type));
 
         return $data;
     }
 
     /**
-     * @param      $appointment
-     * @param null $bookingKey
+     * @param        $appointment
+     * @param null   $bookingKey
+     * @param string $type
      *
      * @return array
      *
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \Exception
      */
-    private function getAppointmentData($appointment, $bookingKey = null)
+    private function getAppointmentData($appointment, $bookingKey = null, $type = null)
     {
         /** @var SettingsService $settingsService */
         $settingsService = $this->container->get('domain.settings.service');
@@ -147,15 +152,16 @@ class AppointmentPlaceholderService extends PlaceholderService
         }
 
         return [
+            'appointment_status'     => BackendStrings::getCommonStrings()[$appointment['status']],
             'appointment_notes'      => $appointment['internalNotes'],
             'appointment_date'       => date_i18n($dateFormat, $bookingStart->getTimestamp()),
             'appointment_date_time'  => date_i18n($dateFormat . ' ' . $timeFormat, $bookingStart->getTimestamp()),
             'appointment_start_time' => date_i18n($timeFormat, $bookingStart->getTimestamp()),
             'appointment_end_time'   => date_i18n($timeFormat, $bookingEnd->getTimestamp()),
-            'zoom_host_url'         => $zoomStartUrl ?
+            'zoom_host_url'          => $zoomStartUrl && $type === 'email' ?
                 '<a href="' . $zoomStartUrl . '">' . BackendStrings::getCommonStrings()['zoom_click_to_start'] . '</a>'
                 : $zoomStartUrl,
-            'zoom_join_url'          => $zoomJoinUrl ?
+            'zoom_join_url'          => $zoomJoinUrl && $type === 'email' ?
                 '<a href="' . $zoomJoinUrl . '">' . BackendStrings::getCommonStrings()['zoom_click_to_join'] . '</a>'
                 : $zoomJoinUrl,
         ];
@@ -163,6 +169,7 @@ class AppointmentPlaceholderService extends PlaceholderService
 
     /**
      * @param $appointmentArray
+     * @param $bookingKey
      *
      * @return array
      * @throws \Slim\Exception\ContainerValueNotFoundException
@@ -171,7 +178,7 @@ class AppointmentPlaceholderService extends PlaceholderService
      * @throws \Interop\Container\Exception\ContainerException
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
      */
-    private function getServiceData($appointmentArray)
+    private function getServiceData($appointmentArray, $bookingKey = null)
     {
         /** @var CategoryRepository $categoryRepository */
         $categoryRepository = $this->container->get('domain.bookable.category.repository');
@@ -212,6 +219,41 @@ class AppointmentPlaceholderService extends PlaceholderService
         /** @var Collection $extras */
         $extras = $extraRepository->getAllIndexedById();
 
+        $duration = $service->getDuration()->getValue();
+
+        if ($bookingKey !== null) {
+            foreach ($appointmentArray['bookings'][$bookingKey]['extras'] as $bookingExtra) {
+                /** @var Extra $extra */
+                $extra = $extras->getItem($bookingExtra['extraId']);
+
+                $duration += $extra->getDuration() ? $extra->getDuration()->getValue() * $bookingExtra['quantity'] : 0;
+            }
+        } else {
+            $maxBookingDuration = 0;
+
+            foreach ($appointmentArray['bookings'] as $booking) {
+                $bookingDuration = $duration;
+
+                foreach ($booking['extras'] as $bookingExtra) {
+                    /** @var Extra $extra */
+                    $extra = $extras->getItem($bookingExtra['extraId']);
+
+                    $bookingDuration += $extra->getDuration() ?
+                        $extra->getDuration()->getValue() * $bookingExtra['quantity'] : 0;
+                }
+
+                if ($bookingDuration > $maxBookingDuration &&
+                    ($booking['status'] === BookingStatus::APPROVED || $booking['status'] === BookingStatus::PENDING)
+                ) {
+                    $maxBookingDuration = $bookingDuration;
+                }
+            }
+
+            $duration = $maxBookingDuration;
+        }
+
+        $data['appointment_duration'] = $helperService->secondsToNiceDuration($duration);
+
         /** @var Extra $extra */
         foreach ($extras->getItems() as $extra) {
             $extraId = $extra->getId()->getValue();
@@ -221,6 +263,9 @@ class AppointmentPlaceholderService extends PlaceholderService
 
             $data["service_extra_{$extraId}_quantity"] =
                 array_key_exists($extraId, $bookingExtras) ? $bookingExtras[$extraId]['quantity'] : '';
+
+            $data["service_extra_{$extraId}_price"] = array_key_exists($extraId, $bookingExtras) ?
+                $helperService->getFormattedPrice($extra->getPrice()->getValue()) : '';
         }
 
         return $data;
@@ -263,6 +308,8 @@ class AppointmentPlaceholderService extends PlaceholderService
             'employee_full_name'   => $user->getFirstName()->getValue() . ' ' . $user->getLastName()->getValue(),
             'employee_phone'       => $user->getPhone()->getValue(),
             'employee_note'        => $user->getNote() ? $user->getNote()->getValue() : '',
+            'employee_panel_url'  => trim($this->container->get('domain.settings.service')
+                ->getSetting('roles', 'providerCabinet')['pageUrl']),
             'location_address'     => !$location ?
                 $settingsService->getSetting('company', 'address') : $location->getAddress()->getValue(),
             'location_phone'       => !$location ?
@@ -271,6 +318,98 @@ class AppointmentPlaceholderService extends PlaceholderService
                 $settingsService->getSetting('company', 'address') : $location->getName()->getValue(),
             'location_description' => $location && $location->getDescription() ?
                 $location->getDescription()->getValue() : ''
+        ];
+    }
+
+    /**
+     * @param array  $appointment
+     * @param int    $bookingKey
+     * @param string $type
+     *
+     * @return array
+     *
+     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws NotFoundException
+     * @throws QueryExecutionException
+     * @throws \Interop\Container\Exception\ContainerException
+     */
+    public function getRecurringAppointmentsData($appointment, $bookingKey, $type)
+    {
+        if (!array_key_exists('recurring', $appointment)) {
+            return [
+                'recurring_appointments_details' => ''
+            ];
+        }
+
+        /** @var CustomerBookingRepository $bookingRepository */
+        $bookingRepository = $this->container->get('domain.booking.customerBooking.repository');
+
+        /** @var PlaceholderService $placeholderService */
+        $placeholderService = $this->container->get("application.placeholder.appointment.service");
+
+        /** @var SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $appointmentsSettings = $settingsService->getCategorySettings('appointments');
+
+        $recurringAppointmentDetails = [];
+
+        foreach ($appointment['recurring'] as $recurringData) {
+            $recurringBookingKey = null;
+
+            if ($bookingKey !== null) {
+                foreach ($recurringData['appointment']['bookings'] as $key => $recurringBooking) {
+                    if (isset($recurringData['booking']['id'])) {
+                        if ($recurringBooking['id'] === $recurringData['booking']['id']) {
+                            $recurringBookingKey = $key;
+                        }
+                    } else {
+                        $recurringBookingKey = $bookingKey;
+                    }
+                }
+            }
+
+            $token = isset($recurringData['appointment']['bookings'][$bookingKey]) ?
+                $bookingRepository->getToken($recurringData['appointment']['bookings'][$bookingKey]['id']) : null;
+
+            $recurringPlaceholders = array_merge(
+                $this->getEmployeeData($recurringData['appointment']),
+                $this->getAppointmentData($recurringData['appointment'], $recurringBookingKey, $type),
+                $this->getBookingData(
+                    $recurringData['appointment'],
+                    $type,
+                    $recurringBookingKey,
+                    isset($token['token']) ? $token['token'] : null
+                )
+            );
+
+            if ($bookingKey === null) {
+                if (isset($recurringPlaceholders['appointment_cancel_url'])) {
+                    $recurringPlaceholders['appointment_cancel_url'] = '';
+                }
+
+                $recurringPlaceholders['zoom_join_url'] = '';
+            } else {
+                $recurringPlaceholders['zoom_host_url'] = '';
+            }
+
+            if (!empty($recurringPlaceholders['appointment_cancel_url'])) {
+                $recurringPlaceholders['appointment_cancel_url'] = $type === 'email' ?
+                    '<a href="' . $recurringPlaceholders['appointment_cancel_url'] . '">' . BackendStrings::getAppointmentStrings()['cancel_appointment'] . '</a>'
+                    : $recurringPlaceholders['appointment_cancel_url'];
+            }
+
+            $recurringAppointmentDetails[] = $placeholderService->applyPlaceholders(
+                $appointmentsSettings['recurringPlaceholders'],
+                $recurringPlaceholders
+            );
+        }
+
+        return [
+            'recurring_appointments_details' => $recurringAppointmentDetails ? implode(
+                $type === 'email' ? '<br>' : PHP_EOL,
+                $recurringAppointmentDetails
+            ) : ''
         ];
     }
 }

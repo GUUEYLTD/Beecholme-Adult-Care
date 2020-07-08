@@ -9,6 +9,7 @@ use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\Token;
 use AmeliaBooking\Infrastructure\Services\Frontend\LessParserService;
 use AmeliaBooking\Infrastructure\WP\SettingsService\SettingsStorage;
+use Exception;
 
 /**
  * Class ActivationSettingsHook
@@ -20,7 +21,7 @@ class ActivationSettingsHook
     /**
      * Initialize the plugin
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function init()
     {
@@ -88,6 +89,7 @@ class ActivationSettingsHook
         $settings = [
             'timeSlotLength'                         => 1800,
             'serviceDurationAsSlot'                  => false,
+            'bufferTimeInSlot'                       => true,
             'defaultAppointmentStatus'               => 'approved',
             'minimumTimeRequirementPriorToBooking'   => 0,
             'minimumTimeRequirementPriorToCanceling' => 0,
@@ -220,17 +222,18 @@ class ActivationSettingsHook
     private static function initGoogleCalendarSettings()
     {
         $settings = [
-            'clientID'                      => '',
-            'clientSecret'                  => '',
-            'redirectURI'                   => AMELIA_SITE_URL . '/wp-admin/admin.php?page=wpamelia-employees',
-            'showAttendees'                 => false,
-            'insertPendingAppointments'     => false,
-            'addAttendees'                  => false,
-            'sendEventInvitationEmail'      => false,
-            'removeGoogleCalendarBusySlots' => false,
-            'maximumNumberOfEventsReturned' => 50,
-            'eventTitle'                    => '%service_name%',
-            'eventDescription'              => '',
+            'clientID'                        => '',
+            'clientSecret'                    => '',
+            'redirectURI'                     => AMELIA_SITE_URL . '/wp-admin/admin.php?page=wpamelia-employees',
+            'showAttendees'                   => false,
+            'insertPendingAppointments'       => false,
+            'addAttendees'                    => false,
+            'sendEventInvitationEmail'        => false,
+            'removeGoogleCalendarBusySlots'   => false,
+            'maximumNumberOfEventsReturned'   => 50,
+            'eventTitle'                      => '%service_name%',
+            'eventDescription'                => '',
+            'includeBufferTimeGoogleCalendar' => false,
         ];
 
         self::initSettings('googleCalendar', $settings);
@@ -259,15 +262,16 @@ class ActivationSettingsHook
     private static function initPaymentsSettings()
     {
         $settings = [
-            'currency'              => 'USD',
-            'symbol'                => '$',
-            'priceSymbolPosition'   => 'before',
-            'priceNumberOfDecimals' => 2,
-            'priceSeparator'        => 1,
-            'defaultPaymentMethod'  => 'onSite',
-            'onSite'                => true,
-            'coupons'               => true,
-            'payPal'                => [
+            'currency'                   => 'USD',
+            'symbol'                     => '$',
+            'priceSymbolPosition'        => 'before',
+            'priceNumberOfDecimals'      => 2,
+            'priceSeparator'             => 1,
+            'hideCurrencySymbolFrontend' => false,
+            'defaultPaymentMethod'       => 'onSite',
+            'onSite'                     => true,
+            'coupons'                    => true,
+            'payPal'                     => [
                 'enabled'         => false,
                 'sandboxMode'     => false,
                 'liveApiClientId' => '',
@@ -280,7 +284,7 @@ class ActivationSettingsHook
                     'event'       => ''
                 ],
             ],
-            'stripe'                => [
+            'stripe'                     => [
                 'enabled'            => false,
                 'testMode'           => false,
                 'livePublishableKey' => '',
@@ -298,11 +302,12 @@ class ActivationSettingsHook
                     'event'       => null
                 ],
             ],
-            'wc'                    => [
+            'wc'                         => [
                 'enabled'      => false,
                 'productId'    => '',
                 'onSiteIfFree' => false,
                 'page'         => 'cart',
+                'dashboard'    => true,
             ]
         ];
 
@@ -316,6 +321,7 @@ class ActivationSettingsHook
                 ['payPal', 'description'],
                 ['wc', 'onSiteIfFree'],
                 ['wc', 'page'],
+                ['wc', 'dashboard'],
             ],
             $settings
         );
@@ -327,10 +333,11 @@ class ActivationSettingsHook
     private static function initActivationSettings()
     {
         $settings = [
-            'active'            => false,
-            'purchaseCodeStore' => '',
-            'envatoTokenEmail'  => '',
-            'version'           => '',
+            'showActivationSettings' => true,
+            'active'                 => false,
+            'purchaseCodeStore'      => '',
+            'envatoTokenEmail'       => '',
+            'version'                => '',
         ];
 
         self::initSettings('activation', $settings);
@@ -339,13 +346,20 @@ class ActivationSettingsHook
     /**
      * Init Customization Settings
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private static function initCustomizationSettings()
     {
         $settingsService = new SettingsService(new SettingsStorage());
 
         $settings = $settingsService->getCategorySettings('customization');
+        unset($settings['hash']);
+
+        $lessParserService = new LessParserService(
+            AMELIA_PATH . '/assets/less/frontend/amelia-booking.less',
+            UPLOADS_PATH . '/amelia/css',
+            $settingsService
+        );
 
         if (!$settings) {
             $settings = [
@@ -354,18 +368,12 @@ class ActivationSettingsHook
                 'primaryGradient2'      => '#0454A2',
                 'textColor'             => '#354052',
                 'textColorOnBackground' => '#FFFFFF',
-                'font'                  => 'Roboto'
+                'font'                  => 'Roboto',
+                'hash'                  => $lessParserService->generateRandomString()
             ];
 
             self::initSettings('customization', $settings);
         }
-
-        /** @var LessParserService $lessParserService */
-        $lessParserService = new LessParserService(
-            AMELIA_PATH . '/assets/less/frontend/amelia-booking.less',
-            'amelia-booking.css',
-            UPLOADS_PATH . '/amelia/css'
-        );
 
         $lessParserService->compileAndSave([
             'color-accent'      => $settings['primaryColor'],
@@ -374,7 +382,8 @@ class ActivationSettingsHook
             'color-text-prime'  => $settings['textColor'],
             'color-text-second' => $settings['textColor'],
             'color-white'       => $settings['textColorOnBackground'],
-            'roboto'            => $settings['font']
+            'roboto'            => $settings['font'],
+            'hash'              => $settings['hash']
         ]);
     }
 
@@ -399,33 +408,30 @@ class ActivationSettingsHook
      */
     private static function initRolesSettings()
     {
-        $settingsService = new SettingsService(new SettingsStorage());
-
-        $general = $settingsService->getCategorySettings('general');
-
-        $token = new Token(null, 20);
-        $urlToken = new Token(null, 20);
-
-        // TODO - Fallback. Remove fallback after 1.4.5.
         $settings = [
-            'allowConfigureSchedule'      => isset($general['allowConfigureSchedule']) ?
-                $general['allowConfigureSchedule'] : false,
+            'allowConfigureSchedule'      => false,
             'allowConfigureDaysOff'       => false,
             'allowConfigureSpecialDays'   => false,
             'allowConfigureServices'      => false,
-            'allowWriteAppointments'      => isset($general['allowWriteAppointments']) ?
-                $general['allowWriteAppointments'] : false,
-            'automaticallyCreateCustomer' => isset($general['automaticallyCreateCustomer']) ?
-                $general['automaticallyCreateCustomer'] : false,
-            'inspectCustomerInfo'         => isset($general['inspectCustomerInfo']) ?
-                $general['inspectCustomerInfo'] : false,
+            'allowWriteAppointments'      => false,
+            'automaticallyCreateCustomer' => false,
+            'inspectCustomerInfo'         => false,
             'allowCustomerReschedule'     => false,
             'allowCustomerDeleteProfile'  => false,
             'allowWriteEvents'            => false,
             'customerCabinet'             => [
-                'enabled'         => false,
-                'headerJwtSecret' => $urlToken->getValue(),
-                'urlJwtSecret'    => $token->getValue(),
+                'enabled'         => true,
+                'headerJwtSecret' => (new Token(null, 20))->getValue(),
+                'urlJwtSecret'    => (new Token(null, 20))->getValue(),
+                'tokenValidTime'  => 2592000,
+                'pageUrl'         => '',
+                'loginEnabled'    => true,
+                'filterDate'      => false,
+            ],
+            'providerCabinet'             => [
+                'enabled'         => true,
+                'headerJwtSecret' => (new Token(null, 20))->getValue(),
+                'urlJwtSecret'    => (new Token(null, 20))->getValue(),
                 'tokenValidTime'  => 2592000,
                 'pageUrl'         => '',
                 'loginEnabled'    => true,
@@ -449,17 +455,12 @@ class ActivationSettingsHook
      */
     private static function initAppointmentsSettings()
     {
-        $settingsService = new SettingsService(new SettingsStorage());
-
-        $general = $settingsService->getCategorySettings('general');
-
-        // TODO - Fallback. Remove fallback after 1.4.5.
         $settings = [
             'isGloballyBusySlot'    => false,
-            'allowBookingIfPending' => isset($general['allowBookingIfPending']) ?
-                $general['allowBookingIfPending'] : true,
+            'allowBookingIfPending' => true,
             'allowBookingIfNotMin'  => true,
-            'openedBookingAfterMin' => false
+            'openedBookingAfterMin' => false,
+            'recurringPlaceholders' => 'DateTime: %appointment_date_time%',
         ];
 
         self::initSettings('appointments', $settings);

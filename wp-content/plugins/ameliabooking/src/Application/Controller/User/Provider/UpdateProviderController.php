@@ -41,7 +41,9 @@ class UpdateProviderController extends Controller
         'pictureFullPath',
         'pictureThumbPath',
         'zoomUserId',
-        'googleCalendar'
+        'googleCalendar',
+        'password',
+        'sendEmployeePanelAccessEmail',
     ];
 
     /**
@@ -57,7 +59,9 @@ class UpdateProviderController extends Controller
     {
         $command = new UpdateProviderCommand($args);
         $requestBody = $request->getParsedBody();
+
         $this->setCommandFields($command, $requestBody);
+        $command->setToken($request);
 
         return $command;
     }

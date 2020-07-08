@@ -19,4 +19,4 @@ wp-config.php
 # ignore uploads
 wp-content/uploads/
 wp-content/cache/
-
+wp-content/uploads/amelia/css/amelia-booking.css

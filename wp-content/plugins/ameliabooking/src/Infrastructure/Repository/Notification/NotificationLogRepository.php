@@ -144,6 +144,7 @@ class NotificationLogRepository extends AbstractRepository
                     a.locationId AS appointment_locationId,
                     a.internalNotes AS appointment_internalNotes,
                     a.status AS appointment_status,
+                    a.zoomMeeting AS appointment_zoom_meeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -233,10 +234,12 @@ class NotificationLogRepository extends AbstractRepository
                     e.parentId AS event_parentId,
                     e.created AS event_created,
                     e.notifyParticipants AS event_notifyParticipants,
+                    e.zoomUserId AS event_zoomUserId,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
                     ep.periodEnd AS event_periodEnd,
+                    ep.zoomMeeting AS event_periodZoomMeeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -315,6 +318,7 @@ class NotificationLogRepository extends AbstractRepository
                     a.locationId AS appointment_locationId,
                     a.internalNotes AS appointment_internalNotes,
                     a.status AS appointment_status,
+                    a.zoomMeeting AS appointment_zoom_meeting,
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -400,10 +404,12 @@ class NotificationLogRepository extends AbstractRepository
                     e.parentId AS event_parentId,
                     e.created AS event_created,
                     e.notifyParticipants AS event_notifyParticipants,
-                    
+                    e.zoomUserId AS event_zoomUserId,
+       
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
                     ep.periodEnd AS event_periodEnd,
+                    ep.zoomMeeting AS event_periodZoomMeeting,
                     
                     pu.id AS provider_id,
                     pu.firstName AS provider_firstName,

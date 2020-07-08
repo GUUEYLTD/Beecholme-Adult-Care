@@ -23,6 +23,7 @@ class SuccessfulBookingController extends Controller
     public $allowedFields = [
         'type',
         'appointmentStatusChanged',
+        'recurring',
     ];
 
     /**

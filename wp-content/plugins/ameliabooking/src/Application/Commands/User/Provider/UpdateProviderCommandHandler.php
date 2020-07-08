@@ -2,19 +2,22 @@
 
 namespace AmeliaBooking\Application\Commands\User\Provider;
 
-use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Commands\CommandHandler;
+use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
-use AmeliaBooking\Domain\Entity\User\Provider;
-use AmeliaBooking\Domain\Services\Settings\SettingsService;
-use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\String\Password;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class UpdateProviderCommandHandler
@@ -23,45 +26,21 @@ use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
  */
 class UpdateProviderCommandHandler extends CommandHandler
 {
-
-    /**
-     * @var array
-     */
-    public $mandatoryFields = [
-        'firstName',
-        'lastName',
-        'email',
-    ];
-
     /**
      * @param UpdateProviderCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function handle(UpdateProviderCommand $command)
     {
-        $this->checkMandatoryFields($command);
-
-        $userId = (int)$command->getArg('id');
-
-        /** @var AbstractUser $currentUser */
-        $currentUser = $this->container->get('logged.in.user');
-
-        if (!$this->getContainer()->getPermissionsService()->currentUserCanWrite(Entities::EMPLOYEES) ||
-            (
-                !$this->getContainer()->getPermissionsService()->currentUserCanWriteOthers(Entities::EMPLOYEES) &&
-                $currentUser->getId()->getValue() !== $userId
-            )
-        ) {
-            throw new AccessDeniedException('You are not allowed to update employee.');
-        }
-
         $result = new CommandResult();
+
+        $this->checkMandatoryFields($command);
 
         /** @var ProviderRepository $providerRepository */
         $providerRepository = $this->container->get('domain.users.providers.repository');
@@ -69,13 +48,43 @@ class UpdateProviderCommandHandler extends CommandHandler
         /** @var ProviderApplicationService $providerAS */
         $providerAS = $this->container->get('application.user.provider.service');
 
-        /** @var Provider $oldUser */
-        $oldUser = $providerAS->getProviderWithServicesAndSchedule($userId);
+        $userId = (int)$command->getArg('id');
+
+        /** @var AbstractUser $currentUser */
+        $currentUser = $this->container->get('logged.in.user');
+
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
+
+        if (!$this->getContainer()->getPermissionsService()->currentUserCanWrite(Entities::EMPLOYEES) ||
+            (
+                !$this->getContainer()->getPermissionsService()->currentUserCanWriteOthers(Entities::EMPLOYEES) &&
+                $currentUser->getId()->getValue() !== $userId
+            )
+        ) {
+            $oldUser = $userAS->getAuthenticatedUser($command->getToken(), false, 'provider');
+
+            if ($oldUser === null) {
+                $result->setResult(CommandResult::RESULT_ERROR);
+                $result->setMessage('Could not retrieve user');
+                $result->setData(
+                    [
+                        'reauthorize' => true
+                    ]
+                );
+
+                return $result;
+            }
+
+            $oldUser = $providerAS->getProviderWithServicesAndSchedule($oldUser->getId()->getValue());
+        } else {
+            $oldUser = $providerAS->getProviderWithServicesAndSchedule($userId);
+        }
 
         $command->setField('id', $userId);
 
         /** @var Provider $newUser */
-        $newUser = UserFactory::create($command->getFields());
+        $newUser = UserFactory::create(array_merge($oldUser->toArray(), $command->getFields()));
 
         if (!$newUser instanceof AbstractUser) {
             $result->setResult(CommandResult::RESULT_ERROR);
@@ -84,7 +93,9 @@ class UpdateProviderCommandHandler extends CommandHandler
             return $result;
         }
 
-        if ($currentUser->getType() === AbstractUser::USER_ROLE_PROVIDER) {
+        if (($currentUser === null && $command->getToken()) ||
+            $currentUser->getType() === AbstractUser::USER_ROLE_PROVIDER
+        ) {
             /** @var SettingsService $settingsDS */
             $settingsDS = $this->container->get('domain.settings.service');
 
@@ -117,6 +128,12 @@ class UpdateProviderCommandHandler extends CommandHandler
             return $result;
         }
 
+        if ($command->getField('password')) {
+            $newPassword = new Password($command->getField('password'));
+
+            $providerRepository->updateFieldById($command->getArg('id'), $newPassword->getValue(), 'password');
+        }
+
         try {
             if (!$providerAS->update($oldUser, $newUser)) {
                 $providerRepository->rollback();
@@ -134,11 +151,23 @@ class UpdateProviderCommandHandler extends CommandHandler
             throw $e;
         }
 
-        $result->setResult(CommandResult::RESULT_SUCCESS);
-        $result->setMessage('Successfully updated user');
-        $result->setData([
-            Entities::USER => $newUser->toArray()
-        ]);
+        $result = $userAS->getAuthenticatedUserResponse(
+            $newUser,
+            $oldUser->getEmail()->getValue() !== $newUser->getEmail()->getValue(),
+            true,
+            $oldUser->getLoginType(),
+            'provider'
+        );
+
+        $result->setData(
+            array_merge(
+                $result->getData(),
+                ['sendEmployeePanelAccessEmail' =>
+                     $command->getField('password') && $command->getField('sendEmployeePanelAccessEmail'),
+                 'password'                     => $command->getField('password')
+                ]
+            )
+        );
 
         $providerRepository->commit();
 

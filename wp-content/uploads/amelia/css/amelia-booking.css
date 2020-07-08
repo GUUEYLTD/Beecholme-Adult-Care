@@ -114,7 +114,7 @@
 }
 .el-popper {
   max-width: 97%;
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 }
 .el-popper .el-select-dropdown__item {
   white-space: normal;
@@ -136,7 +136,7 @@
   border-color: #ff4949;
 }
 .el-message-box {
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 }
 * {
   -webkit-font-smoothing: antialiased;
@@ -161,7 +161,7 @@ html .amelia-app-booking {
 }
 .amelia-app-booking,
 .am-modal.am-in-body {
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 }
 .amelia-app-booking h1,
 .am-modal.am-in-body h1,
@@ -185,7 +185,7 @@ html .amelia-app-booking {
 .am-modal.am-in-body li,
 .amelia-app-booking a,
 .am-modal.am-in-body a {
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
 }
 .amelia-app-booking h1,
 .am-modal.am-in-body h1 {
@@ -265,7 +265,7 @@ html .amelia-app-booking {
 .am-modal.am-in-body .form-control,
 .amelia-app-booking .am-stripe-card,
 .am-modal.am-in-body .am-stripe-card {
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 400;
   color: #354052;
@@ -879,7 +879,7 @@ body.admin-bar .el-popper[x-placement^=top] {
 }
 .amelia-app-booking .v-calendar-column .c-pane-container,
 .am-modal.am-in-body .v-calendar-column .c-pane-container {
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
   padding: 0 8px;
 }
 .amelia-app-booking .am-btns,

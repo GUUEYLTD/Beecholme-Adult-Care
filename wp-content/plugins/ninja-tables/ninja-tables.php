@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -10,14 +9,15 @@
  *
  * @link              https://wpmanageninja.com
  * @since             1.0.0
+ *
  * @package           ninja-tables
  *
  * @wordpress-plugin
  * Plugin Name:       Ninja Tables
- * Plugin URI:        https://wpmanageninja.com/plugins/ninja-tables/
+ * Plugin URI:        https://wpmanageninja.com/downloads/ninja-tables-pro-add-on/
  * Description:       The Easiest & Fastest Responsive Table Plugin on WordPress. Multiple templates, drag-&-drop live table builder, multiple color scheme, and styles.
- * Version:           1.9.5
- * Author:            WPManageNinja
+ * Version:           3.5.12
+ * Author:            WPManageNinja LLC
  * Author URI:        https://wpmanageninja.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -31,35 +31,47 @@ if (!defined('WPINC')) {
 }
 
 define('NINJA_TABLES_DIR_URL', plugin_dir_url(__FILE__));
-define('NINJA_TABLES_PUBLIC_DIR_URL', NINJA_TABLES_DIR_URL.'public/');
-define('NINJA_TABLES_VERSION', '1.9.5');
+define('NINJA_TABLES_DIR_PATH', plugin_dir_path(__FILE__));
+define('NINJA_TABLES_PUBLIC_DIR_URL', NINJA_TABLES_DIR_URL . 'public/');
+define('NINJA_TABLES_VERSION', '3.5.12');
+define('NINJA_TABLES_ASSET_VERSION', '3.1.0');
 
+$ninja_table_instances = array();
+$ninja_table_current_rendering_table = array();
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/NinjaTablesActivator.php
  */
-function activate_ninja_tables()
+function activate_ninja_tables($network_wide)
 {
-    require_once plugin_dir_path(__FILE__).'includes/NinjaTablesActivator.php';
-    NinjaTablesActivator::activate();
+    require_once plugin_dir_path(__FILE__) . 'includes/NinjaTablesActivator.php';
+    \NinjaTables\Classes\NinjaTablesActivator::activate($network_wide);
 }
 
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/NinjaTablesDeActivator.php
- */
-//function deactivate_ninja_tables() {
-//	require_once plugin_dir_path( __FILE__ ) . 'includes/NinjaTablesDeActivator.php';
-//	NinjaTablesDeActivator::deactivate();
-//}
-
 register_activation_hook(__FILE__, 'activate_ninja_tables');
+
+function deactivate_ninja_tables()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/NinjaTablesDeactivator.php';
+    \NinjaTables\Classes\NinjaTablesDeactivator::deactivate();
+}
+
+register_deactivation_hook(__FILE__, 'deactivate_ninja_tables');
+
+// Handle Newtwork new Site Activation
+add_action('wpmu_new_blog', function ($blogId) {
+    require_once plugin_dir_path(__FILE__) . 'includes/NinjaTablesActivator.php';
+    switch_to_blog($blogId);
+    \NinjaTables\Classes\NinjaTablesActivator::create_datatables_table();
+    restore_current_blog();
+});
+
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__).'includes/NinjaTableClass.php';
+require plugin_dir_path(__FILE__) . 'includes/NinjaTableClass.php';
 
 /**
  * Begins execution of the plugin.
@@ -70,11 +82,11 @@ require plugin_dir_path(__FILE__).'includes/NinjaTableClass.php';
  *
  * @since    1.0.0
  */
-function run_ninja_tables()
+function ninja_tables_boot()
 {
-    $plugin = new NinjaTableClass();
+    $plugin = new \NinjaTables\Classes\NinjaTableClass();
     $plugin->run();
 }
 
 // kick off
-run_ninja_tables();
+ninja_tables_boot();

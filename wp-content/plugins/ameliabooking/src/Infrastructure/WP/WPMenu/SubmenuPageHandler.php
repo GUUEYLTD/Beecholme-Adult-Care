@@ -49,6 +49,10 @@ class SubmenuPageHandler
             );
         }
 
+        if ($page === 'wpamelia-notifications') {
+            wp_enqueue_script('amelia_paddle', 'https://cdn.paddle.com/paddle/paddle.js');
+        }
+
         // Enqueue Styles
         wp_enqueue_style(
             'amelia_booking_styles',
@@ -140,7 +144,8 @@ class SubmenuPageHandler
                         BackendStrings::getUserStrings(),
                         BackendStrings::getCustomerStrings(),
                         BackendStrings::getAppointmentStrings(),
-                        BackendStrings::getPaymentStrings()
+                        BackendStrings::getPaymentStrings(),
+                        BackendStrings::getRecurringStrings()
                     )
                 );
 
@@ -174,7 +179,8 @@ class SubmenuPageHandler
                         BackendStrings::getUserStrings(),
                         BackendStrings::getCustomerStrings(),
                         BackendStrings::getDashboardStrings(),
-                        BackendStrings::getPaymentStrings()
+                        BackendStrings::getPaymentStrings(),
+                        BackendStrings::getRecurringStrings()
                     )
                 );
 
@@ -191,7 +197,8 @@ class SubmenuPageHandler
                         BackendStrings::getCustomerStrings(),
                         BackendStrings::getCalendarStrings(),
                         BackendStrings::getPaymentStrings(),
-                        BackendStrings::getEventStrings()
+                        BackendStrings::getEventStrings(),
+                        BackendStrings::getRecurringStrings()
                     )
                 );
 
