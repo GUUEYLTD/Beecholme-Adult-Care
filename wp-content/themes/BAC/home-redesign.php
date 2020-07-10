@@ -213,19 +213,19 @@ if(!empty($counsellors)) {
     <div class="main-mob-how-it-work">
         <h2>How It Works?</h2>
         <div class="main-mob-how-it-work-item">
-            <div class="main-mob-how-it-work-item-number">1</div>
-            <div class="main-mob-how-it-work-item-title">Look for your counsellor</div>
-            <div class="main-mob-how-it-work-item-text">Select the therapist or coach that better suit your needs and book your first session</div>
+            <div class="main-mob-how-it-work-item-number"><?php the_field('number_first', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-title"><?php the_field('title_first', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_first', $cur_page); ?></div>
         </div>
         <div class="main-mob-how-it-work-item">
-            <div class="main-mob-how-it-work-item-number">2</div>
-            <div class="main-mob-how-it-work-item-title">Initial free consultation</div>
-            <div class="main-mob-how-it-work-item-text">Chat with the counsellor to get all information you require to decide if coaching or therapy can help you</div>
+            <div class="main-mob-how-it-work-item-number"><?php the_field('number_second', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-title"><?php the_field('title_second', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_second', $cur_page); ?></div>
         </div>
         <div class="main-mob-how-it-work-item">
-            <div class="main-mob-how-it-work-item-number">3</div>
-            <div class="main-mob-how-it-work-item-title">Start therapy / coaching</div>
-            <div class="main-mob-how-it-work-item-text">Begin the journey towards a happier and healthier you</div>
+            <div class="main-mob-how-it-work-item-number"><?php the_field('number_third', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-title"><?php the_field('title_third', $cur_page); ?></div>
+            <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_third', $cur_page); ?></div>
         </div>
     </div>
 
