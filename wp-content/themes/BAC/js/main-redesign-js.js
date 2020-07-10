@@ -3,7 +3,8 @@ jQuery(document).ready(function($) {
     jQuery(function($) {
 
         var $win = $(window),
-            winH = $win.height();
+            // winH = $win.height();
+            winH = 200;
 
         $(document).on('click', '.toggle', function(){
             if( $win.scrollTop() < winH ){
@@ -34,6 +35,7 @@ jQuery(document).ready(function($) {
 
     $('.owl-carousel').owlCarousel({
         loop:true,
+        stagePadding: 25,
         nav:true,
         margin:10,
         responsive:{

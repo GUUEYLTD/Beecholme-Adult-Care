@@ -145,7 +145,8 @@
         line-height: 39px;
         color: #fff;
         margin: 0;
-        margin-bottom: 20px
+        margin-bottom: 20px;
+        font-family: 'InterBold', sans-serif;
     }
 
     .home-top-banner-mobile-text-buttons h2 {
@@ -153,7 +154,8 @@
         line-height: 22px;
         color: #fff;
         margin: 0;
-        margin-bottom: 30px
+        margin-bottom: 30px;
+        font-weight: 400
     }
 
     .home-top-banner-mobile-buttons .cta-button {
@@ -202,7 +204,7 @@
     }
 
     .page-template-home-redesign .owl-carousel {
-        padding: 0 0 0 60px
+        padding: 0 15px
     }
 
     .main-mob-counsellors .our-counsellors .single-item {
@@ -213,13 +215,8 @@
         margin-top: 25px
     }
 
-    .page-template-home-redesign .owl-carousel .owl-stage-outer {
-        margin-left: -30px
-    }
-
     .page-template-home-redesign .owl-theme .owl-dots {
         margin: 25px;
-        margin-left:-25px
     }
 
     .page-template-home-redesign .cta-button-wrapper {
