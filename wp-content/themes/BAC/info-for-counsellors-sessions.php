@@ -67,6 +67,14 @@ get_header();
                 </div>
             </div>
         <?php endif; ?>
+        <?php if(get_field('eight_block_title', $cur_page) || get_field('eight_block_text', $cur_page)) : ?>
+            <div class="counsellors-info-item counsellors-info-item-100">
+                <div class="counsellors-info-item-heading"><?php the_field('eight_block_title', $cur_page); ?></div>
+                <div class="counsellors-info-item-text">
+                    <?php the_field('eight_block_text', $cur_page); ?>
+                </div>
+            </div>
+        <?php endif; ?>
 
     </div>
 
