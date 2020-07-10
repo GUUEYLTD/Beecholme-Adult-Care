@@ -4758,6 +4758,10 @@ a.policy-link-sidebar:hover {
 .counsellors-info-item-100{
     width:100%
 }
+.counsellors-info-item-100 img{
+    width:100%;
+    height:auto;
+}
 .counsellors-info-item-70{
     width:calc(70% - 15px);
 }
