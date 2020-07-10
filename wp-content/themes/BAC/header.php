@@ -42,9 +42,14 @@
 	<header id="header">
 		<div class="inner-container header-container d-flex justify-content-between">
 			<div class="logo">
-				<a href="/">
+				<a class="logo-black-letters" href="/">
 					<img src="<?php echo get_template_directory_uri(); ?>/images/logo.svg" alt="logo">
 				</a>
+                <?php if ( is_page_template('home-redesign.php') ) : ?>
+                <a class="logo-white-letters" href="/">
+                    <img src="<?php echo get_template_directory_uri(); ?>/images/logo-white.svg" alt="logo">
+                </a>
+                <?php endif; ?>
 			</div>
 			<div class="header-controls d-flex">
 				<!-- TrustBox widget - Review Collector -->
@@ -86,7 +91,7 @@
 			</div>
 		</div>
 	</header>
-	<?php if(is_front_page() || is_home() ||  is_singular('post') || is_archive() || is_page_template(array('info-for-counsellors.php', 'info-for-counsellors-registration.php', 'info-for-counsellors-clients.php', 'info-for-counsellors-payments.php', 'info-for-counsellors-cancellation.php', 'info-for-counsellors-zoom-account.php', 'info-for-counsellors-sessions.php', 'info-for-counsellors-profile.php'))) {} else { ?>
+	<?php if(is_front_page() || is_home() ||  is_singular('post') || is_archive() || is_page_template(array('home-redesign.php', 'info-for-counsellors.php', 'info-for-counsellors-registration.php', 'info-for-counsellors-clients.php', 'info-for-counsellors-payments.php', 'info-for-counsellors-cancellation.php', 'info-for-counsellors-zoom-account.php', 'info-for-counsellors-sessions.php', 'info-for-counsellors-profile.php'))) {} else { ?>
         <h1 class="page-title"><?php echo get_the_title(); ?></h1>
 		<?php if(get_field('hero_image', $cur_page)) { ?>
 		<div class="mid-container hero-image d-flex justify-content-center">

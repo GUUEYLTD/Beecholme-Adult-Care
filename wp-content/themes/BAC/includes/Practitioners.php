@@ -88,6 +88,37 @@ class Practitioners
     }
 
     /**
+     * Get 4 practitioners from main mobile page
+     *
+     * @return array|object|null
+     */
+    public function mobileCounsellors($args = [])
+    {
+        global $wpdb;
+
+        $results = $wpdb->get_results("
+            SELECT 
+                *
+            FROM 
+                {$wpdb->prefix}amelia_users as u
+            WHERE 
+                status='visible' AND 
+                type='provider'
+            LIMIT 8   
+        ");
+
+        $results = array_filter($results, function ($user){
+            return get_field('enable_search', "user_{$user->externalId}");
+        });
+
+        if ( ! empty($args)) {
+            $results = $this->filterUsers($results, $args);
+        }
+
+        return $results;
+    }
+
+    /**
      * @param $practitionerId
      * @param $serviceName
      *

@@ -1,0 +1,319 @@
+@media all and (max-width:900px) {
+    /*for-global-mobile-version*/
+    .body-overflow-hidden{overflow: hidden!important}
+
+    footer .footer-controls .buttons a {
+        width: 200px !important;
+        margin: 0 auto 24px;
+    }
+
+    .mobile-menu .toggle-inner, .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after {
+        height: 4px;
+        border-radius: 2px;
+        background: #5AB9AC;
+    }
+
+    .mobile-menu {
+        position: static;
+    }
+
+    .mobile-menu .mobile-menu-container {
+        top: 79px;
+        height: 100vh;
+        right: 0;
+        left: 0;
+    }
+
+    .menu-menu1-container {
+        height: 100%
+    }
+
+    .menu-menu1-container #menu-menu1 {
+        height: 100%;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .menu-menu1-container #menu-menu1 .sub-menu{
+        background: none;
+    }
+
+    .menu-menu1-container #menu-menu1 .sub-menu li a{
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: #5AB9AC;
+    }
+
+    .menu-menu1-container #menu-menu1 li a{
+        padding-right:0;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29px;
+        color:#333333;
+        padding:3px;
+    }
+
+    header #menu-menu1 .menu-item-has-children a:first-child:after, header #menu-menu1 .menu-item-has-children.active a:first-child:after{
+        content:''
+    }
+
+
+
+    /*end for-global-mobile-version*/
+
+
+    /*only main header*/
+    .page-template-home-redesign .mobile-menu .toggle-inner, .page-template-home-redesign .mobile-menu .toggle-inner:before, .page-template-home-redesign .mobile-menu .toggle-inner:after {
+        height: 3px;
+        /*width: 28px;*/
+        background: #fff;
+    }
+
+    .page-template-home-redesign header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .page-template-home-redesign .header-white .header-container{
+        background:#fff;
+    }
+
+    .page-template-home-redesign .header-white .mobile-menu .toggle-inner, .page-template-home-redesign .header-white .mobile-menu .toggle-inner:before, .page-template-home-redesign .header-white .mobile-menu .toggle-inner:after {
+        background: #5AB9AC;
+    }
+
+    .page-template-home-redesign .header-container, .page-template-home-redesign .header-menu {
+        background: none;
+    }
+
+    .logo-black-letters {
+        display: none;
+    }
+    .logo-white-letters {
+        display: block
+    }
+
+    .logo-display-none{
+        display:none;
+    }
+
+    .logo-display-block{
+        display:block;
+    }
+
+    .logo-black-letters img, .logo-white-letters img {
+        width: 175px
+    }
+
+    .home-top-banner-mobile-buttons .cta-button-wellbeing {
+        opacity: 0;
+    }
+    /*end only main header*/
+
+
+
+    /*home-top-banner-mobile*/
+
+    .page-template-home-redesign h2 {
+        text-align: center;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29px;
+    }
+    .home-top-banner-mobile img {
+        width: 100%
+    }
+
+    .home-top-banner-mobile {
+        position: relative;
+    }
+
+    .home-top-banner-mobile-text-buttons {
+        position: absolute;
+        bottom: 0;
+        left:0;
+        right:0;
+        padding: 45px 32px
+    }
+
+    .home-top-banner-mobile-text-buttons h1 {
+        font-weight: bold;
+        font-size: 32px;
+        line-height: 39px;
+        color: #fff;
+        margin: 0;
+        margin-bottom: 20px
+    }
+
+    .home-top-banner-mobile-text-buttons h2 {
+        font-size: 16px;
+        line-height: 22px;
+        color: #fff;
+        margin: 0;
+        margin-bottom: 30px
+    }
+
+    .home-top-banner-mobile-buttons .cta-button {
+        padding: 13px 40px;
+        width: 311px;
+        margin-top: 12px;
+    }
+
+    /*end home-top-banner-mobile*/
+    /*owl-carousel*/
+
+
+    .main-mob-counsellors {
+        background: #F4F4F5;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        padding: 50px 0 70px;
+        margin-top:-5px
+    }
+
+    .main-mob-counsellors-subtitle {
+        font-size: 16px;
+        line-height: 22px;
+        text-align: center;
+        padding: 5px 30px
+    }
+
+    .main-mob-counsellors-slide {
+        border: 1px solid #000;
+    }
+
+    .main-mob-counsellors .our-counsellors .single-item .personal-info .avatar {
+        min-width: 65px
+    }
+
+    .main-mob-counsellors .our-counsellors .single-item {
+        min-height: 280px;
+        max-width:100%
+    }
+
+    .page-template-home-redesign .owl-carousel .owl-item .languages img {
+        height: auto
+    }
+
+    .page-template-home-redesign .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+        background: #5AB9AC;
+    }
+
+    .page-template-home-redesign .owl-carousel {
+        padding: 0 0 0 40px
+    }
+
+    .main-mob-counsellors .our-counsellors .single-item {
+        margin: 0
+    }
+
+    .main-mob-counsellors .our-counsellors {
+        margin-top: 25px
+    }
+
+    .page-template-home-redesign .owl-carousel .owl-stage-outer {
+        margin-left: -20px
+    }
+
+    .page-template-home-redesign .owl-theme .owl-dots {
+        margin: 25px
+    }
+
+    .page-template-home-redesign .cta-button-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    .main-mob-counsellors .cta-button {
+        padding: 13px 40px;
+    }
+
+    /*end owl-carousel*/
+    /*counsellor form*/
+    .main-mob-counsellors-form {
+        background: url('../images/mobile-form-background.png');
+        padding: 88px 14px;
+    }
+
+    .main-mob-counsellors-form h2 {
+        margin-bottom: 24px
+    }
+
+    .home-form-wrapper {
+        height: auto;
+        padding: 15px 25px 32px;
+    }
+
+    /*end counsellor form*/
+    /*main-mob-how-it-work */
+    .main-mob-how-it-work {
+        padding: 72px 24px;
+        text-align: center;
+        background: #F4F4F5;
+    }
+
+    .main-mob-how-it-work h2 {
+        margin: 0
+    }
+
+    .main-mob-how-it-work-item {
+        margin-top: 48px
+    }
+
+    .main-mob-how-it-work-item-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 32px;
+        line-height: 39px;
+        width: 72px;
+        height: 72px;
+        background: #fff;
+        border-radius: 50%;
+        margin: auto;
+        color: #5AB9AC
+    }
+
+    .main-mob-how-it-work-item-title {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        margin: 16px auto 12px
+    }
+
+    .main-mob-how-it-work-item-text {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    /*end main-mob-how-it-work */
+
+    /*blog*/
+    .page-template-home-redesign .blog-section .post .image{
+        height:auto
+    }
+    /*end blog*/
+}
+
+@media all and (min-width:768px) and (max-width:1000px) and (orientation: landscape){
+    .page-template-home-redesign header{
+        z-index:99;
+        background: #fff;
+    }
+}
+@media all and (orientation: landscape){
+    .menu-menu1-container #menu-menu1{
+        margin-top:0
+    }
+    .menu-menu1-container #menu-menu1 li a{
+        line-height:16px
+    }
+}
+
+.home-top-banner-mobile-buttons{height:113px}
+.home-top-banner-mobile-text, .home-top-banner-mobile-buttons .cta-button-wrapper{
+    display: none;
+}
