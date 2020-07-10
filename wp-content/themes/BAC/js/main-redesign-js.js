@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
     });
 
     $(document).on('click', '.toggle', function(){
-        $('.toggle').toggleClass('active');
+        //$('.toggle').toggleClass('active');
         $('.mobile-menu-container').toggleClass('logo-display-block');
     });
 
