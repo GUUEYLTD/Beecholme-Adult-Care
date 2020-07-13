@@ -78,6 +78,10 @@
         right: 0;
     }
 
+    .page-template-home-redesign .header-container{
+        height:88px
+    }
+
     .page-template-home-redesign .header-white .header-container{
         background:#fff;
     }
@@ -87,6 +91,7 @@
     }
 
     .page-template-home-redesign .header-container, .page-template-home-redesign .header-menu {
+        transition: all 0.2s 0.1s;
         background: none;
     }
 
@@ -321,6 +326,3 @@
 }
 
 .home-top-banner-mobile-buttons{height:113px}
-/*.home-top-banner-mobile-text, .home-top-banner-mobile-buttons .cta-button-wrapper{*/
-/*    display: none;*/
-/*}*/

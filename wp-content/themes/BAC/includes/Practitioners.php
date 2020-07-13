@@ -104,7 +104,7 @@ class Practitioners
             WHERE 
                 status='visible' AND 
                 type='provider'
-            LIMIT 8   
+            LIMIT 9   
         ");
 
         $results = array_filter($results, function ($user){

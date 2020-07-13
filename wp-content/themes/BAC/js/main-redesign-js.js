@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 
         var $win = $(window),
             // winH = $win.height();
-            winH = 200;
+            winH = 60;
 
         $(document).on('click', '.toggle', function(){
             if( $win.scrollTop() < winH ){
