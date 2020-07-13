@@ -30,8 +30,8 @@ jQuery(document).ready(function($) {
         $('.mobile-menu-container').toggleClass('logo-display-block');
     });
 
-    setTimeout(function(){ $('.home-top-banner-mobile-text').fadeIn() }, 1500);
-    setTimeout(function(){ $('.home-top-banner-mobile-buttons .cta-button-wrapper').fadeIn() }, 2500);
+    // setTimeout(function(){ $('.home-top-banner-mobile-text').fadeIn() }, 1500);
+    // setTimeout(function(){ $('.home-top-banner-mobile-buttons .cta-button-wrapper').fadeIn() }, 2500);
 
     $('.owl-carousel').owlCarousel({
         loop:true,

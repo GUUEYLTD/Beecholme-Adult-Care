@@ -34,6 +34,8 @@ function adding_scripts() {
 
     if ( is_page_template('home-redesign.php') ) {
         wp_enqueue_script('main-redesign-js',get_template_directory_uri() . '/js/main-redesign-js.js', array('jquery', 'owl-carousel'), '', true);
+        wp_enqueue_script('wow-js','https://cdnjs.cloudflare.com/ajax/libs/wow/0.1.12/wow.min.js', array('jquery'), '', true);
+        wp_enqueue_style( 'animate-css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css');
         wp_enqueue_style( 'main-redesign-css', get_template_directory_uri() . '/css/main-redesign-css.css');
     }
 

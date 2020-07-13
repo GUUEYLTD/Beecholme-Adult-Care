@@ -108,15 +108,15 @@ if(!empty($counsellors)) {
         </div>
     </div>
     <?php else: ?>
-    <div class="text-center home-top-banner-mobile">
+    <div class="text-center home-top-banner-mobile ">
         <img src="<?php echo get_template_directory_uri().'/images/mobile-main-first.png' ?>" alt="mobile-main-first-block">
         <div class="home-top-banner-mobile-text-buttons">
-            <div class="home-top-banner-mobile-text">
+            <div data-wow-delay="0.7s" class="home-top-banner-mobile-text wow fadeIn">
                 <h1>Your Mental Health Is On Our Mind</h1>
                 <h2>BAC provides online counselling to help peoplelive a happier life</h2>
             </div>
             <div class="home-top-banner-mobile-buttons">
-                <div class="cta-button-wrapper">
+                <div data-wow-delay="1.4s" class="cta-button-wrapper wow fadeInUpBig">
                     <a class="cta-button cta-button-sessions" href="/our-counsellors/">Book Free Welcome Session</a>
                 </div>
                 <div class="cta-button-wrapper">
@@ -212,23 +212,27 @@ if(!empty($counsellors)) {
 
     <div class="main-mob-how-it-work">
         <h2>How It Works?</h2>
-        <div class="main-mob-how-it-work-item">
+        <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">
             <div class="main-mob-how-it-work-item-number"><?php the_field('number_first', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-title"><?php the_field('title_first', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_first', $cur_page); ?></div>
         </div>
-        <div class="main-mob-how-it-work-item">
+        <div data-wow-delay="0.5s" class="main-mob-how-it-work-item wow fadeInUp">
             <div class="main-mob-how-it-work-item-number"><?php the_field('number_second', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-title"><?php the_field('title_second', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_second', $cur_page); ?></div>
         </div>
-        <div class="main-mob-how-it-work-item">
+        <div data-wow-delay="0.6s" class="main-mob-how-it-work-item wow fadeInUp">
             <div class="main-mob-how-it-work-item-number"><?php the_field('number_third', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-title"><?php the_field('title_third', $cur_page); ?></div>
             <div class="main-mob-how-it-work-item-text"><?php the_field('subtitle_third', $cur_page); ?></div>
         </div>
     </div>
-
+    <script>
+        jQuery(document).ready(function($) {
+            new WOW().init();
+        });
+    </script>
     <?php endif; ?>
 
     <?php if ( !wp_is_mobile() ) : ?>

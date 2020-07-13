@@ -1,5 +1,6 @@
 @media all and (max-width:900px) {
     /*for-global-mobile-version*/
+
     .body-overflow-hidden{overflow: hidden!important}
 
     footer .footer-controls .buttons a {
@@ -114,7 +115,6 @@
     /*end only main header*/
 
 
-
     /*home-top-banner-mobile*/
 
     .page-template-home-redesign h2 {
@@ -136,7 +136,7 @@
         bottom: 0;
         left:0;
         right:0;
-        padding: 45px 32px
+        padding: 35px 32px
     }
 
     .home-top-banner-mobile-text-buttons h1 {
@@ -145,8 +145,9 @@
         line-height: 39px;
         color: #fff;
         margin: 0;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-family: 'InterBold', sans-serif;
+        letter-spacing: 0.7px;
     }
 
     .home-top-banner-mobile-text-buttons h2 {
@@ -154,7 +155,8 @@
         line-height: 22px;
         color: #fff;
         margin: 0;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
+        letter-spacing: 0.5px;
         font-weight: 400
     }
 
@@ -236,16 +238,23 @@
     }
 
     .main-mob-counsellors-form h2 {
-        margin-bottom: 24px
+        margin-bottom: 24px;
+        letter-spacing: 0.5px;
     }
 
     .home-form-wrapper {
         height: auto;
-        padding: 15px 25px 32px;
+        padding: 25px 25px 32px;
+        width:auto;
+        max-width:360px
+    }
+    .home-form-wrapper .type-tabs{
+        justify-content: space-between;
     }
 
     /*end counsellor form*/
     /*main-mob-how-it-work */
+
     .main-mob-how-it-work {
         padding: 72px 24px;
         text-align: center;
@@ -312,6 +321,6 @@
 }
 
 .home-top-banner-mobile-buttons{height:113px}
-.home-top-banner-mobile-text, .home-top-banner-mobile-buttons .cta-button-wrapper{
-    display: none;
-}
+/*.home-top-banner-mobile-text, .home-top-banner-mobile-buttons .cta-button-wrapper{*/
+/*    display: none;*/
+/*}*/
