@@ -22,6 +22,12 @@
     src: url(/wp-content/themes/BAC/fonts/Inter-UI-Bold.woff);
 }
 
+@font-face {
+    font-family: InterSemiBold;
+    font-display: swap;
+    src: url(/wp-content/themes/BAC/fonts/Inter-SemiBold.ttf);
+}
+
 /*@font-face {
     font-family: InterIt;
     src: url(/wp-content/themes/your-theme/fonts/Inter-UI-Italic.woff);

@@ -9,7 +9,7 @@
     }
 
     .mobile-menu .toggle-inner, .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after {
-        height: 4px;
+        height: 3px;
         border-radius: 2px;
         background: #5AB9AC;
     }
@@ -19,7 +19,7 @@
     }
 
     .mobile-menu .mobile-menu-container {
-        top: 79px;
+        top: 70px;
         height: 100vh;
         right: 0;
         left: 0;
@@ -59,7 +59,14 @@
         content:''
     }
 
+    .mobile-menu .toggle{
+        height:40px
+    }
 
+    .mobile-menu .toggle-inner{
+        position:absolute;
+        top:20px
+    }
 
     /*end for-global-mobile-version*/
 
@@ -79,7 +86,7 @@
     }
 
     .page-template-home-redesign .header-container{
-        height:88px
+        height:70px
     }
 
     .page-template-home-redesign .header-white .header-container{
@@ -95,23 +102,23 @@
         background: none;
     }
 
-    .logo-black-letters {
+    .page-template-home-redesign .logo-black-letters {
         display: none;
     }
-    .logo-white-letters {
+    .page-template-home-redesign .logo-white-letters {
         display: block
     }
 
-    .logo-display-none{
+    .page-template-home-redesign .logo-display-none{
         display:none;
     }
 
-    .logo-display-block{
+    .page-template-home-redesign .logo-display-block{
         display:block;
     }
 
     .logo-black-letters img, .logo-white-letters img {
-        width: 175px
+        width: 130px
     }
 
     .home-top-banner-mobile-buttons .cta-button-wellbeing {
@@ -122,7 +129,8 @@
 
     /*home-top-banner-mobile*/
 
-    .page-template-home-redesign h2 {
+    .page-template-home-redesign h2, .page-template-home-redesign .blog-section>.title {
+        font-family: InterSemiBold;
         text-align: center;
         font-weight: 600;
         font-size: 24px;
@@ -141,7 +149,7 @@
         bottom: 0;
         left:0;
         right:0;
-        padding: 35px 32px
+        padding: 25px 32px
     }
 
     .home-top-banner-mobile-text-buttons h1 {
@@ -156,8 +164,9 @@
     }
 
     .home-top-banner-mobile-text-buttons h2 {
-        font-size: 16px;
+        font-family: InterReg;
         line-height: 22px;
+        font-size: 16px;
         color: #fff;
         margin: 0;
         margin-bottom: 35px;
@@ -240,6 +249,8 @@
     .main-mob-counsellors-form {
         background: url('../images/mobile-form-background.png');
         padding: 88px 14px;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     .main-mob-counsellors-form h2 {
@@ -251,11 +262,15 @@
         height: auto;
         padding: 25px 25px 32px;
         width:auto;
-        max-width:360px
+        max-width:336px
     }
     .home-form-wrapper .type-tabs{
         justify-content: space-between;
     }
+
+    /*.home-form-wrapper .type-tabs .single-tab{*/
+    /*    width:100%*/
+    /*}*/
 
     /*end counsellor form*/
     /*main-mob-how-it-work */
@@ -278,6 +293,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family: InterBold;
         font-weight: bold;
         font-size: 32px;
         line-height: 39px;
@@ -291,6 +307,7 @@
 
     .main-mob-how-it-work-item-title {
         font-weight: 600;
+        font-family: InterSemiBold;
         font-size: 20px;
         line-height: 24px;
         margin: 16px auto 12px
@@ -307,6 +324,31 @@
     .page-template-home-redesign .blog-section .post .image{
         height:auto
     }
+    .page-template-home-redesign .blog-section .post:nth-of-type(3){
+        margin-bottom:0
+    }
+
+    .page-template-home-redesign .blog-section .explore-more{
+        margin-bottom:72px
+    }
+
+    .page-template-home-redesign .blog-section>.title{
+        margin-top:72px;
+        margin-bottom:30px
+    }
+    .page-template-home-redesign .blog-section .post .title{
+        font-family: InterSemiBold, sans-serif;
+        font-size: 20px;
+        line-height: 24px;
+        margin-bottom: 16px;
+        height: auto;
+    }
+
+    .page-template-home-redesign .blog-section .post .read-more{
+        font-family: InterSemiBold, sans-serif;
+        line-height: 19px;
+    }
+
     /*end blog*/
 }
 
@@ -326,3 +368,5 @@
 }
 
 .home-top-banner-mobile-buttons{height:113px}
+
+

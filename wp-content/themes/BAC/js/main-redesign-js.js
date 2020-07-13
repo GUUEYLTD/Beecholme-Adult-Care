@@ -9,16 +9,16 @@ jQuery(document).ready(function($) {
         $(document).on('click', '.toggle', function(){
             if( $win.scrollTop() < winH ){
                 $('#header').toggleClass('header-white');
-                $('.logo-black-letters').toggleClass("logo-display-block" );
-                $('.logo-white-letters').toggleClass("logo-display-none" );
+                $('.page-template-home-redesign .logo-black-letters').toggleClass("logo-display-block" );
+                $('.page-template-home-redesign .logo-white-letters').toggleClass("logo-display-none" );
             }
             $('body').toggleClass("body-overflow-hidden");
         });
 
         $win.on("scroll", function () {
             $('#header').toggleClass("header-white", $(this).scrollTop() > winH );
-            $('.logo-black-letters').toggleClass("logo-display-block", $(this).scrollTop() > winH );
-            $('.logo-white-letters').toggleClass("logo-display-none", $(this).scrollTop() > winH );
+            $('.page-template-home-redesign .logo-black-letters').toggleClass("logo-display-block", $(this).scrollTop() > winH );
+            $('.page-template-home-redesign .logo-white-letters').toggleClass("logo-display-none", $(this).scrollTop() > winH );
         }).on("resize", function(){
             winH = $(this).height();
         });
