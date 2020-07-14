@@ -112,8 +112,8 @@ if(!empty($counsellors)) {
         <img src="<?php echo get_template_directory_uri().'/images/mobile-main-first.png' ?>" alt="mobile-main-first-block">
         <div class="home-top-banner-mobile-text-buttons">
             <div data-wow-delay="0.7s" class="home-top-banner-mobile-text wow fadeIn">
-                <h1>Find an online therapist, counsellor or life coach</h1>
-                <h2>BAC provides online counselling to help people live a happier life</h2>
+                <h1><?php the_field('home_page_h1', $cur_page); ?></h1>
+                <h2><?php the_field('home_page_h2', $cur_page); ?></h2>
             </div>
             <div class="home-top-banner-mobile-buttons">
                 <div data-wow-delay="1.4s" class="cta-button-wrapper wow fadeInUpBig">
