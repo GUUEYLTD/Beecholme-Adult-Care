@@ -112,8 +112,8 @@ if(!empty($counsellors)) {
         <img src="<?php echo get_template_directory_uri().'/images/mobile-main-first.png' ?>" alt="mobile-main-first-block">
         <div class="home-top-banner-mobile-text-buttons">
             <div data-wow-delay="0.7s" class="home-top-banner-mobile-text wow fadeIn">
-                <h1>Your Mental Health Is On Our Mind</h1>
-                <h2>BAC provides online counselling to help peoplelive a happier life</h2>
+                <h1>Find an online therapist, counsellor or life coach</h1>
+                <h2>BAC provides online counselling to help people live a happier life</h2>
             </div>
             <div class="home-top-banner-mobile-buttons">
                 <div data-wow-delay="1.4s" class="cta-button-wrapper wow fadeInUpBig">
@@ -130,7 +130,7 @@ if(!empty($counsellors)) {
     <?php if ( wp_is_mobile() ) : ?>
     <div class="main-mob-counsellors">
         <h2>Our Counsellors</h2>
-        <div class="main-mob-counsellors-subtitle">BAC makes therapy and life coaching affordable for all with a team of counsellors</div>
+        <div class="main-mob-counsellors-subtitle">BAC makes therapy and life coaching affordable for all with a team of professional counsellors</div>
         <div class="owl-carousel owl-theme our-counsellors">
             <?php do_action('bac_list_counsellors', $counsellors); ?>
         </div>
