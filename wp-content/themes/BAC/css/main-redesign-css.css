@@ -370,3 +370,9 @@
 .home-top-banner-mobile-buttons{height:113px}
 
 
+/*fixed blog mobile*/
+@media all and (max-width:900px) {
+    .blog .blog-page .post-meta{
+        flex-wrap:wrap
+    }
+}
