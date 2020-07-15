@@ -13,88 +13,126 @@ get_header(); ?>
             back to list
         </a>
 
-<!--        --><?php //if(have_posts()) : the_post(); ?>
-            <div class="profile-container block1">
-                <div class="personal-info d-flex left">
-                    <div class="avatar">
-                        <img src="<?php echo $user->amelia_employee->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt="">
-                    </div>
-                    <div class="info">
-<!--                        <div class="rating">-->
-<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
-<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
-<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
-<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
-<!--                            <img src="--><?php //echo get_stylesheet_directory_uri(); ?><!--/images/rating-grey-star.png" alt="">-->
-<!--                        </div>-->
-                        <div class="name"><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></div>
-                        <div class="specialty"><?= implode(", ", getACFLoopValues('type', $user->ID)) ?></div>
-                        <div class="actions d-flex align-items-center">
-                            <div class="price">
-                                <span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
-                            </div>
-                            <div class="button-wrapper">
-                                <a href="/booking/?user=<?= $user->amelia_employee->id ?>">
-                                    <button>Book a session</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+        <div class="profile-container block1">
+            <div class="personal-info d-flex left">
+                <div class="avatar">
+                    <img src="<?php echo $user->amelia_employee->pictureThumbPath ?? (get_stylesheet_directory_uri() . '/images/profile-placeholder.png'); ?>" alt="">
                 </div>
-
-                <div class="summary d-flex flex-column right">
-                    <div class="single-item d-flex"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-location.png" alt="">
-                        <div class="info d-flex flex-column">
-                            <div class="caption">Located in</div>
-<!--                            --><?php //if(get_field('location', $user->id)) ?>
-                            <div class="message"><?php echo get_field('location', "user_{$user->id}") ?? '' ?></div>
+                <div class="info">
+                    <!--                        <div class="rating"></div>-->
+                    <div class="name"><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></div>
+                    <div class="specialty"><?= implode(", ", getACFLoopValues('type', $user->ID)) ?></div>
+                    <div class="actions d-flex align-items-center">
+                        <div class="price">
+                            <span>&#163;<?= \BAC\Practitioners::getPriceByPractitionerId($user->amelia_employee->id) ?></span> / session
                         </div>
-                    </div>
-                    <div class="single-item d-flex">
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-graduate.png" alt="">
-                        <div class="info d-flex flex-column">
-                            <div class="caption">Education</div>
-                            <div class="message"><?php echo get_field('education', "user_{$user->id}") ?? '' ?></div>
-                        </div>
-                    </div>
-                    <div class="single-item d-flex"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-languages.png" alt="">
-                        <div class="info d-flex flex-column">
-                            <div class="caption">Languages</div>
-                            <?php
-                                $languages = array();
-                                if(have_rows('languages', "user_{$user->ID}")) : while(have_rows('languages', "user_{$user->ID}")) : the_row();
-                                    $languages[] = get_sub_field('language');
-                                    endwhile;
-                                endif;
-                                $languages = implode(", ", $languages);
-//                                var_dump($languages); die;
-                            ?>
-                            <div class="message"><?= $languages ?></div>
+                        <div class="button-wrapper">
+                            <a href="/booking/?user=<?= $user->amelia_employee->id ?>">
+                                <button>Book a session</button>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="divider"></div>
 
-            <div class="profile-container block2">
-                <div class="about left">
+            <div class="summary d-flex flex-column right">
+                <div class="single-item d-flex"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-location.png" alt="">
+                    <div class="info d-flex flex-column">
+                        <div class="caption">Located in</div>
+                        <div class="message"><?php echo get_field('location', "user_{$user->id}") ?? '' ?></div>
+                    </div>
+                </div>
+                <div class="single-item d-flex">
+                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-graduate.png" alt="">
+                    <div class="info d-flex flex-column">
+                        <div class="caption">Education</div>
+                        <div class="message"><?php echo get_field('education', "user_{$user->id}") ?? '' ?></div>
+                    </div>
+                </div>
+                <div class="single-item d-flex"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/icon-languages.png" alt="">
+                    <div class="info d-flex flex-column">
+                        <div class="caption">Languages</div>
+                        <?php
+                        $languages = array();
+                        if(have_rows('languages', "user_{$user->ID}")) : while(have_rows('languages', "user_{$user->ID}")) : the_row();
+                            $languages[] = get_sub_field('language');
+                        endwhile;
+                        endif;
+                        $languages = implode(", ", $languages);
+
+                        ?>
+                        <div class="message"><?= $languages ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <div class="profile-container block2">
+
+            <div class="about left">
+
+                <div class="about">
                     <div class="heading">About me</div>
-<!--                    <div class="text">--><?php //the_field('about', "user_{$user->ID}") ?><!--</div>-->
                     <div class="text"><?php echo get_the_author_meta('description', $user->id) ?></div>
-<!--                    <div class="text"></div>-->
                 </div>
-                <div class="specializations right">
-                    <div class="heading">Areas of Expertise</div>
-                    <div class="text">
-                        <?php foreach (getACFLoopValues('specializations', $user->ID) as $service) { ?>
-                            <span>- </span><?php echo $service; ?><br>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
 
-            <div class="profile-container block3">
-                <div class="details left">
+                <?php if( get_field('show_video', "user_{$user->id}") && get_field('video_link', "user_{$user->id}") ) : ?>
+
+                    <div class="video-counsellors">
+
+                        <div id="ytplayer">
+                            <?php $src_image = get_field('video_thumbnail', "user_{$user->id}") ?? ''; ?>
+                            <?php if($src_image):?>
+                                <img id="ytThumb" src=<?php echo $src_image; ?> >
+                            <?php endif; ?>
+                            <div id="ytClick">
+                                <div class="img-wrapper">
+                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/arrow-right-video.svg" alt="ytClick">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <script>
+                        var tag = document.createElement('script');
+                        tag.src = "https://www.youtube.com/player_api";
+                        var firstScriptTag = document.getElementsByTagName('script')[0];
+                        var videoId = '<?php echo get_field('video_link', "user_{$user->id}");?>';
+
+                        jQuery(function($) {
+                            $(document).on('click', '#ytClick', function(){
+                                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                            });
+
+                            var is_video_thumbnail = document.getElementById("ytThumb");
+                            if (!is_video_thumbnail){
+                                var video_thumbnail = $('<img id="ytThumb" src="//img.youtube.com/vi/'+videoId+'/0.jpg">');
+                                $('#ytplayer').append(video_thumbnail);
+                            }
+                        });
+
+                        var player;
+                        function onYouTubePlayerAPIReady() {
+                            player = new YT.Player('ytplayer', {
+                                height: '100%',
+                                width: '100%',
+                                autoplay: 'true',
+                                videoId: videoId,
+                                events: {
+                                    'onReady': onPlayerReady
+                                }
+                            });
+                        }
+                        function onPlayerReady(event) {
+                            event.target.playVideo();
+                        }
+                    </script>
+
+                <?php endif; ?>
+
+                <div class="details">
                     <div class="heading">Session details</div>
                     <div class="single-detail d-flex">
                         <div class="text caption">Duration</div>
@@ -115,32 +153,49 @@ get_header(); ?>
                         <div class="text info"><?php the_field('how_it_works', "user_{$user->ID}"); ?></div>
                     </div>
                     <div class="button-wrapper">
-                        <button>Book a Session</button>
+                        <a href="/booking/?user=<?= $user->amelia_employee->id ?>">
+                            <button>Book a Session</button>
+                        </a>
                     </div>
                 </div>
-                <div class="education right">
+
+            </div>
+
+            <div class="specializations right">
+
+                <div class="areas">
+                    <div class="heading">Areas of Expertise</div>
+                    <div class="text">
+                        <?php foreach (getACFLoopValues('specializations', $user->ID) as $service) { ?>
+                            <span>- </span><?php echo $service; ?><br>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="education ">
                     <div class="heading">Licence, accreditations & certifications</div>
                     <?php
                     if(have_rows('certifications', "user_{$user->ID}")) : while(have_rows('certifications', "user_{$user->ID}")) : the_row(); ?>
                         <div class="single-item d-flex flex-column">
                             <?php if(!get_sub_field('hide')) : ?>
-                            <div class="name text"><?php the_sub_field('title'); ?></div>
-                            <div class="info d-flex justify-content-between">
-                                <div class="date"><?php the_sub_field('date'); ?></div>
-                                <?php if(get_sub_field('link')) : ?>
-                                    <div class="link"><a href="<?php the_sub_field('link'); ?>" target="_blank">View</a></div>
-                                <?php endif; ?>
-                            </div>
+                                <div class="name text"><?php the_sub_field('title'); ?></div>
+                                <div class="info d-flex justify-content-between">
+                                    <div class="date"><?php the_sub_field('date'); ?></div>
+                                    <?php if(get_sub_field('link')) : ?>
+                                        <div class="link"><a href="<?php the_sub_field('link'); ?>" target="_blank">View</a></div>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif;?>
                         </div>
                     <?php endwhile;
                     endif;
                     ?>
                 </div>
+
             </div>
-<!--        --><?php //else :
-            //
-//        endif; ?>
+        </div>
+
     </div>
 
 <?php get_footer(); ?>
+

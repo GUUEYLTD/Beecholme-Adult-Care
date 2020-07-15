@@ -38,6 +38,10 @@ function adding_scripts() {
         wp_enqueue_style( 'animate-css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css');
     }
 
+    if ( is_author() ) {
+        wp_enqueue_style( 'author-ch-css', get_template_directory_uri() . '/css/pages/author.css');
+    }
+
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );
     }
