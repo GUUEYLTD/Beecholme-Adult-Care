@@ -519,3 +519,30 @@ add_filter('wpseo_sitemap_exclude_author', function ($users){
 });
 
 add_filter('use_block_editor_for_post', '__return_false', 10);
+
+
+/**
+ * Change new user email
+ */
+add_filter( 'wp_new_user_notification_email' , 'edit_user_notification_email', 10, 3 );
+
+function edit_user_notification_email( $wp_new_user_notification_email, $user, $blogname ) {
+
+    $key = get_password_reset_key( $user );
+
+    $message = "Congratulations and welcome to BAC Online platform, we are excited about working in partnership with you and taking this journey helping people and communities through the medium of online counselling and therapy.\r\n";
+    $message .= "The first thing that we need to do on this journey is complete your online profile, please see the link below to change your password, set your availability and most importantly tell your story in your bio.\r\n\r\n";
+    $message .= sprintf(__( 'Username: %s' ), $user->user_login ) . "\r\n";
+    $message .= 'To set your password, visit the following address:' . "\r\n\r\n";
+    $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login') . "\r\n";
+    $message .= network_site_url("wp-login.php"). "\r\n\r\n";
+    $message .= "To find out information on our platform, how it works, are they any cost? frequently asked questions visit the following address:" . "\r\n\r\n";
+    $message .= network_site_url("frequently-asked-questions"). "\r\n\r\n";
+
+    $wp_new_user_notification_email['headers'] = 'From: BAC Online <online@beecholmeadultcare.co.uk>';
+    $wp_new_user_notification_email['subject'] = 'Welcome to BAC Online Platform!';
+    $wp_new_user_notification_email['message'] = $message;
+
+    return $wp_new_user_notification_email;
+
+}
