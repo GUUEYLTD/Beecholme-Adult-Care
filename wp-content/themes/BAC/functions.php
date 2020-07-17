@@ -538,6 +538,9 @@ function edit_user_notification_email( $wp_new_user_notification_email, $user, $
     $message .= network_site_url("wp-login.php"). "\r\n\r\n";
     $message .= "To find out information on our platform, how it works, are they any cost? frequently asked questions visit the following address:" . "\r\n\r\n";
     $message .= network_site_url("frequently-asked-questions"). "\r\n\r\n";
+    $message .= "For any questions about your registration, please reply to this email" . "\r\n";
+    $message .= "Thank you" . "\r\n";
+    $message .= "BAC Team" . "\r\n\r\n";
 
     $wp_new_user_notification_email['headers'] = 'From: BAC Online <online@beecholmeadultcare.co.uk>';
     $wp_new_user_notification_email['subject'] = 'Welcome to BAC Online Platform!';
