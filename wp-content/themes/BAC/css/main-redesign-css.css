@@ -3,23 +3,31 @@
 .page-template-home-redesign .banner-content h1{
     font-size:42px;
     font-family: InterBold;
-    line-height:51px
+    line-height:51px;
+    font-weight:normal
 }
 
 .page-template-home-redesign h3, .page-template-home-redesign .features-container .single-feature h3, .page-template-home-redesign .blog-section>.title , .page-template-home-redesign .blog-section .post .read-more, .page-template-home-redesign .blog-section .post .title, .page-template-home-redesign h2, .page-template-home-redesign .heading .cta-button{
     font-family: InterSemiBold;
+    font-weight:normal;
 }
 
 .page-template-home-redesign .information h2 {
     font-family: InterBold;
+    font-weight: normal;
 }
 
 .page-template-home-redesign  .banner-content .second-heading{
     font-family: InterReg;
+    font-weight:normal;
 }
 
 .home-form-wrapper{
     height: 485px;
+}
+
+.page-template-home-redesign  .type-tabs .single-tab{
+    font-weight: normal;
 }
 
 .add-text-main{
