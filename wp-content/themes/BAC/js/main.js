@@ -83,9 +83,31 @@ jQuery(document).ready(function($) {
   });
 
   $(document).on('click', '#menu-menu1 .menu-item-type-custom', function(){
+
+    $('#menu-menu1 .menu-item-type-custom').not(this).removeClass('active');
     $(this).toggleClass('active');
-    $(this).find('.sub-menu').slideToggle();
+
+    $('#menu-menu1 .sub-menu').slideUp();
+    if( $(this).hasClass('active') ){
+      $(this).find('.sub-menu').slideDown();
+    }
+
   });
+
+
+    // var opened = $(this).hasClass('open');
+    //
+    // $('.faq-content .questions-wrapper').slideUp();
+    // $('.faq .topic').removeClass('open');
+    //
+    // if(!opened) {
+    //   $(this).addClass('open');
+    //   $(this).parent('.single-topic').find('.questions-wrapper').slideToggle();
+    // }
+    //
+    // $('.faq .topic').removeClass('active');
+    // $(this).addClass('active');
+
 
   $(document).on('click', '#menu-menu1-2 .menu-item-type-custom', function(){
     $('#menu-menu1-2 .sub-menu').css('display','none');

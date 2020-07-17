@@ -1,3 +1,67 @@
+/*BAC-130 Minor edits regarding (homepage)*/
+
+.page-template-home-redesign .banner-content h1{
+    font-size:42px;
+    font-family: InterBold;
+    line-height:51px
+}
+
+.page-template-home-redesign h3, .page-template-home-redesign .features-container .single-feature h3, .page-template-home-redesign .blog-section>.title , .page-template-home-redesign .blog-section .post .read-more, .page-template-home-redesign .blog-section .post .title, .page-template-home-redesign h2, .page-template-home-redesign .heading .cta-button{
+    font-family: InterSemiBold;
+}
+
+.page-template-home-redesign .information h2 {
+    font-family: InterBold;
+}
+
+.page-template-home-redesign  .banner-content .second-heading{
+    font-family: InterReg;
+}
+
+.home-form-wrapper{
+    height: 485px;
+}
+
+.add-text-main{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.home-form-wrapper .wpcf7-form-control-wrap {
+    display: flex;
+}
+
+.home-form-wrapper .g-recaptcha {
+    transform: scale(0.882);
+    transform-origin:0 0;
+    margin:0
+}
+
+.home-form-wrapper .wpcf7-form input[type="submit"] {
+    position: absolute;
+    right:0;
+    bottom: -35px;
+}
+
+.home-form-wrapper .form-addition {
+    padding:3px;
+    bottom: -35px;
+}
+
+.home-form-wrapper .form-addition-action {
+     padding: 0;
+ }
+
+.home-form-wrapper .wpcf7-form input, .home-form-wrapper .wpcf7-form select ,  .home-form-wrapper .type-tabs{
+    border: solid 1px rgba(196, 196, 196, .5);
+}
+
+.home-form-wrapper .type-tabs .single-tab:first-child {
+    border-right: solid 1px rgba(196, 196, 196, .5);
+}
+
+/*End BAC-130 Minor edits regarding (homepage)*/
+
 @media all and (max-width:900px) {
     /*for-global-mobile-version*/
 
@@ -160,7 +224,7 @@
         margin: 0;
         margin-bottom: 15px;
         font-family: 'InterBold', sans-serif;
-        letter-spacing: 0.7px;
+        /*letter-spacing: 0.7px;*/
     }
 
     .home-top-banner-mobile-text-buttons h2 {
@@ -181,8 +245,9 @@
     }
 
     /*end home-top-banner-mobile*/
-    /*owl-carousel*/
 
+
+    /*owl-carousel*/
 
     .main-mob-counsellors {
         background: #F4F4F5;

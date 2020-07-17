@@ -52,6 +52,16 @@ jQuery(document).ready(function($) {
                 items:3
             }
         }
-    })
+    });
+
+    // $('.banner-content .tab').on('click',function(){
+    //     console.log('123');
+    //     if($(this).attr('data-tab') == 'referral-tab'){
+    //         console.log('referral-tab');
+    //                     $('.home-form-wrapper').animate({
+    //             height: "+=50px"
+    //         });
+    //     }
+    // });
 
 });

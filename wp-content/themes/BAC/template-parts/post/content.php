@@ -30,7 +30,13 @@
         <div class="post-featured-image">
             <?php the_post_thumbnail() ?>
         </div>
+    <?php else: ?>
+        <div class="post-featured-image">
+            <img src="<?= get_template_directory_uri(); ?>/images/no-photo.png" alt="">
+        </div>
     <?php endif; ?>
+
+
 
     <div class="post-content">
         <?php if ( is_single() ) {

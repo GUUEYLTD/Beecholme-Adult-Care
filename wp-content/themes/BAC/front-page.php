@@ -94,6 +94,9 @@ if(!empty($counsellors)) {
                     <div class="button-wrapper">
                         <button>Search</button>
                     </div>
+                    <div class="add-text-main">
+                        <?php the_field('hero_subheading_p2', $cur_page); ?>
+                    </div>
                 </form>
                 <div class="tab-content referral-tab">
                     <?php echo do_shortcode('[contact-form-7 id="18" title="Home page"]'); ?>
@@ -240,7 +243,7 @@ if(!empty($counsellors)) {
         <h2>Services</h2>
         <div class="services-container d-flex justify-content-between">
             <?php if(get_field('serv_h1')) { ?>
-                <a href="/12-week-recovery-program/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/12-week-recovery-program/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h1'); ?></h3>
                         <p><?php the_field('serv_t1'); ?></p>
@@ -248,7 +251,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h2')) { ?>
-                <a href="/24-hour-residential-care-home/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/24-hour-residential-care-home/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h2'); ?></h3>
                         <p><?php the_field('serv_t2'); ?></p>
@@ -256,7 +259,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h3')) { ?>
-                <a href="/life-coaching-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/life-coaching-surrey/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h3'); ?></h3>
                         <p><?php the_field('serv_t3'); ?></p>
@@ -264,7 +267,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h4')) { ?>
-                <a href="/therapist-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/therapist-surrey/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h4'); ?></h3>
                         <p><?php the_field('serv_t4'); ?></p>
@@ -576,7 +579,11 @@ if(!empty($counsellors)) {
             <?php foreach ($recentPosts as $post) { ?>
                 <div class="post d-flex flex-column">
                     <div class="image">
-                        <img src="<?= wp_get_attachment_url( get_post_thumbnail_id($post->ID)) ?>" alt="">
+                        <?php if(has_post_thumbnail()):?>
+                            <img src="<?= wp_get_attachment_url( get_post_thumbnail_id($post->ID)) ?>" alt="">
+                        <?php else: ?>
+                            <img src="<?= get_template_directory_uri(); ?>/images/no-photo.png" alt="">
+                        <?php endif;?>
                     </div>
                     <div class="content">
                         <div class="title"><?= $post->post_title ?></div>

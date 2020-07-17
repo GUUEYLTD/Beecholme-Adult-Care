@@ -240,7 +240,7 @@ if(!empty($counsellors)) {
         <h2>Services</h2>
         <div class="services-container d-flex justify-content-between">
             <?php if(get_field('serv_h1')) { ?>
-                <a href="/12-week-recovery-program/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/12-week-recovery-program/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h1'); ?></h3>
                         <p><?php the_field('serv_t1'); ?></p>
@@ -248,7 +248,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h2')) { ?>
-                <a href="/24-hour-residential-care-home/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/24-hour-residential-care-home/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h2'); ?></h3>
                         <p><?php the_field('serv_t2'); ?></p>
@@ -256,7 +256,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h3')) { ?>
-                <a href="/life-coaching-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/life-coaching-surrey/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h3'); ?></h3>
                         <p><?php the_field('serv_t3'); ?></p>
@@ -264,7 +264,7 @@ if(!empty($counsellors)) {
                 </a>
             <?php } ?>
             <?php if(get_field('serv_h4')) { ?>
-                <a href="/therapist-surrey/" class="single-service-container d-flex align-items-center justify-content-center">
+                <a href="/therapist-surrey/" class="single-service-container d-flex align-items-top justify-content-center">
                     <div class="single-service">
                         <h3><?php the_field('serv_h4'); ?></h3>
                         <p><?php the_field('serv_t4'); ?></p>
