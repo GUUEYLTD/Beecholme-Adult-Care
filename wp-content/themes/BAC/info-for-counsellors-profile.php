@@ -182,6 +182,180 @@ get_header();
         </div>
     </div>
 
+
+    <div class="mid-container counsellors-info-wrapper counsellors-video-wrapper">
+        <?php if( get_field('show_video')  ) : ?>
+
+            <div class="video-counsellors">
+
+                <div id="ytplayer">
+                    <?php $src_image = get_field('video_thumbnail') ?? ''; ?>
+                    <?php if($src_image):?>
+                        <img id="ytThumb" src=<?php echo $src_image; ?> >
+                    <?php endif; ?>
+                    <?php if(get_field('video_link')):?>
+                    <div id="ytClick">
+                        <div class="img-wrapper">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/arrow-right-video.svg" alt="ytClick">
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <div class="ytplayer-title">
+                    Example of a good video presentation
+                </div>
+
+            </div>
+
+            <script>
+                var tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/player_api";
+                var firstScriptTag = document.getElementsByTagName('script')[0];
+                var videoId = '<?php echo get_field('video_link');?>';
+
+                jQuery(function($) {
+                    $(document).on('click', '#ytClick', function(){
+                        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    });
+
+                    var is_video_thumbnail = document.getElementById("ytThumb");
+                    if (!is_video_thumbnail){
+                        var video_thumbnail = $('<img id="ytThumb" src="//img.youtube.com/vi/'+videoId+'/0.jpg">');
+                        $('#ytplayer').append(video_thumbnail);
+                    }
+                });
+
+                var player;
+                function onYouTubePlayerAPIReady() {
+                    player = new YT.Player('ytplayer', {
+                        height: '100%',
+                        width: '100%',
+                        autoplay: 'true',
+                        videoId: videoId,
+                        events: {
+                            'onReady': onPlayerReady
+                        }
+                    });
+                }
+                function onPlayerReady(event) {
+                    event.target.playVideo();
+                }
+            </script>
+
+            <div class="description-counsellors">
+                <h2><?php echo get_field('video_title');?></h2>
+                <div class="description-counsellors-text">
+                    <?php echo get_field('video_text');?>
+                </div>
+            </div>
+
+        <?php endif; ?>
+    </div>
+
+    <div class="mid-container counsellors-info-wrapper counsellors-video-structure-wrapper">
+        <h2>Video Structure</h2>
+        <div class="counsellors-video-structure">
+            <div class="counsellors-video-structure-item">
+                <?php if( get_field('item1_image')  ) : ?>
+                <div class="counsellors-video-structure-item-img">
+                    <img src="<?php echo get_field('item1_image'); ?>" alt="vstructure-one">
+                </div>
+                <?php endif; ?>
+                <div class="counsellors-video-structure-item-title"><?php echo get_field('item1_title'); ?></div>
+                <div class="counsellors-video-structure-item-text"><?php echo get_field('item1_text'); ?></div>
+            </div>
+            <div class="counsellors-video-structure-item">
+                <?php if( get_field('item2_image')  ) : ?>
+                    <div class="counsellors-video-structure-item-img">
+                        <img src="<?php echo get_field('item2_image'); ?>" alt="vstructure-two">
+                    </div>
+                <?php endif; ?>
+                <div class="counsellors-video-structure-item-title"><?php echo get_field('item2_title'); ?></div>
+                <div class="counsellors-video-structure-item-text"><?php echo get_field('item2_text'); ?></div>
+            </div>
+            <div class="counsellors-video-structure-item">
+                <?php if( get_field('item3_image')  ) : ?>
+                    <div class="counsellors-video-structure-item-img">
+                        <img src="<?php echo get_field('item3_image'); ?>" alt="vstructure-three">
+                    </div>
+                <?php endif; ?>
+                <div class="counsellors-video-structure-item-title"><?php echo get_field('item3_title'); ?></div>
+                <div class="counsellors-video-structure-item-text"><?php echo get_field('item3_text'); ?></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mid-container counsellors-info-wrapper counsellors-video-presentation-wrapper">
+
+        <h2>Video Presentation Guidelines</h2>
+        <div class="counsellors-video-presentation">
+
+            <div class="counsellors-video-presentation-left">
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">1</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item1g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item1g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">2</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item2g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item2g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">3</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item3g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item3g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">4</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item4g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item4g_text'); ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="counsellors-video-presentation-right">
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">5</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item5g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item5g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">6</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item6g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item6g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">7</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item7g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item7g_text'); ?></div>
+                    </div>
+                </div>
+                <div class="counsellors-video-presentation-item">
+                    <div class="counsellors-video-presentation-item-counter">8</div>
+                    <div class="counsellors-video-presentation-item-title-text">
+                        <div class="counsellors-video-presentation-item-title"><?php echo get_field('item8g_title'); ?></div>
+                        <div class="counsellors-video-presentation-item-text"><?php echo get_field('item8g_text'); ?></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 <?php get_footer(); ?>
 
 <script>
