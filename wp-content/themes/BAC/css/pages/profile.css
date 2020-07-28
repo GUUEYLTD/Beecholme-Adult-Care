@@ -266,4 +266,7 @@
     .author .video-counsellors{
         height:210px
     }
+    .counsellors-video-presentation-item-text{
+        word-break: break-word;
+    }
 }
