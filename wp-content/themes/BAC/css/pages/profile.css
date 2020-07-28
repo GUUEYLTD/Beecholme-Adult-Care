@@ -70,6 +70,12 @@
     color:#333333;
     font-size:inherit;
 }
+.page-template-info-for-counsellors-profile .footer-contact p {
+    line-height: 24px;
+    font-size: 18px;
+    color: #c4c4c4;
+}
+
 
 .page-template-info-for-counsellors-profile .video-counsellors{
     margin-top:35px
