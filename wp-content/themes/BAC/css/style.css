@@ -4321,7 +4321,7 @@ a.policy-link {
 }
 
 .booking-form .am-confirmation-booking-cost:before {
-    content: 'Use your Welcome Coupon Code "WELCOMESESSION" and book your free initial consultation to get to know your counsellor and discuss your needs.';
+    /*content: 'Use your Welcome Coupon Code "WELCOMESESSION" and book your free initial consultation to get to know your counsellor and discuss your needs.';*/
     max-width: 100%;
     margin: 0px 10px 20px;
     font-weight: 300;
@@ -4334,10 +4334,12 @@ a.policy-link {
 
 .booking-form .save-five:before {
     content: 'Book 5 sessions and use Code "SAVE5" to 5% off';
+    font-family: InterSemiBold, sans-serif;
 }
 
 .booking-form .save-ten:before {
     content: 'Book 10 sessions and use Code "SAVE10" to 10% off';
+    font-family: InterSemiBold, sans-serif;
 }
 
 .booking-form #amelia-step-booking0-calendar {
