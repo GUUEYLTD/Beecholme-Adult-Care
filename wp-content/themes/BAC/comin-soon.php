@@ -9,9 +9,9 @@
     <a href="<?php echo home_url(); ?>">Go To Homepage</a>
   </div>
 
-  <h2>We are happy to offer a free welcome session</h2>
+  
   <div class="button button-free-session">
-      <a href="/our-counsellors/" target="_blank">Book Your Free Welcome Session Now</a>
+      <a href="/our-counsellors/" target="_blank">Find a counsellor and book a session</a>
   </div>
 
 </div>
