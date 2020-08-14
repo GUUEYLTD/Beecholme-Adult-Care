@@ -1444,6 +1444,14 @@ img {
     padding: 19px 186px;
 }
 
+.page-template-booking .booking-form .text-block-800 p{
+    font-size:16px;
+    margin-bottom:5px;
+}
+.page-template-booking .booking-form .text-block-800-consellors {
+    margin: 0 auto 25px;
+}
+
 /*PAGE 24 hour*/
 
 .image-carousel {
