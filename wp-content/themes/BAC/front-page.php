@@ -120,7 +120,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="home-top-banner-mobile-buttons">
                 <div data-wow-delay="1.4s" class="cta-button-wrapper wow fadeInUpBig">
-                    <a class="cta-button cta-button-sessions" href="/our-counsellors/">Book Free Welcome Session</a>
+                    <a class="cta-button cta-button-sessions" href="/our-counsellors/">Book Your Session</a>
                 </div>
                 <div class="cta-button-wrapper">
                     <a class="cta-button cta-button-wellbeing" href="/our-counsellors/">Test Your Wellbeing</a>
