@@ -9,7 +9,7 @@
               BAC PROMO
           </p>
           <p>
-              Book 5 sessions and save 5% using Coupon Code "<strong>SAVE 5</strong>".
+              Book 5 sessions and save 5% using Coupon Code "<strong>SAVE5</strong>".
           </p>
           <p>
               Book 10 sessions and save 10% using Coupon Code "<strong>SAVE10</strong>"
