@@ -137,13 +137,35 @@ abstract class AbstractNotificationService
             $data
         );
 
+        function is_first_customer_booking_byID ($customer_id){
+            global $wpdb;
+            $query = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}amelia_customer_bookings WHERE customerId = '{$customer_id}'");
+            return count($query);
+        }
+
+
+
         foreach ($users as $user) {
             try {
+
+                $need_user_id = $user['id'];
+
+                if ( is_first_customer_booking_byID ($need_user_id) <= 1 ){
+                    $new_text = "
+                    <br>
+                    <p>Thank you for booking a session with BAC. We look forward to providing you with a tailored experience on our platform and would appreciate if you could complete this questionnaire to give your counsellor the information they need to best support you</p>
+                    <p>Please fill out the relevant questionnaire ('Therapy Questionnaire' if you have booked a therapy session, 'Life coaching Questionnaire' if you have booked a life coaching session)</p>
+                    <a href='https://docs.google.com/forms/d/1S-ZADzld4-Cy5z7T6wKCCLW9E7kXCNgbQEJfROldbUg/edit' style='color:#5AB9AC'>Therapy Questionnaire ></a>
+                    <br><br>
+                    <a href='https://docs.google.com/forms/d/1npFtJ9G3udBYN_OKc6OXRSMW2HmfoUkCXRCgbqOjdB8/edit' style='color:#5AB9AC'>Life Coaching Questionnaire ></a>
+                    ";
+                }
+
                 if ($user['email']) {
                     $mailService->send(
                         $user['email'],
                         $subject,
-                        $this->getParsedBody($body),
+                        $this->getParsedBody($body). $new_text,
                         $settingsAS->getBccEmails()
                     );
 
