@@ -31,8 +31,8 @@
 
 <script>
     jQuery(document).ready(function($) {
-        if( $('.type').html() == 'Life coach, Therapist' ){
-            console.log($('.type').html());
+        if( ($('.type').html() == 'Life coach, Therapist') || ($('.type').html() == 'Therapist, Life coach') ){
+            console.log('2:'+$('.type').html());
         } else {
             var style = document.createElement('style');
             style.innerHTML =
@@ -41,7 +41,7 @@
                 '}';
             var ref = document.querySelector('script');
             ref.parentNode.insertBefore(style, ref);
-            console.log($('.type').html());
+            console.log('1:'+$('.type').html());
         }
     });
 </script>
