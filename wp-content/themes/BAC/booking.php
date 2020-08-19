@@ -28,3 +28,21 @@
   </div>
 </div>
 <?php get_footer(); ?>
+
+<script>
+    jQuery(document).ready(function($) {
+        if( $('.type').html() == 'Life coach, Therapist' ){
+            console.log($('.type').html());
+        } else {
+            var style = document.createElement('style');
+            style.innerHTML =
+                '.am-custom-fields .el-row .el-col:nth-last-of-type(2){' +
+                'display:none;' +
+                '}';
+            var ref = document.querySelector('script');
+            ref.parentNode.insertBefore(style, ref);
+            console.log($('.type').html());
+        }
+    });
+</script>
+
