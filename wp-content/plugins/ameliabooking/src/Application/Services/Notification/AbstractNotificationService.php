@@ -155,7 +155,7 @@ abstract class AbstractNotificationService
                     <br>
                     <p>We look forward to providing you with a tailored experience on our platform and would appreciate if you could complete our pre-assessment questionnaire* to give your counsellor the information they need to best support you.</p>
                     <a href='https://docs.google.com/forms/d/1S-ZADzld4-Cy5z7T6wKCCLW9E7kXCNgbQEJfROldbUg/edit' style='color:#5AB9AC;font-weight:bold'>Therapy Questionnaire ></a>
-                    <br><br>
+                    <br>
                     <a href='https://docs.google.com/forms/d/1npFtJ9G3udBYN_OKc6OXRSMW2HmfoUkCXRCgbqOjdB8/edit' style='color:#5AB9AC;font-weight:bold'>Life Coaching Questionnaire ></a>
                     <br>
                     <p><span style='color: #5AB9AC;font-weight:bold' >IMPORTANT! </span> Please fill out the relevant questionnaire ('Therapy Questionnaire' if you have booked a therapy session, 'Life coaching Questionnaire' if you have booked a life coaching session)</p>                    
