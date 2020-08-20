@@ -153,11 +153,12 @@ abstract class AbstractNotificationService
                 if ( is_first_customer_booking_byID ($need_user_id) <= 1 ){
                     $new_text = "
                     <br>
-                    <p>Thank you for booking a session with BAC. We look forward to providing you with a tailored experience on our platform and would appreciate if you could complete this questionnaire to give your counsellor the information they need to best support you</p>
-                    <p>Please fill out the relevant questionnaire ('Therapy Questionnaire' if you have booked a therapy session, 'Life coaching Questionnaire' if you have booked a life coaching session)</p>
-                    <a href='https://docs.google.com/forms/d/1S-ZADzld4-Cy5z7T6wKCCLW9E7kXCNgbQEJfROldbUg/edit' style='color:#5AB9AC'>Therapy Questionnaire ></a>
+                    <p>We look forward to providing you with a tailored experience on our platform and would appreciate if you could complete our pre-assessment questionnaire* to give your counsellor the information they need to best support you.</p>
+                    <a href='https://docs.google.com/forms/d/1S-ZADzld4-Cy5z7T6wKCCLW9E7kXCNgbQEJfROldbUg/edit' style='color:#5AB9AC;font-weight:bold'>Therapy Questionnaire ></a>
                     <br><br>
-                    <a href='https://docs.google.com/forms/d/1npFtJ9G3udBYN_OKc6OXRSMW2HmfoUkCXRCgbqOjdB8/edit' style='color:#5AB9AC'>Life Coaching Questionnaire ></a>
+                    <a href='https://docs.google.com/forms/d/1npFtJ9G3udBYN_OKc6OXRSMW2HmfoUkCXRCgbqOjdB8/edit' style='color:#5AB9AC;font-weight:bold'>Life Coaching Questionnaire ></a>
+                    <br>
+                    <p><span style='color: #5AB9AC;font-weight:bold' >IMPORTANT! </span> Please fill out the relevant questionnaire ('Therapy Questionnaire' if you have booked a therapy session, 'Life coaching Questionnaire' if you have booked a life coaching session)</p>                    
                     ";
                 }
 
@@ -266,10 +267,12 @@ abstract class AbstractNotificationService
                         continue;
                     }
 
-                    $this->sendNotification(
+                    /** TODO This method should be changed back to sendNotification and it should be implemented outside of the plugin */
+                    $this->sendDuplicateNotification(
                         $appointmentArray,
                         $customerNotification,
                         $logNotification,
+                        //array_search($bookingArray['id'], array_column($appointmentArray['bookings'], 'id'), true)
                         $bookingKey
                     );
                 }
