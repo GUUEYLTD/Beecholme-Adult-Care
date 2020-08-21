@@ -514,32 +514,32 @@ function filter_counsellors_paginated()
     $metaCount = 0;
     if ($type) {
         $metaCount++;
-        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
-        $filters .= "AND wpum{$metaCount}.meta_key='type' AND wpum{$metaCount}.meta_value LIKE '%{$type}%'";
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId AND wpum{$metaCount}.meta_key='type'";
+        $filters .= "AND wpum{$metaCount}.meta_value LIKE '%{$type}%'";
     }
 
     if ($specialization !== 'All') {
         $type = $type !== '' ? $type : (in_array($specialization, getServices('Life coach')) ? 'coach' : 'therapist');
         $metaCount++;
-        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
-        $filters .= "AND wpum{$metaCount}.meta_key='specializations_{$type}' AND wpum{$metaCount}.meta_value LIKE '%{$specialization}%'";
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId AND wpum{$metaCount}.meta_key='specializations_{$type}'";
+        $filters .= "AND wpum{$metaCount}.meta_value LIKE '%{$specialization}%'";
     }
 
     if ($languages) {
         $languages = '\'' . implode('\',\'', $languages) . '\'';
         $metaCount++;
-        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId ";
-        $filters .= "AND wpum{$metaCount}.meta_key LIKE '%_language%' AND wpum{$metaCount}.meta_value IN ($languages)";
+        $userMetaJoins .= "LEFT JOIN wp_usermeta as wpum{$metaCount} ON wpum{$metaCount}.user_id = au.externalId AND wpum{$metaCount}.meta_key LIKE '%_language%'";
+        $filters .= "AND wpum{$metaCount}.meta_value IN ($languages)";
     }
 
 
     $query = "SELECT *, au.id as 'ameliaId', au.pictureThumbPath FROM  wp_amelia_users as au
             LEFT JOIN wp_users as wpu ON wpu.ID = au.externalId
-            LEFT JOIN wp_usermeta as wpum ON wpum.user_id = au.externalId
+            LEFT JOIN wp_usermeta as wpum ON wpum.user_id = au.externalId AND wpum.meta_key='counsellor_score'
             {$userMetaJoins}
             LEFT JOIN wp_amelia_providers_to_services as wpapts ON wpapts.id = au.id
             LEFT JOIN wp_amelia_services as wpas ON wpas.id = wpapts.serviceId
-            {$filters} AND wpum.meta_key='counsellor_score' 
+            {$filters}
             ORDER BY wpum.meta_value DESC , au.lastName ASC LIMIT {$limit}";
 //var_dump($query);die;
     global $wpdb;
