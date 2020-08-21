@@ -535,12 +535,13 @@ function filter_counsellors_paginated()
 
     $query = "SELECT *, au.id as 'ameliaId', au.pictureThumbPath FROM  wp_amelia_users as au
             LEFT JOIN wp_users as wpu ON wpu.ID = au.externalId
+            LEFT JOIN wp_usermeta as wpum ON wpum.user_id = au.externalId
             {$userMetaJoins}
             LEFT JOIN wp_amelia_providers_to_services as wpapts ON wpapts.id = au.id
             LEFT JOIN wp_amelia_services as wpas ON wpas.id = wpapts.serviceId
-            {$filters}
-            LIMIT {$limit}";
-
+            {$filters} AND wpum.meta_key='counsellor_score' 
+            ORDER BY wpum.meta_value DESC , au.lastName ASC LIMIT {$limit}";
+//var_dump($query);die;
     global $wpdb;
     //$wpdb->show_errors( true );
 

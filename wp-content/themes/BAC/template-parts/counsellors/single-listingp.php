@@ -1,4 +1,4 @@
-<div class="single-item" data-rating="" data-price="<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->ameliaId) ?>" data-index="<?= $listingUser->ameliaId ?>">
+<div class="single-item" data-rating="" data-price="<?= \BAC\Practitioners::getPriceByPractitionerId($listingUser->ameliaId) ?>" data-index="<?php echo get_field('counsellor_score', "user_{$listingUser->ID}") ? get_field('counsellor_score', "user_{$listingUser->ID}") : 0; ?>" data-surname="<?php echo $listingUser->lastName;?>">
     <a href="<?php echo get_author_posts_url($listingUser->ID) ?>">
         <div class="personal-info d-flex">
             <div class="avatar"><img
@@ -10,6 +10,8 @@
             </div>
         </div>
     </a>
+
+    <div class="user-score text-center" >Counsellor score : <?php the_field('counsellor_score', "user_{$listingUser->ID}"); ?></div>
     <div class="specialty">
         <?= implode(", ", getACFLoopValues('specializations', $listingUser->externalId)) ?>
     </div>

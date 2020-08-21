@@ -8,7 +8,7 @@
                 <option value="price">Price</option>
             </select>
         </div>
-        <div class="order-filter ascending">
+        <div class="order-filter descending">
             <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/counsellor-order-icon.png" alt="">
         </div>
     </div>
@@ -18,3 +18,6 @@
         <span class="results-number"><?php echo apply_filters('bac_total_results', 0) ?></span> results
     </div>
 </div>
+<style>
+    .user-score{display:none}
+</style>
