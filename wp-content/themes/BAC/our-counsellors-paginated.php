@@ -64,6 +64,7 @@ get_header();
         </style>
 
         
+
         <div class="button-wrapper" style="position: relative; margin-bottom:100px">
             <button id="more_button" style="max-width: 200px;display: block;margin: 20px auto 70px;">Load more</button>
 
@@ -111,7 +112,7 @@ get_header();
 
                                 setTimeout( function(){
                                     jQuery('.counsellors-preloader-more').addClass('counsellors-preloader-noactive');
-                                } , 1500);
+                                } , 2000);
 
                             } else {
                                 $('.results-amount .results-now').html('0');
@@ -145,11 +146,6 @@ get_header();
                                       jQuery('#more_button').css('display', 'block');
                                   }
 
-                                  var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-11)+')');
-                                  $('html, body').animate({
-                                        scrollTop: nScroll.offset().top - 100
-                                  }, 1000);
-
                                 } , 1000);
                             }
                         }
@@ -169,12 +165,12 @@ get_header();
                     limit = limit + 12;
                     ajaxQuery(type, specialization, languages, sortBy, sortOrder, limit);
 
-                    // setTimeout( function(){
-                    //     var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-8)+')');
-                    //     $('html, body').animate({
-                    //         scrollTop: nScroll.offset().top - 100
-                    //     }, 1000);
-                    // } , 1000);
+                    setTimeout( function(){
+                        var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-8)+')');
+                        $('html, body').animate({
+                            scrollTop: nScroll.offset().top - 100
+                        }, 0);
+                    } , 2000);
 
                 });
 
@@ -192,13 +188,6 @@ get_header();
                     var sortBy = $( ".sort-bar .sort .sort-filter .question-select .current" ).html();
                     var sortOrder = $( ".sort-bar .sort .order-filter" ).hasClass("ascending") ? 'ASC' :  'DESC';
                     ajaxQuery(type, specialization, languages, sortBy, sortOrder, limit);
-
-                    // setTimeout( function(){
-                    //     var nScroll = $('.counsellors-list > .single-item:nth-child(1)');
-                    //     $('html, body').animate({
-                    //         scrollTop: nScroll.offset().top - 100
-                    //     }, 1000);
-                    // } , 500);
 
                 });
 

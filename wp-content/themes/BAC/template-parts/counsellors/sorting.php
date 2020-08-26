@@ -1,7 +1,7 @@
 <div class="sort-bar d-flex justify-content-between align-items-center">
     <div class="sort d-flex align-items-center">
         <div class="caption">Sort by</div>
-        <div class="question-filter sort-filter d-flex flex-column align-left">
+        <div class="sort-filter d-flex flex-column align-left">
             <select class="question-select sort-by">
                 <option value="index" data-display-text="Recommended">Recommended</option>
 <!--                <option value="rating">Rating</option>-->
