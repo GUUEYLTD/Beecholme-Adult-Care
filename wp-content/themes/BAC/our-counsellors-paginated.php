@@ -144,6 +144,12 @@ get_header();
                                   } else {
                                       jQuery('#more_button').css('display', 'block');
                                   }
+
+                                  var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-11)+')');
+                                  $('html, body').animate({
+                                        scrollTop: nScroll.offset().top - 100
+                                  }, 1000);
+
                                 } , 1000);
                             }
                         }
@@ -163,12 +169,12 @@ get_header();
                     limit = limit + 12;
                     ajaxQuery(type, specialization, languages, sortBy, sortOrder, limit);
 
-                    setTimeout( function(){
-                        var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-8)+')');
-                        $('html, body').animate({
-                            scrollTop: nScroll.offset().top - 100
-                        }, 1000);
-                    } , 1000);
+                    // setTimeout( function(){
+                    //     var nScroll = $('.counsellors-list > .single-item:nth-child('+(limit-8)+')');
+                    //     $('html, body').animate({
+                    //         scrollTop: nScroll.offset().top - 100
+                    //     }, 1000);
+                    // } , 1000);
 
                 });
 
@@ -187,12 +193,12 @@ get_header();
                     var sortOrder = $( ".sort-bar .sort .order-filter" ).hasClass("ascending") ? 'ASC' :  'DESC';
                     ajaxQuery(type, specialization, languages, sortBy, sortOrder, limit);
 
-                    setTimeout( function(){
-                        var nScroll = $('.counsellors-list > .single-item:nth-child(1)');
-                        $('html, body').animate({
-                            scrollTop: nScroll.offset().top - 100
-                        }, 1000);
-                    } , 500);
+                    // setTimeout( function(){
+                    //     var nScroll = $('.counsellors-list > .single-item:nth-child(1)');
+                    //     $('html, body').animate({
+                    //         scrollTop: nScroll.offset().top - 100
+                    //     }, 1000);
+                    // } , 500);
 
                 });
 
