@@ -58,7 +58,8 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                             <span class="rating-close">&times;</span>
                             <div class="">
                                 <div class="review-title">Please leave your feedback about <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span></div>
-                                <?php echo do_shortcode('[contact-form-7 id="2621" title="Review form"]');?>
+                                <?php //echo do_shortcode('[contact-form-7 id="2621" title="Review form"]');?>
+                                <?php echo do_shortcode('[contact-form-7 id="2705" title="Review form"]');?>
                             </div>
                         </div>
                     </div>
