@@ -384,7 +384,8 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
         });
 
 
-        var wpcf7Elm = document.querySelector( '#wpcf7-f2621-o1' );
+        //var wpcf7Elm = document.querySelector( '#wpcf7-f2621-o1' );
+        var wpcf7Elm = document.querySelector( '#wpcf7-f2705-o1' );
 
         wpcf7Elm.addEventListener( 'wpcf7mailsent', function( event ) {
             var revid = $('#revId').val();
