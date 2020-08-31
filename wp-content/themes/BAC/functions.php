@@ -587,3 +587,149 @@ function edit_user_notification_email($wp_new_user_notification_email, $user, $b
     return $wp_new_user_notification_email;
 
 }
+
+
+
+/**
+ * Новый тип записи - «Отзывы»
+ **/
+add_action( 'init', 'register_post_type_reviews' );
+function register_post_type_reviews(){
+    register_post_type('reviews', array(
+        'label'  => null,
+        'labels' => [
+            'name'               => 'Counsellor review',
+            'singular_name'      => 'Counsellor review',
+            'add_new'            => 'Add Counsellor review',
+            'add_new_item'       => 'Add Counsellor review',
+            'edit_item'          => 'Edit Counsellor review',
+            'new_item'           => 'New Counsellor review',
+            'view_item'          => 'Show Counsellor review',
+            'search_items'       => 'Find Counsellor review',
+            'not_found'          => 'Not found',
+            'not_found_in_trash' => 'Not found in trash',
+            'menu_name'          => 'Counsellor review',
+        ],
+        'description'            => 'Counsellor review',
+        'exclude_from_search'    => false,
+        'public'                 => true,
+        'capability_type'        => 'page',
+        'hierarchical'           => false,
+        'show_in_menu'           => null,
+        'show_in_rest'           => null,
+        'rest_base'              => null,
+        'menu_position'          => null,
+        'menu_icon'              => 'dashicons-format-status',
+        'supports'               => [
+            'title',
+            'editor',
+            // 'excerpt',
+            // 'trackbacks',
+            // 'custom-fields',
+            // 'comments',
+            // 'revisions',
+            // 'thumbnail',
+            // 'author',
+            // 'page-attributes',
+        ],
+        'has_archive'         => false,
+        'rewrite'             => true,
+        'query_var'           => true,
+    ) );
+}
+
+/**
+ * Уведомления о новых неопубликованных отзывах
+ **/
+add_action( 'admin_menu', 'add_user_menu_bubble' );
+function add_user_menu_bubble() {
+    global $menu;
+
+    $count = wp_count_posts('reviews')->pending; # на утверждении
+    if ($count) {
+        foreach ($menu as $key => $value) {
+            if ( $menu[$key][2] == 'edit.php?post_type=reviews' ) {
+                $menu[$key][0] .= '<span class="awaiting-mod"><span class="pending-count">'.$count.'</span></span>';
+                break;
+            }
+        }
+    }
+}
+
+add_action('wp_ajax_add_review_callback', 'add_review_callback');
+add_action('wp_ajax_nopriv_add_review_callback', 'add_review_callback');
+
+function is_first_customer_booking_byID ($customer_id){
+    global $wpdb;
+    $query = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}amelia_customer_bookings WHERE customerId = '{$customer_id}'");
+    return count($query);
+}
+
+function get_customer_id_by_email ($customer_email){
+    global $wpdb;
+    $query = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}amelia_users WHERE email = '{$customer_email}'");
+    $customer_id = $query[0]->id;
+    return $customer_id;
+}
+
+//$nid = get_customer_id_by_email('d.horbachov@beecholmeadultcare.co.uk');
+//
+//var_dump( is_first_customer_booking_byID($nid) ); die;
+
+function add_review_callback(){
+    $revid = $_GET['revid'] ? $_GET['revid'] : '';
+    $rfirstname = $_GET['rfirstname'] ? $_GET['rfirstname'] : '';
+    $rlastname = $_GET['rlastname'] ? $_GET['rlastname'] : '';
+    $remail = $_GET['remail'] ? $_GET['remail'] : '';
+    $rstars =  $_GET['rstars'] ? $_GET['rstars'] : '1';
+    $rreview =  $_GET['rreview'] ? $_GET['rreview'] : '1';
+    //echo 'Ajax callback : '.$revid.'--- FN ---'.$rfirstname.'--- LN ---'.$rlastname.'--- EMAIL ---'.$remail.'--- STARS ---'.$rstars.'--- REVIEW ---'.$rreview ;
+    //insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview);
+    $customer_id = get_customer_id_by_email($remail);
+    $is_customer_has_booking = is_first_customer_booking_byID($customer_id);
+    if ($is_customer_has_booking > 0){
+        insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview);
+        echo "add";
+    } else {
+        echo "notfound";
+    }
+    die;
+
+}
+
+
+function insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview){
+    // wp_reset_postdata();
+    // Создаем массив
+    $post_data = array(
+        // 	'post_author'    => <user ID>,                                                     // ID автора записи
+        'post_content'   => $rreview,                                        // Полный текст записи.
+        // 	'post_date'      => Y-m-d H:i:s,                                                   // Время, когда запись была создана.
+        // 	'post_date_gmt'  => Y-m-d H:i:s,
+        //'post_status'    => 'draft' | 'publish' | 'pending'| 'future' | 'private',         // Статус создаваемой записи.
+        'post_title'     => $rfirstname . ' ' . $rlastname,                                                 // Заголовок (название) записи.
+        'post_type'      => 'reviews',
+        'meta_input'     => [
+            'review-user-id'=>$revid,
+            'review-email' => $remail,
+            'review-stars' => $rstars
+        ],
+    );
+
+    // Вставляем данные в БД
+    wp_insert_post( $post_data, $wp_error = false );
+
+}
+
+function rating_average() {
+    global $wpdb;
+    $res = $wpdb->get_var( "SELECT AVG(`meta_value`) FROM $wpdb->postmeta WHERE `meta_key` = 'review-stars'" );
+    return round($res, 2);
+}
+
+//function rating_count() {
+//    global $wpdb;
+////    $res = $wpdb->get_var( "SELECT COUNT(*)  FROM $wpdb->postmeta WHERE `meta_key` = 'review-stars'" );
+////    $count = $wpdb->get_row("SELECT COUNT(*) AS THE_COUNT FROM $wpdb->postmeta WHERE (meta_key = 'review-stars' AND meta_value = 'blue')");
+//    return $res;
+//}
