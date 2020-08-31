@@ -48,6 +48,10 @@ function adding_scripts()
         wp_enqueue_style('profile-ch-css', get_template_directory_uri() . '/css/pages/profile.css');
     }
 
+    if (is_page_template('booking.php')) {
+        wp_enqueue_style('booking-css', get_template_directory_uri() . '/css/pages/booking.css');
+    }
+
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
     }
