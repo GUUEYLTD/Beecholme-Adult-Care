@@ -53,12 +53,10 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
 
                     <!-- The Modal -->
                     <div id="formRating" class="rating-modal">
-                        <!-- Modal content -->
                         <div class="rating-modal-content">
                             <span class="rating-close">&times;</span>
                             <div class="">
                                 <div class="review-title">Please leave your feedback about <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span></div>
-                                <?php //echo do_shortcode('[contact-form-7 id="2621" title="Review form"]');?>
                                 <?php echo do_shortcode('[contact-form-7 id="2705" title="Review form"]');?>
                             </div>
                         </div>
@@ -77,34 +75,6 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                             <div class="popup-content">Our records say you didn`t have sessions with <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span>. Unfortunately you can`t leave a feedback. Please book a session with counselor in order to leave feedback about quality of counselor`s services</div>
                         </div>
                     </div>
-
-                    <script>
-                        jQuery(function($) {
-                            var modal = document.getElementById("formRating");
-                            var modalSuccess = document.getElementById("modalSuccess");
-                            var modalNotfound = document.getElementById("modalNotfound");
-                            var btn = document.getElementById("btnRating");
-                            var span = document.getElementsByClassName("rating-close")[0];
-                            var spanSuccess = document.getElementsByClassName("rating-close")[1];
-                            var spanNotfound = document.getElementsByClassName("rating-close")[2];
-                            $(btn).click(function(){
-                                modal.style.display = "block";
-                            });
-                            $(span).click(function(){
-                                modal.style.display = "none";
-                                console.log('I AM A SPAN');
-                            });
-                            $(spanSuccess).click(function(){
-                                modalSuccess.style.display = "none";
-                                console.log('spanSuccess');
-                            });
-                            $(spanNotfound).click(function(){
-                                modalNotfound.style.display = "none";
-                                console.log('spanNotfound');
-                            });
-
-                        });
-                    </script>
 
                     <div id="btnRating" class="rating d-flex justify-content-start">
 
@@ -163,7 +133,6 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                         endwhile;
                         endif;
                         $languages = implode(", ", $languages);
-
                         ?>
                         <div class="message"><?= $languages ?></div>
                     </div>
@@ -262,7 +231,6 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                         </a>
                     </div>
                 </div>
-                
 
             </div>
 
@@ -298,7 +266,6 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                 </div>
 
             </div>
-
 
         </div>
 
@@ -362,197 +329,18 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                 <?php endwhile; wp_reset_postdata();?>
             </div>
 
-            <!--                    <div class="button-wrapper">-->
-            <!--                        <a href="#">-->
-            <!--                            <button>Show all 6 reviews</button>-->
-            <!--                        </a>-->
-            <!--                    </div>-->
         </div>
 
     </div>
 
-<script type="text/javascript">
-
-    jQuery(function($){
-
-        document.addEventListener( 'wpcf7mailsent', function( event ) {
-            $('.popup').css('display','none');
-        }, false );
-
-        $('input[name=radio-review]').click(function(){
-            console.log($('input[name=radio-review]:checked').val());
-        });
-
-
-        //var wpcf7Elm = document.querySelector( '#wpcf7-f2621-o1' );
-        var wpcf7Elm = document.querySelector( '#wpcf7-f2705-o1' );
-
-        wpcf7Elm.addEventListener( 'wpcf7mailsent', function( event ) {
-            var revid = $('#revId').val();
-            var remail = $('input[name=your-email]').val();
-            var rfirstname = $('input[name=first-name]').val();
-            var rlastname = $('input[name=last-name]').val();
-            var rstars = $('input[name=radio-review]:checked').val();
-            var rreview = $('.wpcf7-textarea').val();
-
-            ajaxAddReview(revid, remail, rfirstname, rlastname, rstars, rreview);
-
-        }, false );
-
-
-        function ajaxAddReview(revid, remail, rfirstname, rlastname, rstars, rreview) {
-
-            $.ajax({
-                url: ajaxurl,
-                type: 'GET',
-                data: {
-                    action: 'add_review_callback',
-                    revid: revid,
-                    remail: remail,
-                    rfirstname: rfirstname,
-                    rlastname: rlastname,
-                    rstars: rstars,
-                    rreview: rreview
-                },
-                success: function( data ) {
-                    if( data ) {
-                        if (data == 'add'){
-                            console.log('ok');
-                            document.getElementById("formRating").style.display = "none";
-                            document.getElementById("modalSuccess").style.display = "block";
-                            setTimeout( function(){
-                                document.getElementById("modalSuccess").style.display = "none";
-                            } , 4000);
-                        } else {
-                            console.log('ne ok');
-                            document.getElementById("formRating").style.display = "none";
-                            document.getElementById("modalNotfound").style.display = "block";
-                            setTimeout( function(){
-                                document.getElementById("modalNotfound").style.display = "none";
-                            } , 8000);
-                        }
-                    } else {
-                        console.log('no data');
-                    }
-                }
-            });
-        }
-
-    });
-
-</script>
-
 <?php get_footer(); ?>
-
 <script>
     jQuery(function($){
-        $('.wpcf7-list-item-label').html('');
         document.getElementById("revId").value = '<?php echo $user->ID;?>';
 
-        $('.rating-hover .one').hover(function() {
-            $('.stars-top .rating-upper').css('width', '20%');
-        });
-        $('.rating-hover .two').hover(function() {
-            $('.stars-top .rating-upper').css('width', '40%');
-        });
-        $('.rating-hover .three').hover(function() {
-            $('.stars-top .rating-upper').css('width', '60%');
-        });
-        $('.rating-hover .four').hover(function() {
-            $('.stars-top .rating-upper').css('width', '80%');
-        });
-        $('.rating-hover .five').hover(function() {
-            $('.stars-top .rating-upper').css('width', '100%');
-        });
         $('.rating-hover').mouseout(function() {
             var ratingwidth = <?php echo ($average_stars*20);?>+'%';
             $('.stars-top .rating-upper').css('width', ratingwidth);
         });
-
-        var rad = $('input[name=radio-review]');
-        var prev = null;
-        for (var i = 0; i < rad.length; i++) {
-            rad[i].addEventListener('change', function() {
-                // (prev) ? console.log(prev.value): null;
-                // if (this !== prev) {
-                //     prev = this;
-                // }
-                if(this.value == 1){
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-active');
-                }
-                if(this.value == 2){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-active');
-                }
-                if(this.value == 3){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-active');
-                }
-                if(this.value == 4){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-active');
-                }
-                if(this.value == 5){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').addClass('list-item-active');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').addClass('list-item-active');
-                }
-                //console.log(this.value)
-            });
-
-
-            rad[i].addEventListener('mouseleave', function() {
-                $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').removeClass('list-item-hover');
-                $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').removeClass('list-item-hover');
-                $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').removeClass('list-item-hover');
-                $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-hover');
-                $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-hover');
-            })
-            rad[i].addEventListener('mouseover', function() {
-                console.log(this.value);
-                if(this.value == 1){
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-hover');
-                }
-                if(this.value == 2){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-hover');
-                }
-                if(this.value == 3){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').removeClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-hover');
-                }
-                if(this.value == 4){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').removeClass('list-item-hover');
-                }
-                if(this.value == 5){
-                    $('.wpcf7-list-item:nth-child(1) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(2) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(3) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(4) .wpcf7-list-item-label').addClass('list-item-hover');
-                    $('.wpcf7-list-item:nth-child(5) .wpcf7-list-item-label').addClass('list-item-hover');
-                }
-            });
-        }
     });
 </script>

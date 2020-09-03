@@ -42,6 +42,7 @@ function adding_scripts()
 
     if (is_author()) {
         wp_enqueue_style('author-ch-css', get_template_directory_uri() . '/css/pages/author.css');
+        wp_enqueue_script('author-js', get_template_directory_uri() . '/js/author.js', array('jquery'), '', true);
     }
 
     if (is_page_template('info-for-counsellors-profile.php')) {
