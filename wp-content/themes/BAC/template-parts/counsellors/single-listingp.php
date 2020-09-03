@@ -14,6 +14,7 @@
     <?php
     $args = array(
         'post_type' => 'reviews',
+        'post_status' => 'publish',
         'posts_per_page' => -1,
         'meta_query' => array(
             array(

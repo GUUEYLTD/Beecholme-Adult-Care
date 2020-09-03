@@ -10,6 +10,7 @@ get_header(); ?>
 $args = array(
     'post_type' => 'reviews',
     'posts_per_page' => -1,
+    'post_status' => 'publish',
     'meta_query' => array(
         array(
             'key' => 'review-user-id',
@@ -288,6 +289,7 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                 $args = array(
                     'post_type' => 'reviews',
                     'posts_per_page' => -1,
+                    'post_status' => 'publish',
                     'meta_query' => array(
                         array(
                             'key' => 'review-user-id',
