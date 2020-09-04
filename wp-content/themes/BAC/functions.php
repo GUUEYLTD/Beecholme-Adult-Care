@@ -759,7 +759,8 @@ function wpcf7_add_text_to_mail_body($contact_form){
     }
 
    //wp_send_json_error($contact_form);
-   if ( $contact_form->id() === 2621 ){
+   //if ( $contact_form->id() === 2621 ){
+   if ( $contact_form->id() === 2705 ){
 
         //get answer
 
