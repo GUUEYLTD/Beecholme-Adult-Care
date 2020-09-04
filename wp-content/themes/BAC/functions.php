@@ -666,8 +666,14 @@ add_action('wp_ajax_nopriv_add_review_callback', 'add_review_callback');
 
 function is_first_customer_booking_byID ($customer_id){
     global $wpdb;
-    $query = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}amelia_customer_bookings WHERE customerId = '{$customer_id}'");
+    $query = $wpdb->get_results("SELECT appointmentId FROM {$wpdb->prefix}amelia_customer_bookings WHERE customerId = '{$customer_id}'");
     return count($query);
+}
+
+function get_appointment_id_by_customer_id ($customer_id){
+    global $wpdb;
+    $query = $wpdb->get_results("SELECT appointmentId FROM {$wpdb->prefix}amelia_customer_bookings WHERE customerId = '{$customer_id}'");
+    return $query;
 }
 
 function get_customer_id_by_email ($customer_email){
@@ -677,9 +683,23 @@ function get_customer_id_by_email ($customer_email){
     return $customer_id;
 }
 
-//$nid = get_customer_id_by_email('d.horbachov@beecholmeadultcare.co.uk');
-//
-//var_dump( is_first_customer_booking_byID($nid) ); die;
+function get_amelia_id_by_wpuser_id ($wpuser_id){
+    global $wpdb;
+    $query = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}amelia_users WHERE externalId = '{$wpuser_id}'");
+    return $query[0]->id;
+}
+
+function is_customer_has_counsellor_appointment($customer_id, $counsellor_id){
+    $appointments_id = get_appointment_id_by_customer_id ($customer_id);
+    $appointments = [];
+    foreach ($appointments_id as $key => $item) {
+        $appointments[] = $item->appointmentId;
+    }
+    $appointments = implode("','",$appointments);
+    global $wpdb;
+    $query = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}amelia_appointments WHERE id IN ('".$appointments."') AND providerId = '{$counsellor_id}'");
+    return count($query);
+}
 
 function add_review_callback(){
     $revid = $_GET['revid'] ? $_GET['revid'] : '';
@@ -688,15 +708,18 @@ function add_review_callback(){
     $remail = $_GET['remail'] ? $_GET['remail'] : '';
     $rstars =  $_GET['rstars'] ? $_GET['rstars'] : '1';
     $rreview =  $_GET['rreview'] ? $_GET['rreview'] : '1';
-    //echo 'Ajax callback : '.$revid.'--- FN ---'.$rfirstname.'--- LN ---'.$rlastname.'--- EMAIL ---'.$remail.'--- STARS ---'.$rstars.'--- REVIEW ---'.$rreview ;
-    //insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview);
+
     $customer_id = get_customer_id_by_email($remail);
-    $is_customer_has_booking = is_first_customer_booking_byID($customer_id);
+    $counsellor_id = get_amelia_id_by_wpuser_id($revid);
+    //$is_customer_has_booking = is_first_customer_booking_byID($customer_id);
+    $is_customer_has_booking = is_customer_has_counsellor_appointment($customer_id, $counsellor_id);
+
     if ($is_customer_has_booking > 0){
         insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview);
         echo "add";
     } else {
         echo "notfound";
+
     }
     die;
 
@@ -704,15 +727,9 @@ function add_review_callback(){
 
 
 function insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstars, $rreview){
-    // wp_reset_postdata();
-    // Создаем массив
     $post_data = array(
-        // 	'post_author'    => <user ID>,                                                     // ID автора записи
-        'post_content'   => $rreview,                                        // Полный текст записи.
-        // 	'post_date'      => Y-m-d H:i:s,                                                   // Время, когда запись была создана.
-        // 	'post_date_gmt'  => Y-m-d H:i:s,
-        //'post_status'    => 'draft' | 'publish' | 'pending'| 'future' | 'private',         // Статус создаваемой записи.
-        'post_title'     => $rfirstname . ' ' . $rlastname,                                                 // Заголовок (название) записи.
+        'post_content'   => $rreview,
+        'post_title'     => $rfirstname . ' ' . $rlastname,
         'post_type'      => 'reviews',
         'meta_input'     => [
             'review-user-id'=>$revid,
@@ -720,11 +737,9 @@ function insert_review_callback($revid, $rfirstname, $rlastname, $remail, $rstar
             'review-stars' => $rstars
         ],
     );
-
-    // Вставляем данные в БД
     wp_insert_post( $post_data, $wp_error = false );
-
 }
+
 
 function rating_average() {
     global $wpdb;
@@ -732,9 +747,49 @@ function rating_average() {
     return round($res, 2);
 }
 
-//function rating_count() {
-//    global $wpdb;
-////    $res = $wpdb->get_var( "SELECT COUNT(*)  FROM $wpdb->postmeta WHERE `meta_key` = 'review-stars'" );
-////    $count = $wpdb->get_row("SELECT COUNT(*) AS THE_COUNT FROM $wpdb->postmeta WHERE (meta_key = 'review-stars' AND meta_value = 'blue')");
-//    return $res;
-//}
+
+add_action( 'wpcf7_before_send_mail', 'wpcf7_add_text_to_mail_body' );
+
+function wpcf7_add_text_to_mail_body($contact_form){
+
+
+    $submission = WPCF7_Submission::get_instance();
+    if ( $submission ) {
+        $posted_data = $submission->get_posted_data();
+    }
+
+   //wp_send_json_error($contact_form);
+   if ( $contact_form->id() === 2621 ){
+
+        //get answer
+
+        $remail = $posted_data['your-email'];
+        $customer_id = get_customer_id_by_email($remail);
+
+        $revid = $posted_data['review-user-id'];
+        $counsellor_id = get_amelia_id_by_wpuser_id($revid);
+
+        $user = get_user_by( 'id', $revid );
+
+        $is_customer_has_booking = is_customer_has_counsellor_appointment($customer_id, $counsellor_id);
+
+        if ($is_customer_has_booking > 0){
+            $review_status = "Review status: SENT (Counsellor: ".$user->first_name." ".$user->last_name.")\r\n\r\n";
+        }
+        else {
+            $review_status = "Review status: ERROR (Counsellor: ".$user->first_name." ".$user->last_name.")\r\n\r\n";
+        }
+
+        // get mail property
+        $mail = $contact_form->prop( 'mail' ); // returns array
+
+        $mail['body'] = $review_status.$mail['body'] ;
+
+        // set mail property with changed value(s)
+        $contact_form->set_properties( array( 'mail' => $mail ) );
+
+   } else {
+       return;
+   }
+
+}

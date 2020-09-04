@@ -28,7 +28,8 @@ jQuery(function($){
         $('.popup').css('display','none');
     }, false );
 
-    var wpcf7Elm = document.querySelector( '#wpcf7-f2705-o1' );
+    //var wpcf7Elm = document.querySelector( '#wpcf7-f2705-o1' );
+    var wpcf7Elm = document.querySelector( '#wpcf7-f2621-o1' );
 
     wpcf7Elm.addEventListener( 'wpcf7mailsent', function( event ) {
         var revid = $('#revId').val();
@@ -41,6 +42,8 @@ jQuery(function($){
         ajaxAddReview(revid, remail, rfirstname, rlastname, rstars, rreview);
 
     }, false );
+
+
 
 
     function ajaxAddReview(revid, remail, rfirstname, rlastname, rstars, rreview) {
@@ -64,13 +67,13 @@ jQuery(function($){
                         document.getElementById("modalSuccess").style.display = "block";
                         setTimeout( function(){
                             document.getElementById("modalSuccess").style.display = "none";
-                        } , 4000);
+                        } , 6000);
                     } else {
                         document.getElementById("formRating").style.display = "none";
                         document.getElementById("modalNotfound").style.display = "block";
                         setTimeout( function(){
                             document.getElementById("modalNotfound").style.display = "none";
-                        } , 8000);
+                        } , 15000);
                     }
                 } else {
                     console.log('no data');

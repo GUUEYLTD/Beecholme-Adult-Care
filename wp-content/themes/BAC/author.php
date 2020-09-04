@@ -57,7 +57,7 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                         <div class="rating-modal-content">
                             <span class="rating-close">&times;</span>
                             <div class="">
-                                <div class="review-title">Please leave your feedback about <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span></div>
+                                <div class="review-title">Please rate your experience with <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span></div>
                                 <?php echo do_shortcode('[contact-form-7 id="2705" title="Review form"]');?>
                             </div>
                         </div>
@@ -66,14 +66,18 @@ if ( $average_stars > 0 && $average_stars <= 1 ){
                     <div id="modalSuccess" class="modal-success">
                         <div class="popup-body">
                             <span class="rating-close">&times;</span>
-                            <div class="popup-content">Thank you for review</div>
+                            <div class="popup-content">Thank you for taking your time for the review!</div>
                         </div>
                     </div>
 
                     <div id="modalNotfound" class="modal-not-found">
                         <div class="popup-body">
                             <span class="rating-close">&times;</span>
-                            <div class="popup-content">Our records say you didn`t have sessions with <span><?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?></span>. Unfortunately you can`t leave a feedback. Please book a session with counselor in order to leave feedback about quality of counselor`s services</div>
+                            <div class="popup-content">Sorry! You are not allowed to review <?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?> since you haven't booked any session. Would you like to book a session with <?= $user->amelia_employee->firstName . ' ' . $user->amelia_employee->lastName ?>? Click
+                                <a style="font-family: 'InterBold', sans-serif;color: #5AB9AC;" href="/booking/?user=<?= $user->amelia_employee->id ?>" target="_blank">here</a><br><br>
+                                If you want to book a session with a different counsellor,  please click
+                                <a style="font-family: 'InterBold', sans-serif;color: #5AB9AC;" href="/our-counsellors" target="_blank">here</a>
+                            </div>
                         </div>
                     </div>
 
