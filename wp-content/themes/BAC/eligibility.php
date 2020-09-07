@@ -15,7 +15,7 @@ get_header();
             <div class="eligibility-subtitle text-center"><?php echo get_field('for_therapists_subtitle'); ?></div>
         </div>
         <div class="eligibility-title text-center"><?php the_title();?></div>
-        <div class=" counsellors-info-wrapper">
+        <div class=" eligibility-info-wrapper">
 
             <?php
             if ( !empty(get_field('eligibility_criteria_therapist_item')) ):
@@ -23,11 +23,11 @@ get_header();
                 $item_count = 1;
                 foreach ($eligibility_items as $eligibility_item) :
                     ?>
-                    <div class="counsellors-info-item counsellors-info-item-<?php echo $eligibility_item['columns'];?>">
-                        <div class="counsellors-info-item-number">
+                    <div class="eligibility-info-item eligibility-info-item-<?php echo $eligibility_item['columns'];?>">
+                        <div class="eligibility-info-item-number">
                             <?php echo $item_count;?>
                         </div>
-                        <div class="counsellors-info-item-text">
+                        <div class="eligibility-info-item-text">
                             <?php echo $eligibility_item['text']; ?>
                         </div>
                     </div>
@@ -46,7 +46,7 @@ get_header();
             <div class="eligibility-subtitle text-center"><?php echo get_field('for_coaches_subtitle'); ?></div>
         </div>
         <div class="eligibility-title text-center"><?php the_title();?></div>
-        <div class=" counsellors-info-wrapper">
+        <div class=" eligibility-info-wrapper">
 
             <?php
             if ( !empty(get_field('eligibility_criteria_coaches_item')) ):
@@ -54,11 +54,11 @@ get_header();
                 $item_count = 1;
                 foreach ($eligibility_items as $eligibility_item) :
                     ?>
-                    <div class="counsellors-info-item counsellors-info-item-<?php echo $eligibility_item['columns'];?>">
-                        <div class="counsellors-info-item-number">
+                    <div class="eligibility-info-item eligibility-info-item-<?php echo $eligibility_item['columns'];?>">
+                        <div class="eligibility-info-item-number">
                             <?php echo $item_count;?>
                         </div>
-                        <div class="counsellors-info-item-text">
+                        <div class="eligibility-info-item-text">
                             <?php echo $eligibility_item['text']; ?>
                         </div>
                     </div>

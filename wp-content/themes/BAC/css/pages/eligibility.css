@@ -75,22 +75,57 @@
 
 
 /*Items*/
-.counsellors-info-item{
-    padding:24px;
+.eligibility-info-wrapper{
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom:90px
 }
 
-.counsellors-info-item.counsellors-info-item-33{
+.eligibility-info-item{
+    background: #FFFFFF;
+    border: 1px solid #F4F4F5;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    margin-bottom: 30px;
+    padding:24px;
+    display: flex;
+    align-items: center
+}
+
+.eligibility-info-item-text{
+    font-size: 18px;
+    line-height: 24px;
+    margin-top: 16px;
+    color: #656D78;
+}
+
+.eligibility-info-item-text a, .eligibility-info-item-text a:hover{
+    text-decoration: none;
+    color: #5AB9AC;
+    font-weight:bold
+}
+
+.eligibility-info-item-text p{
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 16px
+}
+
+.eligibility-info-item.eligibility-info-item-33{
     display:block
 }
-.counsellors-info-item.counsellors-info-item-33 .counsellors-info-item-number{
+
+.eligibility-info-item.eligibility-info-item-33 .eligibility-info-item-number{
     margin-bottom: 24px;
 }
-.counsellors-info-item-text{
+
+.eligibility-info-item-text{
     margin-top:0
 }
-.counsellors-info-item-number{
+
+.eligibility-info-item-number{
     margin-right:24px;
     display: flex;
     align-items: center;
@@ -105,4 +140,30 @@
     font-weight: 600;
     flex: 0 0 auto;
 }
+
+.eligibility-info-item-100{
+    width:100%
+}
+
+.eligibility-info-item-100 img{
+    width:100%;
+    height:auto;
+}
+
+.eligibility-info-item-50{
+    width:calc(50% - 15px);
+}
+
+.eligibility-info-item-33{
+    width:calc(33% - 15px)
+}
+
+
+@media screen and (max-width:1200px) {
+    .page-template-info-for-eligibility .eligibility-info-wrapper{
+        padding: 0 10px;
+    }
+}
+
+
 /*End Items*/
