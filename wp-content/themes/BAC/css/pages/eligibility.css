@@ -1,0 +1,108 @@
+.page-template-eligibility h1{
+    display:none
+}
+
+.eligibility-tabs, .eligibility-title-text{
+    width:100%;
+    max-width:730px;
+    margin:auto;
+}
+
+.eligibility-title-text{
+    margin-bottom: 104px
+}
+
+.eligibility-tabs, .eligibility-title-text .eligibility-subtitle{
+    font-size:18px;
+    line-height:24px;
+    color:#333;
+}
+
+.eligibility-title{
+    font-size:32px;
+    line-height:39px;
+    font-family: InterSemiBold, sans-serif;
+    margin-bottom:48px
+}
+
+.eligibility-tabs{
+    margin-top:80px;
+}
+
+.eligibility-tabs .tab{
+    color: #C4C4C4;
+    cursor: pointer;
+    width: 100%;
+    padding-bottom: 4px;
+    border-bottom: 3px solid #F4F4F5;
+    text-align: center;
+    font-family: 'InterSemibold', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.eligibility-tabs .tab.active {
+    color: #5AB9AC;
+    border-color: #5AB9AC;
+}
+
+.eligibility-tab-content{
+    transition: all 1s;
+    opacity: 0;
+    display:none;
+}
+
+.eligibility-tab-content.active{
+    opacity: 1;
+    display:block
+}
+
+@media screen and (max-width:767px) {
+    .eligibility-title{
+        font-size:26px
+    }
+    .eligibility-tabs{
+        margin-top:0
+    }
+    .eligibility-title-text .eligibility-subtitle{
+        font-size:16px
+    }
+    .eligibility-title-text{
+        margin-bottom:48px
+    }
+}
+
+
+
+/*Items*/
+.counsellors-info-item{
+    padding:24px;
+    display: flex;
+    align-items: center;
+}
+
+.counsellors-info-item.counsellors-info-item-33{
+    display:block
+}
+.counsellors-info-item.counsellors-info-item-33 .counsellors-info-item-number{
+    margin-bottom: 24px;
+}
+.counsellors-info-item-text{
+    margin-top:0
+}
+.counsellors-info-item-number{
+    margin-right:24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: #E5EEEE;
+    border-radius: 50%;
+    color: #5AB9AC;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 600;
+    flex: 0 0 auto;
+}
+/*End Items*/

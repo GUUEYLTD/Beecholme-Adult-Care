@@ -4801,3 +4801,19 @@ a.policy-link-sidebar:hover {
 .logo-white-letters{
     display:none
 }
+
+/*Eligibility*/
+
+.eligibility-link, .eligibility-link:hover {
+    color:#fff;
+    margin-left:20px
+}
+
+@media screen and (max-width:767px) {
+    .eligibility-link, .eligibility-link:hover {
+        margin-left: 0;
+        margin-right: 15px
+    }
+}
+
+/*End Eligibility*/
