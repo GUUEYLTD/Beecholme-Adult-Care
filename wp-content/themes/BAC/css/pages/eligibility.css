@@ -169,6 +169,15 @@
     .eligibility-info-item-50, .eligibility-info-item-33 {
         width: 100%;
     }
+    .eligibility-subtitle, .eligibility-subtitle p, .eligibility-info-item-text, .eligibility-info-item-text p{
+        font-size: 16px
+    }
+    .eligibility-info-item{
+        padding:24px 16px
+    }
+    .eligibility-info-item-number{
+        margin-right:16px
+    }
 }
 
 
