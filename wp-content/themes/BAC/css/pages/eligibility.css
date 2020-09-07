@@ -165,8 +165,8 @@
     }
 }
 
-@media screen and (max-width:600px) {
-    .counsellors-info-item-50, .counsellors-info-item-33 {
+@media screen and (max-width:767px) {
+    .eligibility-info-item-50, .eligibility-info-item-33 {
         width: 100%;
     }
 }
