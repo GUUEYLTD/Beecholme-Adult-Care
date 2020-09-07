@@ -12,7 +12,7 @@
     margin-bottom: 104px
 }
 
-.eligibility-tabs, .eligibility-title-text .eligibility-subtitle{
+.eligibility-tabs, .eligibility-title-text .eligibility-subtitle, .eligibility-title-text .eligibility-subtitle p{
     font-size:18px;
     line-height:24px;
     color:#333;
@@ -33,7 +33,7 @@
     color: #C4C4C4;
     cursor: pointer;
     width: 100%;
-    padding-bottom: 4px;
+    padding-bottom: 16px;
     border-bottom: 3px solid #F4F4F5;
     text-align: center;
     font-family: 'InterSemibold', sans-serif;
@@ -162,6 +162,12 @@
 @media screen and (max-width:1200px) {
     .page-template-info-for-eligibility .eligibility-info-wrapper{
         padding: 0 10px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .counsellors-info-item-50, .counsellors-info-item-33 {
+        width: 100%;
     }
 }
 
