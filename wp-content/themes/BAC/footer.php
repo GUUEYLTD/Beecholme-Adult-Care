@@ -55,7 +55,7 @@
                 <span>Copyright 2020. All Rights Reserved.</span>
                 <?php $link = get_field('policies', 'option'); ?>
                 <a href="<?php echo $link['url']; ?>" class="policy-link"><?php echo $link['title']; ?></a>
-                <a href="eligibility-criteria" class="eligibility-link">Eligibility Criteria</a>
+                <a href="<?php echo get_site_url().'/eligibility-criteria';?>" class="eligibility-link">Eligibility Criteria</a>
             </div>
             <div class="footer-social d-flex align-items-center">
                 <div class="sectigo">
