@@ -9,6 +9,10 @@ get_header();
     <?php endif; ?>
     <h1 class="page-title"><?php echo get_the_title(); ?></h1>
 
+    <div class="text-block-800 text-block-800-consellors">
+        <?php the_post(); the_content(); ?>
+    </div>
+
     <div class="mid-container counsellors-info-wrapper">
         <?php if(get_field('first_block_title', $cur_page) || get_field('first_block_text', $cur_page)) : ?>
         <div class="counsellors-info-item counsellors-info-item-50">
