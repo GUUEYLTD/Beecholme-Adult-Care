@@ -25,7 +25,7 @@
 	</script>
 	<script async src='https://www.google-analytics.com/analytics.js'></script>
 	<!-- End Google Analytics -->
-
+<script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/6e72fa740d0fb29dca49fb646/2b3d4bba124de2800ffbe3afa.js");</script>
 </head>
 
 <body <?php body_class();?> class="page-<?php echo $cur_page; ?>">

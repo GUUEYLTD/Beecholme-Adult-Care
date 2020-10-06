@@ -4329,15 +4329,18 @@ a.policy-link {
 }
 
 .booking-form .am-confirmation-booking-cost:before {
-    /*content: 'Use your Welcome Coupon Code "WELCOMESESSION" and book your free initial consultation to get to know your counsellor and discuss your needs.';*/
+    content: 'Use the code "WELCOME20" to book your FREE 20 minutes initial consultation';
     max-width: 100%;
+    font-family: InterSemiBold, sans-serif;
     margin: 0px 10px 20px;
     font-weight: 300;
     padding: 0;
     font-size: 14px;
     color: #354052;
-    line-height: 1;
+    line-height: 20px;
+    letter-spacing: 0.5px;
     display: block;
+	text-align:center;
 }
 
 .booking-form .save-five:before {
