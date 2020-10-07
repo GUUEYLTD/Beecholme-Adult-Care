@@ -1,0 +1,64 @@
+@font-face {
+    font-family: InterReg;
+    font-display: swap;
+    src: url(/wp-content/themes/BAC/fonts/Inter-UI-Regular.woff);
+}
+
+body.login{
+    font-family: InterReg;
+    background: green;
+    background: url(../images/landing_bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    backdrop-filter:blur(2px);
+}
+
+#login{
+    background: rgb(255 255 255 / 81%);
+    border: 3px solid rgb(90 185 172 / 62%);
+    border-radius: 3px;
+    padding: 15px;
+
+}
+
+#login .message,
+#backtoblog{
+    display: none;
+}
+
+#login form p{
+    width:100%
+}
+
+.login h1 a{
+    background-image: url(../images/logo.svg);
+    background-size:contain;
+    width:250px
+}
+
+.login form #wp-submit{
+    background: #5AB9AC;
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 20px;
+    border: 1px solid #5AB9AC;
+}
+
+.login form input:focus{
+    border-color: #5AB9AC;
+    box-shadow: 0 0 0 1px #5AB9AC;
+    outline: 2px solid transparent;
+}
+
+.login label{
+    font-size:16px;
+    color:#5AB9AC
+}
+
+ .wp-core-ui .button-secondary{
+    color:#5AB9AC!important
+}
+

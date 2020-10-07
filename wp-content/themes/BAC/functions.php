@@ -798,3 +798,26 @@ function wpcf7_add_text_to_mail_body($contact_form){
    }
 
 }
+
+
+function modify_admin()
+{
+    wp_enqueue_style('admin-customization', get_template_directory_uri() . '/css/admin-customization.css');
+}
+
+add_action('admin_head', 'modify_admin');
+
+function modify_login() {
+    wp_enqueue_style('admin-customization', get_template_directory_uri() . '/css/login-customization.css');
+}
+add_action('login_head', 'modify_login');
+
+
+function dsourc_hide_notices(){
+    $user = wp_get_current_user();
+    if (!($user->roles[0] == 'administrator')) {
+        remove_all_actions( 'admin_notices' );
+    }
+}
+
+add_action( 'admin_head', 'dsourc_hide_notices', 1 );

@@ -1,0 +1,57 @@
+@font-face {
+    font-family: InterReg;
+    font-display: swap;
+    src: url(/wp-content/themes/BAC/fonts/Inter-UI-Regular.woff);
+}
+
+body{
+    font-family: InterReg;
+    letter-spacing: 0.4px;
+ }
+
+#wpbody {
+    margin-top: 10px;
+}
+
+#wpadminbar{
+    height:50px
+}
+
+#wp-admin-bar-wp-logo-external, #wp-admin-bar-wp-logo-default{
+    display:none!important;
+}
+
+ #wp-admin-bar-wp-logo>a, #wp-admin-bar-wp-logo>a:hover{
+     background-image: url(../images/logo-white.svg)!important;
+     width: 115px;
+     height: 40px!important;
+     background-size: contain!important;
+     background-repeat: no-repeat!important;
+     margin: 5px 15px 0 10px !important;
+ }
+
+#wp-admin-bar-wp-logo a span{
+    display: none!important;
+}
+
+#adminmenu div.wp-menu-image:before,
+#adminmenu div.wp-menu-name{
+    color: #5AB9AC;
+}
+
+#adminmenu li.current div.wp-menu-name{
+    color:#fff;
+    font-weight:bold
+}
+#adminmenu li.current a.menu-top{
+    background:#5AB9AC
+}
+
+#screen-meta-links .screen-meta-toggle{
+    display: none;
+}
+
+input, input:focus{
+    border-color: #5AB9AC!important;
+    box-shadow: 0 0 0 1px #5AB9AC!important;
+}
