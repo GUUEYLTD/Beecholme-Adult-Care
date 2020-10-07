@@ -26,6 +26,16 @@ if(!empty($counsellors)) {
                 </div>
             </div>
             <div class="home-form-wrapper">
+                <div class="october-promo">
+                    <div class="octobet-promo-deko">October Promo</div>
+                    <div class="octobet-promo-text">
+                        <div class="deco-leaf-one"></div>
+                        <div class="deco-leaf-two"></div>
+                        <div class="deco-leaf-three"></div>
+                        <div class="deco-leaf-four"></div>
+                        Free 20 min counsultation with the code WELCOME20
+                    </div>
+                </div>
                 <div class="tabs d-flex justify-content-center">
                     <div class="tab active" data-tab="find-tab">Find a Counsellor</div>
                     <div class="tab" data-tab="referral-tab">Make a Referral</div>
@@ -143,7 +153,18 @@ if(!empty($counsellors)) {
     </div>
 
     <div class="main-mob-counsellors-form">
+
         <div class="banner-content  home-form-wrapper">
+            <div class="october-promo">
+                <div class="octobet-promo-deko">October Promo</div>
+                <div class="octobet-promo-text">
+                    <div class="deco-leaf-one"></div>
+                    <div class="deco-leaf-two"></div>
+                    <div class="deco-leaf-three"></div>
+                    <div class="deco-leaf-four"></div>
+                    Free 20 min counsultation with the code WELCOME20
+                </div>
+            </div>
             <h2>Find Your Counsellor</h2>
             <form class="tab-content find-tab active" action="our-counsellors">
                 <div class="homepage-filter type-filter d-flex flex-column align-left">

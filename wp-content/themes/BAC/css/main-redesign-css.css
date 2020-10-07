@@ -23,7 +23,111 @@
 }
 
 .home-form-wrapper{
-    height: 485px;
+    height: 515px;
+    border:none;
+}
+
+.october-promo{
+    margin-top:-43px;
+    margin-left:-32px;
+    margin-right:-32px;
+    background: #5AB9AC;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    color:#fff;
+    margin-bottom:30px
+}
+
+.octobet-promo-deko{
+    font-size:14px;
+    line-height:17px;
+    text-transform: uppercase;
+    font-family: InterBold, sans-serif;
+    position: absolute;
+    width:84px;
+    height:72px;
+    padding:10px;
+    text-align: center;
+    background: url('../images/october-deco.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    left:8px;
+    top:-4px
+}
+
+.octobet-promo-text{
+    position: relative;
+    font-size:16px;
+    line-height:19px;
+    font-family: InterSemiBold, sans-serif;
+    padding: 8px 8px 8px 100px;
+    text-align: center;
+}
+
+.deco-leaf-one,
+.deco-leaf-two,
+.deco-leaf-three,
+.deco-leaf-four{
+    position: absolute;
+}
+
+.deco-leaf-one{
+    width:32px;
+    height:32px;
+    background: url('../images/deco-leaf-one.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: -40px;
+}
+.deco-leaf-two{
+    width:40px;
+    height:16px;
+    background: url('../images/deco-leaf-two.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: -12px;
+    right: 12px;
+}
+.deco-leaf-three{
+    width:32px;
+    height:12px;
+    background: url('../images/deco-leaf-three.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: -10px;
+    left: 110px;
+}
+.deco-leaf-four{
+    width:48px;
+    height:48px;
+    background: url('../images/deco-leaf-four.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    right: -25px;
+    bottom: -36px;
+}
+
+.header-menu.home-header #menu-menu1-1 li.menu-item-976 a,
+.menu-menu1-container #menu-menu1 li.menu-item-976 a{
+    color:#5AB9AC
+}
+
+@media all and (max-width:900px) {
+    .october-promo{
+        margin-top:-25px;
+        margin-left:-25px;
+        margin-right:-25px;
+    }
+
+    .deco-leaf-four{
+        width:48px;
+        height:48px;
+        background: url('../images/deco-leaf-four.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        right: -15px;
+        bottom: -36px;
+    }
 }
 
 .page-template-home-redesign  .type-tabs .single-tab{
