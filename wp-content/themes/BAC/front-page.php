@@ -130,7 +130,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="home-top-banner-mobile-buttons">
                 <div data-wow-delay="1.4s" class="cta-button-wrapper wow fadeInUpBig">
-                    <a class="cta-button cta-button-sessions" href="/our-counsellors/">Book Your Session</a>
+                    <a class="cta-button cta-button-sessions" href="/our-counsellors/">Book Your Free Session Now</a>
                 </div>
                 <div class="cta-button-wrapper">
                     <a class="cta-button cta-button-wellbeing" href="/our-counsellors/">Test Your Wellbeing</a>
@@ -143,7 +143,7 @@ if(!empty($counsellors)) {
 <?php if ( wp_is_mobile() ) : ?>
     <div class="main-mob-counsellors">
         <h2>Our Counsellors</h2>
-        <div class="main-mob-counsellors-subtitle">BAC makes therapy and life coaching affordable for all with a team of professional counsellors</div>
+        <div class="main-mob-counsellors-subtitle">Affordable online therapy and life coaching for all. Book a FREE session with a professional counsellor</div>
         <div class="owl-carousel owl-theme our-counsellors">
             <?php do_action('bac_list_counsellors', $counsellors); ?>
         </div>
