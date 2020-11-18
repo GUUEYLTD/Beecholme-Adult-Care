@@ -4820,3 +4820,13 @@ a.policy-link-sidebar:hover {
 }
 
 /*End Eligibility*/
+
+/** IOS fix for inputs in form **/
+
+.amelia-app-booking input[type="text"], .am-modal.am-in-body input[type="text"], .amelia-app-booking input[type="password"], .am-modal.am-in-body input[type="password"], .amelia-app-booking input[type="email"], .am-modal.am-in-body input[type="email"], .amelia-app-booking input[type="tel"], .am-modal.am-in-body input[type="tel"], .amelia-app-booking input[type="url"], .am-modal.am-in-body input[type="url"], .amelia-app-booking textarea, .am-modal.am-in-body textarea, .amelia-app-booking select, .am-modal.am-in-body select, .amelia-app-booking .form-control, .am-modal.am-in-body .form-control, .amelia-app-booking .am-stripe-card, .am-modal.am-in-body .am-stripe-card {
+	z-index: 111111111111 !important;
+	-webkit-user-select: text !important;
+	display: block !important;
+}
+
+/** End IOS fix for inputs in form **/

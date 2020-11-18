@@ -27,7 +27,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="home-form-wrapper">
                 <div class="october-promo">
-                    <div class="octobet-promo-deko">October Promo</div>
+                    <div class="octobet-promo-deko">Autumn Promo</div>
                     <div class="octobet-promo-text">
                         <div class="deco-leaf-one"></div>
                         <div class="deco-leaf-two"></div>
