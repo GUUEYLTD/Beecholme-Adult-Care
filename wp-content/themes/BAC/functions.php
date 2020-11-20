@@ -34,11 +34,18 @@ function adding_scripts()
     wp_enqueue_script('main');
 
     wp_enqueue_style('main-redesign-css', get_template_directory_uri() . '/css/main-redesign-css.css');
-    if (is_page_template('home-redesign.php')) {
+    if (is_page_template('home-redesign.php') || is_page_template('home-new.php')) {
         wp_enqueue_script('main-redesign-js', get_template_directory_uri() . '/js/main-redesign-js.js', array('jquery', 'owl-carousel'), '', true);
         wp_enqueue_script('wow-js', 'https://cdnjs.cloudflare.com/ajax/libs/wow/0.1.12/wow.min.js', array('jquery'), '', true);
         wp_enqueue_style('animate-css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css');
     }
+
+
+    if ( is_page_template('home-new.php') ) {
+        wp_enqueue_style('main-new-css', get_template_directory_uri() . '/css/main-new.css');
+        wp_enqueue_script('main-new-js', get_template_directory_uri() . '/js/main-new.js', array('jquery', 'owl-carousel'), '', true);
+    }
+    add_filter('show_admin_bar', '__return_false');
 
     if (is_author()) {
         wp_enqueue_style('author-ch-css', get_template_directory_uri() . '/css/pages/author.css');
