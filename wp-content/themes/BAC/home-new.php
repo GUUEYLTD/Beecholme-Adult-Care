@@ -255,6 +255,46 @@ if(!empty($counsellors)) {
 </div>
 
 
+<div class="with-you">
+    <h2>With BAC you can rely on Quality, Safety and Trust</h2>
+    <div class="with-you-content inner-container">
+        <div class="with-you-content-left">
+            <img src="<?php echo get_template_directory_uri().'/images/main-new/with-bac.png' ?>" class="" alt="with-you-content-left">
+        </div>
+        <div class="with-you-content-right">
+            <div class="with-you-content-right-text">
+                If you're not satisfied, we'll arrange a free session with an alternative counsellor for you or offer you a full refund.
+            </div>
+            <div class="banner-content  home-form-wrapper">
+                <div class="home-form-title">I Need Help With...</div>
+                <form class="tab-content find-tab active" action="our-counsellors">
+                    <div class="homepage-filter question-filter empty-filter active">
+                        <select class="question-select" name="common">
+                            <option value="" data-display-text="All">All</option>
+                            <?php foreach (getServices() as $serviceName) : ?>
+                                <option
+                                        value="<?php echo $serviceName ?>"
+                                    <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
+                                ><?php echo $serviceName ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="button-wrapper">
+                            <button>
+                                <?php if(!wp_is_mobile()) :?>
+                                    Find a Counsellor
+                                <?php else : ?>
+                                    <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-search.svg' ?>" class="main-new-search-ico" alt="search-icon">
+                                <?php endif; ?>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="blog-section d-flex flex-column inner-container">
     <h2 class="title">
         Blog Posts
