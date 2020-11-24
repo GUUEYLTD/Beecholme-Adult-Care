@@ -65,14 +65,14 @@
                     </div>
                     <?php
                     if (wp_is_mobile()){
-                        wp_nav_menu( array( 'theme_location' => 'header-menu' ) );
+                       wp_nav_menu( array( 'theme_location' => 'header-menu' ) );
                     }else {
                         wp_nav_menu( array( 'theme_name' => 'Header-new' ) );
                     }
                     ?>
 
                     <div class="menu-socials-wrapper">
-                        <a href="/our-counsellors" class="menu-button-100">Find Your Counsellor</a>
+                        <a href="/our-counsellors" class="mobile-only menu-button-100">Find Your Counsellor</a>
                         <div class="menu-socials">
                             <a href="https://www.facebook.com/BeecholmeAdultCare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-facebook.svg" alt="fb"></a>
                             <a href="https://twitter.com/BeecholmeAC" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-twitter.svg" alt="twitter"></a>
