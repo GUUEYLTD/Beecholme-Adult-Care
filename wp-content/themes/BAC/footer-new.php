@@ -29,7 +29,9 @@
 
                 <div class="footer-menu">
                     <h4>Links</h4>
-                    <?php wp_nav_menu( array( 'theme_location' => 'header-menu' ) ); ?>
+                    <?php //wp_nav_menu( array( 'theme_location' => 'header-menu' ) );
+                    wp_nav_menu( array( 'theme_name' => 'Header-new' ) );
+                    ?>
                 </div>
 
             </div>

@@ -629,7 +629,7 @@ body{
 }
 .post-social-items:hover{cursor:pointer}
 .post-social-items:hover .post-social-item-wrapper{opacity:1}
-
+.post-social-items .post-social-item{margin-bottom:4px}
 @media all and (max-width:900px) {
     .page-template-home-new  .posts-title-wrapper{padding:64px 0 24px; justify-content: center}
     .page-template-home-new  .posts-title-wrapper .title{font-size: 26px;line-height: 32px;}
@@ -647,6 +647,10 @@ body{
     }
     .page-template-home-new .posts .post .content {
         margin: 0 16px 16px 16px;
+    }
+    .page-template-home-new .posts .post:nth-child(1) .image,
+    .page-template-home-new .posts .post:nth-child(2) .image{
+        min-height:150px;
     }
 }
 @media all and (max-width:500px) {

@@ -341,14 +341,7 @@ if(!empty($counsellors)) {
                                     <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-share.svg' ?>" class="main-new-search-ico" alt="share-icon">
                                 </div>
                                 <div class="post-social-item-wrapper">
-                                    <div class="post-social-item">
-                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
-                                           data-text="<?php echo get_the_permalink() ?>"
-                                           rel="canonical"
-                                        >
-                                            Tweet
-                                        </a>
-                                    </div>
+
                                     <div class="post-social-item">
                                         <div class="fb-share-button"
                                              data-layout="button"
@@ -362,6 +355,14 @@ if(!empty($counsellors)) {
                                                 Share
                                             </a>
                                         </div>
+                                    </div>
+                                    <div class="post-social-item">
+                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
+                                           data-text="<?php echo get_the_permalink() ?>"
+                                           rel="canonical"
+                                        >
+                                            Tweet
+                                        </a>
                                     </div>
                                 </div>
                             </div>
