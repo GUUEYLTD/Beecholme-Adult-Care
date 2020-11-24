@@ -140,7 +140,7 @@ if(!empty($counsellors)) {
 <!--            <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">-->
             <div class="main-mob-how-it-work-item">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how1.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">1</div>
+                <div class="how-it-work-item-number">01</div>
                 <div class="how-it-work-item-content">
                     <div class="how-it-work-item-title">Choose your counsellor</div>
                     <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
@@ -148,7 +148,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="main-mob-how-it-work-item">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how2.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">2</div>
+                <div class="how-it-work-item-number">02</div>
                 <div class="how-it-work-item-content">
                     <div class="how-it-work-item-title">Book online</div>
                     <div class="how-it-work-item-text">Choose the day and time that best fits your schedule and fill out the booking form</div>
@@ -156,7 +156,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="main-mob-how-it-work-item">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">3</div>
+                <div class="how-it-work-item-number">03</div>
                 <div class="how-it-work-item-content">
                     <div class="how-it-work-item-title">Start therapy / coaching</div>
                     <div class="how-it-work-item-text">Begin the journey towards a happier and healthier your</div>
@@ -207,11 +207,7 @@ if(!empty($counsellors)) {
         </div>
 
     </div>
-    <script>
-      jQuery(document).ready(function($) {
-        new WOW().init();
-      });
-    </script>
+
 
 
     <div class="testimonials">
@@ -267,7 +263,7 @@ if(!empty($counsellors)) {
                     If you're not satisfied, we'll arrange a free session with an alternative counsellor for you or offer you a full refund.
                 </div>
                 <div class="banner-content  home-form-wrapper">
-                    <div class="home-form-title">I Need Help With...</div>
+                    <div class="home-form-title">Help me with...</div>
                     <form class="tab-content find-tab active" action="our-counsellors">
                         <div class="homepage-filter question-filter empty-filter active">
                             <select class="question-select" name="common">
@@ -311,9 +307,7 @@ if(!empty($counsellors)) {
             <?php $query = new WP_Query( 'posts_per_page=5' ); ?>
             <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                 <div class="post d-flex flex-column">
-                    <div class="image">
-                        <img src="<?= get_the_post_thumbnail_url(get_the_ID(), 'medium') ?>" alt="">
-                    </div>
+                    <div class="image" style="background-image: url(<?= get_the_post_thumbnail_url(get_the_ID(), 'medium') ?>)"></div>
                     <div class="content">
                         <a href="<?php echo get_the_permalink() ?>" target="_blank" class="title"><?php echo get_the_title(); ?></a>
                         <div class="description"><?= wp_filter_nohtml_kses(get_the_content()) ?></div>
