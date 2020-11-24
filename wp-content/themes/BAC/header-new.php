@@ -49,23 +49,38 @@
         </div>
         <div class="mobile-menu d-flex">
             <div class="desk-nav">
-                <a href="#">Find Your Counsellor</a>
-                <a href="#">Help</a>
-                <a href="#">Join BAC</a>
+                <a href="/our-counsellors">Find Your Counsellor</a>
+                <a href="/frequently-asked-questions">Help</a>
+                <a href="/join-our-team/">Join BAC</a>
                 <?php //wp_nav_menu( array( 'theme_name' => 'Header-top' ) ); ?>
             </div>
             <div class="toggle align-self-center">
                 <div class="toggle-inner"></div>
             </div>
             <div class="mobile-menu-container">
-                <div class="inner-container">
+                <div class="inner-container menu-container-new">
+                    <div class="mobile-only mobile-only-top-buttons">
+                        <a href="/frequently-asked-questions" class="menu-button-50">Help</a>
+                        <a href="/join-our-team" class="menu-button-50">Join BAC</a>
+                    </div>
                     <?php
                     if (wp_is_mobile()){
                         wp_nav_menu( array( 'theme_location' => 'header-menu' ) );
                     }else {
-                        wp_nav_menu( array( 'theme_name' => 'Header-top' ) );
+                        wp_nav_menu( array( 'theme_name' => 'Header-new' ) );
                     }
                     ?>
+
+                    <div class="menu-socials-wrapper">
+                        <a href="/our-counsellors" class="menu-button-100">Find Your Counsellor</a>
+                        <div class="menu-socials">
+                            <a href="https://www.facebook.com/BeecholmeAdultCare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-facebook.svg" alt="fb"></a>
+                            <a href="https://twitter.com/BeecholmeAC" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-twitter.svg" alt="twitter"></a>
+                            <a href="https://www.instagram.com/bac_beecholmeadultcare/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-instagram.svg" alt="instagram"></a>
+                            <a href="https://www.linkedin.com/company/beecholme-adult-care-ltd/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/main-new/icon-linkedin.svg" alt="linkedin"></a>
+                        </div>
+
+                    </div>
                 </div>
 
             </div>

@@ -150,16 +150,16 @@ if(!empty($counsellors)) {
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how2.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">2</div>
                 <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+                    <div class="how-it-work-item-title">Book online</div>
+                    <div class="how-it-work-item-text">Choose the day and time that best fits your schedule and fill out the booking form</div>
                 </div>
             </div>
             <div class="main-mob-how-it-work-item">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">3</div>
                 <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+                    <div class="how-it-work-item-title">Start therapy / coaching</div>
+                    <div class="how-it-work-item-text">Begin the journey towards a happier and healthier your</div>
                 </div>
             </div>
         </div>

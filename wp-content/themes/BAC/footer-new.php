@@ -63,7 +63,9 @@
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/letter-plain.svg' ?>" class="footer-subscribe-form-plain" alt="plain-icon">
             </div>
 
-            <?php echo do_shortcode('[contact-form-7 id="2724" title="Subscribe to our newsletter"]'); ?>
+            <?php //echo do_shortcode('[contact-form-7 id="2724" title="Subscribe to our newsletter"]');
+            echo do_shortcode(get_field('subscribe_form', 'option'))
+            ?>
         </div>
 
         <div class="footer-bottom d-flex justify-content-between align-items-center">

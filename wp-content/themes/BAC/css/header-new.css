@@ -121,7 +121,11 @@ header  .header-container {
     font-weight:600;
     color:#5AB9AC;
     padding:5px 16px;
-
+    transition:all 0.3s
+}
+.desk-nav a:hover{
+    color:#49504F;
+    text-decoration: none;
 }
 
 #menu-header-bottom{
@@ -138,8 +142,54 @@ header  .header-container {
     font-size:16px;line-height:24px;padding:8px 0
 }
 
+.menu-container-new{
+    display:flex
+}
+
 
 @media (max-width: 900px){
+    .mobile-only-top-buttons{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .menu-button-50{
+        font-size:16px;
+        line-height:24px;
+        font-weight:600;
+        border-radius:40px;
+        background:#7BC7BD;
+        color:#fff;
+        padding:8px;
+        text-align:center;
+        width:calc(50% - 8px)
+    }
+    .menu-button-100{
+        font-size:16px;
+        line-height:24px;
+        font-weight:600;
+        border-radius:40px;
+        background:#fff;
+        color:#5AB9AC;
+        padding:12px;
+        text-align:center;
+        width:100%;
+        margin-bottom:32px;
+        display: block;
+    }
+    .menu-container-new{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .menu-socials-wrapper{width:100%;text-align: center;padding-bottom: 24px;}
+    .menu-menu1-container , .menu-menu1-container #menu-menu1{
+        height:auto
+    }
+    .menu-socials a{
+        margin:0 12px
+    }
     .logo-black-letters img, .logo-white-letters img {
         width: 152px;
     }
@@ -154,5 +204,11 @@ header  .header-container {
     }
     .desk-nav{
         display: none;
+    }
+    .menu-menu1-container #menu-menu1{
+        margin-top:0
+    }
+    .menu-menu1-container #menu-menu1 li a{
+
     }
 }
