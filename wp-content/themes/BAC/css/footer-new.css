@@ -1,0 +1,116 @@
+.card-container{
+    width:400px
+}
+.card-container .card .google-map{
+    border-radius:10px
+}
+
+.footer-controls .buttons a{
+    width:auto;
+    min-width:167px;
+    border-radius:40px;
+    margin:8px
+}
+
+.footer-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-subscribe-form{
+    background: #545C5B;
+    border-radius:20px;
+    padding:24px 16px;
+    margin-top:32px
+}
+.footer-subscribe-form form{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.footer-subscribe-form  .wpcf7 input[type="email"]{
+    border-radius: 40px;
+    width:540px;
+    background:#fff;
+    transform: translateX(72px);
+}
+.footer-subscribe-form .wpcf7-form input[type="submit"] {
+    width: 144px;
+    max-width: 144px;
+    height: 48px;
+    margin: 2px;
+    border-radius: 40px;
+    transform: translateX(-76px);
+}
+.footer-subscribe-form div.wpcf7-response-output{
+    display: none!important;
+}
+.footer-subscribe-form div.wpcf7-response-output,
+.footer-subscribe-form span.wpcf7-not-valid-tip{
+    position: absolute;
+    bottom: -42px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: translateX(72px);
+}
+.footer-subscribe-form-title{
+    color:#fff;
+    font-size:24px;
+    line-height:32px;
+    font-weight:600;
+    text-align:center;
+    margin-bottom:24px;
+    position: relative;
+}
+.footer-subscribe-form div.wpcf7 .ajax-loader{
+    display:none!important
+}
+.footer-subscribe-form-plain{
+    position: absolute;
+    top: -24px;
+    left: 12%;
+}
+
+@media (max-width: 900px){
+    .footer-subscribe-form form{
+        flex-direction:column
+    }
+    .footer-subscribe-form  .wpcf7 input[type="email"],
+    .footer-subscribe-form .wpcf7-form input[type="submit"] {
+        width:314px;
+        max-width:314px;
+        transform:none;
+    }
+    .footer-buttons{
+        flex-direction: column;
+    }
+    .card-container .card{
+        height:168px
+    }
+    .footer-subscribe-form-title{
+        font-size:20px;
+        margin-bottom:16px
+    }
+    .footer-subscribe-form-plain{
+        top: -42px;
+        left: 10%;
+        width: 64px;
+    }
+
+}
+
+@media (max-width: 450px){
+    footer .footer-controls.footer-controls-first .buttons a {
+        width: 100% !important;
+    }
+    footer .footer-controls.footer-controls-second .buttons a {
+        width: calc(50% - 8px) !important;
+        min-width:auto
+    }
+    .footer-subscribe-form  .wpcf7 input[type="email"],
+    .footer-subscribe-form .wpcf7-form input[type="submit"] {
+        width:100%;
+    }
+
+}

@@ -1,5 +1,5 @@
 <?php /*Template Name: home-new*/
-get_header('new');
+get_header();
 $cur_page = get_the_ID();
 
 /*Return counsellors*/
@@ -22,7 +22,7 @@ if(!empty($counsellors)) {
                     <div class="home-top-banner-sub-two">Talk to a licensed counsellor now.</div>
                 </div>
                 <div class="home-top-banner-top-right">
-                    <img src="<?php echo get_template_directory_uri().'/images/main-new/home-top-banner-image.svg' ?>" alt="with-bac">
+                    <img src="<?php echo get_template_directory_uri().'/images/main-new/home-top-banner-image.png' ?>" alt="with-bac">
                 </div>
             </div>
 
@@ -137,8 +137,7 @@ if(!empty($counsellors)) {
     <div class="main-mob-how-it-work" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/how-it-works-mob-bg.png' : get_template_directory_uri().'/images/main-new/how-it-works-bg.png' ?>)">
         <h2 class="text-center">How It Works?</h2>
         <div class="inner-container how-it-work-container">
-<!--            <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">-->
-            <div class="main-mob-how-it-work-item">
+            <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how1.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">1</div>
                 <div class="how-it-work-item-content">
@@ -146,7 +145,7 @@ if(!empty($counsellors)) {
                     <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
                 </div>
             </div>
-            <div class="main-mob-how-it-work-item">
+            <div data-wow-delay="0.5s" class="main-mob-how-it-work-item wow fadeInUp">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how2.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">2</div>
                 <div class="how-it-work-item-content">
@@ -154,7 +153,7 @@ if(!empty($counsellors)) {
                     <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
                 </div>
             </div>
-            <div class="main-mob-how-it-work-item">
+            <div data-wow-delay="0.6s" class="main-mob-how-it-work-item wow fadeInUp">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">3</div>
                 <div class="how-it-work-item-content">
@@ -301,13 +300,11 @@ if(!empty($counsellors)) {
             <h2 class="title">
                 Blog Posts
             </h2>
-            <?php if(!wp_is_mobile()) : ?>
             <a href="/blog/" target="_blank">Explore more posts</a>
-            <?php endif; ?>
         </div>
 
         <div class="posts d-flex flex-row">
-
+            <?php //foreach ($recentPosts as $post) { ?>
             <?php $query = new WP_Query( 'posts_per_page=5' ); ?>
             <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                 <div class="post d-flex flex-column">
@@ -341,40 +338,33 @@ if(!empty($counsellors)) {
                                 </div>
                                 <span><?php echo get_the_date('M j, Y') ?></span>
                             </div>
+<!--                            <a href="--><?php //echo get_the_permalink() ?><!--" target="_blank" class="read-more">-->
 
-                            <div class="post-social-items">
-                                <div class="post-social-items-ico">
-                                    <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-share.svg' ?>" class="main-new-search-ico" alt="share-icon">
+                                <div class="post-social-item">
+                                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
+                                       data-text="<?php echo get_the_permalink() ?>"
+                                       rel="canonical"
+                                    >
+                                        Tweet
+                                    </a>
                                 </div>
-                                <div class="post-social-item-wrapper">
-                                    <div class="post-social-item">
-                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
-                                           data-text="<?php echo get_the_permalink() ?>"
-                                           rel="canonical"
+
+                                <div class="post-social-item">
+                                    <div class="fb-share-button"
+                                         data-layout="button"
+                                         data-size="small"
+                                         data-href="<?php echo get_the_title() ?>"
+                                    >
+                                        <a target="_blank"
+                                           href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                                           class="fb-xfbml-parse-ignore"
                                         >
-                                            Tweet
+                                            Share
                                         </a>
                                     </div>
-                                    <div class="post-social-item">
-                                        <div class="fb-share-button"
-                                             data-layout="button"
-                                             data-size="small"
-                                             data-href="<?php echo get_the_title() ?>"
-                                        >
-                                            <a target="_blank"
-                                               href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
-                                               class="fb-xfbml-parse-ignore"
-                                            >
-                                                Share
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
 
-
-
-
+<!--                            </a>-->
                         </div>
                     </div>
                 </div>
@@ -383,14 +373,12 @@ if(!empty($counsellors)) {
             else : ?>
                 <p><?php esc_html_e( 'Sorry, no posts matched your criteria.' ); ?></p>
             <?php endif; ?>
-
+            <?php //} ?>
         </div>
-        <?php if(wp_is_mobile()) : ?>
-        <div class="explore-more d-flex justify-content-center">
-            <a href="/blog/" target="_blank">Explore more posts</a>
-        </div>
-        <?php endif; ?>
+<!--        <div class="explore-more d-flex justify-content-center">-->
+<!--            <a href="/blog/" target="_blank">Explore more posts</a>-->
+<!--        </div>-->
     </div>
 
 
-<?php get_footer('new'); ?>
+<?php get_footer(); ?>

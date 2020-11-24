@@ -35,8 +35,8 @@
             </div>
         </div>
 
-        <div class="footer-bittons">
-            <div class="footer-controls">
+        <div class="footer-buttons">
+            <div class="footer-controls footer-controls-first">
                 <div class="buttons d-flex flex-wrap justify-content-between">
                     <?php $link = get_field('councelor_button', 'option'); ?>
                     <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <div class="footer-controls">
+            <div class="footer-controls footer-controls-second">
                 <div class="buttons d-flex flex-wrap justify-content-between">
                     <?php $link = get_field('therapists_button', 'option'); ?>
                     <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
@@ -54,6 +54,16 @@
                     <a href="<?php echo $link['url']; ?>"><?php echo $link['title']; ?></a>
                 </div>
             </div>
+        </div>
+
+
+        <div class="footer-subscribe-form">
+            <div class="footer-subscribe-form-title">
+                Subscribe to our newsletter
+                <img src="<?php echo get_template_directory_uri().'/images/main-new/letter-plain.svg' ?>" class="footer-subscribe-form-plain" alt="plain-icon">
+            </div>
+
+            <?php echo do_shortcode('[contact-form-7 id="2724" title="Subscribe to our newsletter"]'); ?>
         </div>
 
         <div class="footer-bottom d-flex justify-content-between align-items-center">
