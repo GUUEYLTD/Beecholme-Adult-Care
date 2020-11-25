@@ -255,6 +255,11 @@ header  .header-container {
         justify-content: space-around;
         align-items: center;
     }
+    .menu-container-new ul li,
+    .menu-container-new ul li a{
+        color:#fff!important;
+        background: #5AB9AC!important;
+    }
 
     .menu-socials-wrapper{width:100%;text-align: center;padding-bottom: 24px;}
     .menu-menu1-container , .menu-menu1-container #menu-menu1{

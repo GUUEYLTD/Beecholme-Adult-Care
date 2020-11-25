@@ -105,8 +105,20 @@ footer ul li.menu-item-has-children{
 /*}*/
 footer .sub-menu{
     position: absolute;
-    left: 50%;
-    display: none;
+    left: 40%;
+    opacity: 0;
+    top: 0;
+}
+footer .footer-bottom{
+    border-top:0
+}
+footer ul li.menu-item-has-children:hover{cursor:pointer}
+footer ul li.menu-item-has-children:hover .sub-menu{
+    opacity:1;
+}
+
+.copyrights {
+    color: #7E8E8B;
 }
 footer .sub-menu:nth-last-of-type(){
     background:red

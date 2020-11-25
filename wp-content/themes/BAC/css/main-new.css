@@ -353,7 +353,7 @@ body{
     font-weight:600;
     margin-bottom:8px
 }
-.page-template-home-new .how-it-work-item-text{font-size:18px;line-height:28px;}
+.page-template-home-new .how-it-work-item-text{font-size:18px;line-height:28px;opacity: 0.75}
 @media all and (max-width:900px) {
     .page-template-home-new  .how-it-work-container{
         flex-direction: column;

@@ -51,7 +51,7 @@
             <div class="desk-nav">
                 <a href="/our-counsellors">Find Your Counsellor</a>
                 <a href="/frequently-asked-questions">Help</a>
-                <a href="/join-our-team/">Join BAC</a>
+                <a href="/info-for-counsellors">Join BAC</a>
                 <?php //wp_nav_menu( array( 'theme_name' => 'Header-top' ) ); ?>
             </div>
             <div class="toggle align-self-center">
@@ -61,7 +61,7 @@
                 <div class="inner-container menu-container-new">
                     <div class="mobile-only mobile-only-top-buttons">
                         <a href="/frequently-asked-questions" class="menu-button-50">Help</a>
-                        <a href="/join-our-team" class="menu-button-50">Join BAC</a>
+                        <a href="/info-for-counsellors" class="menu-button-50">Join BAC</a>
                     </div>
                     <?php
                     if (wp_is_mobile()){
