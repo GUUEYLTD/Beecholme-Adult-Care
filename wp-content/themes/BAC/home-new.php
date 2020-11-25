@@ -1,5 +1,5 @@
 <?php /*Template Name: home-new*/
-get_header('new');
+get_header();
 $cur_page = get_the_ID();
 
 /*Return counsellors*/
@@ -385,4 +385,4 @@ if(!empty($counsellors)) {
     </div>
 
 
-<?php get_footer('new'); ?>
+<?php get_footer(); ?>

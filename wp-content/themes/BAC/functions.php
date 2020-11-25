@@ -59,10 +59,10 @@ function adding_scripts()
         wp_enqueue_style('header-new-css', get_template_directory_uri() . '/css/header-new.css');
         wp_enqueue_style('footer-new-css', get_template_directory_uri() . '/css/footer-new.css');
     }
-    if ( is_page_template('faq-unlimited-test.php') ) {
+    //if ( is_page_template('faq-unlimited-test.php') ) {
         wp_enqueue_style('header-new-css', get_template_directory_uri() . '/css/header-new.css');
         wp_enqueue_style('footer-new-css', get_template_directory_uri() . '/css/footer-new.css');
-    }
+   // }
     add_filter('show_admin_bar', '__return_false');
 
     if (is_author()) {
