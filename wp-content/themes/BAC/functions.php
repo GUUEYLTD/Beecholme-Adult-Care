@@ -846,3 +846,90 @@ function dsourc_hide_notices(){
 }
 
 add_action( 'admin_head', 'dsourc_hide_notices', 1 );
+
+
+//if( function_exists('acf_add_local_field_group') ):
+//    acf_add_local_field_group(array(
+//        'key' => 'home_new',
+//        'title' => 'Home new',
+//        'fields' => array(
+//
+//            array(
+//                'key' => 'investors_audit_reports_links_tab',
+//                'label' => 'Аудиторские заключения о финансовой отчетности (Документы для скачивания)',
+//                'name' => 'investors_audit_reports_links_tab',
+//                'type' => 'tab',
+//                'placement' => 'top',
+//            ),
+//
+//            array(
+//                'key' => 'investors_audit_reports_links_subtitle',
+//                'label' => 'Заголовок блока',
+//                'name' => 'investors_audit_reports_links_subtitle',
+//                'type' => 'text',
+//                'wrapper' => array(
+//                    'width' => '50',
+//                ),
+//                'placeholder' => 'Введите заголовок блока',
+//            ),
+//
+//            array(
+//                'key' => 'investors_audit_reports_links',
+//                'name' => 'investors_audit_reports_links',
+//                'type' => 'repeater',
+//                'layout' => 'table',
+//                'sub_fields' => array(
+//                    array(
+//                        'key' => 'investors_audit_reports_link',
+//                        'label' => 'Текст ссылки',
+//                        'name' => 'investors_audit_reports_link',
+//                        'type' => 'text',
+//                        'placeholder' => 'Введите текст ссылки',
+//                        'wrapper' => array(
+//                            'width' => '40',
+//                        ),
+//                    ),
+//                    array(
+//                        'key' => 'investors_audit_reports_pdf_file',
+//                        'label' => 'Документ (файл)',
+//                        'name' => 'investors_audit_reports_pdf_file',
+//                        'type' => 'file',
+//                        'placeholder' => '',
+//                        'mime_types' => '.pdf, .xls, .doc, .xlsx, .docx, .jpg, .jpeg, .png',
+//                    ),
+//                    array(
+//                        'key' => 'investors_audit_reports_date',
+//                        'label' => 'Дата',
+//                        'name' => 'investors_audit_reports_date',
+//                        'type' => 'text',
+//                        'placeholder' => 'Введите дату',
+//                        'wrapper' => array(
+//                            'width' => '20',
+//                        ),
+//                    ),
+//
+//                ),
+//            ),
+//
+//
+//
+//
+//
+//        ),
+//        'location' => array(
+//            array(
+//                array(
+//                    'param' => 'page_template',
+//                    'operator' => '==',
+//                    'value' => 'home-new.php',
+//                ),
+//            ),
+//        ),
+//        'menu_order' => 0,
+//        'position' => 'normal',
+//        'style' => 'default',
+//        'label_placement' => 'top',
+//        'instruction_placement' => 'label',
+//        'hide_on_screen' => '',
+//    ));
+//endif;
