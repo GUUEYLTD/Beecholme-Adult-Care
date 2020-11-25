@@ -19,6 +19,8 @@
 
 .footer-subscribe-form{
     background: #545C5B;
+    background-image:url(../images/main-new/form-plain.svg);
+    background-size: cover;
     border-radius:20px;
     padding:24px 16px;
     margin-top:32px
@@ -68,8 +70,8 @@
 }
 .footer-subscribe-form-plain{
     position: absolute;
-    top: -24px;
-    left: 12%;
+    top: -33px;
+    left: 168px;
 }
 
 footer {
@@ -84,18 +86,44 @@ footer ul li{
 footer ul li.menu-item-has-children{
     position: relative;
 }
+/*footer ul li:first-of-type{*/
+/*    background:red*/
+/*}*/
+/*.menu-item-has-children:first-with-class{*/
+/*    background:red*/
+/*}*/
+/*.menu-item-has-children:first-child{*/
+/*    background:red*/
+/*}*/
 footer .sub-menu{
     position: absolute;
     left: 50%;
-    top: 2px;
+    display: none;
 }
-footer ul li a{
+footer .sub-menu:nth-last-of-type(){
+    background:red
+}
+footer .sub-menu:nth-of-class(2){
+    background:blue
+}
+footer .sub-menu:nth-child(2){
+    /*//display: none;*/
+}
+
+.footer-menu{width:350px}
+.footer-contact p, footer ul li a{
     color:#D1D3D3;
-    font-size:18px;
-    line-height:24px
+    font-size:16px;
+    line-height:20px
 }
 footer ul li a:hover{
     color: #5AB9AC;
+}
+
+@media (max-width: 1140px){
+    .footer-subscribe-form-plain{
+        display:none
+    }
 }
 @media (max-width: 1000px){
     .footer-menu{
@@ -123,10 +151,10 @@ footer ul li a:hover{
         font-size:20px;
         margin-bottom:16px
     }
-    .footer-subscribe-form-plain{
-        top: -42px;
-        left: 10%;
-        width: 64px;
+    .footer-subscribe-form{
+        background-image:url(../images/main-new/form-plain-mob.svg);
+        margin-top:10px;
+        padding-top:56px
     }
 
 }

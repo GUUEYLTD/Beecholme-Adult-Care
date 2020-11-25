@@ -12,7 +12,8 @@ if(!empty($counsellors)) {
 ?>
 
 
-    <div class="text-center home-top-banner-new" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/first-screen-mob.png' : get_template_directory_uri().'/images/main-new/first-screen-desk.png' ?>)">
+    <div class="" style="background:#E5F5F4">
+    <div class="text-center home-top-banner-new" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/first-screen-mob.png' : get_template_directory_uri().'/images/main-new/first-screen-desk.svg' ?>)">
 
         <div class="home-top-banner-wrapper inner-container">
             <div class="home-top-banner-top">
@@ -75,7 +76,7 @@ if(!empty($counsellors)) {
 
         </div>
     </div>
-
+    </div>
 
 
     <div class="main-mob-counsellors">
@@ -307,7 +308,7 @@ if(!empty($counsellors)) {
             <?php $query = new WP_Query( 'posts_per_page=5' ); ?>
             <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                 <div class="post d-flex flex-column">
-                    <div class="image" style="background-image: url(<?= get_the_post_thumbnail_url(get_the_ID(), 'medium') ?>)"></div>
+                    <div class="image" style="background-image: url(<?= get_the_post_thumbnail_url(get_the_ID()) ?>)"></div>
                     <div class="content">
                         <a href="<?php echo get_the_permalink() ?>" target="_blank" class="title"><?php echo get_the_title(); ?></a>
                         <div class="description"><?= wp_filter_nohtml_kses(get_the_content()) ?></div>
@@ -337,9 +338,9 @@ if(!empty($counsellors)) {
                             </div>
 
                             <div class="post-social-items">
-                                <div class="post-social-items-ico">
-                                    <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-share.svg' ?>" class="main-new-search-ico" alt="share-icon">
-                                </div>
+<!--                                <div class="post-social-items-ico">-->
+<!--                                    <img src="--><?php //echo get_template_directory_uri().'/images/main-new/icon-share.svg' ?><!--" class="main-new-search-ico" alt="share-icon">-->
+<!--                                </div>-->
                                 <div class="post-social-item-wrapper">
 
                                     <div class="post-social-item">
@@ -351,18 +352,14 @@ if(!empty($counsellors)) {
                                             <a target="_blank"
                                                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
                                                class="fb-xfbml-parse-ignore"
-                                            >
-                                                Share
-                                            </a>
+                                            >Share</a>
                                         </div>
                                     </div>
                                     <div class="post-social-item">
                                         <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
                                            data-text="<?php echo get_the_permalink() ?>"
                                            rel="canonical"
-                                        >
-                                            Tweet
-                                        </a>
+                                        >Tweet</a>
                                     </div>
                                 </div>
                             </div>
