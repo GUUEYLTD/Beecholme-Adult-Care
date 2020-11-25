@@ -67,7 +67,7 @@
                     if (wp_is_mobile()){
                        wp_nav_menu( array( 'theme_location' => 'header-menu' ) );
                     }else {
-                        //wp_nav_menu( array( 'theme_name' => 'Header-new' ) );
+                        wp_nav_menu( array( 'theme_name' => 'Header-new' ) );
                     }
                     ?>
 

@@ -38,6 +38,7 @@ body{
 @media all and (max-width:900px){
     .page-template-home-new .home-top-banner-new{
         /*min-height:100vh;*/
+        background-position: bottom center;
         padding-top:77px;
         border-bottom-right-radius: 20px;
         border-bottom-left-radius: 20px;
@@ -230,6 +231,7 @@ body{
     margin-top:0;
     margin-bottom:48px;
     color:#49504F;
+    text-transform: capitalize;
 }
 .main-mob-counsellors .owl-carousel .owl-dots.disabled{
 
@@ -284,7 +286,7 @@ body{
 }
 .our-counsellors .single-item .single-item-stars-name{display: flex;justify-content: space-between;}
 .our-counsellors .single-item .single-item-stars img{height:auto}
-.our-counsellors .single-item .single-item-name{font-size:18px;line-height:24px;color: #5AB9AC;}
+.our-counsellors .single-item .single-item-name{font-size:18px;line-height:24px;color: #5AB9AC;font-weight:500}
 .our-counsellors .single-item .single-item-icon{
     width:28px!important;
     object-fit: contain;
@@ -296,6 +298,14 @@ body{
     /*    height:auto;*/
     /*    min-height:225px*/
     /*}*/
+    .main-mob-counsellors .our-counsellors .single-item {
+        min-height: 280px;
+        flex-direction: column;
+        height:280px
+    }
+    .our-counsellors .single-item .single-item-icon{
+        margin-bottom:16px
+    }
     .our-counsellors .single-item .single-item-name,
     .our-counsellors .single-item  .single-item-text{
         font-size:16px;
@@ -322,6 +332,10 @@ body{
     margin:0
 }
 @media all and (max-width:900px) {
+    .page-template-home-new .main-mob-how-it-work{
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+    }
     .page-template-home-new .main-mob-how-it-work h2{
         font-size:26px;
         line-height:32px;
@@ -598,7 +612,8 @@ body{
     padding-top:30px;
     height:auto;
     margin-bottom:20px;
-    font-weight:600
+    font-weight:600;
+    min-height:75px
 }
 .page-template-home-new .posts .post .description{-webkit-line-clamp: 5;}
 .page-template-home-new .posts .post:nth-child(1),

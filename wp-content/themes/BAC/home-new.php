@@ -134,11 +134,11 @@ if(!empty($counsellors)) {
 
 
 
-
+    <div class="" style="background:#E5F5F4">
     <div class="main-mob-how-it-work" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/how-it-works-mob-bg.png' : get_template_directory_uri().'/images/main-new/how-it-works-bg.png' ?>)">
         <h2 class="text-center">How It Works?</h2>
         <div class="inner-container how-it-work-container">
-<!--            <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">-->
+
             <div class="main-mob-how-it-work-item">
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how1.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">01</div>
@@ -208,7 +208,7 @@ if(!empty($counsellors)) {
         </div>
 
     </div>
-
+    </div>
 
 
     <div class="testimonials">

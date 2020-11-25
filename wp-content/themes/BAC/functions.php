@@ -52,10 +52,14 @@ function adding_scripts()
     }
 
 
-        if ( is_page_template('home-new.php') ) {
+     if ( is_page_template('home-new.php') ) {
         wp_enqueue_style('main-new-css', get_template_directory_uri() . '/css/main-new.css');
         wp_enqueue_script('main-new-js', get_template_directory_uri() . '/js/main-new.js', array('jquery', 'owl-carousel'), '', true);
 
+        wp_enqueue_style('header-new-css', get_template_directory_uri() . '/css/header-new.css');
+        wp_enqueue_style('footer-new-css', get_template_directory_uri() . '/css/footer-new.css');
+    }
+    if ( is_page_template('faq-unlimited-test.php') ) {
         wp_enqueue_style('header-new-css', get_template_directory_uri() . '/css/header-new.css');
         wp_enqueue_style('footer-new-css', get_template_directory_uri() . '/css/footer-new.css');
     }

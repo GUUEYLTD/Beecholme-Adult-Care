@@ -12,6 +12,14 @@
     margin:8px
 }
 
+
+.footer-controls .buttons a.referral-button, .footer-controls .buttons a.referral-button:hover {
+    background: #545C5B;
+}
+.footer-controls .buttons a.referral-button:hover {
+    opacity: 0.9;
+}
+
 .footer-buttons{
     display: flex;
     justify-content: space-between;
@@ -132,6 +140,9 @@ footer ul li a:hover{
 }
 
 @media (max-width: 900px){
+    footer .footer-controls .buttons a{
+        margin-bottom:16px
+    }
     .footer-subscribe-form form{
         flex-direction:column
     }
@@ -139,6 +150,7 @@ footer ul li a:hover{
     .footer-subscribe-form .wpcf7-form input[type="submit"] {
         width:314px;
         max-width:314px;
+        height:48px;
         transform:none;
     }
     .footer-buttons{
