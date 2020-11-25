@@ -97,12 +97,12 @@ footer ul li a:hover{
 footer ul li.menu-item-has-children{
     position: relative;
     z-index:0;
-    width:160px
+    width:200px
 }
 
 footer .sub-menu{
     position: absolute;
-    left: 160px;
+    left: 200px;
     display: none;
     top: 0;
     width:220px
@@ -127,8 +127,8 @@ footer ul li.menu-item-has-children>a{position: relative;}
 footer ul li.menu-item-has-children>a:after{    
     content: "\203A";
     display: block;
-    font-size: 28px;
-    line-height: 22px;
+    font-size: 24px;
+    line-height: 16px;
     position: absolute;
     right: -16px;
     top: 0px;
