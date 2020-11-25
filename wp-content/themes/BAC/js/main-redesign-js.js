@@ -36,7 +36,10 @@ jQuery(document).ready(function($) {
     $('.owl-carousel').owlCarousel({
         loop:true,
         stagePadding: 25,
-        nav:true,
+      nav:true,
+      items:4,
+      navText : ['<i class="fas fa-arrow-left" aria-hidden="true"></i>','<i class="fas fa-arrow-right"></i>'],
+      margin:10,
         margin:10,
         responsive:{
             0:{

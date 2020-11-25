@@ -19,43 +19,17 @@ body{
     max-width:346px
 }
 
-.mobile-menu .toggle{
-    background: #5AB9AC;
-    border-radius: 50%;
-    width:40px;
-    height:40px
-}
-.mobile-menu .toggle:hover{cursor:pointer}
 
-.mobile-menu .toggle-inner, .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after{
-    width:20px;
-    height:2px;
-    background:#fff
-}
-.mobile-menu .toggle-inner {left: 10px;}
-.toggle-inner:befote{top:-6px}
-.toggle-inner:after{bottom:-6px}
-.header-container{
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-.page-template-home-new .mobile-menu .mobile-menu-container,
-.page-template-home-new #menu-menu1 .menu-item-type-custom,.page-template-home-new  #menu-item-187{
-    background: #5AB9AC;
-    color:#fff
-}
-.page-template-home-new  .menu-menu1-container #menu-menu1 li a{
-    color:#fff
-}
 
 
 
 .page-template-home-new .home-top-banner-new{
     position: relative;
     min-height:100vh;
-    background-size:cover;
+
     background-repeat:no-repeat;
     background-position: top center;
+    background-size: 101%;
     display: flex;
     border-bottom-right-radius: 250px;
     border-bottom-left-radius: 250px;
@@ -65,8 +39,8 @@ body{
     .page-template-home-new .home-top-banner-new{
         /*min-height:100vh;*/
         padding-top:77px;
-        /*border-bottom-right-radius: 20px;*/
-        /*border-bottom-left-radius: 20px;*/
+        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
     }
 }
 /*@media all and (max-width:1100px) and (orientation: landscape) {*/
@@ -257,9 +231,31 @@ body{
     margin-bottom:48px;
     color:#49504F;
 }
+.main-mob-counsellors .owl-carousel .owl-dots.disabled{
+
+}
+.main-mob-counsellors .owl-carousel .owl-nav{
+    display:block;
+
+}
+.main-mob-counsellors .owl-carousel .owl-prev,
+.main-mob-counsellors .owl-carousel .owl-next,
+.main-mob-counsellors .owl-carousel .owl-prev:hover,
+.main-mob-counsellors .owl-carousel .owl-next:hover{
+    color: #5AB9AC;
+    font-size:16px
+}
 @media all and (max-width:900px) {
+    .page-template-home-new .main-mob-counsellors .owl-theme .owl-dots{
+        display:none
+    }
+    .page-template-home-new .main-mob-counsellors .owl-carousel .owl-nav{
+        position: absolute;
+        bottom: -40px;
+        right: 50%;
+    }
     .page-template-home-new .main-mob-counsellors{
-        padding:64px 0
+        padding: 64px 0 110px;
     }
     .page-template-home-new .main-mob-counsellors h2{
         font-size:26px;
@@ -623,6 +619,14 @@ body{
 .page-template-home-new .posts .post:nth-child(3) .description,
 .page-template-home-new .posts .post:nth-child(4) .description,
 .page-template-home-new .posts .post:nth-child(5) .description{display:none}
+.page-template-home-new .posts .post:nth-child(3) .content,
+.page-template-home-new .posts .post:nth-child(4) .content,
+.page-template-home-new .posts .post:nth-child(5) .content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 .page-template-home-new .posts .post .image{display: none;margin-bottom:0}
 .page-template-home-new .posts .post:nth-child(1) .image,
 .page-template-home-new .posts .post:nth-child(2) .image {display:block;height:auto}

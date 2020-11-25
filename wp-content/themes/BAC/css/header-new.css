@@ -13,6 +13,34 @@ body.page-template-home-new{
         padding-top:56px
     }
 }
+.mobile-menu .toggle{
+    background: #5AB9AC;
+    border-radius: 50%;
+    width:40px;
+    height:40px
+}
+.mobile-menu .toggle:hover{cursor:pointer}
+
+.mobile-menu .toggle-inner, .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after{
+    width:20px;
+    height:2px;
+    background:#fff
+}
+.mobile-menu .toggle-inner {left: 12px;}
+.toggle-inner:befote{top:-6px}
+.toggle-inner:after{bottom:-6px}
+.header-container{
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+.page-template-home-new .mobile-menu .mobile-menu-container,
+.page-template-home-new #menu-menu1 .menu-item-type-custom,.page-template-home-new  #menu-item-187{
+    background: #5AB9AC;
+    color:#fff
+}
+.page-template-home-new  .menu-menu1-container #menu-menu1 li a{
+    color:#fff
+}
 .mobile-menu{
     display:flex!important;
     position: static;
@@ -31,7 +59,9 @@ header{
 }
 
 .mobile-menu .toggle {
-    background: #5AB9AC;
+    /*background: #5AB9AC;*/
+    background: rgb(79,207,190);
+    background: linear-gradient(90deg, rgba(79,207,190,1) 0%, rgba(49,192,173,1) 100%);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -42,19 +72,20 @@ header{
 .mobile-menu .toggle-inner, .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after {
     content:'';
     display:block;
-    width: 20px!important;
+    width: 16px!important;
     height: 2px!important;
     background: #fff!important;
+    border-radius: 3px;
 
 }
 .mobile-menu .toggle-inner:before, .mobile-menu .toggle-inner:after {
     position: absolute;
 }
 .mobile-menu .toggle-inner:before{
-    top:-8px
+    top:-6px
 }
 .mobile-menu .toggle-inner:after{
-    top:8px
+    top:6px
 }
 .mobile-menu .toggle-inner{
     right:10px;

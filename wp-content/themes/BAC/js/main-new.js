@@ -4,6 +4,9 @@ jQuery(document).ready(function($) {
     loop:true,
     //stagePadding: 25,
     nav:true,
+    items:4,
+    navText : ['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fas fa-arrow-right"></i>'],
+    margin:10,
     margin:10,
     responsive:{
       0:{
