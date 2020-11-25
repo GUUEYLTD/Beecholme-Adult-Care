@@ -112,10 +112,23 @@ footer .sub-menu{
 footer .footer-bottom{
     border-top:0
 }
-footer ul li.menu-item-has-children:hover{cursor:pointer}
+footer ul li.menu-item-has-children:hover, footer ul li.menu-item-has-children a:hover{cursor:pointer;text-decoration: none}
 footer ul li.menu-item-has-children:hover .sub-menu{
     opacity:1;
 }
+footer ul li.menu-item-has-children>a:focus,
+footer ul li.menu-item-has-children>a:active{
+    color:#D1D3D3;
+    text-decoration: none;
+}
+/*footer ul li.menu-item-has-children>a:after{*/
+/*    content:'';*/
+/*    display: block;*/
+/*    width:20px;*/
+/*    height:20px;*/
+/*    background:url('../images/icon_nextright.svg');*/
+/*    background-size:cover*/
+/*}*/
 
 .copyrights {
     color: #7E8E8B;

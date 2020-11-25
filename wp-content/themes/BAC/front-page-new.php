@@ -1,5 +1,5 @@
-<?php /*Template Name: home-new*/
-get_header();
+<?php
+get_header('new');
 $cur_page = get_the_ID();
 
 /*Return counsellors*/
@@ -12,70 +12,71 @@ if(!empty($counsellors)) {
 ?>
 
 
-    <div class="text-center home-top-banner-new" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/first-screen-mob.png' : get_template_directory_uri().'/images/main-new/first-screen-desk.png' ?>)">
+    <div class="" style="background:#E5F5F4">
+        <div class="text-center home-top-banner-new" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/first-screen-mob.png' : get_template_directory_uri().'/images/main-new/first-screen-desk.svg' ?>)">
 
-        <div class="home-top-banner-wrapper inner-container">
-            <div class="home-top-banner-top">
-                <div class="home-top-banner-top-left">
-                    <h1>Online Therapy and Coaching for you.</h1>
-                    <div class="home-top-banner-sub-one">Help when you need it most</div>
-                    <div class="home-top-banner-sub-two">Talk to a licensed counsellor now.</div>
+            <div class="home-top-banner-wrapper inner-container">
+                <div class="home-top-banner-top">
+                    <div class="home-top-banner-top-left">
+                        <h1>Online Therapy and Coaching for you.</h1>
+                        <div class="home-top-banner-sub-one">Help when you need it most</div>
+                        <div class="home-top-banner-sub-two">Talk to a licensed counsellor now.</div>
+                    </div>
+                    <div class="home-top-banner-top-right">
+                        <img src="<?php echo get_template_directory_uri().'/images/main-new/home-top-banner-image.svg' ?>" alt="with-bac">
+                    </div>
                 </div>
-                <div class="home-top-banner-top-right">
-                    <img src="<?php echo get_template_directory_uri().'/images/main-new/home-top-banner-image.png' ?>" alt="with-bac">
-                </div>
-            </div>
 
-            <div class="home-top-banner-bottom">
-                <div class="banner-content  home-form-wrapper">
-                    <div class="home-form-title">I Need Help With...</div>
-                    <form class="tab-content find-tab active" action="our-counsellors">
-                        <div class="homepage-filter question-filter empty-filter active">
-                            <select class="question-select" name="common">
-                                <option value="" data-display-text="All">All</option>
-                                <?php foreach (getServices() as $serviceName) : ?>
-                                    <option
-                                            value="<?php echo $serviceName ?>"
-                                        <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
-                                    ><?php echo $serviceName ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="button-wrapper">
-                                <button>
-                                    <?php if(!wp_is_mobile()) :?>
-                                        Find a Counsellor
-                                    <?php else : ?>
-                                        <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-search.svg' ?>" class="main-new-search-ico" alt="search-icon">
-                                    <?php endif; ?>
-                                </button>
+                <div class="home-top-banner-bottom">
+                    <div class="banner-content  home-form-wrapper">
+                        <div class="home-form-title">I Need Help With...</div>
+                        <form class="tab-content find-tab active" action="our-counsellors">
+                            <div class="homepage-filter question-filter empty-filter active">
+                                <select class="question-select" name="common">
+                                    <option value="" data-display-text="All">All</option>
+                                    <?php foreach (getServices() as $serviceName) : ?>
+                                        <option
+                                                value="<?php echo $serviceName ?>"
+                                            <?php echo isset($_GET['common']) && $_GET['common'] === $serviceName ? 'selected' : '' ?>
+                                        ><?php echo $serviceName ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="button-wrapper">
+                                    <button>
+                                        <?php if(!wp_is_mobile()) :?>
+                                            Find a Counsellor
+                                        <?php else : ?>
+                                            <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-search.svg' ?>" class="main-new-search-ico" alt="search-icon">
+                                        <?php endif; ?>
+                                    </button>
+                                </div>
                             </div>
+                        </form>
+                    </div>
+                    <div class="home-form-captions">
+                        <div class="home-form-caption-item">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
+                            Professional licenced therapists and coaches</div>
+                        <div class="home-form-caption-item">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
+                            Affordable
                         </div>
-                    </form>
-                </div>
-                <div class="home-form-captions">
-                    <div class="home-form-caption-item">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
-                        Professional licenced therapists and coaches</div>
-                    <div class="home-form-caption-item">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
-                        Affordable
-                    </div>
-                    <div class="home-form-caption-item">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
-                        Secure
-                    </div>
-                    <div class="home-form-caption-item">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
-                        Satisfaction Guarantee
+                        <div class="home-form-caption-item">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
+                            Secure
+                        </div>
+                        <div class="home-form-caption-item">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
+                            Satisfaction Guarantee
+                        </div>
                     </div>
                 </div>
+
+
+
             </div>
-
-
-
         </div>
     </div>
-
 
 
     <div class="main-mob-counsellors">
@@ -133,84 +134,81 @@ if(!empty($counsellors)) {
 
 
 
+    <div class="" style="background:#E5F5F4">
+        <div class="main-mob-how-it-work" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/how-it-works-mob-bg.png' : get_template_directory_uri().'/images/main-new/how-it-works-bg.png' ?>)">
+            <h2 class="text-center">How It Works?</h2>
+            <div class="inner-container how-it-work-container">
 
-    <div class="main-mob-how-it-work" style="background-image: url(<?php echo wp_is_mobile() ? get_template_directory_uri().'/images/main-new/how-it-works-mob-bg.png' : get_template_directory_uri().'/images/main-new/how-it-works-bg.png' ?>)">
-        <h2 class="text-center">How It Works?</h2>
-        <div class="inner-container how-it-work-container">
-            <div data-wow-delay="0.4s" class="main-mob-how-it-work-item wow fadeInUp">
-                <img src="<?php echo get_template_directory_uri().'/images/main-new/how1.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">1</div>
-                <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+                <div class="main-mob-how-it-work-item">
+                    <img src="<?php echo get_template_directory_uri().'/images/main-new/how1.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
+                    <div class="how-it-work-item-number">01</div>
+                    <div class="how-it-work-item-content">
+                        <div class="how-it-work-item-title">Choose your counsellor</div>
+                        <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+                    </div>
+                </div>
+                <div class="main-mob-how-it-work-item">
+                    <img src="<?php echo get_template_directory_uri().'/images/main-new/how2.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
+                    <div class="how-it-work-item-number">02</div>
+                    <div class="how-it-work-item-content">
+                        <div class="how-it-work-item-title">Book online</div>
+                        <div class="how-it-work-item-text">Choose the day and time that best fits your schedule and fill out the booking form</div>
+                    </div>
+                </div>
+                <div class="main-mob-how-it-work-item">
+                    <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
+                    <div class="how-it-work-item-number">03</div>
+                    <div class="how-it-work-item-content">
+                        <div class="how-it-work-item-title">Start therapy / coaching</div>
+                        <div class="how-it-work-item-text">Begin the journey towards a happier and healthier your</div>
+                    </div>
                 </div>
             </div>
-            <div data-wow-delay="0.5s" class="main-mob-how-it-work-item wow fadeInUp">
-                <img src="<?php echo get_template_directory_uri().'/images/main-new/how2.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">2</div>
-                <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+
+            <div class="why-choose">
+                <h2>Why Choose BAC Online Therapy and Coaching?</h2>
+                <div class="why-choose-items inner-container">
+                    <div class="why-choose-item">
+                        <div class="why-choose-img">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/why1.svg' ?>" alt="why-choose-icon">
+                        </div>
+                        <div class="why-choose-content">
+                            <div class="why-choose-title">Verified Counsellors</div>
+                            <div class="why-choose-text">BAC counsellors are all licensed, trained, experienced, and accredited</div>
+                        </div>
+                    </div>
+                    <div class="why-choose-item">
+                        <div class="why-choose-img">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/why2.svg' ?>" alt="why-choose-icon">
+                        </div>
+                        <div class="why-choose-content">
+                            <div class="why-choose-title">Secure</div>
+                            <div class="why-choose-text">BAC takes several steps to ensure safe services and guarantee confidentiality</div>
+                        </div>
+                    </div>
+                    <div class="why-choose-item">
+                        <div class="why-choose-img">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/why3.svg' ?>" alt="why-choose-icon">
+                        </div>
+                        <div class="why-choose-content">
+                            <div class="why-choose-title">Accessible</div>
+                            <div class="why-choose-text">Wherever you wish to be, you can still get your sessions</div>
+                        </div>
+                    </div>
+                    <div class="why-choose-item">
+                        <div class="why-choose-img">
+                            <img src="<?php echo get_template_directory_uri().'/images/main-new/why4.svg' ?>" alt="why-choose-icon">
+                        </div>
+                        <div class="why-choose-content">
+                            <div class="why-choose-title">Easy To Use</div>
+                            <div class="why-choose-text">Easy booking process, secure payment system and 24/7 support</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div data-wow-delay="0.6s" class="main-mob-how-it-work-item wow fadeInUp">
-                <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
-                <div class="how-it-work-item-number">3</div>
-                <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
-                </div>
-            </div>
+
         </div>
-
-        <div class="why-choose">
-            <h2>Why Choose BAC Online Therapy and Coaching?</h2>
-            <div class="why-choose-items inner-container">
-                <div class="why-choose-item">
-                    <div class="why-choose-img">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/why1.svg' ?>" alt="why-choose-icon">
-                    </div>
-                    <div class="why-choose-content">
-                        <div class="why-choose-title">Verified Counsellors</div>
-                        <div class="why-choose-text">BAC counsellors are all licensed, trained, experienced, and accredited</div>
-                    </div>
-                </div>
-                <div class="why-choose-item">
-                    <div class="why-choose-img">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/why2.svg' ?>" alt="why-choose-icon">
-                    </div>
-                    <div class="why-choose-content">
-                        <div class="why-choose-title">Secure</div>
-                        <div class="why-choose-text">BAC takes several steps to ensure safe services and guarantee confidentiality</div>
-                    </div>
-                </div>
-                <div class="why-choose-item">
-                    <div class="why-choose-img">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/why3.svg' ?>" alt="why-choose-icon">
-                    </div>
-                    <div class="why-choose-content">
-                        <div class="why-choose-title">Accessible</div>
-                        <div class="why-choose-text">Wherever you wish to be, you can still get your sessions</div>
-                    </div>
-                </div>
-                <div class="why-choose-item">
-                    <div class="why-choose-img">
-                        <img src="<?php echo get_template_directory_uri().'/images/main-new/why4.svg' ?>" alt="why-choose-icon">
-                    </div>
-                    <div class="why-choose-content">
-                        <div class="why-choose-title">Easy To Use</div>
-                        <div class="why-choose-text">Easy booking process, secure payment system and 24/7 support</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-    <script>
-      jQuery(document).ready(function($) {
-        new WOW().init();
-      });
-    </script>
 
 
     <div class="testimonials">
@@ -266,7 +264,7 @@ if(!empty($counsellors)) {
                     If you're not satisfied, we'll arrange a free session with an alternative counsellor for you or offer you a full refund.
                 </div>
                 <div class="banner-content  home-form-wrapper">
-                    <div class="home-form-title">I Need Help With...</div>
+                    <div class="home-form-title">Help me with...</div>
                     <form class="tab-content find-tab active" action="our-counsellors">
                         <div class="homepage-filter question-filter empty-filter active">
                             <select class="question-select" name="common">
@@ -300,17 +298,17 @@ if(!empty($counsellors)) {
             <h2 class="title">
                 Blog Posts
             </h2>
-            <a href="/blog/" target="_blank">Explore more posts</a>
+            <?php if(!wp_is_mobile()) : ?>
+                <a href="/blog/" target="_blank">Explore more posts</a>
+            <?php endif; ?>
         </div>
 
         <div class="posts d-flex flex-row">
-            <?php //foreach ($recentPosts as $post) { ?>
+
             <?php $query = new WP_Query( 'posts_per_page=5' ); ?>
             <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
                 <div class="post d-flex flex-column">
-                    <div class="image">
-                        <img src="<?= get_the_post_thumbnail_url(get_the_ID(), 'medium') ?>" alt="">
-                    </div>
+                    <div class="image" style="background-image: url(<?= get_the_post_thumbnail_url(get_the_ID()) ?>)"></div>
                     <div class="content">
                         <a href="<?php echo get_the_permalink() ?>" target="_blank" class="title"><?php echo get_the_title(); ?></a>
                         <div class="description"><?= wp_filter_nohtml_kses(get_the_content()) ?></div>
@@ -338,33 +336,37 @@ if(!empty($counsellors)) {
                                 </div>
                                 <span><?php echo get_the_date('M j, Y') ?></span>
                             </div>
-<!--                            <a href="--><?php //echo get_the_permalink() ?><!--" target="_blank" class="read-more">-->
 
-                                <div class="post-social-item">
-                                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
-                                       data-text="<?php echo get_the_permalink() ?>"
-                                       rel="canonical"
-                                    >
-                                        Tweet
-                                    </a>
-                                </div>
+                            <div class="post-social-items">
+                                <!--                                <div class="post-social-items-ico">-->
+                                <!--                                    <img src="--><?php //echo get_template_directory_uri().'/images/main-new/icon-share.svg' ?><!--" class="main-new-search-ico" alt="share-icon">-->
+                                <!--                                </div>-->
+                                <div class="post-social-item-wrapper">
 
-                                <div class="post-social-item">
-                                    <div class="fb-share-button"
-                                         data-layout="button"
-                                         data-size="small"
-                                         data-href="<?php echo get_the_title() ?>"
-                                    >
-                                        <a target="_blank"
-                                           href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
-                                           class="fb-xfbml-parse-ignore"
+                                    <div class="post-social-item">
+                                        <div class="fb-share-button"
+                                             data-layout="button"
+                                             data-size="small"
+                                             data-href="<?php echo get_the_title() ?>"
                                         >
-                                            Share
-                                        </a>
+                                            <a target="_blank"
+                                               href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                                               class="fb-xfbml-parse-ignore"
+                                            >Share</a>
+                                        </div>
+                                    </div>
+                                    <div class="post-social-item">
+                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-url="<?php echo get_the_title() ?>"
+                                           data-text="<?php echo get_the_permalink() ?>"
+                                           rel="canonical"
+                                        >Tweet</a>
                                     </div>
                                 </div>
+                            </div>
 
-<!--                            </a>-->
+
+
+
                         </div>
                     </div>
                 </div>
@@ -373,12 +375,14 @@ if(!empty($counsellors)) {
             else : ?>
                 <p><?php esc_html_e( 'Sorry, no posts matched your criteria.' ); ?></p>
             <?php endif; ?>
-            <?php //} ?>
+
         </div>
-<!--        <div class="explore-more d-flex justify-content-center">-->
-<!--            <a href="/blog/" target="_blank">Explore more posts</a>-->
-<!--        </div>-->
+        <?php if(wp_is_mobile()) : ?>
+            <div class="explore-more d-flex justify-content-center">
+                <a href="/blog/" target="_blank">Explore more posts</a>
+            </div>
+        <?php endif; ?>
     </div>
 
 
-<?php get_footer(); ?>
+<?php get_footer('new'); ?>
