@@ -63,7 +63,7 @@ function adding_scripts()
         wp_enqueue_style('header-new-css', get_template_directory_uri() . '/css/header-new.css');
         wp_enqueue_style('footer-new-css', get_template_directory_uri() . '/css/footer-new.css');
    // }
-    add_filter('show_admin_bar', '__return_false');
+   // add_filter('show_admin_bar', '__return_false');
 
     if (is_author()) {
         wp_enqueue_style('author-ch-css', get_template_directory_uri() . '/css/pages/author.css');
