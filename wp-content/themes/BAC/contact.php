@@ -24,6 +24,10 @@
     .contact .wpcf7-form input, .contact .wpcf7-form select, .contact .wpcf7-form textarea{
         width:100%!important
     }
+    .contact .wpcf7-form input:focus, .contact .wpcf7-form select:focus, .contact .wpcf7-form textarea:focus{
+        border: 2px solid #5AB9AC;
+        outline:none
+    }
 
     .contact span.wpcf7-not-valid-tip {
         color: #f00;
