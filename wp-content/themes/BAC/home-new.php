@@ -18,9 +18,9 @@ if(!empty($counsellors)) {
         <div class="home-top-banner-wrapper inner-container">
             <div class="home-top-banner-top">
                 <div class="home-top-banner-top-left">
-                    <h1>Online Therapy and Coaching for you.</h1>
+                    <h1>Online Therapy and Life Coaching for you</h1>
                     <div class="home-top-banner-sub-one">Help when you need it most</div>
-                    <div class="home-top-banner-sub-two">Talk to a licensed counsellor now.</div>
+                    <div class="home-top-banner-sub-two">Talk to a licensed therapist or life coach today</div>
                 </div>
                 <div class="home-top-banner-top-right">
                     <img src="<?php echo get_template_directory_uri().'/images/main-new/home-top-banner-image.svg' ?>" alt="with-bac">
@@ -56,7 +56,7 @@ if(!empty($counsellors)) {
                 <div class="home-form-captions">
                     <div class="home-form-caption-item">
                         <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
-                        Professional licenced therapists and coaches</div>
+                        Professional licenced therapists and life coaches</div>
                     <div class="home-form-caption-item">
                         <img src="<?php echo get_template_directory_uri().'/images/main-new/icon-check.svg' ?>" class="home-form-caption-item-icon" alt="check-icon">
                         Affordable
@@ -80,7 +80,7 @@ if(!empty($counsellors)) {
 
 
     <div class="main-mob-counsellors">
-        <h2 class="text-center">What our clients say</h2>
+        <h2 class="text-center">What our clients say about us </h2>
 
         <div class="owl-carousel owl-theme our-counsellors inner-container">
 
@@ -144,7 +144,7 @@ if(!empty($counsellors)) {
                 <div class="how-it-work-item-number">01</div>
                 <div class="how-it-work-item-content">
                     <div class="how-it-work-item-title">Choose your counsellor</div>
-                    <div class="how-it-work-item-text">Select the counsellor that best suits your needs from 50+ verified therapists and coaches</div>
+                    <div class="how-it-work-item-text"><a href="https://beecholmeadultcare.co.uk/our-counsellors/" target="_blank" rel="noopener"> Select the counsellor</a> that best suits your needs from 50+ verified therapists and life coaches</div>
                 </div>
             </div>
             <div class="main-mob-how-it-work-item">
@@ -159,14 +159,14 @@ if(!empty($counsellors)) {
                 <img src="<?php echo get_template_directory_uri().'/images/main-new/how3.svg' ?>" class="how-it-work-item-image" alt="quote-icon">
                 <div class="how-it-work-item-number">03</div>
                 <div class="how-it-work-item-content">
-                    <div class="how-it-work-item-title">Start therapy / coaching</div>
+                    <div class="how-it-work-item-title">Start online therapy / life coaching</div>
                     <div class="how-it-work-item-text">Begin the journey towards a happier and healthier your</div>
                 </div>
             </div>
         </div>
 
         <div class="why-choose">
-            <h2>Why Choose BAC Online Therapy and Coaching?</h2>
+            <h2>Why Choose BAC Online Therapy and Life Coaching?</h2>
             <div class="why-choose-items inner-container">
                 <div class="why-choose-item">
                     <div class="why-choose-img">
@@ -261,7 +261,7 @@ if(!empty($counsellors)) {
             </div>
             <div class="with-you-content-right">
                 <div class="with-you-content-right-text">
-                    If you're not satisfied, we'll arrange a free session with an alternative counsellor for you or offer you a full refund.
+                    If you're not satisfied with your therapy or life coaching session, we'll arrange a free online consultation with an alternative counsellor for you or offer you a full refund.
                 </div>
                 <div class="banner-content  home-form-wrapper">
                     <div class="home-form-title">Help me with...</div>
