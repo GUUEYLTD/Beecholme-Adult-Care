@@ -25,7 +25,7 @@
         width:100%!important
     }
     .contact .wpcf7-form input:focus, .contact .wpcf7-form select:focus, .contact .wpcf7-form textarea:focus{
-        border: 2px solid #5AB9AC;
+        border: 1px solid #5AB9AC;
         outline:none
     }
 
